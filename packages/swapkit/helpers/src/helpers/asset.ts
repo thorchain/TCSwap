@@ -1,6 +1,7 @@
 import { AssetValue } from "../modules/assetValue";
 import { RequestClient } from "../modules/requestClient";
-import { BaseDecimal, Chain, ChainToRPC, type EVMChain, EVMChains } from "../types/chains";
+import { SKConfig } from "../modules/swapKitConfig";
+import { BaseDecimal, Chain, type EVMChain, EVMChains } from "../types/chains";
 import type { RadixCoreStateResourceDTO } from "../types/radix";
 import type { TokenNames } from "../types/tokens";
 
@@ -21,19 +22,22 @@ export const CommonAssetStrings = [
 
 const getContractDecimals = async ({ chain, to }: { chain: EVMChain; to: string }) => {
   try {
-    const { result } = await RequestClient.post<{ result: string }>(ChainToRPC[chain], {
-      headers: {
-        accept: "*/*",
-        "content-type": "application/json",
-        "cache-control": "no-cache",
+    const { result } = await RequestClient.post<{ result: string }>(
+      SKConfig.get("rpcUrls")[chain],
+      {
+        headers: {
+          accept: "*/*",
+          "content-type": "application/json",
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify({
+          id: 44,
+          jsonrpc: "2.0",
+          method: "eth_call",
+          params: [{ to: to.toLowerCase(), data: getDecimalMethodHex }, "latest"],
+        }),
       },
-      body: JSON.stringify({
-        id: 44,
-        jsonrpc: "2.0",
-        method: "eth_call",
-        params: [{ to: to.toLowerCase(), data: getDecimalMethodHex }, "latest"],
-      }),
-    });
+    );
 
     return Number.parseInt(BigInt(result || BaseDecimal[chain]).toString());
   } catch (error) {
@@ -47,7 +51,7 @@ const getRadixResourceDecimals = async ({ symbol }: { symbol: string }) => {
     const resourceAddress = symbol.split("-")[1]?.toLowerCase();
 
     const { manager } = await RequestClient.post<RadixCoreStateResourceDTO>(
-      `${ChainToRPC[Chain.Radix]}/state/resource`,
+      `${SKConfig.get("rpcUrls").XRD}/state/resource`,
       {
         headers: {
           Accept: "*/*",

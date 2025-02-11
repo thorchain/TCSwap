@@ -1,5 +1,5 @@
 import { type CoinbaseWalletProvider, CoinbaseWalletSDK } from "@coinbase/wallet-sdk";
-import { Chain, ChainToRPC, SKConfig } from "@swapkit/helpers";
+import { Chain, SKConfig } from "@swapkit/helpers";
 import type { getToolboxByChain } from "@swapkit/toolbox-evm";
 import { AbstractSigner, type Provider } from "ethers";
 
@@ -58,7 +58,7 @@ export const getWalletMethods = async (
       };
       const coinbaseWallet = new CoinbaseWalletSDK(coinbaseConfig);
 
-      const walletProvider = coinbaseWallet.makeWeb3Provider(ChainToRPC[chain]);
+      const walletProvider = coinbaseWallet.makeWeb3Provider(SKConfig.get("rpcUrls")[chain]);
 
       // TODO fix error
       if (!walletProvider) throw new Error("No wallet provider");

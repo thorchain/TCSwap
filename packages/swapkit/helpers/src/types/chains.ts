@@ -1,5 +1,3 @@
-import { SKConfig } from "../modules/swapKitConfig";
-
 export enum Chain {
   Arbitrum = "ARB",
   Avalanche = "AVAX",
@@ -425,14 +423,6 @@ export const ChainToChainId = chains.reduce(
     return acc;
   },
   {} as { [key in Chain]: ChainId },
-);
-
-export const ChainToRPC = chains.reduce(
-  (acc, chain) => {
-    acc[chain] = SKConfig.get("rpcUrls")[chain];
-    return acc;
-  },
-  {} as { [key in Chain]: string },
 );
 
 export const ChainToHexChainId = chains.reduce(
