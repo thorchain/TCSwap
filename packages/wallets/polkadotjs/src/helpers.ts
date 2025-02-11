@@ -1,25 +1,8 @@
 import { Chain, SwapKitError, WalletOption } from "@swapkit/helpers";
 
-import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
+import type { InjectedWindow } from "@swapkit/toolbox-substrate";
 
-import type { InjectedWindow, PolkadotToolbox } from "@swapkit/toolbox-substrate";
-
-export const convertAddress = (inputAddress: string, newPrefix: number): string => {
-  const decodedAddress = decodeAddress(inputAddress);
-  const convertedAddress = encodeAddress(decodedAddress, newPrefix);
-  return convertedAddress;
-};
-
-export const getWalletForChain = async ({
-  chain,
-}: {
-  chain: Chain;
-  ethplorerApiKey?: string;
-  covalentApiKey?: string;
-}): Promise<{
-  walletMethods: Awaited<ReturnType<typeof PolkadotToolbox>>;
-  address: string;
-}> => {
+export const getWalletMethods = async (chain: Chain) => {
   switch (chain) {
     case Chain.Polkadot: {
       const { getToolboxByChain } = await import("@swapkit/toolbox-substrate");
@@ -28,24 +11,21 @@ export const getWalletForChain = async ({
 
       const rawExtension = await injectedExtension?.enable?.("polkadot-js");
       if (!rawExtension) {
-        throw new SwapKitError({
-          errorKey: "wallet_polkadot_not_found",
-          info: { chain },
-        });
+        throw new SwapKitError({ errorKey: "wallet_polkadot_not_found", info: { chain } });
       }
 
       const toolbox = await getToolboxByChain(chain, { signer: rawExtension.signer });
-      const accounts = await rawExtension.accounts.get();
-      if (!accounts[0]?.address) {
+      const [account] = await rawExtension.accounts.get();
+
+      if (!account?.address) {
         throw new SwapKitError({
           errorKey: "wallet_missing_params",
-          info: { wallet: WalletOption.POLKADOT_JS, accounts, address: accounts[0]?.address },
+          info: { wallet: WalletOption.POLKADOT_JS, address: account?.address },
         });
       }
-      const subAddress: string = accounts[0].address;
-      const newPrefix = 0;
-      const address = convertAddress(subAddress, newPrefix);
-      return { walletMethods: toolbox, address };
+
+      const address = toolbox.convertAddress(account.address, 0);
+      return { ...toolbox, address };
     }
 
     default:

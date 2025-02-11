@@ -1,42 +1,13 @@
-import type { OfflineDirectSigner } from "@cosmjs/proto-signing";
-import type { Account } from "@cosmjs/stargate";
-import {
-  type AssetValue,
-  BaseDecimal,
-  ChainId,
-  DerivationPath,
-  SwapKitNumber,
-} from "@swapkit/helpers";
+import { BaseDecimal, Chain, ChainId, SwapKitNumber } from "@swapkit/helpers";
 
-import { CosmosClient } from "../cosmosClient";
-
-import type { ToolboxParams, TransferParams } from "../types";
+import type { TransferParams } from "../types";
 
 import type { GaiaToolboxType } from "../thorchainUtils/types/client-types";
 import { buildNativeTransferTx } from "../util";
 import { BaseCosmosToolbox, getFeeRateFromThorswap } from "./BaseCosmosToolbox";
 
-export const GaiaToolbox = ({ server }: ToolboxParams = {}): GaiaToolboxType => {
-  const client = new CosmosClient({
-    server: server || "https://node-router.thorswap.net/cosmos/rest",
-    chainId: ChainId.Cosmos,
-  });
-
-  const cosmosToolbox: {
-    validateAddress: (address: string) => boolean;
-    getAddressFromMnemonic: (phrase: string) => Promise<string>;
-    getAccount: (address: string) => Promise<Account | null>;
-    getBalance: (address: string, potentialScamFilter?: boolean) => Promise<AssetValue[]>;
-    transfer: (params: TransferParams) => Promise<string>;
-    getSigner: (phrase: string) => Promise<OfflineDirectSigner>;
-    getSignerFromPrivateKey: (privateKey: Uint8Array) => Promise<OfflineDirectSigner>;
-    getPubKeyFromMnemonic: (phrase: string) => Promise<string>;
-    createPrivateKeyFromPhrase: (phrase: string) => Promise<Uint8Array>;
-  } = BaseCosmosToolbox({
-    decimal: BaseDecimal.GAIA,
-    derivationPath: DerivationPath.GAIA,
-    client,
-  });
+export function GaiaToolbox(): GaiaToolboxType {
+  const cosmosToolbox = BaseCosmosToolbox({ chain: Chain.Cosmos });
 
   async function getFees() {
     const baseFee = await getFeeRateFromThorswap(ChainId.Cosmos, 500);
@@ -65,10 +36,5 @@ export const GaiaToolbox = ({ server }: ToolboxParams = {}): GaiaToolboxType => 
     });
   }
 
-  return {
-    ...cosmosToolbox,
-    getFees,
-    transfer,
-    buildTransferTx: buildNativeTransferTx,
-  };
-};
+  return { ...cosmosToolbox, getFees, transfer, buildTransferTx: buildNativeTransferTx };
+}

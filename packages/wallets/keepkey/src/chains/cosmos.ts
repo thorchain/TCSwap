@@ -4,8 +4,8 @@ import {
   ChainId,
   DerivationPath,
   type DerivationPathArray,
+  SKConfig,
   derivationPathToString,
-  getRPCUrl,
 } from "@swapkit/helpers";
 import type { BaseCosmosToolboxType, TransferParams } from "@swapkit/toolbox-cosmos";
 
@@ -13,13 +13,10 @@ import { bip32ToAddressNList } from "../helpers/coins";
 
 export const cosmosWalletMethods = async ({
   sdk,
-  api,
   derivationPath,
-}: {
-  sdk: KeepKeySdk;
-  api: string;
-  derivationPath?: DerivationPathArray;
-}): Promise<BaseCosmosToolboxType & { address: string }> => {
+}: { sdk: KeepKeySdk; derivationPath?: DerivationPathArray }): Promise<
+  BaseCosmosToolboxType & { address: string }
+> => {
   const { DEFAULT_COSMOS_FEE_MAINNET, GaiaToolbox, createStargateClient } = await import(
     "@swapkit/toolbox-cosmos"
   );
@@ -33,7 +30,7 @@ export const cosmosWalletMethods = async ({
       address_n: bip32ToAddressNList(derivationPathString),
     })) as { address: string };
 
-    const toolbox = GaiaToolbox({ server: api });
+    const toolbox = GaiaToolbox();
 
     if (DEFAULT_COSMOS_FEE_MAINNET.amount[0]) {
       DEFAULT_COSMOS_FEE_MAINNET.amount[0].amount = String(
@@ -72,7 +69,7 @@ export const cosmosWalletMethods = async ({
         decodedBytes.charCodeAt(i),
       );
 
-      const client = await createStargateClient(getRPCUrl(Chain.Cosmos));
+      const client = await createStargateClient(SKConfig.get("rpcUrls")[Chain.Cosmos]);
       const response = await client.broadcastTx(uint8Array);
 
       return response.transactionHash;

@@ -1,5 +1,6 @@
-import { type ApiPromise, Keyring } from "@polkadot/api";
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import type { SubmittableExtrinsic } from "@polkadot/api/types";
+import type { KeyringPair } from "@polkadot/keyring/types";
 import type { Callback, IKeyringPair, ISubmittableResult, Signer } from "@polkadot/types/types";
 import { hexToU8a, isHex, u8aToHex } from "@polkadot/util";
 import {
@@ -8,8 +9,9 @@ import {
   encodeAddress as encodePolkadotAddress,
 } from "@polkadot/util-crypto";
 import {
-  type AssetValue,
+  AssetValue,
   Chain,
+  SKConfig,
   type SubstrateChain,
   SwapKitError,
   SwapKitNumber,
@@ -143,6 +145,12 @@ const signAndBroadcast = (
   return hash.toString();
 };
 
+function convertAddress(address: string, newPrefix: number) {
+  const decodedAddress = decodePolkadotAddress(address);
+  const convertedAddress = encodePolkadotAddress(decodedAddress, newPrefix);
+  return convertedAddress;
+}
+
 function decodeAddress(address: string, networkPrefix?: number) {
   return isHex(address)
     ? hexToU8a(address)
@@ -174,8 +182,10 @@ export const BaseSubstrateToolbox = ({
 }) => ({
   api,
   network,
+  gasAsset,
   decodeAddress,
   encodeAddress,
+  convertAddress,
   createKeyring: (phrase: string) => createKeyring(phrase, network.prefix),
   getAddress: (keyring: IKeyringPair | Signer = signer) =>
     isKeyringPair(keyring) ? keyring.address : undefined,
@@ -216,21 +226,28 @@ export const substrateValidateAddress = ({
   address,
   chain,
 }: { address: string; chain: Chain.Polkadot | Chain.Chainflip }) => {
-  switch (chain) {
-    case Chain.Polkadot: {
-      return (
-        validateAddress(address, Network.DOT.prefix) ||
-        validateAddress(address, Network.GENERIC.prefix)
-      );
-    }
-    case Chain.Chainflip: {
-      return (
-        validateAddress(address, Network.FLIP.prefix) ||
-        validateAddress(address, Network.GENERIC.prefix)
-      );
-    }
-  }
-  return false;
+  const { prefix } = chain === Chain.Polkadot ? Network.DOT : Network.FLIP;
+
+  return validateAddress(address, prefix) || validateAddress(address, Network.GENERIC.prefix);
+};
+
+export async function ToolboxFactory({
+  generic,
+  chain,
+  signer,
+}: ToolboxParams & { chain: SubstrateChain }) {
+  const rpcUrl = SKConfig.get("rpcUrls")[chain];
+  const provider = new WsProvider(rpcUrl);
+  const api = await ApiPromise.create({ provider });
+  const gasAsset = AssetValue.from({ chain });
+  const network = generic ? Network.GENERIC : Network[chain];
+
+  return BaseSubstrateToolbox({ api, signer, gasAsset, network });
+}
+
+export type ToolboxParams = {
+  generic?: boolean;
+  signer: KeyringPair | Signer;
 };
 
 export type BaseSubstrateWallet = ReturnType<typeof BaseSubstrateToolbox>;

@@ -77,7 +77,6 @@ export type TransferTransaction = {
 };
 
 export type CosmosNativeTransferTxParams = {
-  isStagenet?: boolean;
   fromAddress: string;
   toAddress: string;
   assetValue: AssetValue;
@@ -94,7 +93,7 @@ export type ThorchainTransferTxParams = {
   asSignable?: boolean;
 };
 
-export type ThorcahinDepositTxParams = Omit<ThorchainTransferTxParams, "recipient">;
+export type ThorchainDepositTxParams = Omit<ThorchainTransferTxParams, "recipient">;
 
 export type BaseCosmosToolboxType = {
   getAccount: (address: string) => Promise<CosmosAccount | null>;
@@ -104,6 +103,7 @@ export type BaseCosmosToolboxType = {
   getAddressFromMnemonic: (phrase: string) => Promise<string>;
   getPubKeyFromMnemonic: (phrase: string) => Promise<string>;
   getBalance: (address: string, potentialScamFilter?: boolean) => Promise<AssetValue[]>;
+  getBalanceAsDenoms: (address: string) => Promise<{ denom: string; amount: string }[]>;
   transfer: (params: TransferParams) => Promise<string>;
   getFeeRateFromThorswap?: (chainId: ChainId, safeDefault: number) => Promise<number>;
   createPrivateKeyFromPhrase: (phrase: string) => Promise<Uint8Array>;
@@ -120,7 +120,7 @@ export type ThorchainToolboxType = BaseCosmosToolboxType & {
     params: ThorchainTransferTxParams,
   ) => ReturnType<ReturnType<typeof buildTransferTx>>;
   buildDepositTx: (
-    params: ThorcahinDepositTxParams,
+    params: ThorchainDepositTxParams,
   ) => ReturnType<ReturnType<typeof buildDepositTx>>;
   buildEncodedTxBody: typeof buildEncodedTxBody;
   prepareMessageForBroadcast: typeof prepareMessageForBroadcast;
@@ -137,26 +137,18 @@ export type ThorchainToolboxType = BaseCosmosToolboxType & {
     membersPubKeys: string[],
     threshold: number,
     bodyBytes: Uint8Array,
-    isStagenet?: boolean,
   ) => Promise<string>;
   pubkeyToAddress: (pubkey: Pubkey, prefix: string) => string;
   loadAddressBalances: (address: string) => Promise<AssetValue[]>;
   signWithPrivateKey: ({
     privateKey,
     message,
-  }: {
-    privateKey: Uint8Array;
-    message: string;
-  }) => Promise<string>;
+  }: { privateKey: Uint8Array; message: string }) => Promise<string>;
   verifySignature: ({
     signature,
     message,
     address,
-  }: {
-    signature: string;
-    message: string;
-    address: string;
-  }) => Promise<boolean>;
+  }: { signature: string; message: string; address: string }) => Promise<boolean>;
 };
 
 export type MayaToolboxType = ThorchainToolboxType;

@@ -94,6 +94,7 @@ const errorCodes = {
   wallet_keepkey_contract_address_not_provided: 20902,
   wallet_keepkey_send_transaction_no_address: 20903,
   wallet_bitkeep_not_found: 21001,
+  wallet_exodus_sign_transaction_error: 21100,
   /**
    * Chainflip
    */
@@ -128,6 +129,7 @@ const errorCodes = {
   toolbox_cosmos_signer_not_defined: 90101,
   toolbox_cosmos_no_accounts_found: 90102,
   toolbox_cosmos_verify_signature_no_pubkey: 90103,
+  toolbox_cosmos_validate_address_prefix_not_found: 90104,
   toolbox_evm_no_abi_fragment: 90201,
   toolbox_evm_no_signer: 90202,
   toolbox_evm_no_signer_address: 90203,

@@ -11,10 +11,9 @@ import {
   ChainId,
   type CosmosChain,
   FeeOption,
-  StagenetChain,
+  SKConfig,
   defaultRequestHeaders,
   getGasAsset,
-  getRPCUrl,
 } from "@swapkit/helpers";
 
 import type { CosmosNativeTransferTxParams } from "./thorchainUtils";
@@ -154,19 +153,22 @@ export const createOfflineStargateClient = (
   return SigningStargateClient.offline(wallet, registry);
 };
 
-export const getRPC = (chainId: ChainId, stagenet?: boolean) => {
+export const getRPC = (chainId: ChainId) => {
+  const { isStagenet } = SKConfig.get("envs");
+  const rpcUrls = SKConfig.get("rpcUrls");
+
   switch (chainId) {
     case ChainId.Kujira:
-      return getRPCUrl(Chain.Kujira);
+      return rpcUrls.KUJI;
 
     case ChainId.THORChain:
     case "thorchain-mainnet-v1" as ChainId:
-      return stagenet ? getRPCUrl(StagenetChain.THORChain) : getRPCUrl(Chain.THORChain);
+      return isStagenet ? rpcUrls.THOR_STAGENET : rpcUrls.THOR;
     case ChainId.Maya:
-      return stagenet ? getRPCUrl(StagenetChain.Maya) : getRPCUrl(Chain.Maya);
+      return isStagenet ? rpcUrls.MAYA_STAGENET : rpcUrls.MAYA;
 
     default:
-      return getRPCUrl(Chain.Cosmos);
+      return rpcUrls.GAIA;
   }
 };
 
@@ -186,9 +188,8 @@ export const estimateMaxSendableAmount = async ({
   const fees = await toolbox.getFees();
 
   if (!balance) {
-    return AssetValue.from({
-      chain: assetEntity?.chain || balances[0]?.chain || Chain.Cosmos,
-    });
+    const chain = assetEntity?.chain || balances[0]?.chain || Chain.Cosmos;
+    return AssetValue.from({ chain, value: 0 });
   }
 
   return balance.sub(fees[feeOptionKey]);
@@ -220,9 +221,7 @@ export const buildNativeTransferTx = async ({
   const { chain, chainId } = assetValue;
 
   const url = getRPC(chainId);
-
   const client = await createStargateClient(url);
-
   const accountOnChain = await client.getAccount(fromAddress);
 
   if (!accountOnChain) {
@@ -232,36 +231,25 @@ export const buildNativeTransferTx = async ({
   const feeAsset = getMsgSendDenom(getGasAsset({ chain }).symbol);
   const defaultFee = getDefaultChainFee(chain as CosmosChain);
 
-  const _fee =
+  const txFee =
     feeAsset && fee
-      ? {
-          amount: [{ denom: feeAsset, amount: fee }],
-          gas: defaultFee.gas,
-        }
+      ? { amount: [{ denom: feeAsset, amount: fee }], gas: defaultFee.gas }
       : defaultFee;
 
   const msgSend = {
     fromAddress,
     toAddress,
     amount: [
-      {
-        amount: assetValue.getBaseValue("string"),
-        denom: getMsgSendDenom(assetValue.symbol),
-      },
+      { amount: assetValue.getBaseValue("string"), denom: getMsgSendDenom(assetValue.symbol) },
     ],
   };
 
   return {
-    memo,
     accountNumber: accountOnChain.accountNumber,
-    sequence: accountOnChain.sequence,
     chainId,
-    msgs: [
-      {
-        typeUrl: getTransferMsgTypeByChain(chain as CosmosChain),
-        value: msgSend,
-      },
-    ],
-    fee: _fee,
+    fee: txFee,
+    memo,
+    sequence: accountOnChain.sequence,
+    msgs: [{ typeUrl: getTransferMsgTypeByChain(chain as CosmosChain), value: msgSend }],
   };
 };

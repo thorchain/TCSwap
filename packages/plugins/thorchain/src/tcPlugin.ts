@@ -23,7 +23,7 @@ import type { AddLiquidityParams, CoreTxParams, CreateLiquidityParams, LoanParam
 
 type SupportedChain = EVMChain | Chain.THORChain | UTXOChain | Chain.Cosmos;
 
-function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
+function plugin({ getWallet }: SwapKitPluginParams) {
   const {
     getInboundDataByChain,
     register,
@@ -31,12 +31,7 @@ function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
     addLiquidity: pluginAddLiquidity,
     createLiquidity: pluginCreateLiquidity,
     ...pluginMethods
-  } = basePlugin({
-    getWallet,
-    pluginChain: Chain.THORChain,
-    stagenet,
-    deposit,
-  });
+  } = basePlugin({ getWallet, pluginChain: Chain.THORChain, deposit });
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO refactor
   async function deposit({
@@ -111,6 +106,8 @@ function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
 
         default: {
           if (wallet) {
+            // @ts-expect-error TODO: right now it's inferred from toolboxes
+            // we need to simplify this to one object params
             return wallet.transfer(params);
           }
 

@@ -19,7 +19,7 @@ import type { AddLiquidityParams, CoreTxParams, CreateLiquidityParams } from "./
 
 type SupportedChain = EVMChain | CosmosChain | UTXOChain;
 
-function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
+function plugin({ getWallet }: SwapKitPluginParams) {
   const {
     getInboundDataByChain,
     register,
@@ -29,7 +29,6 @@ function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
   } = basePlugin({
     deposit,
     pluginChain: Chain.Maya,
-    stagenet,
     getWallet,
   });
 
@@ -96,6 +95,8 @@ function plugin({ getWallet, stagenet = false }: SwapKitPluginParams) {
 
         default: {
           if (wallet) {
+            // @ts-expect-error TODO: right now it's inferred from toolboxes
+            // we need to simplify this to one object params
             return wallet.transfer(params);
           }
 
