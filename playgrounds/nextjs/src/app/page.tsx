@@ -20,6 +20,7 @@ import {
 } from "~/components/ui/select";
 import { useSwapKit } from "~/lib/swapKit";
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: ignore
 export default function SwapPage() {
   const { balances, swapKit, isWalletConnected } = useSwapKit();
   const [inputAsset, setInputAsset] = useState<string>();

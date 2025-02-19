@@ -108,6 +108,7 @@ function createTCBasedPlugin<T extends PluginChain>(pluginChain: T) {
     const pluginType = pluginChain === Chain.Maya ? "mayachain" : "thorchain";
     const getInboundDataByChain = getInboundDataFunction(pluginType);
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor/split
     async function approve<T extends ApproveMode>({
       assetValue,
       type = "checkOnly" as T,

@@ -88,7 +88,7 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
 
       const toolbox = getToolboxByChain(chain)();
 
-      const keys = toolbox.createKeysForPath({ phrase, derivationPath });
+      const keys = await toolbox.createKeysForPath({ phrase, derivationPath });
       const address = toolbox.getAddressFromKeys(keys);
 
       return {
@@ -155,7 +155,7 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
     case Chain.Solana: {
       const { SOLToolbox } = await import("@swapkit/toolboxes/solana");
       const toolbox = SOLToolbox();
-      const keypair = toolbox.createKeysForPath({ phrase, derivationPath });
+      const keypair = await toolbox.createKeysForPath({ phrase, derivationPath });
 
       return {
         address: toolbox.getAddressFromKeys(keypair),

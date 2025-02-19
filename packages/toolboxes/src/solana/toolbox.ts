@@ -1,21 +1,5 @@
-import { mnemonicToSeedSync } from "@scure/bip39";
-import { createMemoInstruction } from "@solana/spl-memo";
-import {
-  TOKEN_PROGRAM_ID,
-  createAssociatedTokenAccountInstruction,
-  createTransferCheckedInstruction,
-  getAccount,
-  getAssociatedTokenAddress,
-} from "@solana/spl-token";
-import { type TokenInfo, TokenListProvider } from "@solana/spl-token-registry";
-import {
-  Connection,
-  Keypair,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  sendAndConfirmTransaction,
-} from "@solana/web3.js";
+import type { TokenInfo } from "@solana/spl-token-registry";
+import { Connection, type Keypair, PublicKey, type Transaction } from "@solana/web3.js";
 import {
   AssetValue,
   Chain,
@@ -25,7 +9,6 @@ import {
   SwapKitNumber,
   type WalletTxParams,
 } from "@swapkit/helpers";
-import { HDKey } from "micro-key-producer/slip10.js";
 
 export function validateAddress(address: string) {
   try {
@@ -36,10 +19,13 @@ export function validateAddress(address: string) {
   }
 }
 
-function createKeysForPath({
+async function createKeysForPath({
   phrase,
   derivationPath = DerivationPath.SOL,
 }: { phrase: string; derivationPath?: string }) {
+  const { HDKey } = await import("micro-key-producer/slip10.js");
+  const { mnemonicToSeedSync } = await import("@scure/bip39");
+  const { Keypair } = await import("@solana/web3.js");
   const seed = mnemonicToSeedSync(phrase);
   const hdKey = HDKey.fromMasterSeed(seed);
 
@@ -54,6 +40,8 @@ async function getTokenBalances({
   connection,
   address,
 }: { connection: Connection; address: string }) {
+  const { TOKEN_PROGRAM_ID } = await import("@solana/spl-token");
+  const { TokenListProvider } = await import("@solana/spl-token-registry");
   const tokenAccounts = await connection.getParsedTokenAccountsByOwner(new PublicKey(address), {
     programId: TOKEN_PROGRAM_ID,
   });
@@ -120,6 +108,14 @@ export async function createSolanaTokenTransaction({
   amount: number;
   decimals: number;
 }) {
+  const {
+    getAssociatedTokenAddress,
+    getAccount,
+    createAssociatedTokenAccountInstruction,
+    createTransferCheckedInstruction,
+  } = await import("@solana/spl-token");
+  const { Transaction, PublicKey } = await import("@solana/web3.js");
+
   const transaction = new Transaction();
   const tokenPublicKey = new PublicKey(tokenAddress);
   const fromSPLAddress = await getAssociatedTokenAddress(tokenPublicKey, from);
@@ -172,6 +168,9 @@ function createSolanaTransaction(connection: Connection) {
     fromPublicKey: PublicKey;
     isProgramDerivedAddress?: boolean;
   }) => {
+    const { createMemoInstruction } = await import("@solana/spl-memo");
+    const { Transaction, SystemProgram } = await import("@solana/web3.js");
+
     if (!(isProgramDerivedAddress || validateAddress(recipient))) {
       throw new SwapKitError("core_transaction_invalid_recipient_address");
     }
@@ -221,6 +220,8 @@ function transfer(connection: Connection) {
     fromKeypair: Keypair;
     isProgramDerivedAddress?: boolean;
   }) => {
+    const { sendAndConfirmTransaction } = await import("@solana/web3.js");
+
     const transaction = await createSolanaTransaction(connection)({
       recipient,
       assetValue,

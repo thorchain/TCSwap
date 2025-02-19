@@ -9,7 +9,6 @@ import {
 import { mnemonicToSeedSync } from "@scure/bip39";
 import { Chain, DerivationPath, FeeOption, type UTXOChain } from "@swapkit/helpers";
 import { Psbt } from "bitcoinjs-lib";
-import { ECPairFactory } from "ecpair";
 
 import {
   accumulative,
@@ -224,11 +223,13 @@ export const validateAddress = (address: string) => {
   );
 };
 
-const createKeysForPath: BCHMethods["createKeysForPath"] = ({
+const createKeysForPath: BCHMethods["createKeysForPath"] = async ({
   phrase,
   derivationPath = `${DerivationPath.BCH}/0`,
   wif,
 }) => {
+  const { ECPairFactory } = await import("ecpair");
+
   const network = getNetwork(chain);
 
   if (wif) {

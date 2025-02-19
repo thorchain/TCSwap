@@ -10,7 +10,7 @@ import {
   type UTXOChain,
 } from "@swapkit/helpers";
 import { Psbt, address as btcLibAddress, initEccLib, payments } from "bitcoinjs-lib";
-import { ECPairFactory, type ECPairInterface } from "ecpair";
+import type { ECPairInterface } from "ecpair";
 
 import {
   UTXOScriptType,
@@ -29,12 +29,13 @@ import type { BCHToolbox, BTCToolbox, DASHToolbox, DOGEToolbox, LTCToolbox } fro
 
 export const nonSegwitChains = [Chain.Dash, Chain.Dogecoin];
 
-function createKeysForPath({
+async function createKeysForPath({
   phrase,
   wif,
   derivationPath,
   chain,
 }: { phrase?: string; wif?: string; derivationPath: string; chain: Chain }) {
+  const { ECPairFactory } = await import("ecpair");
   if (!(wif || phrase)) throw new Error("Either phrase or wif must be provided");
 
   const factory = ECPairFactory(secp256k1);
@@ -313,7 +314,10 @@ export const BaseUTXOToolbox = (chain: UTXOChain) => ({
   getPrivateKeyFromMnemonic: async (params: {
     phrase: string;
     derivationPath: string;
-  }) => createKeysForPath({ ...params, chain }).toWIF(),
+  }) => {
+    const keys = await createKeysForPath({ ...params, chain });
+    return keys.toWIF();
+  },
 
   getBalance: async (address: string, _potentialScamFilter?: boolean) =>
     getBalance({ address, chain }),

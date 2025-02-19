@@ -114,6 +114,7 @@ export class AssetValue extends BigIntArithmetics {
     return AssetValue.from({ asset, value });
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
   static from<T extends {}>({
     value = 0,
     fromBaseDecimal,
@@ -170,6 +171,7 @@ or by passing asyncTokenLookup: true to the from() function, which will make it 
     return new Promise<{ ok: true } | { ok: false; message: string; error: any }>(
       (resolve, reject) => {
         try {
+          // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
           import("@swapkit/helpers/tokens").then((tokenPackage) => {
             if (!tokenPackage.tokenLists) {
               console.warn(
@@ -288,7 +290,7 @@ function safeValue(value: NumberPrimitives, decimal: number) {
     : value;
 }
 
-// TODO refactor & split into smaller functions
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor & split into smaller functions
 function getAssetInfo(identifier: string) {
   const isSynthetic = identifier.slice(0, 14).includes("/");
   const isTradeAsset = identifier.slice(0, 14).includes("~");

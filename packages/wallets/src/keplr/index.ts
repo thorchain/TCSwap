@@ -33,6 +33,7 @@ export const keplrWallet = createWallet({
       const keplrClient = window[extensionKey];
 
       await Promise.all(
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor/split
         filteredChains.map(async (chain) => {
           const chainId = ChainToChainId[chain] as (typeof keplrSupportedChainIds)[number];
 
