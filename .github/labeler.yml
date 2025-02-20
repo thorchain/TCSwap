@@ -1,37 +1,101 @@
 docs:
-  - internal/playground/**/*
-  - docs/**/*
-
-api: packages/swapkit/api/**/*
-tokens: packages/swapkit/tokens/**/*
+- changed-files:
+    any-glob-to-any-file:
+      - 'internal/playground/**/*'
+      - 'docs/**/*'
 core:
-  - packages/swapkit/core/**/*
-  - packages/swapkit/helpers/**/*
-  - packages/swapkit/types/**/*
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/core/src/**/*'
+      - 'packages/helpers/src/**/*'
+plugin:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/plugins/src/**/*'
+toolbox:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/**/*'
 
-cosmos: packages/toolboxes/cosmos/**/*
-evm: packages/toolboxes/evm/**/*
-solana: packages/toolboxes/solana/**/*
-substrate: packages/toolboxes/substrate/**/*
-utxo: packages/toolboxes/utxo/**/*
-radix:
-  - packages/toolboxes/radix/**/*
-  - packages/wallets/radix/src/**/*
-
-keystore: packages/wallets/keystore/**/*
 hardware-wallet:
-  - packages/wallets/ledger/src/**/*
-  - packages/wallets/trezor/src/**/*
-  - packages/wallets/keepkey/src/**/*
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/wallets/src/ledger/**/*'
+      - 'packages/wallets/src/trezor/**/*'
+      - 'packages/wallets/src/keepkey/**/*'
 
 mobile-wallet:
-  - packages/wallets/wc/**/*
-  - packages/wallets/exodus/**/*
-  - packages/wallets/coinbase/**/*
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/wallets/src/coinbase/**/*'
+      - 'packages/wallets/src/exodus/**/*'
+      - 'packages/wallets/src/walletconnect/**/*'
 
 browser-extensions:
-  - packages/wallets/evm-extensions/**/*
-  - packages/wallets/keplr/**/*
-  - packages/wallets/okx/**/*
-  - packages/wallets/phantom/**/*
-  - packages/wallets/xdefi/**/*
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/wallets/src/bitget/**/*'
+      - 'packages/wallets/src/talisman/**/*'
+      - 'packages/wallets/src/coinbase/**/*'
+      - 'packages/wallets/src/ctrl/**/*'
+      - 'packages/wallets/src/evm-extensions/**/*'
+      - 'packages/wallets/src/keplr/**/*'
+      - 'packages/wallets/src/okx/**/*'
+      - 'packages/wallets/src/phantom/**/*'
+      - 'packages/wallets/src/polkadotjs/**/*'
+      - 'packages/wallets/src/radix/**/*'
+
+evm:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/evm/**/*'
+      - 'packages/plugins/src/evm/**/*'
+
+radix:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/radix/**/*'
+      - 'packages/plugins/src/cosmos/**/*'
+
+thorchain:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/plugins/src/thorchain/**/*'
+      - 'packages/toolboxes/src/cosmos/thorchainUtils/**/*'
+      - 'packages/toolboxes/src/cosmos/toolbox/thorchain.*'
+
+chainflip:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/plugins/src/chainflip/**/*'
+
+kado:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/plugins/src/kado/**/*'
+
+cosmos:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/cosmos/**/*'
+
+solana:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/solana/**/*'
+
+substrate:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/substrate/**/*'
+
+utxo:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/toolboxes/src/utxo/**/*'
+
+
+keystore:
+- changed-files:
+    any-glob-to-any-file:
+      - 'packages/wallets/src/keystore/**/*'
