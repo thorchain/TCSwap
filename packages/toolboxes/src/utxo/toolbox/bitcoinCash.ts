@@ -1,14 +1,4 @@
-import * as secp256k1 from "@bitcoinerlab/secp256k1";
-import {
-  HDNode,
-  Transaction,
-  TransactionBuilder,
-  address as bchAddress,
-  // @ts-ignore TODO: check why wallets doesn't see modules included in toolbox
-} from "@psf/bitcoincashjs-lib";
-import { mnemonicToSeedSync } from "@scure/bip39";
 import { Chain, DerivationPath, FeeOption, type UTXOChain } from "@swapkit/helpers";
-import { Psbt } from "bitcoinjs-lib";
 
 import {
   accumulative,
@@ -23,7 +13,6 @@ import {
 } from "../helpers";
 import type {
   TargetOutput,
-  TransactionBuilderType,
   TransactionType,
   UTXOBuildTxParams,
   UTXOType,
@@ -34,9 +23,51 @@ import { BaseUTXOToolbox } from "./utxo";
 
 const chain = Chain.BitcoinCash as UTXOChain;
 
-export const stripToCashAddress = (address: string) => stripPrefix(toCashAddress(address));
+export function stripPrefix(address: string) {
+  return address.replace(/(bchtest:|bitcoincash:)/, "");
+}
 
-const buildBCHTx = async ({ assetValue, recipient, memo, feeRate, sender }: UTXOBuildTxParams) => {
+export function validateAddress(address: string) {
+  const strippedAddress = stripPrefix(address);
+  return (
+    isValidAddress(strippedAddress) && detectAddressNetwork(strippedAddress) === bchNetwork.Mainnet
+  );
+}
+
+export function stripToCashAddress(address: string) {
+  return stripPrefix(toCashAddress(address));
+}
+
+export function createBCHToolbox() {
+  const { getBalance, getFeeRates, broadcastTx, ...toolbox } = BaseUTXOToolbox(Chain.BitcoinCash)();
+
+  function handleGetBalance(address: string, _scamFilter = true) {
+    return getBalance(stripPrefix(toCashAddress(address)));
+  }
+
+  return {
+    ...toolbox,
+    broadcastTx,
+    buildBCHTx,
+    buildTx,
+    createKeysForPath,
+    getAddressFromKeys,
+    getBalance: handleGetBalance,
+    getFeeRates,
+    stripPrefix,
+    stripToCashAddress,
+    validateAddress,
+    transfer: transfer({ getFeeRates, broadcastTx }),
+  };
+}
+
+async function buildBCHTx({ assetValue, recipient, memo, feeRate, sender }: UTXOBuildTxParams) {
+  const {
+    Transaction,
+    TransactionBuilder,
+    address: bchAddress,
+    // @ts-ignore TODO: check why wallets doesn't see modules included in toolbox
+  } = await import("@psf/bitcoincashjs-lib");
   if (!validateAddress(recipient)) throw new Error("Invalid address");
   const utxos = await getUtxoApi(chain).scanUTXOs({
     address: stripToCashAddress(sender),
@@ -82,52 +113,50 @@ const buildBCHTx = async ({ assetValue, recipient, memo, feeRate, sender }: UTXO
   }
 
   return { builder, utxos: inputs };
-};
+}
 
-const transfer = async ({
-  signTransaction,
-  from,
-  recipient,
-  assetValue,
+function transfer({
   broadcastTx,
   getFeeRates,
-  ...rest
-}: UTXOWalletTransferParams<
-  { builder: TransactionBuilderType; utxos: UTXOType[] },
-  TransactionType
-> & {
+}: {
   broadcastTx: (txHash: string) => Promise<string>;
   getFeeRates: () => Promise<Record<FeeOption, number>>;
-}) => {
-  if (!from) throw new Error("From address must be provided");
-  if (!recipient) throw new Error("Recipient address must be provided");
-  if (!signTransaction) throw new Error("signTransaction must be provided");
-
-  const feeRate = rest.feeRate || (await getFeeRates())[FeeOption.Fast];
-
-  // try out if psbt tx is faster/better/nicer
-  const { builder, utxos } = await buildBCHTx({
-    ...rest,
-    assetValue,
-    feeRate,
+}) {
+  return async function transfer({
+    signTransaction,
+    from,
     recipient,
-    sender: from,
-  });
+    assetValue,
+    ...rest
+  }: UTXOWalletTransferParams<
+    { builder: TransactionBuilderType; utxos: UTXOType[] },
+    TransactionType
+  >) {
+    if (!from) throw new Error("From address must be provided");
+    if (!recipient) throw new Error("Recipient address must be provided");
+    if (!signTransaction) throw new Error("signTransaction must be provided");
 
-  const tx = await signTransaction({ builder, utxos });
-  const txHex = tx.toHex();
+    const feeRate = rest.feeRate || (await getFeeRates())[FeeOption.Fast];
 
-  return broadcastTx(txHex);
-};
+    // try out if psbt tx is faster/better/nicer
+    const { builder, utxos } = await buildBCHTx({
+      ...rest,
+      assetValue,
+      feeRate,
+      recipient,
+      sender: from,
+    });
 
-const buildTx = async ({
-  assetValue,
-  recipient,
-  memo,
-  feeRate,
-  sender,
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
-}: UTXOBuildTxParams) => {
+    const tx = await signTransaction({ builder, utxos });
+    const txHex = tx.toHex();
+
+    return broadcastTx(txHex);
+  };
+}
+
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
+async function buildTx({ assetValue, recipient, memo, feeRate, sender }: UTXOBuildTxParams) {
+  const { Psbt } = await import("bitcoinjs-lib");
   const recipientCashAddress = toCashAddress(recipient);
   if (!validateAddress(recipientCashAddress)) throw new Error("Invalid address");
 
@@ -183,23 +212,18 @@ const buildTx = async ({
   }
 
   return { psbt, utxos, inputs: inputs as UTXOType[] };
-};
+}
 
-export const stripPrefix = (address: string) => address.replace(/(bchtest:|bitcoincash:)/, "");
-
-export const validateAddress = (address: string) => {
-  const strippedAddress = stripPrefix(address);
-  return (
-    isValidAddress(strippedAddress) && detectAddressNetwork(strippedAddress) === bchNetwork.Mainnet
-  );
-};
-
-const createKeysForPath = async ({
+async function createKeysForPath({
   phrase,
   derivationPath = `${DerivationPath.BCH}/0`,
   wif,
-}: { wif?: string; phrase?: string; derivationPath?: string }) => {
+}: { wif?: string; phrase?: string; derivationPath?: string }) {
   const { ECPairFactory } = await import("ecpair");
+  const secp256k1 = await import("@bitcoinerlab/secp256k1");
+  const { mnemonicToSeedSync } = await import("@scure/bip39");
+  // @ts-ignore TODO: check why wallets doesn't see modules included in toolbox
+  const { HDNode } = await import("@psf/bitcoincashjs-lib");
 
   const network = getNetwork(chain);
 
@@ -216,33 +240,23 @@ const createKeysForPath = async ({
   // const a = payments.p2pkh({ pubkey: k.publicKey, network });
 
   return keyPair;
-};
+}
 
-const getAddressFromKeys = (keys: { getAddress: (index?: number) => string }) => {
+function getAddressFromKeys(keys: { getAddress: (index?: number) => string }) {
   const address = keys.getAddress(0);
   return stripToCashAddress(address);
-};
+}
 
-export const createBCHToolbox = () => {
-  const { getBalance, ...toolbox } = BaseUTXOToolbox(Chain.BitcoinCash);
-
-  return {
-    ...toolbox,
-    stripPrefix,
-    stripToCashAddress,
-    validateAddress,
-    createKeysForPath,
-    getAddressFromKeys,
-    buildBCHTx,
-    buildTx,
-    getBalance: (address: string, _potentialScamFilter?: boolean) =>
-      getBalance(stripPrefix(toCashAddress(address))),
-    transfer: (
-      params: UTXOWalletTransferParams<
-        { builder: TransactionBuilderType; utxos: UTXOType[] },
-        TransactionType
-      >,
-    ) =>
-      transfer({ ...params, getFeeRates: toolbox.getFeeRates, broadcastTx: toolbox.broadcastTx }),
-  };
+type TransactionBuilderType = {
+  inputs: any[];
+  sign(
+    vin: number,
+    keyPair: { getAddress: (index?: number) => string },
+    redeemScript?: Buffer,
+    hashType?: number,
+    witnessValue?: number,
+    witnessScript?: Buffer,
+    signatureAlgorithm?: string,
+  ): void;
+  build(): TransactionType;
 };

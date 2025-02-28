@@ -10,7 +10,7 @@ import {
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
 import type { UTXOTransferParams } from "@swapkit/toolboxes/utxo";
-import type { Psbt } from "@swapkit/toolboxes/utxo";
+import type { Psbt } from "bitcoinjs-lib";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 import {
   AddressPurpose,
@@ -24,7 +24,7 @@ import {
 } from "sats-connect";
 import { getWalletSupportedChains } from "../helpers";
 
-export const getWalletMethods = async ({
+async function getWalletMethods({
   walletProvider,
   provider,
   chain,
@@ -32,10 +32,11 @@ export const getWalletMethods = async ({
   walletProvider?: Eip1193Provider;
   provider: BrowserProvider | BitcoinProvider;
   chain: Chain;
-}) => {
+}) {
   switch (chain) {
     case Chain.Bitcoin: {
-      const { BTCToolbox, Psbt } = await import("@swapkit/toolboxes/utxo");
+      const { Psbt } = await import("bitcoinjs-lib");
+      const { BTCToolbox } = await import("@swapkit/toolboxes/utxo");
       const toolbox = BTCToolbox();
 
       let address = "";
@@ -59,6 +60,7 @@ export const getWalletMethods = async ({
         },
       };
 
+      // TODO: Towan - probably not needed ?
       await getAddress(getAddressOptions);
 
       async function signTransaction(psbt: Psbt) {
@@ -134,7 +136,7 @@ export const getWalletMethods = async ({
     default:
       throw new Error(`Unsupported chain: ${chain}`);
   }
-};
+}
 
 export const exodusWallet = createWallet({
   name: "connectExodusWallet",
@@ -173,7 +175,6 @@ export const exodusWallet = createWallet({
             chain,
             address,
             getBalance,
-            balance: [],
             walletType: WalletOption.EXODUS,
           });
         }),
