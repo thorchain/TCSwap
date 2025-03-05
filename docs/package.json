@@ -16,7 +16,7 @@
     "@swapkit/sdk": "workspace:*",
     "@swapkit/toolboxes": "workspace:*",
     "@swapkit/wallets": "workspace:*",
-    "astro": "5.4.1",
+    "astro": "5.4.2",
     "sharp": "0.33.5",
     "starlight-typedoc": "0.20.0",
     "typedoc": "0.27.9",
