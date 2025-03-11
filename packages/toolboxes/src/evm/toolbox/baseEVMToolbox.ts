@@ -46,6 +46,27 @@ import type {
   TransferParams,
 } from "../types";
 
+export type EVMWallet = ReturnType<typeof BaseEVMToolbox>;
+export type EVMWalletType = {
+  [Chain.Arbitrum]: ReturnType<typeof ARBToolbox>;
+  [Chain.Avalanche]: ReturnType<typeof AVAXToolbox>;
+  [Chain.Base]: ReturnType<typeof BASEToolbox>;
+  [Chain.BinanceSmartChain]: ReturnType<typeof BSCToolbox>;
+  [Chain.Ethereum]: ReturnType<typeof ETHToolbox>;
+  [Chain.Optimism]: ReturnType<typeof OPToolbox>;
+  [Chain.Polygon]: ReturnType<typeof MATICToolbox>;
+};
+
+type ToolboxWrapParams<P = Provider | BrowserProvider, T = {}> = T & {
+  isEIP1559Compatible?: boolean;
+  provider: P;
+  signer?: Signer;
+};
+
+export type EVMWallets = {
+  [chain in EVMChain]: EVMWallet & EVMWalletType[chain];
+};
+
 export const MAX_APPROVAL = BigInt(
   "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
 );
@@ -88,45 +109,6 @@ export function evmValidateAddress({ address }: { address: string }) {
   }
 }
 
-export type EVMWallet = ReturnType<typeof BaseEVMToolbox>;
-export type EVMWalletType = {
-  [Chain.Arbitrum]: ReturnType<typeof ARBToolbox>;
-  [Chain.Avalanche]: ReturnType<typeof AVAXToolbox>;
-  [Chain.Base]: ReturnType<typeof BASEToolbox>;
-  [Chain.BinanceSmartChain]: ReturnType<typeof BSCToolbox>;
-  [Chain.Ethereum]: ReturnType<typeof ETHToolbox>;
-  [Chain.Optimism]: ReturnType<typeof OPToolbox>;
-  [Chain.Polygon]: ReturnType<typeof MATICToolbox>;
-};
-
-export type EVMWallets = {
-  [chain in EVMChain]: EVMWallet & EVMWalletType[chain];
-};
-
-const baseAssetAddress: Record<EVMChain, string> = {
-  [Chain.Arbitrum]: ContractAddress.ARB,
-  [Chain.Avalanche]: ContractAddress.AVAX,
-  [Chain.Base]: ContractAddress.BASE,
-  [Chain.BinanceSmartChain]: ContractAddress.BSC,
-  [Chain.Ethereum]: ContractAddress.ETH,
-  [Chain.Optimism]: ContractAddress.OP,
-  [Chain.Polygon]: ContractAddress.MATIC,
-};
-
-const stateMutable = ["payable", "nonpayable"];
-// const nonStateMutable = ['view', 'pure'];
-
-const isEIP1559Transaction = (tx: EVMTxParams) =>
-  (tx as EIP1559TxParams).type === 2 ||
-  !!(tx as EIP1559TxParams).maxFeePerGas ||
-  !!(tx as EIP1559TxParams).maxPriorityFeePerGas;
-
-type ToolboxWrapParams<P = Provider | BrowserProvider, T = {}> = T & {
-  isEIP1559Compatible?: boolean;
-  provider: P;
-  signer?: Signer;
-};
-
 export function isBrowserProvider(provider: any) {
   return provider instanceof BrowserProvider;
 }
@@ -145,6 +127,8 @@ export function getCreateContract({ provider }: ToolboxWrapParams) {
   };
 }
 
+const stateMutable = ["payable", "nonpayable"];
+// const nonStateMutable = ['view', 'pure'];
 export function isStateChangingCall({
   abi,
   funcName,
@@ -152,6 +136,111 @@ export function isStateChangingCall({
   const abiFragment = abi.find((fragment: any) => fragment.name === funcName) as any;
   if (!abiFragment) throw new SwapKitError("toolbox_evm_no_abi_fragment", { funcName });
   return abiFragment.stateMutability && stateMutable.includes(abiFragment.stateMutability);
+}
+
+export function toChecksumAddress(address: string) {
+  return getAddress(address);
+}
+
+export function getEIP1193SendTransaction(provider: Provider | BrowserProvider) {
+  return function EIP1193SendTransaction({
+    value,
+    ...params
+  }: EVMTxParams | ContractTransaction): Promise<string> {
+    if (!isBrowserProvider(provider)) {
+      throw new SwapKitError("toolbox_evm_provider_not_eip1193_compatible");
+    }
+
+    return (provider as BrowserProvider).send("eth_sendTransaction", [
+      { value: toHexString(BigInt(value || 0)), ...params } as any,
+    ]);
+  };
+}
+
+export function getChecksumAddressFromAsset(asset: Asset, chain: EVMChain) {
+  const assetAddress = getTokenAddress(asset, chain);
+
+  if (assetAddress) {
+    return getAddress(assetAddress.toLowerCase());
+  }
+
+  throw new SwapKitError("toolbox_evm_invalid_gas_asset_address");
+}
+
+const baseAssetAddress: Record<EVMChain, string> = {
+  [Chain.Arbitrum]: ContractAddress.ARB,
+  [Chain.Avalanche]: ContractAddress.AVAX,
+  [Chain.Base]: ContractAddress.BASE,
+  [Chain.BinanceSmartChain]: ContractAddress.BSC,
+  [Chain.Ethereum]: ContractAddress.ETH,
+  [Chain.Optimism]: ContractAddress.OP,
+  [Chain.Polygon]: ContractAddress.MATIC,
+};
+export function getTokenAddress({ chain, symbol, ticker }: Asset, baseAssetChain: EVMChain) {
+  try {
+    const isBSCBNB = chain === Chain.BinanceSmartChain && symbol === "BNB" && ticker === "BNB";
+    const isBaseAsset =
+      chain === baseAssetChain && symbol === baseAssetChain && ticker === baseAssetChain;
+    const isEVMAsset =
+      [Chain.Arbitrum, Chain.Base].includes(chain) && symbol === "ETH" && ticker === "ETH";
+
+    if (isBaseAsset || isBSCBNB || isEVMAsset) {
+      return baseAssetAddress[baseAssetChain];
+    }
+
+    // strip 0X only - 0x is still valid
+    return getAddress(symbol.slice(ticker.length + 1).replace(/^0X/, ""));
+  } catch (_error) {
+    return null;
+  }
+}
+
+export function getCreateContractTxObject({ provider }: ToolboxWrapParams) {
+  return async ({ contractAddress, abi, funcName, funcParams = [], txOverrides }: CallParams) =>
+    createContract(contractAddress, abi, provider)
+      .getFunction(funcName)
+      .populateTransaction(
+        ...funcParams.concat(txOverrides).filter((p) => typeof p !== "undefined"),
+      );
+}
+
+export function getEstimateGasPrices({
+  provider,
+  isEIP1559Compatible = true,
+}: { provider: Provider; isEIP1559Compatible?: boolean }) {
+  return async function estimateGasPrices() {
+    try {
+      const { maxFeePerGas, maxPriorityFeePerGas, gasPrice } = await provider.getFeeData();
+
+      if (isEIP1559Compatible) {
+        if (maxFeePerGas === null || maxPriorityFeePerGas === null)
+          throw new SwapKitError("toolbox_evm_no_fee_data");
+
+        return {
+          [FeeOption.Average]: { maxFeePerGas, maxPriorityFeePerGas },
+          [FeeOption.Fast]: {
+            maxFeePerGas: (maxFeePerGas * 15n) / 10n,
+            maxPriorityFeePerGas: (maxPriorityFeePerGas * 15n) / 10n,
+          },
+          [FeeOption.Fastest]: {
+            maxFeePerGas: maxFeePerGas * 2n,
+            maxPriorityFeePerGas: maxPriorityFeePerGas * 2n,
+          },
+        };
+      }
+      if (!gasPrice) throw new SwapKitError("toolbox_evm_no_gas_price");
+
+      return {
+        [FeeOption.Average]: { gasPrice },
+        [FeeOption.Fast]: { gasPrice: (gasPrice * 15n) / 10n },
+        [FeeOption.Fastest]: { gasPrice: gasPrice * 2n },
+      };
+    } catch (error) {
+      throw new Error(
+        `Failed to estimate gas price: ${(error as any).msg ?? (error as any).toString()}`,
+      );
+    }
+  };
 }
 
 function getCall({ provider, isEIP1559Compatible, signer }: ToolboxWrapParams) {
@@ -226,15 +315,6 @@ function getCall({ provider, isEIP1559Compatible, signer }: ToolboxWrapParams) {
 
     return typeof result?.hash === "string" ? result?.hash : result;
   };
-}
-
-export function getCreateContractTxObject({ provider }: ToolboxWrapParams) {
-  return async ({ contractAddress, abi, funcName, funcParams = [], txOverrides }: CallParams) =>
-    createContract(contractAddress, abi, provider)
-      .getFunction(funcName)
-      .populateTransaction(
-        ...funcParams.concat(txOverrides).filter((p) => typeof p !== "undefined"),
-      );
 }
 
 function getApprovedAmount({ provider }: ToolboxWrapParams) {
@@ -360,45 +440,6 @@ function getTransfer({ signer, isEIP1559Compatible = true, provider }: ToolboxWr
   };
 }
 
-export function getEstimateGasPrices({
-  provider,
-  isEIP1559Compatible = true,
-}: { provider: Provider; isEIP1559Compatible?: boolean }) {
-  return async function estimateGasPrices() {
-    try {
-      const { maxFeePerGas, maxPriorityFeePerGas, gasPrice } = await provider.getFeeData();
-
-      if (isEIP1559Compatible) {
-        if (maxFeePerGas === null || maxPriorityFeePerGas === null)
-          throw new SwapKitError("toolbox_evm_no_fee_data");
-
-        return {
-          [FeeOption.Average]: { maxFeePerGas, maxPriorityFeePerGas },
-          [FeeOption.Fast]: {
-            maxFeePerGas: (maxFeePerGas * 15n) / 10n,
-            maxPriorityFeePerGas: (maxPriorityFeePerGas * 15n) / 10n,
-          },
-          [FeeOption.Fastest]: {
-            maxFeePerGas: maxFeePerGas * 2n,
-            maxPriorityFeePerGas: maxPriorityFeePerGas * 2n,
-          },
-        };
-      }
-      if (!gasPrice) throw new SwapKitError("toolbox_evm_no_gas_price");
-
-      return {
-        [FeeOption.Average]: { gasPrice },
-        [FeeOption.Fast]: { gasPrice: (gasPrice * 15n) / 10n },
-        [FeeOption.Fastest]: { gasPrice: gasPrice * 2n },
-      };
-    } catch (error) {
-      throw new Error(
-        `Failed to estimate gas price: ${(error as any).msg ?? (error as any).toString()}`,
-      );
-    }
-  };
-}
-
 function getEstimateCall({ provider, signer }: { signer?: Signer; provider: Provider }) {
   return function estimateCall({
     contractAddress,
@@ -463,6 +504,11 @@ function getEstimateGasLimit({ provider, signer }: ToolboxWrapParams) {
     });
   };
 }
+
+const isEIP1559Transaction = (tx: EVMTxParams) =>
+  (tx as EIP1559TxParams).type === 2 ||
+  !!(tx as EIP1559TxParams).maxFeePerGas ||
+  !!(tx as EIP1559TxParams).maxPriorityFeePerGas;
 
 function getSendTransaction({ provider, signer, isEIP1559Compatible = true }: ToolboxWrapParams) {
   return async function sendTransaction({
@@ -546,57 +592,6 @@ function getSendTransaction({ provider, signer, isEIP1559Compatible = true }: To
       throw new SwapKitError("toolbox_evm_error_sending_transaction", { error });
     }
   };
-}
-
-/**
- * Exported helper functions
- */
-export function toChecksumAddress(address: string) {
-  return getAddress(address);
-}
-
-export function getEIP1193SendTransaction(provider: Provider | BrowserProvider) {
-  return function EIP1193SendTransaction({
-    value,
-    ...params
-  }: EVMTxParams | ContractTransaction): Promise<string> {
-    if (!isBrowserProvider(provider)) {
-      throw new SwapKitError("toolbox_evm_provider_not_eip1193_compatible");
-    }
-
-    return (provider as BrowserProvider).send("eth_sendTransaction", [
-      { value: toHexString(BigInt(value || 0)), ...params } as any,
-    ]);
-  };
-}
-
-export function getChecksumAddressFromAsset(asset: Asset, chain: EVMChain) {
-  const assetAddress = getTokenAddress(asset, chain);
-
-  if (assetAddress) {
-    return getAddress(assetAddress.toLowerCase());
-  }
-
-  throw new SwapKitError("toolbox_evm_invalid_gas_asset_address");
-}
-
-export function getTokenAddress({ chain, symbol, ticker }: Asset, baseAssetChain: EVMChain) {
-  try {
-    const isBSCBNB = chain === Chain.BinanceSmartChain && symbol === "BNB" && ticker === "BNB";
-    const isBaseAsset =
-      chain === baseAssetChain && symbol === baseAssetChain && ticker === baseAssetChain;
-    const isEVMAsset =
-      [Chain.Arbitrum, Chain.Base].includes(chain) && symbol === "ETH" && ticker === "ETH";
-
-    if (isBaseAsset || isBSCBNB || isEVMAsset) {
-      return baseAssetAddress[baseAssetChain];
-    }
-
-    // strip 0X only - 0x is still valid
-    return getAddress(symbol.slice(ticker.length + 1).replace(/^0X/, ""));
-  } catch (_error) {
-    return null;
-  }
 }
 
 function getCreateTransferTx({

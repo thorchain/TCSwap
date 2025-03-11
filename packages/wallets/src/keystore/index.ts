@@ -90,7 +90,7 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
       const getToolbox = await getToolboxByChain(chain);
       const toolbox = getToolbox();
 
-      const keys = await toolbox.createKeysForPath({ phrase, derivationPath });
+      const keys = toolbox.createKeysForPath({ phrase, derivationPath });
       const address = toolbox.getAddressFromKeys(keys);
 
       return {
@@ -101,6 +101,7 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
             toolbox.transfer({
               ...params,
               from: address,
+              // @ts-expect-error - TODO: change to @noble (?)
               signTransaction: async (psbt: Psbt) => psbt.signAllInputs(keys),
             }),
         },

@@ -285,7 +285,7 @@ async function addressFromKeysGetter(chain: UTXOChain) {
     if (!keys) throw new Error("Keys must be provided");
 
     const method = nonSegwitChains.includes(chain) ? payments.p2pkh : payments.p2wpkh;
-    const { address } = method({ pubkey: keys.publicKey, network: getNetwork(chain) });
+    const { address } = method({ pubkey: keys.publicKey as Buffer, network: getNetwork(chain) });
     if (!address) throw new Error("Address not defined");
 
     return address;
