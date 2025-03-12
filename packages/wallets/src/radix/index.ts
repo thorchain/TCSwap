@@ -14,7 +14,7 @@ import {
   createWallet,
   filterSupportedChains,
 } from "@swapkit/helpers";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 export const radixWallet = createWallet({
   name: "connectRadixWallet",

@@ -11,7 +11,7 @@ import {
 } from "@swapkit/helpers";
 import type { UTXOTransferParams, UTXOType } from "@swapkit/toolboxes/utxo";
 import type { Psbt } from "bitcoinjs-lib";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 function getScriptType(derivationPath: DerivationPathArray) {
   switch (derivationPath[0]) {

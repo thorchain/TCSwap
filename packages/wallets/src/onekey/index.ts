@@ -19,7 +19,7 @@ import type {
   GetAddressResponse,
   SignTransactionOptions,
 } from "sats-connect";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 declare global {
   interface Window {

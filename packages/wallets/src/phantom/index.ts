@@ -8,7 +8,7 @@ import {
   filterSupportedChains,
 } from "@swapkit/helpers";
 import type { SolanaProvider } from "@swapkit/toolboxes/solana";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 export const phantomWallet = createWallet({
   name: "connectPhantom",

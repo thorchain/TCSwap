@@ -8,7 +8,7 @@ import {
   filterSupportedChains,
 } from "@swapkit/helpers";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import {
   type WalletTxParams,
   getCtrlAddress,

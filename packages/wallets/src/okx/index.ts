@@ -2,7 +2,7 @@ import type { StdSignDoc, StdSignature } from "@cosmjs/amino";
 import type { EthereumWindowProvider } from "@swapkit/helpers";
 import { Chain, WalletOption, createWallet, filterSupportedChains } from "@swapkit/helpers";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import { getWalletMethods } from "./helpers";
 import type { AminoSignResponse, OfflineAminoSigner } from "./types";
 

@@ -11,7 +11,7 @@ import {
 import { KeepKeySdk } from "@keepkey/keepkey-sdk";
 export type { PairingInfo } from "@keepkey/keepkey-sdk";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import { cosmosWalletMethods } from "./chains/cosmos";
 import { KeepKeySigner } from "./chains/evm";
 import { mayachainWalletMethods } from "./chains/mayachain";

@@ -11,7 +11,7 @@ import {
 } from "@swapkit/helpers";
 import type { InjectedWindow } from "@swapkit/toolboxes/substrate";
 import type { Eip1193Provider } from "ethers";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 export const talismanWallet = createWallet({
   name: "connectTalisman",

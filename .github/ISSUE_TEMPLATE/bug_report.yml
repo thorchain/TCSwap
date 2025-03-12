@@ -50,12 +50,13 @@ body:
       description: |
         Which packages are affected by the issue?
       options:
-        - label: "@swapkit/sdk"
         - label: "@swapkit/core"
         - label: "@swapkit/helpers"
-        - label: "@swapkit/wallets"
-        - label: "@swapkit/toolboxes"
         - label: "@swapkit/plugins"
+        - label: "@swapkit/sdk"
+        - label: "@swapkit/toolboxes"
+        - label: "@swapkit/ui"
+        - label: "@swapkit/wallets"
 
   - type: textarea
     attributes:

@@ -7,7 +7,7 @@ import {
   filterSupportedChains,
 } from "@swapkit/helpers";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import { getWalletMethods } from "./signer";
 
 export const coinbaseWallet = createWallet({

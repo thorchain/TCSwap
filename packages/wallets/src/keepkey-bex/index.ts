@@ -7,7 +7,7 @@ import {
   filterSupportedChains,
 } from "@swapkit/helpers";
 import type { Eip1193Provider } from "ethers";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import {
   type WalletTxParams,
   cosmosTransfer,

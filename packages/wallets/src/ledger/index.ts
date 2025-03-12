@@ -12,7 +12,7 @@ import {
 import type { DepositParam, TransferParams } from "@swapkit/toolboxes/cosmos";
 import type { UTXOBuildTxParams } from "@swapkit/toolboxes/utxo";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import { getLedgerAddress, getLedgerClient } from "./helpers/index";
 
 export const ledgerWallet = createWallet({

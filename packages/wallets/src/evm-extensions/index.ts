@@ -11,7 +11,7 @@ import {
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 declare const window: {
   ethereum: EthereumWindowProvider;

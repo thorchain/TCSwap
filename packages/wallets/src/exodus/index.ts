@@ -22,7 +22,7 @@ import {
   getAddress,
   signTransaction as satsSignTransaction,
 } from "sats-connect";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 async function getWalletMethods({
   walletProvider,

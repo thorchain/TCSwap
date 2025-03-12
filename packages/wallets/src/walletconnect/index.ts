@@ -16,7 +16,7 @@ import type {
 import type { WalletConnectModalSign } from "@walletconnect/modal-sign-html";
 import type { SessionTypes, SignClientTypes } from "@walletconnect/types";
 
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 import {
   DEFAULT_APP_METADATA,
   DEFAULT_COSMOS_METHODS,

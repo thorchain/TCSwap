@@ -19,7 +19,7 @@ import {
 import type { UTXOTransferParams } from "@swapkit/toolboxes/utxo";
 import { BigNumber as BigNumberJS } from "bignumber.js";
 import { VoidSigner } from "ethers";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 export type LedgerAccount = Account & { multichainBalance?: AssetValue[] };
 

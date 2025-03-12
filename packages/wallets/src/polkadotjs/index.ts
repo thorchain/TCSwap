@@ -6,7 +6,7 @@ import {
   filterSupportedChains,
 } from "@swapkit/helpers";
 import type { InjectedWindow } from "@swapkit/toolboxes/substrate";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 export const polkadotWallet = createWallet({
   name: "connectPolkadotJs",

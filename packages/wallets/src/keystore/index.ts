@@ -21,7 +21,7 @@ import type {
   UTXOWalletTransferParams,
 } from "@swapkit/toolboxes/utxo";
 import type { Psbt } from "bitcoinjs-lib";
-import { getWalletSupportedChains } from "../helpers";
+import { getWalletSupportedChains } from "../utils";
 
 type Params = {
   chain: Chain;

@@ -6,7 +6,7 @@ import { NetworkDerivationPath, WalletOption } from "@swapkit/helpers";
 import type { ChainflipPlugin } from "@swapkit/plugins/chainflip";
 import type { KadoPlugin } from "@swapkit/plugins/kado";
 import type { MayachainPlugin, ThorchainPlugin } from "@swapkit/plugins/thorchain";
-import type { wallets } from "@swapkit/wallets";
+import type { SKWallets } from "@swapkit/wallets";
 
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
@@ -20,7 +20,7 @@ type KeystoreFile = {
 const swapKitAtom = atom<ReturnType<
   typeof SwapKit<
     typeof ThorchainPlugin & typeof ChainflipPlugin & typeof MayachainPlugin & typeof KadoPlugin,
-    typeof wallets
+    SKWallets[WalletOption]
   >
 > | null>(null);
 const balanceAtom = atom<AssetValue[]>([]);
@@ -31,6 +31,18 @@ const walletState = atom<{ connected: boolean; type: WalletOption | null }>({
 const keystoreFileAtom = atom<KeystoreFile>(null);
 const isKeystoreOpenAtom = atom<boolean>(false);
 const isKeystoreDecryptingAtom = atom<boolean>(false);
+
+async function loadWallets() {
+  const { loadWallet } = await import("@swapkit/wallets");
+
+  const walletsToLoad = Object.values(WalletOption).map(loadWallet);
+  const loadedWallets = await Promise.all(walletsToLoad);
+
+  // biome-ignore lint/performance/noAccumulatingSpread: Shouldn't be a problem here ~max 20-30 elements
+  const wallets = loadedWallets.reduce((acc, wallet) => ({ ...acc, ...wallet }), {} as SKWallets);
+
+  return wallets;
+}
 
 export const useSwapKit = () => {
   const [swapKit, setSwapKit] = useAtom(swapKitAtom);
@@ -43,7 +55,8 @@ export const useSwapKit = () => {
       const { ChainflipPlugin } = await import("@swapkit/plugins/chainflip");
       const { KadoPlugin } = await import("@swapkit/plugins/kado");
       const { ThorchainPlugin, MayachainPlugin } = await import("@swapkit/plugins/thorchain");
-      const { wallets } = await import("@swapkit/wallets");
+
+      const wallets = await loadWallets();
 
       const swapKitClient = SwapKit({
         config: {
