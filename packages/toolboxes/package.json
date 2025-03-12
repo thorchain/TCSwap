@@ -28,7 +28,7 @@
     "cashaddrjs": "0.4.4",
     "coininfo": "5.2.1",
     "cosmjs-types": "0.9.0",
-    "ecpair": "3.0.0",
+    "ecpair": "2.1.0",
     "ethers": "6.13.5",
     "micro-key-producer": "0.7.5",
     "protobufjs": "7.4.0"

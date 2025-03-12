@@ -1,13 +1,6 @@
 import type { OfflineSigner } from "@cosmjs/proto-signing";
 import type { SigningStargateClientOptions } from "@cosmjs/stargate";
-import {
-  AssetValue,
-  Chain,
-  ChainId,
-  type CosmosChain,
-  SKConfig,
-  getGasAsset,
-} from "@swapkit/helpers";
+import { AssetValue, Chain, ChainId, type CosmosChain, SKConfig } from "@swapkit/helpers";
 
 import type { CosmosNativeTransferTxParams } from "./thorchainUtils";
 
@@ -202,7 +195,8 @@ export const buildNativeTransferTx = async ({
     throw new Error("Account does not exist");
   }
 
-  const feeAsset = getMsgSendDenom(getGasAsset({ chain }).symbol);
+  const gasAsset = AssetValue.from({ chain });
+  const feeAsset = getMsgSendDenom(gasAsset.symbol);
   const defaultFee = getDefaultChainFee(chain as CosmosChain);
 
   const txFee =

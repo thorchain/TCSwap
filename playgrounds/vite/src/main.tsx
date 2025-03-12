@@ -7,7 +7,7 @@ import "./index.css";
 import App from "./App";
 
 function AppWrapper() {
-  const [isWidget, setIsWidget] = useState(true);
+  const [isWidget, setIsWidget] = useState(false);
 
   return (
     <>

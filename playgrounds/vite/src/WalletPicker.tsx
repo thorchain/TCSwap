@@ -239,17 +239,19 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
     if (!skClient) return alert("client is not ready");
     setBalanceLoading(true);
     try {
+      const walletChains = Object.keys(skClient.getAllWallets()) as Chain[];
+
       const walletDataArray = await Promise.all(
-        chains.map((chain) => skClient.getWalletWithBalance(chain, true)),
+        walletChains.map((chain) => skClient.getWalletWithBalance(chain, true)),
       );
-      setWallet(walletDataArray.filter(Boolean));
+      setWallet(walletDataArray);
     } catch (e) {
       console.error(e);
       alert(e);
     } finally {
       setBalanceLoading(false);
     }
-  }, [chains, skClient, setWallet]);
+  }, [skClient, setWallet]);
 
   const handleKeystoreConnection = useCallback(
     async ({ target }: any) => {
@@ -267,8 +269,8 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
           setPhrase(phrases);
 
           await skClient.connectKeystore(chains, phrases);
-          const walletDataArray = chains.map((chain) => skClient.getWallet(chain));
-          setWallet(walletDataArray.filter(Boolean));
+          const walletDataArray = Object.values(skClient.getAllWallets());
+          setWallet(walletDataArray);
           setLoading(false);
         } catch (e) {
           console.error(e);
@@ -278,7 +280,7 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
         handleBalanceUpdate();
       }, 500);
     },
-    [chains, setWallet, skClient, setPhrase, handleBalanceUpdate],
+    [setWallet, chains, skClient, setPhrase, handleBalanceUpdate],
   );
 
   const handleConnection = useCallback(
@@ -286,13 +288,13 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
       if (!skClient) return alert("client is not ready");
       setLoading(true);
       await connectWallet(option, provider);
-      const walletDataArray = chains.map((chain) => skClient.getWallet(chain));
-      setWallet(walletDataArray.filter(Boolean));
+      const walletDataArray = Object.values(skClient.getAllWallets());
+      setWallet(walletDataArray);
       setLoading(false);
 
       handleBalanceUpdate();
     },
-    [chains, connectWallet, setWallet, skClient, handleBalanceUpdate],
+    [connectWallet, setWallet, skClient, handleBalanceUpdate],
   );
 
   const isWalletDisabled = useCallback(

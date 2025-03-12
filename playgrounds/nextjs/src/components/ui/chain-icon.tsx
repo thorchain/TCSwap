@@ -1,6 +1,6 @@
 "use client";
 
-import { type Chain, getGasAsset } from "@swapkit/helpers";
+import { AssetValue, type Chain } from "@swapkit/helpers";
 import { getTokenIcon } from "@swapkit/helpers/tokens";
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ interface ChainIconProps {
 }
 
 export function ChainIcon({ chain, className }: ChainIconProps) {
-  const gasAsset = getGasAsset({ chain });
+  const gasAsset = AssetValue.from({ chain });
   const iconUrl = getTokenIcon(gasAsset.toString());
 
   if (!iconUrl) {

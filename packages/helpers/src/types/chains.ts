@@ -156,6 +156,7 @@ export type EVMChain =
   | Chain.Ethereum
   | Chain.Optimism
   | Chain.Polygon;
+
 export const EVMChains = [
   Chain.Arbitrum,
   Chain.Avalanche,
@@ -223,7 +224,7 @@ export const RPC_URLS: Record<Chain | StagenetChain, string> = {
   [Chain.Dogecoin]: "https://node-router.thorswap.net/dogecoin",
   [Chain.Ethereum]: "https://ethereum-rpc.publicnode.com",
   [Chain.Fiat]: "",
-  [Chain.Kujira]: "https://rpc-kujira.synergynodes.com/",
+  [Chain.Kujira]: "https://kujira-rpc.ibs.team",
   [Chain.Litecoin]: "https://node-router.thorswap.net/litecoin",
   [Chain.Maya]: "https://tendermint.mayachain.info",
   [Chain.Optimism]: "https://mainnet.optimism.io",
@@ -271,7 +272,7 @@ export const FALLBACK_URLS: Record<Chain | StagenetChain, string[]> = {
   [Chain.Dogecoin]: ["https://doge.getblock.io/mainnet", "https://dogecoin.publicnode.com"],
   [Chain.Ethereum]: ["https://eth.llamarpc.com", "https://rpc.ankr.com/eth"],
   [Chain.Fiat]: [],
-  [Chain.Kujira]: ["https://kujira-rpc.polkachu.com", "https://kujira-rpc.ibs.team"],
+  [Chain.Kujira]: ["https://kujira-rpc.polkachu.com", "https://rpc-kujira.synergynodes.com/"],
   [Chain.Litecoin]: ["https://ltc.getblock.io/mainnet", "https://litecoin.publicnode.com"],
   [Chain.Maya]: ["https://tendermint.mayachain.info", "https://maya-tendermint.publicnode.com"],
   [StagenetChain.Maya]: [],

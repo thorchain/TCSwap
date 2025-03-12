@@ -7,15 +7,10 @@
   ],
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit"
   },
   "search.exclude": {
-    "node_modules/**": true,
-    "node_modules": true,
     "bun.lock": true,
     "**/node_modules": true,
     "**/dist": true,
@@ -23,7 +18,6 @@
     "**/coverage": true
   },
   "cSpell.words": [
-    "AVALACHE",
     "bchaddrjs",
     "bchtest",
     "Bech",
@@ -74,14 +68,5 @@
     "Woofi",
     "xchain",
     "xpub"
-  ],
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  }
+  ]
 }

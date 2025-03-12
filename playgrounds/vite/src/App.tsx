@@ -115,6 +115,8 @@ const App = () => {
       <div style={{ cursor: skClient ? "default" : "not-allowed" }}>
         <div
           style={{
+            display: "flex",
+            flexDirection: "row",
             pointerEvents: skClient ? "all" : "none",
             opacity: skClient ? 1 : 0.5,
           }}
@@ -140,30 +142,35 @@ const App = () => {
             </div>
           </div>
 
-          {skClient && (
-            <>
-              <button onClick={disconnectAll} type="button">
-                Disconnect All
-              </button>
-              {Array.isArray(wallet) ? (
-                wallet.map((walletData) => (
+          <div>
+            {skClient && (
+              <>
+                <button onClick={disconnectAll} type="button">
+                  Disconnect All:{" "}
+                  {Array.isArray(wallet) ? wallet[0]?.walletType : wallet?.walletType}
+                </button>
+
+                {Array.isArray(wallet) ? (
+                  wallet.map((walletData) => (
+                    <Wallet
+                      key={`${walletData?.address}-${walletData?.balance?.[0]?.chain}`}
+                      setAsset={setAsset}
+                      walletData={walletData}
+                      disconnect={() => disconnectChain(walletData?.balance?.[0]?.chain as Chain)}
+                    />
+                  ))
+                ) : (
                   <Wallet
-                    key={`${walletData?.address}-${walletData?.balance?.[0]?.chain}`}
+                    key={`${wallet?.address}-${wallet?.balance?.[0]?.chain}`}
                     setAsset={setAsset}
-                    walletData={walletData}
-                    disconnect={() => disconnectChain(walletData?.balance?.[0]?.chain as Chain)}
+                    walletData={wallet as FullWallet[Chain]}
+                    disconnect={() => disconnectChain(wallet?.balance?.[0]?.chain as Chain)}
                   />
-                ))
-              ) : (
-                <Wallet
-                  key={`${wallet?.address}-${wallet?.balance?.[0]?.chain}`}
-                  setAsset={setAsset}
-                  walletData={wallet as FullWallet[Chain]}
-                  disconnect={() => disconnectChain(wallet?.balance?.[0]?.chain as Chain)}
-                />
-              )}
-            </>
-          )}
+                )}
+              </>
+            )}
+          </div>
+
           <WalletWidget />
         </div>
       </div>

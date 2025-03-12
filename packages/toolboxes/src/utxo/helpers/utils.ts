@@ -4,7 +4,7 @@ const pid = typeof process !== "undefined" && process.pid ? process.pid.toString
 
 export async function getUtxoNetwork() {
   // @ts-ignore
-  const { coininfo } = await import("coininfo");
+  const coininfo = await import("coininfo");
   const { networks } = await import("bitcoinjs-lib");
 
   return function getNetwork(chain: Chain) {

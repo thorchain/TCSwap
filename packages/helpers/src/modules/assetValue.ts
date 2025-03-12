@@ -2,7 +2,7 @@ import { BaseDecimal, Chain, type ChainId, ChainToChainId } from "../types/chain
 import type { TokenNames, TokenTax } from "../types/tokens";
 import {
   type CommonAssetString,
-  CommonAssetStrings,
+  assetFromString,
   getAssetType,
   getCommonAssetInfo,
   getDecimal,
@@ -114,7 +114,6 @@ export class AssetValue extends BigIntArithmetics {
     return AssetValue.from({ asset, value });
   }
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
   static from<T extends {}>({
     value = 0,
     fromBaseDecimal,
@@ -122,16 +121,11 @@ export class AssetValue extends BigIntArithmetics {
     ...fromAssetOrChain
   }: T & AssetValueFromParams): ConditionalAssetValueReturn<T> {
     const parsedValue = value instanceof BigIntArithmetics ? value.getValue("string") : value;
-    const isFromChain = "chain" in fromAssetOrChain;
-    const assetOrChain = isFromChain ? fromAssetOrChain.chain : fromAssetOrChain.asset;
+    const assetOrChain = getAssetString(fromAssetOrChain);
 
-    const isFromCommonAssetOrChain =
-      isFromChain ||
-      CommonAssetStrings.includes(assetOrChain as (typeof CommonAssetStrings)[number]);
-
-    const { identifier: unsafeIdentifier, decimal: commonAssetDecimal } = isFromCommonAssetOrChain
-      ? getCommonAssetInfo(assetOrChain as CommonAssetString)
-      : { identifier: assetOrChain, decimal: undefined };
+    const { identifier: unsafeIdentifier, decimal: commonAssetDecimal } = getCommonAssetInfo(
+      assetOrChain as CommonAssetString,
+    );
 
     const { chain, isSynthetic, isTradeAsset } = getAssetInfo(unsafeIdentifier);
     const token = staticTokensMap.get(
@@ -262,6 +256,15 @@ function safeValue(value: NumberPrimitives, decimal: number) {
   return typeof value === "bigint"
     ? formatBigIntToSafeValue({ value, bigIntDecimal: decimal, decimal })
     : value;
+}
+
+function getAssetString(assetOrChain: AssetIdentifier) {
+  if ("chain" in assetOrChain) return assetOrChain.chain;
+
+  const { chain, symbol } = assetFromString(assetOrChain.asset);
+  const isNativeChain = getAssetType({ chain, symbol }) === "Native";
+
+  return isNativeChain ? chain : assetOrChain.asset;
 }
 
 function getAssetInfo(identifier: string) {

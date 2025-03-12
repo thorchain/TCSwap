@@ -10,11 +10,10 @@ export const Wallet = ({ walletData, setAsset, disconnect }: Props) => {
   if (!walletData) return null;
 
   return (
-    <div style={{ paddingBottom: "16px" }}>
+    <div style={{ paddingBottom: "8px" }}>
       <div>
         <span>
-          {walletData?.walletType} {walletData?.balance?.[0]?.chain} wallet address:{" "}
-          {walletData?.address}
+          {walletData?.chain} address: {walletData?.address}
         </span>
       </div>
 
@@ -63,9 +62,11 @@ export const Wallet = ({ walletData, setAsset, disconnect }: Props) => {
               alt=""
             />
           </div>
+
           <button onClick={() => setAsset(b)} type="button">
             {b.toSignificant(6)} {b.ticker}
           </button>
+
           <button onClick={() => disconnect()} type="button">
             Disconnect
           </button>
