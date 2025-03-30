@@ -9,8 +9,8 @@
     "@swapkit/wallets": "workspace:*"
   },
   "devDependencies": {
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "author": "swapkit-oss",
   "description": "SwapKit - UI",

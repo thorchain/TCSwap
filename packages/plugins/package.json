@@ -5,7 +5,7 @@
     "@polkadot/util": "13.4.3",
     "@swapkit/helpers": "workspace:*",
     "@swapkit/toolboxes": "workspace:*",
-    "ts-pattern": "5.6.2"
+    "ts-pattern": "5.7.0"
   },
   "description": "SwapKit Plugin - ChainFlip",
   "exports": {
