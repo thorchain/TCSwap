@@ -1,14 +1,8 @@
-import {
-  AssetValue,
-  BaseDecimal,
-  Chain,
-  FeeOption,
-  SwapKitNumber,
-  type UTXOChain,
-} from "@swapkit/helpers";
+import { AssetValue, Chain, FeeOption, SwapKitNumber, type UTXOChain } from "@swapkit/helpers";
 import type { Psbt } from "bitcoinjs-lib";
 import type { ECPairInterface } from "ecpair";
 
+import { getBalance } from "../../utils";
 import {
   UTXOScriptType,
   accumulative,
@@ -18,7 +12,6 @@ import {
   getInputSize,
   getUtxoApi,
   getUtxoNetwork,
-  standardFeeRates,
 } from "../helpers";
 import type { TargetOutput, UTXOBuildTxParams, UTXOType, UTXOWalletTransferParams } from "../types";
 import { validateAddress as validateBCHAddress } from "./bitcoinCash";
@@ -322,22 +315,14 @@ function transfer(chain: UTXOChain) {
   };
 }
 
-function getBalance(chain: UTXOChain) {
-  return async function getBalance(address: string, _scamFilter = true) {
-    const baseBalance = await getUtxoApi(chain).getBalance(address);
-    const balance = SwapKitNumber.fromBigInt(BigInt(baseBalance), BaseDecimal[chain]).getValue(
-      "string",
-    );
-    const asset = AssetValue.from({ asset: `${chain}.${chain}`, value: balance });
-
-    return [asset];
-  };
-}
-
 async function getFeeRates(chain: UTXOChain) {
   const suggestedFeeRate = await getUtxoApi(chain).getSuggestedTxFee();
 
-  return standardFeeRates(suggestedFeeRate);
+  return {
+    [FeeOption.Average]: suggestedFeeRate,
+    [FeeOption.Fast]: suggestedFeeRate * 1.5,
+    [FeeOption.Fastest]: suggestedFeeRate * 2.0,
+  };
 }
 
 function getInputsAndTargetOutputs(chain: UTXOChain) {
