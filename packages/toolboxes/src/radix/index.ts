@@ -7,9 +7,7 @@ import type {
 } from "@radixdlt/babylon-gateway-api-sdk";
 import { AssetValue, Chain, type SKConfigIntegrations } from "@swapkit/helpers";
 
-export type RadixWallets = {
-  [Chain.Radix]: Awaited<ReturnType<typeof RadixToolbox>>;
-};
+export type RadixWallet = Awaited<ReturnType<typeof RadixToolbox>>;
 
 type RadixGetBalanceParams = {
   address: string;

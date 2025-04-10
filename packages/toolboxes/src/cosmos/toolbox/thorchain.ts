@@ -20,17 +20,17 @@ import {
   createDefaultAminoTypes,
   createDefaultRegistry,
   parseAminoMessageForDirectSigning,
-} from "../thorchainUtils/index";
+} from "../thorchainUtils";
 import type { ThorchainConstantsResponse } from "../thorchainUtils/types/client-types";
 import type { MultisigTx } from "../types";
-import type { CosmosSigner, MultiSigSigner, TransferParams } from "../types";
+import type { CosmosToolboxParams, MultiSigSigner, TransferParams } from "../types";
 import {
   createOfflineStargateClient,
   createSigningStargateClient,
   createStargateClient,
   getDefaultChainFee,
 } from "../util";
-import { BaseCosmosToolbox, type CosmosToolboxParams } from "./BaseCosmosToolbox";
+import { createCosmosToolbox } from "./cosmos";
 
 function secp256k1HdWalletFromMnemonic({
   prefix,
@@ -164,14 +164,12 @@ async function signWithPrivateKey({
   return base64.encode(Buffer.concat([signature.r(32), signature.s(32)]));
 }
 
-export function BaseThorchainToolbox({
+export function createThorchainToolbox({
   chain,
   derivationPath: paramsDerivationPath,
   index = 0,
   signer,
-}: Omit<CosmosToolboxParams, "chain"> & {
-  chain: Chain.THORChain | Chain.Maya;
-}) {
+}: Omit<CosmosToolboxParams, "chain"> & { chain: Chain.THORChain | Chain.Maya }) {
   const nodeUrl = SKConfig.get("nodeUrls")[chain];
   const rpcUrl = SKConfig.get("rpcUrls")[chain];
   const { isStagenet } = SKConfig.get("envs");
@@ -180,7 +178,7 @@ export function BaseThorchainToolbox({
   const chainPrefix = `${isStagenet ? "s" : ""}${CosmosChainPrefixes[chain]}`;
   const derivationPath = paramsDerivationPath || DerivationPath[chain];
 
-  const cosmosToolbox = BaseCosmosToolbox({
+  const cosmosToolbox = createCosmosToolbox({
     chain,
     derivationPath,
     signer,
@@ -298,16 +296,3 @@ export function BaseThorchainToolbox({
     },
   };
 }
-
-export function ThorchainToolbox<S extends CosmosSigner>(signer: S) {
-  return BaseThorchainToolbox({ chain: Chain.THORChain, signer });
-}
-
-export function MayaToolbox<S extends CosmosSigner>(signer: S) {
-  return BaseThorchainToolbox({ chain: Chain.Maya, signer });
-}
-
-export type ThorchainWallet = Omit<ReturnType<typeof BaseThorchainToolbox>, "signMessage">;
-export type ThorchainWallets = {
-  [chain in Chain.THORChain | Chain.Maya]: ThorchainWallet;
-};

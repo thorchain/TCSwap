@@ -9,7 +9,7 @@ import {
 } from "@swapkit/helpers";
 import { getBalance } from "../utils";
 
-export async function getAddressValidator() {
+export async function getSolanaAddressValidator() {
   const { PublicKey } = await import("@solana/web3.js");
 
   return (address: string) => {
@@ -22,7 +22,7 @@ export async function getAddressValidator() {
   };
 }
 
-export const SOLToolbox = () => {
+export function getSolanaToolbox() {
   return {
     getConnection,
     createKeysForPath,
@@ -31,9 +31,9 @@ export const SOLToolbox = () => {
     getBalance: getBalance(Chain.Solana),
     transfer: transfer(getConnection),
     broadcastTransaction: broadcastTransaction(getConnection),
-    getAddressValidator,
+    getAddressValidator: getSolanaAddressValidator,
   };
-};
+}
 
 async function getConnection() {
   const { Connection } = await import("@solana/web3.js");
@@ -153,7 +153,7 @@ function createSolanaTransaction(getConnection: () => Promise<Connection>) {
   }) => {
     const { createMemoInstruction } = await import("@solana/spl-memo");
 
-    const validateAddress = await getAddressValidator();
+    const validateAddress = await getSolanaAddressValidator();
 
     if (!(isProgramDerivedAddress || validateAddress(recipient))) {
       throw new SwapKitError("core_transaction_invalid_recipient_address");

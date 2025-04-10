@@ -10,7 +10,7 @@ import {
   OptimismLedger,
   PolygonLedger,
 } from "../clients/evm";
-import { THORChainLedger } from "../clients/thorchain/index";
+import { THORChainLedger } from "../clients/thorchain";
 import {
   BitcoinCashLedger,
   BitcoinLedger,

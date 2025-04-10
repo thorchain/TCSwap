@@ -18,7 +18,7 @@ import { SwapKitApi } from "@swapkit/helpers/api";
 import type { StdFee } from "@cosmjs/amino";
 import type { Account } from "@cosmjs/stargate";
 import { getBalance } from "../../utils";
-import type { CosmosSigner, TransferParams } from "../types";
+import type { CosmosToolboxParams, TransferParams } from "../types";
 import {
   buildNativeTransferTx,
   createSigningStargateClient,
@@ -26,19 +26,6 @@ import {
   getDenomWithChain,
   getMsgSendDenom,
 } from "../util";
-
-export type CosmosToolboxParams = {
-  chain: CosmosChain;
-  derivationPath?: DerivationPath;
-  index?: number;
-  signer?: CosmosSigner;
-};
-
-export type BaseCosmosToolboxType = ReturnType<typeof BaseCosmosToolbox>;
-export type BaseCosmosWallet = ReturnType<typeof BaseCosmosToolbox>;
-export type CosmosWallets = {
-  [chain in Chain.Cosmos | Chain.Kujira]: BaseCosmosWallet;
-};
 
 export async function fetchFeeRateFromSwapKit(chainId: ChainId, safeDefault: number) {
   try {
@@ -129,7 +116,7 @@ export function verifySignature(getAccount: (address: string) => Promise<Account
   };
 }
 
-export function BaseCosmosToolbox({
+export function createCosmosToolbox({
   chain,
   derivationPath: paramsDerivationPath,
   index = 0,
@@ -371,10 +358,3 @@ function createPrivateKeyFromPhrase(derivationPath: string) {
     return privkey;
   };
 }
-
-export function createCosmosToolbox<C extends CosmosChain>(chain: C) {
-  return (signer?: CosmosSigner) => BaseCosmosToolbox({ chain, signer });
-}
-
-export const GaiaToolbox = createCosmosToolbox(Chain.Cosmos);
-export const KujiraToolbox = createCosmosToolbox(Chain.Kujira);

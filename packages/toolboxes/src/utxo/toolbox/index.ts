@@ -15,10 +15,10 @@ type UTXOToolboxes = {
 };
 
 export type UTXOWallets = {
-  [key in keyof UTXOToolboxes]: ReturnType<UTXOToolboxes[key]>;
+  [key in keyof UTXOToolboxes]: UTXOToolboxes[key];
 };
 
-export async function getToolboxByChain<T extends UTXOChain>(chain: T): Promise<UTXOToolboxes[T]> {
+export async function getUtxoToolbox<T extends UTXOChain>(chain: T): Promise<UTXOToolboxes[T]> {
   switch (chain) {
     case Chain.BitcoinCash: {
       const toolbox = await createBCHToolbox();

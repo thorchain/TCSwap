@@ -1,7 +1,6 @@
 import {
   Chain,
   type EVMChain,
-  type EthereumWindowProvider,
   SwapKitError,
   WalletOption,
   createWallet,
@@ -9,7 +8,6 @@ import {
   prepareNetworkSwitch,
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
-import type { InjectedWindow } from "@swapkit/toolboxes/substrate";
 import type { Eip1193Provider } from "ethers";
 import { getWalletSupportedChains } from "../utils";
 
@@ -45,16 +43,11 @@ export const talismanWallet = createWallet({
 
 export const TALISMAN_SUPPORTED_CHAINS = getWalletSupportedChains(talismanWallet);
 
-declare const window: {
-  talismanEth: EthereumWindowProvider;
-} & Window &
-  InjectedWindow;
-
 async function getWeb3WalletMethods({
   walletProvider,
   chain,
 }: { walletProvider: Eip1193Provider | undefined; chain: EVMChain }) {
-  const { getToolboxByChain } = await import("@swapkit/toolboxes/evm");
+  const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
   const { BrowserProvider } = await import("ethers");
 
   if (!walletProvider) {
@@ -66,7 +59,7 @@ async function getWeb3WalletMethods({
 
   const provider = new BrowserProvider(walletProvider, "any");
   const signer = await provider.getSigner();
-  const toolbox = getToolboxByChain(chain)({ provider, signer });
+  const toolbox = await getEvmToolbox(chain, { provider, signer });
 
   try {
     if (chain !== Chain.Ethereum) {
@@ -103,17 +96,16 @@ async function getWalletMethods(chain: Chain) {
 
     case Chain.Polkadot:
     case Chain.Chainflip: {
-      const { getToolboxByChain, Network } = await import("@swapkit/toolboxes/substrate");
+      const { getSubstrateToolbox, Network } = await import("@swapkit/toolboxes/substrate");
 
-      const injectedWindow = window as Window & InjectedWindow;
-      const injectedExtension = injectedWindow?.injectedWeb3?.talisman;
+      const injectedExtension = window?.injectedWeb3?.talisman;
       const rawExtension = await injectedExtension?.enable?.("talisman");
 
       if (!rawExtension) {
         throw new SwapKitError({ errorKey: "wallet_talisman_not_enabled", info: { chain } });
       }
 
-      const toolbox = await getToolboxByChain(chain, { signer: rawExtension.signer });
+      const toolbox = await getSubstrateToolbox(chain, { signer: rawExtension.signer });
       const accounts = await rawExtension.accounts.get();
 
       if (!accounts[0]?.address) {

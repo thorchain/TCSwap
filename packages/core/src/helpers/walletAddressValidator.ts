@@ -4,11 +4,12 @@ export async function getAddressValidator() {
   const { cosmosValidateAddress } = await import("@swapkit/toolboxes/cosmos");
   const { evmValidateAddress } = await import("@swapkit/toolboxes/evm");
   const { substrateValidateAddress } = await import("@swapkit/toolboxes/substrate");
-  const { getAddressValidator: getUtxoValidator } = await import("@swapkit/toolboxes/utxo");
-  const { getAddressValidator: getSolValidator } = await import("@swapkit/toolboxes/solana");
+  const { getUTXOAddressValidator } = await import("@swapkit/toolboxes/utxo");
+  const { getSolanaAddressValidator } = await import("@swapkit/toolboxes/solana");
   const { validateAddress: validateRadixAddress } = await import("@swapkit/toolboxes/radix");
-  const solanaValidateAddress = await getSolValidator();
-  const utxoValidateAddress = await getUtxoValidator();
+
+  const solanaValidateAddress = await getSolanaAddressValidator();
+  const utxoValidateAddress = await getUTXOAddressValidator();
 
   return function validateAddress({ address, chain }: { address: string; chain: Chain }) {
     switch (chain) {

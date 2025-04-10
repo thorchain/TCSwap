@@ -6,7 +6,6 @@ import {
   createWallet,
   filterSupportedChains,
 } from "@swapkit/helpers";
-import type { CosmosSigner } from "@swapkit/toolboxes/cosmos";
 import type { Eip1193Provider } from "ethers";
 import { getWalletSupportedChains } from "../utils";
 import {
@@ -64,15 +63,15 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
   switch (chain) {
     case Chain.Maya:
     case Chain.THORChain: {
-      const { getToolboxByChain, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import(
+      const { getCosmosToolbox, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import(
         "@swapkit/toolboxes/cosmos"
       );
 
       const gasLimit = chain === Chain.Maya ? MAYA_GAS_VALUE : THORCHAIN_GAS_VALUE;
-      const toolbox = getToolboxByChain(chain);
+      const toolbox = getCosmosToolbox(chain);
 
       return {
-        ...toolbox({} as CosmosSigner),
+        ...toolbox,
         deposit: (tx: WalletTxParams) => walletTransfer({ ...tx, recipient: "" }, "deposit"),
         transfer: (tx: WalletTxParams) => walletTransfer({ ...tx, gasLimit }, "transfer"),
       };
@@ -80,8 +79,8 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
 
     case Chain.Cosmos:
     case Chain.Kujira: {
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/cosmos");
-      const toolbox = getToolboxByChain(chain)();
+      const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
+      const toolbox = getCosmosToolbox(chain);
 
       return { ...toolbox, transfer: cosmosTransfer(chain) };
     }
@@ -91,9 +90,8 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
     case Chain.BitcoinCash:
     case Chain.Dogecoin:
     case Chain.Litecoin: {
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/utxo");
-      const getToolbox = await getToolboxByChain(chain);
-      const toolbox = getToolbox();
+      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const toolbox = await getUtxoToolbox(chain);
 
       const getBalance = async () => {
         try {
@@ -121,7 +119,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
     case Chain.Polygon:
     case Chain.Avalanche: {
       const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@swapkit/helpers");
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/evm");
+      const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
       const { BrowserProvider } = await import("ethers");
       const ethereumWindowProvider = getKEEPKEYProvider(chain) as Eip1193Provider;
 
@@ -131,7 +129,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
 
       const provider = new BrowserProvider(ethereumWindowProvider, "any");
       const signer = await provider.getSigner();
-      const toolbox = getToolboxByChain(chain)({ provider, signer });
+      const toolbox = await getEvmToolbox(chain, { provider, signer });
       const keepkeyMethods = getKEEPKEYMethods(provider);
 
       try {

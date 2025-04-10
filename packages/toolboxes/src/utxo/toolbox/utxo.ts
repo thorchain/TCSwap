@@ -83,54 +83,50 @@ export function buildTx(chain: UTXOChain) {
   };
 }
 
-export async function getAddressValidator() {
+export async function getUTXOAddressValidator() {
   const secp256k1 = await import("@bitcoinerlab/secp256k1");
   const { initEccLib, address: btcLibAddress } = await import("bitcoinjs-lib");
   const getNetwork = await getUtxoNetwork();
 
-  return function validateAddress({ chain, address }: { chain: UTXOChain; address: string }) {
+  return function validateAddress({ address, chain }: { address: string; chain: UTXOChain }) {
     if (chain === Chain.BitcoinCash) {
       return validateBCHAddress(address);
     }
 
-    return function validateAddress(address: string) {
-      try {
-        initEccLib(secp256k1);
-        btcLibAddress.toOutputScript(address, getNetwork(chain));
-        return true;
-      } catch (_error) {
-        return false;
-      }
-    };
+    try {
+      initEccLib(secp256k1);
+      btcLibAddress.toOutputScript(address, getNetwork(chain));
+      return true;
+    } catch (_error) {
+      return false;
+    }
   };
 }
 
 export async function createUTXOToolbox(chain: UTXOChain) {
   const getAddressFromKeys = await addressFromKeysGetter(chain);
-  const validateAddress = await getAddressValidator();
+  const validateAddress = await getUTXOAddressValidator();
   const createKeysForPath = await getCreateKeysForPath(chain);
 
-  return function createUTXOToolbox() {
-    return {
-      accumulative,
-      calculateTxSize,
-      getAddressFromKeys,
-      validateAddress: (address: string) => validateAddress({ chain, address }),
-      broadcastTx: (txHash: string) => getUtxoApi(chain).broadcastTx(txHash),
-      buildTx: buildTx(chain),
-      createKeysForPath,
-      getFeeRates: () => getFeeRates(chain),
-      getInputsOutputsFee: getInputsOutputsFee(chain),
-      transfer: transfer(chain),
-      getPrivateKeyFromMnemonic: (params: { phrase: string; derivationPath: string }) => {
-        const keys = createKeysForPath(params);
-        return keys.toWIF();
-      },
+  return {
+    accumulative,
+    calculateTxSize,
+    getAddressFromKeys,
+    validateAddress: (address: string) => validateAddress({ address, chain }),
+    broadcastTx: (txHash: string) => getUtxoApi(chain).broadcastTx(txHash),
+    buildTx: buildTx(chain),
+    createKeysForPath,
+    getFeeRates: () => getFeeRates(chain),
+    getInputsOutputsFee: getInputsOutputsFee(chain),
+    transfer: transfer(chain),
+    getPrivateKeyFromMnemonic: (params: { phrase: string; derivationPath: string }) => {
+      const keys = createKeysForPath(params);
+      return keys.toWIF();
+    },
 
-      getBalance: getBalance(chain),
-      estimateTransactionFee: estimateTransactionFee(chain),
-      estimateMaxSendableAmount: estimateMaxSendableAmount(chain),
-    };
+    getBalance: getBalance(chain),
+    estimateTransactionFee: estimateTransactionFee(chain),
+    estimateMaxSendableAmount: estimateMaxSendableAmount(chain),
   };
 }
 

@@ -154,15 +154,14 @@ export const getLedgerLiveWallet = async ({
   switch (chain) {
     case Chain.Arbitrum:
     case Chain.Ethereum: {
-      const { ETHToolbox, getProvider } = await import("@swapkit/toolboxes/evm");
+      const { getEvmToolbox, getProvider } = await import("@swapkit/toolboxes/evm");
 
       const getAddress = () => ledgerLiveAccount.address;
 
       const ledgerLiveClient = EthereumLedgerLive();
       const provider = await getProvider(Chain.Ethereum);
       const signer = new VoidSigner(ledgerLiveAccount.address, provider);
-
-      const toolbox = ETHToolbox({ provider, signer });
+      const toolbox = await getEvmToolbox(Chain.Ethereum, { provider, signer });
 
       const sendTransaction = async (unsignedTx: any) => {
         const signedTx = await ledgerLiveClient?.signTransaction(ledgerLiveAccount.id, {
@@ -207,9 +206,9 @@ export const getLedgerLiveWallet = async ({
     }
 
     case Chain.Cosmos: {
-      const { GaiaToolbox } = await import("@swapkit/toolboxes/cosmos");
+      const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
       const ledgerLiveClient = CosmosLedgerLive();
-      const toolbox = GaiaToolbox();
+      const toolbox = getCosmosToolbox(Chain.Cosmos);
 
       const getAddress = () => ledgerLiveAccount.address;
 
@@ -278,9 +277,8 @@ export const getLedgerLiveWallet = async ({
     case Chain.Dogecoin:
     case Chain.Bitcoin: {
       const ledgerLiveClient = BitcoinLedgerLive();
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/utxo");
-      const getToolbox = await getToolboxByChain(chain);
-      const toolbox = getToolbox();
+      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const toolbox = await getUtxoToolbox(chain);
 
       const getAddress = () => ledgerLiveAccount.address;
 

@@ -4,15 +4,14 @@ description: A guide to migrate to v4 and update your codebase.
 ---
 
 ```ts twoslash
-import { BTCToolbox } from "@swapkit/toolboxes/utxo"
-import { AVAXToolbox, ETHToolbox, getProvider } from "@swapkit/toolboxes/evm"
+import { getUtxoToolbox } from "@swapkit/toolboxes/utxo"
+import { getEvmToolbox } from "@swapkit/toolboxes/evm"
 import { Chain, createSwapKit, DerivationPath } from "@swapkit/sdk"
 
-const btc = BTCToolbox()
-const eth = ETHToolbox()
-const avax = AVAXToolbox()
+const btc = await getUtxoToolbox(Chain.Bitcoin)
+const eth = await getEvmToolbox(Chain.Ethereum)
+const avax = await getEvmToolbox(Chain.Avalanche)
 
-const ethNetwork = eth.getNetworkParams()
 const avaxNetwork = avax.getNetworkParams()
 
 const btcKeys = await btc.createKeysForPath({

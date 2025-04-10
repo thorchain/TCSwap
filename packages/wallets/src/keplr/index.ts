@@ -34,23 +34,18 @@ export const keplrWallet = createWallet({
           }
 
           keplrClient?.enable(chainId);
-          const offlineSigner = keplrClient?.getOfflineSignerOnlyAmino(chainId);
-          if (!offlineSigner) throw new Error("Could not load offlineSigner");
+          const signer = keplrClient?.getOfflineSignerOnlyAmino(chainId);
+          if (!signer) throw new Error("Could not load signer");
 
-          const { getToolboxByChain } = await import("@swapkit/toolboxes/cosmos");
+          const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
 
-          const accounts = await offlineSigner.getAccounts();
+          const accounts = await signer.getAccounts();
           if (!accounts?.[0]?.address) throw new Error("No accounts found");
 
           const [{ address }] = accounts;
-          const toolbox = getToolboxByChain(chain)(offlineSigner);
+          const toolbox = getCosmosToolbox(chain, { signer });
 
-          addChain({
-            ...toolbox,
-            chain,
-            address,
-            walletType,
-          });
+          addChain({ ...toolbox, chain, address, walletType });
         }),
       );
 

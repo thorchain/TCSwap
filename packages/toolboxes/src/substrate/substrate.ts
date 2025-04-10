@@ -16,27 +16,49 @@ import {
   SwapKitNumber,
 } from "@swapkit/helpers";
 
-import { getBalance } from "../../utils";
-import { Network, type SubstrateNetwork } from "../types/network";
+import { getBalance } from "../utils";
+import { Network, type SubstrateNetwork, type SubstrateTransferParams } from "./types";
 
-// TODO combine this type with the more general SK type
-type SubstrateTransferParams = {
-  recipient: string;
-  assetValue: AssetValue;
-  from?: string;
+export const PolkadotToolbox = ({ signer, generic = false }: ToolboxParams) => {
+  return createSubstrateToolbox({ chain: Chain.Polkadot, generic, signer });
 };
 
-export const isKeyringPair = (account: IKeyringPair | Signer): account is IKeyringPair => {
+export const ChainflipToolbox = async ({ signer, generic = false }: ToolboxParams) => {
+  const toolbox = await createSubstrateToolbox({ chain: Chain.Chainflip, generic, signer });
+
+  return { ...toolbox, getBalance: getBalance(Chain.Chainflip) };
+};
+
+type ToolboxType = {
+  DOT: ReturnType<typeof PolkadotToolbox>;
+  FLIP: ReturnType<typeof ChainflipToolbox>;
+};
+
+export const getSubstrateToolbox = <T extends keyof ToolboxType>(
+  chain: T,
+  params: ToolboxParams,
+): ToolboxType[T] => {
+  switch (chain) {
+    case Chain.Chainflip:
+      return ChainflipToolbox(params);
+    case Chain.Polkadot:
+      return PolkadotToolbox(params);
+    default:
+      throw new Error(`Chain ${chain} is not supported`);
+  }
+};
+
+export function isKeyringPair(account: IKeyringPair | Signer): account is IKeyringPair {
   return "address" in account;
-};
+}
 
-export const createKeyring = async (phrase: string, networkPrefix: number) => {
+export async function createKeyring(phrase: string, networkPrefix: number) {
   const { Keyring } = await import("@polkadot/api");
   const { cryptoWaitReady } = await import("@polkadot/util-crypto");
   await cryptoWaitReady();
 
   return new Keyring({ type: "sr25519", ss58Format: networkPrefix }).addFromUri(phrase);
-};
+}
 
 const getNonce = (api: ApiPromise, address: string) => api.rpc.system.accountNextIndex(address);
 
@@ -244,7 +266,7 @@ export const substrateValidateAddress = ({
   return validateAddress(address, prefix) || validateAddress(address, Network.GENERIC.prefix);
 };
 
-export async function ToolboxFactory({
+export async function createSubstrateToolbox({
   generic,
   chain,
   signer,

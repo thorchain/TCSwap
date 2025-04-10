@@ -28,7 +28,7 @@ type Params = {
   derivationPath: string;
 };
 
-const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
+const getKeystoreWallet = async ({ chain, phrase, derivationPath }: Params) => {
   const rpcUrl = SKConfig.get("rpcUrls")[chain];
 
   switch (chain) {
@@ -39,20 +39,19 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
     case Chain.Ethereum:
     case Chain.Optimism:
     case Chain.Polygon: {
-      const { getProvider, getToolboxByChain } = await import("@swapkit/toolboxes/evm");
+      const { getProvider, getEvmToolbox } = await import("@swapkit/toolboxes/evm");
       const { HDNodeWallet } = await import("ethers");
 
       const provider = await getProvider(chain, rpcUrl);
-      const wallet = HDNodeWallet.fromPhrase(phrase, undefined, derivationPath).connect(provider);
-      const toolbox = getToolboxByChain(chain)({ provider, signer: wallet });
+      const wallet = HDNodeWallet.fromPhrase(phrase).connect(provider);
+      const toolbox = await getEvmToolbox(chain, { provider, signer: wallet });
 
-      return { address: wallet.address, walletMethods: toolbox };
+      return { ...toolbox, address: wallet.address };
     }
 
     case Chain.BitcoinCash: {
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/utxo");
-      const getToolbox = await getToolboxByChain(Chain.BitcoinCash);
-      const toolbox = getToolbox();
+      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const toolbox = await getUtxoToolbox(Chain.BitcoinCash);
 
       const keys = await toolbox.createKeysForPath({ phrase, derivationPath });
       const address = toolbox.getAddressFromKeys(keys);
@@ -68,7 +67,7 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
         return builder.build();
       }
 
-      const walletMethods = {
+      return {
         ...toolbox,
         transfer: (
           params: UTXOWalletTransferParams<
@@ -76,33 +75,29 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
             TransactionType
           >,
         ) => toolbox.transfer({ ...params, from: address, signTransaction }),
+        address,
       };
-
-      return { address, walletMethods };
     }
 
     case Chain.Bitcoin:
     case Chain.Dash:
     case Chain.Dogecoin:
     case Chain.Litecoin: {
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/utxo");
-      const getToolbox = await getToolboxByChain(chain);
-      const toolbox = getToolbox();
+      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const toolbox = await getUtxoToolbox(chain);
 
       const keys = toolbox.createKeysForPath({ phrase, derivationPath });
       const address = toolbox.getAddressFromKeys(keys);
 
       return {
+        ...toolbox,
         address,
-        walletMethods: {
-          ...toolbox,
-          transfer: (params: UTXOTransferParams) =>
-            toolbox.transfer({
-              ...params,
-              from: address,
-              signTransaction: async (psbt: Psbt) => psbt.signAllInputs(keys),
-            }),
-        },
+        transfer: (params: UTXOTransferParams) =>
+          toolbox.transfer({
+            ...params,
+            from: address,
+            signTransaction: async (psbt: Psbt) => psbt.signAllInputs(keys),
+          }),
       };
     }
 
@@ -110,38 +105,37 @@ const getWalletMethods = async ({ chain, phrase, derivationPath }: Params) => {
     case Chain.Kujira:
     case Chain.Maya:
     case Chain.THORChain: {
-      const { getToolboxByChain, getSignerFromPhrase } = await import("@swapkit/toolboxes/cosmos");
+      const { getCosmosToolbox, getSignerFromPhrase } = await import("@swapkit/toolboxes/cosmos");
+
       const signer = await getSignerFromPhrase({ phrase, chain });
-      const toolbox = getToolboxByChain(chain)(signer);
+      const toolbox = getCosmosToolbox(chain, { signer });
       const address = await toolbox.getAddressFromMnemonic(phrase);
 
-      return { address, walletMethods: { ...toolbox } };
+      return { ...toolbox, address };
     }
 
     case Chain.Polkadot:
     case Chain.Chainflip: {
-      const { Network, getToolboxByChain, createKeyring } = await import(
+      const { Network, getSubstrateToolbox, createKeyring } = await import(
         "@swapkit/toolboxes/substrate"
       );
 
       const signer = await createKeyring(phrase, Network[chain].prefix);
-      const toolbox = await getToolboxByChain(chain, { signer });
+      const toolbox = await getSubstrateToolbox(chain, { signer });
 
-      return { address: signer.address, walletMethods: toolbox };
+      return { ...toolbox, address: signer.address };
     }
 
     case Chain.Solana: {
-      const { SOLToolbox } = await import("@swapkit/toolboxes/solana");
-      const toolbox = SOLToolbox();
+      const { getSolanaToolbox } = await import("@swapkit/toolboxes/solana");
+      const toolbox = getSolanaToolbox();
       const keypair = await toolbox.createKeysForPath({ phrase, derivationPath });
 
       return {
+        ...toolbox,
         address: toolbox.getAddressFromKeys(keypair),
-        walletMethods: {
-          ...toolbox,
-          transfer: (params: WalletTxParams & { assetValue: AssetValue }) =>
-            toolbox.transfer({ ...params, fromKeypair: keypair }),
-        },
+        transfer: (params: WalletTxParams & { assetValue: AssetValue }) =>
+          toolbox.transfer({ ...params, fromKeypair: keypair }),
       };
     }
 
@@ -189,13 +183,13 @@ export const keystoreWallet = createWallet({
 
           const derivationPath = derivationPathToString(derivationPathArray);
 
-          const { address, walletMethods } = await getWalletMethods({
+          const wallet = await getKeystoreWallet({
             chain,
             derivationPath,
             phrase,
           });
 
-          addChain({ ...walletMethods, address, chain, walletType: WalletOption.KEYSTORE });
+          addChain({ ...wallet, chain, walletType: WalletOption.KEYSTORE });
         }),
       );
 

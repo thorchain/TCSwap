@@ -5,7 +5,6 @@ import {
   createWallet,
   filterSupportedChains,
 } from "@swapkit/helpers";
-import type { InjectedWindow } from "@swapkit/toolboxes/substrate";
 import { getWalletSupportedChains } from "../utils";
 
 export const polkadotWallet = createWallet({
@@ -33,16 +32,15 @@ export const POLKADOT_SUPPORTED_CHAINS = getWalletSupportedChains(polkadotWallet
 async function getWalletMethods(chain: Chain) {
   switch (chain) {
     case Chain.Polkadot: {
-      const { getToolboxByChain } = await import("@swapkit/toolboxes/substrate");
-      const injectedWindow = window as Window & InjectedWindow;
-      const injectedExtension = injectedWindow?.injectedWeb3?.["polkadot-js"];
+      const { getSubstrateToolbox } = await import("@swapkit/toolboxes/substrate");
+      const injectedExtension = window?.injectedWeb3?.["polkadot-js"];
 
       const rawExtension = await injectedExtension?.enable?.("polkadot-js");
       if (!rawExtension) {
         throw new SwapKitError({ errorKey: "wallet_polkadot_not_found", info: { chain } });
       }
 
-      const toolbox = await getToolboxByChain(chain, { signer: rawExtension.signer });
+      const toolbox = await getSubstrateToolbox(chain, { signer: rawExtension.signer });
       const [account] = await rawExtension.accounts.get();
 
       if (!account?.address) {
