@@ -83,6 +83,7 @@ jobs:
           version: bun version-bump
           publish: bun publish-packages
           setupGitUser: false
+          createGithubReleases: false
 
       - name: Publish Beta to npm
         uses: changesets/action@v1
@@ -90,8 +91,9 @@ jobs:
         with:
           title: ":tada: Publish Beta"
           version: bun version-bump
-          publish: bun publish-packages
+          publish: bun publish-packages --no-git-tag
           setupGitUser: false
+          createGithubReleases: false
 
       - name: Publish Nightly to npm
         uses: changesets/action@v1
@@ -99,8 +101,9 @@ jobs:
         with:
           title: ":tada: Publish Nightly"
           version: bun version-bump
-          publish: bun publish-packages --tag nightly
+          publish: bun publish-packages --tag nightly --no-git-tag
           setupGitUser: false
+          createGithubReleases: false
 
   build-docs:
     runs-on: ubuntu-latest
