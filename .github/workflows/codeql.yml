@@ -71,6 +71,7 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
+        packs: codeql/javascript-experimental-atm-model@0.3.0,codeql/javascript-upgrades@0.0.8,codeql/typos@1.0.21,codeql/typeflow@1.0.21,codeql/typetracking@2.0.5,codeql/regex@1.0.21
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
