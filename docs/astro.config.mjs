@@ -13,9 +13,9 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
-      wrap: true,
       theme: "github-dark",
       transformers: [transformerTwoslash({ renderer: rendererRich() })],
+      wrap: true,
     },
   },
   integrations: [
@@ -36,6 +36,7 @@ export default defineConfig({
         {
           label: "Guides",
           items: [
+            { label: "Getting started", link: "/guides/getting-started" },
             { label: "Create custom plugin", link: "/guides/create-plugin" },
             { label: "Create custom wallet", link: "/guides/create-wallet" },
             { label: "Toolbox usage", link: "/guides/toolbox-usage" },
@@ -58,19 +59,59 @@ export default defineConfig({
                 items: [{ label: "@swapkit", items: docsSidebarItems }],
               },
             ]
-          : process.env.DOCS
-            ? [
-                {
-                  label: "References",
-                  collapsed: true,
-                  autogenerate: { collapsed: true, directory: "references" },
-                },
-              ]
-            : []),
+          : []),
       ],
     }),
   ],
 });
+
+function createDocs() {
+  if (!process.env.REFERENCES) {
+    return { plugins: [], items: [] };
+  }
+
+  const base = createTypeDoc([
+    { label: "/core", entrypoint: "core/src/index.ts" },
+    { label: "/helpers", entrypoint: "helpers/src/index.ts" },
+    { label: "/helpers/api", entrypoint: "helpers/src/api/index.ts" },
+  ]);
+
+  const pluginNames = ["chainflip", "evm", "kado", "radix", "thorchain"];
+  const toolboxNames = ["cosmos", "evm", "radix", "ripple", "solana", "substrate", "utxo"];
+  const walletNames = [
+    "bitget",
+    "coinbase",
+    "ctrl",
+    "evm-extensions",
+    "exodus",
+    "keepkey",
+    "keepkey-bex",
+    "keplr",
+    "keystore",
+    "ledger",
+    "okx",
+    "onekey",
+    "phantom",
+    "polkadotjs",
+    "radix",
+    "talisman",
+    "trezor",
+    "walletconnect",
+  ];
+  const pluginDocs = createTypeDoc(namesToPaths("plugins", pluginNames), "/plugins");
+  const toolboxDocs = createTypeDoc(namesToPaths("toolboxes", toolboxNames), "/toolboxes");
+  const walletDocs = createTypeDoc(namesToPaths("wallets", walletNames), "/wallets");
+
+  return {
+    plugins: [
+      ...base.plugins,
+      ...pluginDocs.plugins,
+      ...toolboxDocs.plugins,
+      ...walletDocs.plugins,
+    ],
+    sidebarItems: [...base.items, ...pluginDocs.items, ...toolboxDocs.items, ...walletDocs.items],
+  };
+}
 
 function createTypeDoc(docs, nest = "") {
   const generatedDocs = docs.reduce(
@@ -98,65 +139,9 @@ function createTypeDoc(docs, nest = "") {
     : generatedDocs;
 }
 
-function createDocs() {
-  if (!process.env.REFERENCES) {
-    return { plugins: [], items: [] };
-  }
-
-  const base = createTypeDoc([
-    { label: "/core", entrypoint: "core/src/index.ts" },
-    { label: "/helpers", entrypoint: "helpers/src/index.ts" },
-    { label: "/helpers/api", entrypoint: "helpers/src/api/index.ts" },
-  ]);
-
-  const plugins = createTypeDoc(
-    [
-      { label: "/chainflip", entrypoint: "plugins/src/chainflip/index.ts" },
-      { label: "/evm", entrypoint: "plugins/src/evm/index.ts" },
-      { label: "/kado", entrypoint: "plugins/src/kado/index.ts" },
-      { label: "/radix", entrypoint: "plugins/src/radix/index.ts" },
-      { label: "/thorchain", entrypoint: "plugins/src/thorchain/index.ts" },
-    ],
-    "/plugins",
-  );
-
-  const toolboxes = createTypeDoc(
-    [
-      { label: "/cosmos", entrypoint: "toolboxes/src/cosmos/index.ts" },
-      { label: "/evm", entrypoint: "toolboxes/src/evm/index.ts" },
-      { label: "/radix", entrypoint: "toolboxes/src/radix/index.ts" },
-      { label: "/solana", entrypoint: "toolboxes/src/solana/index.ts" },
-      { label: "/substrate", entrypoint: "toolboxes/src/substrate/index.ts" },
-      { label: "/utxo", entrypoint: "toolboxes/src/utxo/index.ts" },
-    ],
-    "/toolboxes",
-  );
-
-  const wallets = createTypeDoc(
-    [
-      { label: "/bitget", entrypoint: "wallets/src/bitget/index.ts" },
-      { label: "/coinbase", entrypoint: "wallets/src/coinbase/index.ts" },
-      { label: "/ctrl", entrypoint: "wallets/src/ctrl/index.ts" },
-      { label: "/evm-extensions", entrypoint: "wallets/src/evm-extensions/index.ts" },
-      { label: "/exodus", entrypoint: "wallets/src/exodus/index.ts" },
-      { label: "/keepkey", entrypoint: "wallets/src/keepkey/index.ts" },
-      { label: "/keepkey-bex", entrypoint: "wallets/src/keepkey-bex/index.ts" },
-      { label: "/keplr", entrypoint: "wallets/src/keplr/index.ts" },
-      { label: "/keystore", entrypoint: "wallets/src/keystore/index.ts" },
-      { label: "/ledger", entrypoint: "wallets/src/ledger/index.ts" },
-      { label: "/okx", entrypoint: "wallets/src/okx/index.ts" },
-      { label: "/phantom", entrypoint: "wallets/src/phantom/index.ts" },
-      { label: "/polkadotjs", entrypoint: "wallets/src/polkadotjs/index.ts" },
-      { label: "/radix", entrypoint: "wallets/src/radix/index.ts" },
-      { label: "/talisman", entrypoint: "wallets/src/talisman/index.ts" },
-      { label: "/trezor", entrypoint: "wallets/src/trezor/index.ts" },
-      { label: "/walletconnect", entrypoint: "wallets/src/walletconnect/index.ts" },
-    ],
-    "/wallets",
-  );
-
-  return {
-    plugins: [...base.plugins, ...plugins.plugins, ...toolboxes.plugins, ...wallets.plugins],
-    sidebarItems: [...base.items, ...plugins.items, ...toolboxes.items, ...wallets.items],
-  };
+function namesToPaths(base, names) {
+  return names.map((name) => ({
+    label: `/${name}`,
+    entrypoint: `${base}/src/${name}/index.ts`,
+  }));
 }
