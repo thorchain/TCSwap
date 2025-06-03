@@ -27,7 +27,7 @@ import { getBalance } from "../utils";
 type SolanaSigner = SolanaProvider | Signer;
 
 export async function getSolanaAddressValidator() {
-  const { PublicKey } = (await import("@solana/web3.js")).default;
+  const { PublicKey } = await import("@solana/web3.js");
 
   return (address: string) => {
     try {
@@ -116,7 +116,7 @@ function estimateTransactionFee(getConnection: () => Promise<Connection>) {
 }
 
 async function getConnection() {
-  const { Connection } = (await import("@solana/web3.js")).default;
+  const { Connection } = await import("@solana/web3.js");
   return new Connection(SKConfig.get("rpcUrls").SOL, "confirmed");
 }
 
@@ -131,7 +131,7 @@ function createAssetTransaction(getConnection: () => Promise<Connection>) {
     const fromPubkey = await getPubkeyFromAddress(sender);
 
     if (assetValue.isGasAsset) {
-      const { Transaction, SystemProgram, PublicKey } = (await import("@solana/web3.js")).default;
+      const { Transaction, SystemProgram, PublicKey } = await import("@solana/web3.js");
 
       return new Transaction().add(
         SystemProgram.transfer({
@@ -180,7 +180,7 @@ async function createSolanaTokenTransaction({
     createAssociatedTokenAccountInstruction,
     createTransferCheckedInstruction,
   } = await import("@solana/spl-token");
-  const { Transaction, PublicKey } = (await import("@solana/web3.js")).default;
+  const { Transaction, PublicKey } = await import("@solana/web3.js");
 
   const transaction = new Transaction();
   const tokenPublicKey = new PublicKey(tokenAddress);
@@ -268,7 +268,7 @@ function createTransaction(getConnection: () => Promise<Connection>) {
 async function createTransactionFromInstructions({
   instructions,
 }: { instructions: TransactionInstruction[]; isProgramDerivedAddress?: boolean }) {
-  const { Transaction } = (await import("@solana/web3.js")).default;
+  const { Transaction } = await import("@solana/web3.js");
   const transaction = new Transaction().add(...instructions);
 
   if (!transaction) {
@@ -316,7 +316,7 @@ function broadcastTransaction(getConnection: () => Promise<Connection>) {
 
 function signTransaction(getConnection: () => Promise<Connection>, signer?: SolanaSigner) {
   return async (transaction: Transaction | VersionedTransaction) => {
-    const { VersionedTransaction } = (await import("@solana/web3.js")).default;
+    const { VersionedTransaction } = await import("@solana/web3.js");
     if (!signer) {
       throw new SwapKitError("toolbox_solana_no_signer");
     }
@@ -345,7 +345,7 @@ export async function createKeysForPath({
 }: { phrase: string; derivationPath?: string }) {
   const { HDKey } = await import("micro-key-producer/slip10.js");
   const { mnemonicToSeedSync } = await import("@scure/bip39");
-  const { Keypair } = (await import("@solana/web3.js")).default;
+  const { Keypair } = await import("@solana/web3.js");
   const seed = mnemonicToSeedSync(phrase);
   const hdKey = HDKey.fromMasterSeed(seed);
 
@@ -357,6 +357,6 @@ function getAddressFromPubKey(publicKey: PublicKey) {
 }
 
 async function getPubkeyFromAddress(address: string) {
-  const { PublicKey } = (await import("@solana/web3.js")).default;
+  const { PublicKey } = await import("@solana/web3.js");
   return new PublicKey(address);
 }

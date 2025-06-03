@@ -84,7 +84,7 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
         assetValue,
         isProgramDerivedAddress,
       }: GenericTransferParams & { assetValue: AssetValue; isProgramDerivedAddress?: boolean }) => {
-        const { PublicKey } = (await import("@solana/web3.js")).default;
+        const { PublicKey } = await import("@solana/web3.js");
         const validateAddress = await toolbox.getAddressValidator();
 
         if (!(isProgramDerivedAddress || validateAddress(recipient))) {
