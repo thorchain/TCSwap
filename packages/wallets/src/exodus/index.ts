@@ -9,7 +9,7 @@ import {
   prepareNetworkSwitch,
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
-import type { Psbt } from "bitcoinjs-lib";
+import { Psbt } from "bitcoinjs-lib";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 import {
   AddressPurpose,
@@ -34,7 +34,6 @@ async function getWalletMethods({
 }) {
   switch (chain) {
     case Chain.Bitcoin: {
-      const { Psbt } = await import("bitcoinjs-lib");
       const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
 
       let address = "";

@@ -6,6 +6,7 @@ import {
   prepareNetworkSwitch,
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
+import { Psbt } from "bitcoinjs-lib";
 import type { Eip1193Provider } from "ethers";
 
 const cosmosTransfer =
@@ -81,7 +82,7 @@ export async function getWalletMethods(chain: Chain) {
       if (!(window.okxwallet && "bitcoin" in window.okxwallet)) {
         throw new Error("No bitcoin okxwallet found");
       }
-      const { Psbt } = await import("bitcoinjs-lib");
+
       const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
 
       const { bitcoin: wallet } = window.okxwallet;

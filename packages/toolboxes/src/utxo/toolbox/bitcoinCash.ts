@@ -1,4 +1,10 @@
 import {
+  Transaction,
+  TransactionBuilder,
+  address as bchAddress,
+  // @ts-ignore
+} from "@psf/bitcoincashjs-lib";
+import {
   Chain,
   type ChainSigner,
   type DerivationPathArray,
@@ -7,6 +13,7 @@ import {
   derivationPathToString,
   updateDerivationPath,
 } from "@swapkit/helpers";
+import { Psbt } from "bitcoinjs-lib";
 import type { UtxoToolboxParams } from ".";
 import {
   accumulative,
@@ -130,12 +137,6 @@ async function createTransaction({
   feeRate,
   sender,
 }: UTXOBuildTxParams) {
-  const {
-    Transaction,
-    TransactionBuilder,
-    address: bchAddress,
-    // @ts-ignore
-  } = (await import("@psf/bitcoincashjs-lib")).default;
   if (!bchValidateAddress(recipient)) throw new Error("Invalid address");
   const utxos = await getUtxoApi(chain).scanUTXOs({
     address: stripToCashAddress(sender),
@@ -226,7 +227,6 @@ function transfer({
 
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: TODO: refactor
 async function buildTx({ assetValue, recipient, memo, feeRate, sender }: UTXOBuildTxParams) {
-  const { Psbt } = await import("bitcoinjs-lib");
   const recipientCashAddress = toCashAddress(recipient);
   if (!bchValidateAddress(recipientCashAddress)) throw new Error("Invalid address");
 

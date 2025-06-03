@@ -6,7 +6,7 @@ import {
   prepareNetworkSwitch,
   switchEVMWalletNetwork,
 } from "@swapkit/helpers";
-import type { Psbt } from "bitcoinjs-lib";
+import { Psbt } from "bitcoinjs-lib";
 import type { Eip1193Provider } from "ethers";
 
 export async function getWalletMethods(chain: Chain) {
@@ -38,7 +38,6 @@ export async function getWalletMethods(chain: Chain) {
       }
       const { unisat: wallet } = bitget;
 
-      const { Psbt } = await import("bitcoinjs-lib");
       const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
       const [address] = await wallet.requestAccounts();
 

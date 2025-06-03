@@ -11,8 +11,9 @@ import {
   derivationPathToString,
   updateDerivationPath,
 } from "@swapkit/helpers";
-import type { Psbt } from "bitcoinjs-lib";
+import { Psbt, address as btcLibAddress, initEccLib, payments } from "bitcoinjs-lib";
 import type { ECPairInterface } from "ecpair";
+import ECPairFactory from "ecpair";
 import type { UtxoToolboxParams } from ".";
 import { getBalance } from "../../utils";
 import {
@@ -34,9 +35,15 @@ import type {
 } from "../types";
 import { bchValidateAddress } from "./bitcoinCash";
 
+import secp256k1 from "@bitcoinerlab/secp256k1";
+// @ts-ignore
+import { ECPair, HDNode } from "@psf/bitcoincashjs-lib";
+import { HDKey } from "@scure/bip32";
+import { mnemonicToSeedSync } from "@scure/bip39";
+
 export const nonSegwitChains = [Chain.Dash, Chain.Dogecoin];
 
-async function addInputsAndOutputs({
+function addInputsAndOutputs({
   inputs,
   outputs,
   chain,
@@ -61,9 +68,6 @@ async function addInputsAndOutputs({
 
     psbt.addInput({ hash: utxo.hash, index: utxo.index, ...witnessInfo, ...nonWitnessInfo });
   }
-
-  const { initEccLib } = await import("bitcoinjs-lib");
-  const secp256k1 = await import("@bitcoinerlab/secp256k1");
 
   for (const output of outputs) {
     const address = "address" in output && output.address ? output.address : sender;
@@ -103,8 +107,6 @@ async function createTransaction({
   inputs: UTXOType[];
 }> {
   const chain = assetValue.chain as UTXOChain;
-
-  const { Psbt } = await import("bitcoinjs-lib");
   const compiledMemo = memo ? await compileMemo(memo) : null;
 
   const inputsAndOutputs = await getInputsAndTargetOutputs({
@@ -141,8 +143,6 @@ async function createTransaction({
 }
 
 export async function getUTXOAddressValidator() {
-  const secp256k1 = await import("@bitcoinerlab/secp256k1");
-  const { initEccLib, address: btcLibAddress } = await import("bitcoinjs-lib");
   const getNetwork = await getUtxoNetwork();
 
   return function validateAddress({ address, chain }: { address: string; chain: UTXOChain }) {
@@ -359,13 +359,7 @@ export async function getCreateKeysForPath<T extends keyof CreateKeysForPathRetu
     derivationPath?: string;
   }) => CreateKeysForPathReturnType[T]
 > {
-  const ECPairFactory = (await import("ecpair")).default;
-  const secp256k1 = await import("@bitcoinerlab/secp256k1");
-  const { HDKey } = await import("@scure/bip32");
-  const { mnemonicToSeedSync } = await import("@scure/bip39");
   const getNetwork = await getUtxoNetwork();
-  // @ts-ignore
-  const { HDNode, ECPair } = (await import("@psf/bitcoincashjs-lib")).default;
 
   switch (chain) {
     case Chain.BitcoinCash: {
@@ -427,7 +421,6 @@ export async function getCreateKeysForPath<T extends keyof CreateKeysForPathRetu
 }
 
 export async function addressFromKeysGetter(chain: UTXOChain) {
-  const { payments } = await import("bitcoinjs-lib");
   const getNetwork = await getUtxoNetwork();
 
   return function getAddressFromKeys(keys: ECPairInterface | BchECPair) {

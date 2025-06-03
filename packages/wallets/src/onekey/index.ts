@@ -9,6 +9,7 @@ import {
   filterSupportedChains,
   prepareNetworkSwitch,
 } from "@swapkit/helpers";
+import { Psbt } from "bitcoinjs-lib";
 import type {
   BitcoinProvider,
   GetAddressOptions,
@@ -27,7 +28,6 @@ async function getWalletMethodsForExtension(chain: Chain) {
         });
       }
 
-      const { Psbt } = await import("bitcoinjs-lib");
       const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
       const {
         signTransaction: satsSignTransaction,

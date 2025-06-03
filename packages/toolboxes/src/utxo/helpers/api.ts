@@ -1,5 +1,9 @@
 import { Chain, RequestClient, SKConfig, type UTXOChain, warnOnce } from "@swapkit/helpers";
+import { networks } from "bitcoinjs-lib";
 import { uniqid } from "../../utils";
+
+// @ts-ignore
+import coininfo from "coininfo";
 
 type BlockchairParams<T> = T & { chain: Chain; apiKey?: string };
 type BlockchairFetchUnspentUtxoParams = BlockchairParams<{
@@ -259,11 +263,7 @@ export function getUtxoApi(chain: UTXOChain) {
   return utxoApi(chain);
 }
 
-export async function getUtxoNetwork() {
-  // @ts-ignore
-  const coininfo = (await import("coininfo")).default;
-  const { networks } = await import("bitcoinjs-lib");
-
+export function getUtxoNetwork() {
   return function getNetwork(chain: Chain) {
     switch (chain) {
       case Chain.Bitcoin:

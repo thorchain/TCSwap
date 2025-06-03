@@ -1,3 +1,4 @@
+import { opcodes, script } from "bitcoinjs-lib";
 import type {
   TargetOutput,
   UTXOCalculateTxSizeParams,
@@ -16,8 +17,7 @@ export const OP_RETURN_OVERHEAD = 1 + 8 + 1; //10
 const TX_INPUT_BASE = 32 + 4 + 1 + 4; // 41
 const TX_INPUT_PUBKEYHASH = 107;
 
-export async function compileMemo(memo: string) {
-  const { script, opcodes } = await import("bitcoinjs-lib");
+export function compileMemo(memo: string) {
   const data = Buffer.from(memo, "utf8"); // converts MEMO to buffer
   return script.compile([opcodes.OP_RETURN as number, data]); // Compile OP_RETURN script
 }
