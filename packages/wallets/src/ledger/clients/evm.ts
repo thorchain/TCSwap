@@ -51,7 +51,7 @@ class EVMLedgerInterface extends AbstractSigner {
 
   createTransportAndLedger = async () => {
     const transport = await getLedgerTransport();
-    const { default: EthereumApp } = await import("@ledgerhq/hw-app-eth");
+    const EthereumApp = (await import("@ledgerhq/hw-app-eth")).default;
 
     this.ledgerApp = new EthereumApp(transport);
   };

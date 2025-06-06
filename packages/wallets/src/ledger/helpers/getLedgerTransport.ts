@@ -63,7 +63,7 @@ export const getLedgerTransport = async () => {
   const isSupported = await Transport.isSupported();
   if (!isSupported) throw new Error("WebUSB not supported");
 
-  const { DisconnectedDevice } = (await import("@ledgerhq/errors")).default;
+  const { DisconnectedDevice } = await import("@ledgerhq/errors");
 
   const transport = new Transport(device, iface.interfaceNumber);
 
