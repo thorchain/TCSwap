@@ -54,12 +54,18 @@ export default defineConfig({
           label: "Start Here",
           items: [
             { label: "Getting started", link: "/start/getting-started" },
+            { label: "Core Concepts", link: "/start/core-concepts" },
+            { label: "Configuration", link: "/start/configuration" },
             { label: "Toolbox usage", link: "/start/toolbox-usage" },
           ],
         },
         {
           label: "Guides",
           items: [
+            { label: "API Reference", link: "/guides/api-reference" },
+            { label: "THORChain Features", link: "/guides/thorchain-features" },
+            { label: "Advanced Features", link: "/guides/advanced-features" },
+            { label: "Production Best Practices", link: "/guides/production-best-practices" },
             { label: "Create custom plugin", link: "/guides/create-plugin" },
             { label: "Create custom wallet", link: "/guides/create-wallet" },
             {

@@ -1,0 +1,495 @@
+---
+title: Advanced Features
+description: Multi-chain operations, synthetic assets, and advanced SwapKit patterns
+---
+
+import { Code, Tabs, TabItem } from '@astrojs/starlight/components';
+
+This guide covers advanced SwapKit features for building sophisticated DeFi applications.
+
+## Multi-Chain Operations
+
+SwapKit excels at coordinating operations across multiple blockchains simultaneously.
+
+### Batch Balance Fetching
+
+Fetch balances across all connected chains efficiently:
+
+```typescript
+import { createSwapKit, SwapKitApi } from '@swapkit/sdk';
+import { Chain } from '@swapkit/helpers';
+
+const swapKit = createSwapKit();
+
+// Connect multiple chains
+await swapKit.connectKeystore(
+  [Chain.Ethereum, Chain.Bitcoin, Chain.Avalanche, Chain.THORChain],
+  'your mnemonic phrase'
+);
+
+// Get all balances in parallel
+const chains = [Chain.Ethereum, Chain.Bitcoin, Chain.Avalanche, Chain.THORChain];
+const balances = await Promise.all(
+  chains.map(chain => swapKit.getBalance(chain, true))
+);
+
+// Flatten and filter significant balances
+const allAssets = balances
+  .flat()
+  .filter(asset => asset.getValue('number') > 0.01);
+
+// Calculate total USD value
+const prices = await SwapKitApi.getPrice(
+  allAssets.map(a => a.asset.toString())
+);
+
+const totalValue = allAssets.reduce((sum, asset) => {
+  const price = prices[asset.asset.toString()] || 0;
+  return sum + (asset.getValue('number') * price);
+}, 0);
+```
+
+### Cross-Chain Transaction Batching
+
+Execute multiple transactions across different chains:
+
+```typescript
+import { AssetValue, FeeOption } from '@swapkit/helpers';
+
+// Prepare multiple transactions
+const transactions = [
+  {
+    chain: Chain.Ethereum,
+    assetValue: AssetValue.from({ asset: 'ETH.ETH', value: 0.1 }),
+    recipient: '0x...'
+  },
+  {
+    chain: Chain.Bitcoin,
+    assetValue: AssetValue.from({ asset: 'BTC.BTC', value: 0.001 }),
+    recipient: 'bc1q...'
+  },
+  {
+    chain: Chain.Avalanche,
+    assetValue: AssetValue.from({ asset: 'AVAX.AVAX', value: 1 }),
+    recipient: '0x...'
+  }
+];
+
+// Execute all transactions
+const results = await Promise.allSettled(
+  transactions.map(tx => 
+    swapKit.transfer({
+      ...tx,
+      feeOptionKey: FeeOption.Fast
+    })
+  )
+);
+
+// Handle results
+results.forEach((result, index) => {
+  if (result.status === 'fulfilled') {
+    console.log(`${transactions[index].chain} tx: ${result.value}`);
+  } else {
+    console.error(`${transactions[index].chain} failed:`, result.reason);
+  }
+});
+```
+
+## Synthetic Assets
+
+THORChain synthetic assets provide instant swaps without waiting for L1 confirmations.
+
+### Understanding Synthetics
+
+Synthetic assets are represented with `/` notation:
+- `BTC/BTC` - Synthetic Bitcoin
+- `ETH/ETH` - Synthetic Ethereum
+- `AVAX/AVAX` - Synthetic Avalanche
+
+### Minting Synthetics
+
+Convert L1 assets to synthetics for faster swaps:
+
+```typescript
+import { SwapKitApi } from '@swapkit/sdk';
+
+// Get quote for minting synthetic BTC
+const mintQuote = await SwapKitApi.getSwapQuote({
+  sellAsset: 'BTC.BTC',
+  sellAmount: '10000000', // 0.1 BTC
+  buyAsset: 'BTC/BTC',    // Synthetic BTC
+  sourceAddress: swapKit.getAddress(Chain.Bitcoin),
+  destinationAddress: swapKit.getAddress(Chain.THORChain),
+  slippage: 3
+});
+
+// Execute mint
+const mintTx = await swapKit.swap({ 
+  route: mintQuote.routes[0] 
+});
+```
+
+### Synth Swaps
+
+Swap between synthetics instantly:
+
+```typescript
+// Instant swap between synthetics (no L1 wait)
+const synthSwapQuote = await SwapKitApi.getSwapQuote({
+  sellAsset: 'BTC/BTC',   // Synthetic BTC
+  sellAmount: '10000000',
+  buyAsset: 'ETH/ETH',    // Synthetic ETH
+  sourceAddress: swapKit.getAddress(Chain.THORChain),
+  destinationAddress: swapKit.getAddress(Chain.THORChain),
+  slippage: 1  // Lower slippage for synth swaps
+});
+
+// This swap is instant!
+const swapTx = await swapKit.swap({ 
+  route: synthSwapQuote.routes[0] 
+});
+```
+
+### Redeeming Synthetics
+
+Convert synthetics back to L1 assets:
+
+```typescript
+// Redeem synthetic ETH to real ETH
+const redeemQuote = await SwapKitApi.getSwapQuote({
+  sellAsset: 'ETH/ETH',    // Synthetic ETH
+  sellAmount: '1000000000000000000',
+  buyAsset: 'ETH.ETH',     // L1 ETH
+  sourceAddress: swapKit.getAddress(Chain.THORChain),
+  destinationAddress: swapKit.getAddress(Chain.Ethereum),
+  slippage: 3
+});
+
+const redeemTx = await swapKit.swap({ 
+  route: redeemQuote.routes[0] 
+});
+```
+
+## Custom Transaction Memos
+
+THORChain and Maya use transaction memos for protocol instructions.
+
+### Memo Types
+
+```typescript
+// Swap memo
+const swapMemo = 'SWAP:BTC.BTC:bc1q...';
+
+// Add liquidity memo
+const addLiquidityMemo = '+:BTC.BTC:bc1q...';
+
+// Withdraw liquidity memo
+const withdrawMemo = '-:BTC.BTC:10000'; // Basis points
+
+// THORName registration
+const thornameeMemo = '~:name:chain:address';
+
+// Loan operations
+const loanOpenMemo = 'LOAN+:ETH.ETH:0x...';
+const loanCloseMemo = 'LOAN-:ETH.ETH:0x...';
+```
+
+### Building Custom Memos
+
+```typescript
+import { getMemoFor } from '@swapkit/helpers';
+
+// Build swap memo
+const swapMemo = getMemoFor('swap', {
+  targetAsset: 'BTC.BTC',
+  targetAddress: 'bc1q...',
+  limit: '50000000', // Min output
+  affiliate: 'ss',   // Affiliate code
+  affiliateBps: '50' // 0.5% fee
+});
+
+// Build liquidity memo
+const liquidityMemo = getMemoFor('add', {
+  targetAsset: 'ETH.ETH',
+  targetAddress: '0x...',
+  affiliateBps: '100'
+});
+```
+
+## Custom Route Building
+
+Build custom swap routes for specific requirements:
+
+```typescript
+// Get all available routes
+const { routes } = await SwapKitApi.getSwapQuote({
+  sellAsset: 'ETH.ETH',
+  sellAmount: '1000000000000000000',
+  buyAsset: 'BTC.BTC',
+  sourceAddress: swapKit.getAddress(Chain.Ethereum),
+  destinationAddress: swapKit.getAddress(Chain.Bitcoin),
+  slippage: 3,
+  providers: ['thorchain', 'chainflip', '1inch']
+});
+
+// Filter routes by criteria
+const customRoute = routes.find(route => {
+  // Prefer THORChain for cross-chain
+  if (route.providers.includes('THORCHAIN')) return true;
+  
+  // Use 1inch for same-chain swaps
+  if (route.providers.includes('1INCH') && 
+      route.sellAsset.split('.')[0] === route.buyAsset.split('.')[0]) {
+    return true;
+  }
+  
+  return false;
+});
+
+// Add custom parameters
+const modifiedRoute = {
+  ...customRoute,
+  memo: customRoute.memo + ':ss:50', // Add affiliate
+  expiration: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 min expiry
+};
+
+// Execute custom route
+await swapKit.swap({ route: modifiedRoute });
+```
+
+## Gas Optimization
+
+Optimize gas usage across different chains:
+
+```typescript
+import { SwapKitApi } from '@swapkit/sdk';
+
+// Get current gas rates
+const gasRates = await SwapKitApi.getGasRate();
+
+// Dynamic fee calculation
+async function getOptimalFeeOption(chain: Chain, urgency: 'low' | 'medium' | 'high') {
+  const gasRate = gasRates[chain];
+  
+  // Custom fee multipliers
+  const multipliers = {
+    low: 0.8,
+    medium: 1.0,
+    high: 1.5
+  };
+  
+  return {
+    [Chain.Ethereum]: {
+      maxFeePerGas: Math.floor(Number(gasRate) * multipliers[urgency]),
+      maxPriorityFeePerGas: Math.floor(Number(gasRate) * 0.1 * multipliers[urgency])
+    },
+    [Chain.Bitcoin]: {
+      feeRate: Math.floor(Number(gasRate) * multipliers[urgency])
+    }
+  }[chain];
+}
+
+// Use optimized fees
+const customFees = await getOptimalFeeOption(Chain.Ethereum, 'low');
+const tx = await swapKit.transfer({
+  assetValue,
+  recipient,
+  customTxFee: customFees
+});
+```
+
+## Token List Management
+
+Manage custom token lists and metadata:
+
+```typescript
+import { SwapKitApi } from '@swapkit/sdk';
+import { TokenInfo } from '@swapkit/sdk';
+
+// Get token metadata
+async function getTokenInfo(identifier: string): Promise<TokenInfo> {
+  const cached = localStorage.getItem(`token_${identifier}`);
+  if (cached) return JSON.parse(cached);
+  
+  const token = await SwapKitApi.getTokenList(identifier);
+  localStorage.setItem(`token_${identifier}`, JSON.stringify(token));
+  
+  return token;
+}
+
+// Custom token registry
+class TokenRegistry {
+  private tokens: Map<string, TokenInfo> = new Map();
+  
+  async addCustomToken(token: TokenInfo) {
+    this.tokens.set(token.identifier, token);
+  }
+  
+  async getToken(identifier: string): Promise<TokenInfo> {
+    // Check custom tokens first
+    if (this.tokens.has(identifier)) {
+      return this.tokens.get(identifier)!;
+    }
+    
+    // Fallback to API
+    return SwapKitApi.getTokenList(identifier);
+  }
+}
+
+// Usage
+const registry = new TokenRegistry();
+await registry.addCustomToken({
+  chain: 'ETH',
+  identifier: 'ETH.CUSTOM-0x...',
+  symbol: 'CUSTOM',
+  decimals: 18,
+  name: 'Custom Token',
+  logoURL: 'https://...'
+});
+```
+
+## Transaction Tracking
+
+Implement advanced transaction tracking:
+
+```typescript
+import { SwapKitApi } from '@swapkit/sdk';
+
+class TransactionTracker {
+  private pendingTxs: Map<string, any> = new Map();
+  
+  async trackTransaction(txHash: string, chain: Chain) {
+    this.pendingTxs.set(txHash, { chain, status: 'pending' });
+    
+    // Poll for updates
+    const interval = setInterval(async () => {
+      try {
+        const status = await SwapKitApi.getTrackerDetails({ txHash, chain });
+        
+        if (status.status === 'completed') {
+          this.pendingTxs.set(txHash, { ...status, chain });
+          clearInterval(interval);
+          this.onComplete(txHash, status);
+        } else if (status.status === 'failed') {
+          this.pendingTxs.delete(txHash);
+          clearInterval(interval);
+          this.onFailed(txHash, status);
+        }
+      } catch (error) {
+        // Continue polling
+      }
+    }, 10000); // Check every 10 seconds
+  }
+  
+  private onComplete(txHash: string, status: any) {
+    console.log(`Transaction ${txHash} completed!`);
+    // Update UI, send notifications, etc.
+  }
+  
+  private onFailed(txHash: string, status: any) {
+    console.error(`Transaction ${txHash} failed!`);
+    // Handle failure
+  }
+}
+
+// Usage
+const tracker = new TransactionTracker();
+
+// Track a swap
+const txHash = await swapKit.swap({ route });
+await tracker.trackTransaction(txHash, Chain.Ethereum);
+```
+
+## Error Recovery
+
+Implement robust error handling and recovery:
+
+```typescript
+import { SwapKitError } from '@swapkit/sdk';
+
+class SwapKitRetry {
+  async executeWithRetry<T>(
+    operation: () => Promise<T>,
+    maxRetries = 3,
+    backoff = 1000
+  ): Promise<T> {
+    let lastError: Error;
+    
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error as Error;
+        
+        // Don't retry user rejections
+        if (error instanceof SwapKitError && 
+            error.code === 'wallet_transaction_rejected') {
+          throw error;
+        }
+        
+        // Wait before retry with exponential backoff
+        if (i < maxRetries - 1) {
+          await new Promise(resolve => 
+            setTimeout(resolve, backoff * Math.pow(2, i))
+          );
+        }
+      }
+    }
+    
+    throw lastError!;
+  }
+}
+
+// Usage
+const retry = new SwapKitRetry();
+
+const result = await retry.executeWithRetry(async () => {
+  return await swapKit.swap({ route });
+});
+```
+
+## Performance Optimization
+
+### Caching Strategy
+
+```typescript
+class SwapKitCache {
+  private cache = new Map<string, { data: any, timestamp: number }>();
+  private ttl = 60000; // 1 minute
+  
+  set(key: string, data: any) {
+    this.cache.set(key, { data, timestamp: Date.now() });
+  }
+  
+  get(key: string) {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    
+    if (Date.now() - entry.timestamp > this.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return entry.data;
+  }
+}
+
+// Use cache for quotes
+const cache = new SwapKitCache();
+
+async function getCachedQuote(params: any) {
+  const key = JSON.stringify(params);
+  const cached = cache.get(key);
+  if (cached) return cached;
+  
+  const quote = await SwapKitApi.getSwapQuote(params);
+  cache.set(key, quote);
+  return quote;
+}
+```
+
+## Next Steps
+
+- Explore [THORChain Features](/guides/thorchain-features) for protocol-specific operations
+- Review [API Reference](/guides/api-reference) for all available methods
+- Check [Examples](https://github.com/thorswap/swapkit/tree/develop/examples) for real-world implementations

@@ -1,9 +1,20 @@
 ---
-title: Using SwapKit Toolboxes
-description: How to use different blockchain toolboxes in SwapKit
+title: Toolbox Usage
+description: Direct blockchain operations with SwapKit toolboxes
 ---
 
-SwapKit toolboxes provide chain-specific utility functions for various blockchain networks. These toolboxes are used by wallet adapters and plugins, but can also be used directly for custom implementations.
+SwapKit toolboxes provide low-level blockchain operations for all supported chains. While the main SwapKit SDK handles most operations automatically, toolboxes give you direct access to chain-specific functionality when you need fine-grained control.
+
+## When to Use Toolboxes
+
+Use toolboxes when you need:
+- Direct control over transaction building
+- Custom signing logic
+- Read-only operations without full SDK
+- Minimal bundle size (import only what you need)
+- Integration with existing wallet infrastructure
+
+For most use cases, the [main SDK](/start/getting-started) is recommended as it handles [configuration](/start/configuration), [wallet connections](/guides/actions/connect-wallet), and provides a unified interface.
 
 ## Available Toolboxes
 
@@ -20,6 +31,8 @@ SwapKit provides specialized toolboxes for different blockchain ecosystems:
 Each toolbox can be imported individually, which is preferred for frontend applications to minimize bundle size.
 
 ## Importing Toolboxes
+
+Before using toolboxes, make sure you understand [Core Concepts](/start/core-concepts) like [Chain identifiers](/start/core-concepts#chain-types) and [AssetValue](/start/core-concepts#assetvalue).
 
 You can initialize a toolbox either by importing specific toolbox methods like `getEvmToolbox` or `getUtxoToolbox` or by common toolbox method `getToolbox`.
 

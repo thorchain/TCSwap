@@ -17,6 +17,16 @@ Before starting, ensure you have:
 ## Installation
 
 <Tabs>
+  <TabItem label="bun" icon="bun">
+    ```bash
+    bun add @swapkit/sdk
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```bash
+    pnpm add @swapkit/sdk
+    ```
+  </TabItem>
   <TabItem label="npm">
     ```bash
     npm install @swapkit/sdk
@@ -25,16 +35,6 @@ Before starting, ensure you have:
   <TabItem label="yarn">
     ```bash
     yarn add @swapkit/sdk
-    ```
-  </TabItem>
-  <TabItem label="pnpm">
-    ```bash
-    pnpm add @swapkit/sdk
-    ```
-  </TabItem>
-  <TabItem label="bun" icon="bun">
-    ```bash
-    bun add @swapkit/sdk
     ```
   </TabItem>
 </Tabs>
@@ -53,7 +53,7 @@ const swapKit = createSwapKit();
 
 ### 2. Configure SwapKit (Optional)
 
-For production applications, you'll want to add your own API keys:
+For production applications, you'll want to add your own API keys and custom settings. See our [Configuration Guide](/start/configuration) for detailed setup:
 
 ```typescript
 // @noErrorValidation
@@ -62,14 +62,10 @@ import { createSwapKit } from '@swapkit/sdk';
 const swapKit = createSwapKit({
   config: {
     apiKeys: {
-      // For WalletConnect v2 support
-      walletConnectProjectId: 'your-project-id',
-      // For UTXO chains (Bitcoin, Litecoin, etc.)
-      blockchair: 'your-blockchair-key',
-      // For SwapKit API features
-      swapKit: 'your-swapkit-key',
+      walletConnectProjectId: 'your-project-id', // Get from cloud.walletconnect.com
+      blockchair: 'your-blockchair-key',         // Get from blockchair.com/api
+      swapKit: 'your-swapkit-key',               // Get from api.swapkit.dev
     },
-    // Custom RPC URLs (optional)
     rpcUrls: {
       ETH: 'https://eth-mainnet.g.alchemy.com/v2/your-key',
       AVAX: 'https://api.avax.network/ext/bc/C/rpc',
@@ -80,8 +76,10 @@ const swapKit = createSwapKit({
 
 ## Core Concepts
 
+SwapKit has several fundamental concepts you should understand. For a detailed explanation, see our [Core Concepts](/start/core-concepts) guide.
+
 ### 1. Chains
-SwapKit supports 20+ blockchain networks with a unified chain identifier system:
+SwapKit supports 20+ blockchain networks with a unified [Chain](/start/core-concepts#chain-types) identifier system:
 
 ```typescript
 // @noErrorValidation
@@ -90,26 +88,22 @@ import { Chain } from '@swapkit/helpers';
 // Examples of supported chains
 const ethereum = Chain.Ethereum;   // "ETH"
 const bitcoin = Chain.Bitcoin;     // "BTC"
-const cosmos = Chain.Cosmos;       // "COSMOS"
+const cosmos = Chain.Cosmos;       // "GAIA"
 const thorchain = Chain.THORChain; // "THOR"
-const ripple = Chain.Ripple;       // "XRP"
-const solana = Chain.Solana;       // "SOL"
-const polkadot = Chain.Polkadot;   // "DOT"
-const radix = Chain.Radix;         // "XRD"
 ```
 
-### 2. Assets
-Assets are identified by their chain and symbol:
+### 2. AssetValue
+[AssetValue](/start/core-concepts#assetvalue) is SwapKit's way of representing amounts of any asset:
 
 ```typescript
 // @noErrorValidation
 import { AssetValue } from '@swapkit/helpers';
 
-// Native assets use the asset string format
+// Native assets
 const eth = AssetValue.from({ asset: 'ETH.ETH', value: 1 }); // 1 ETH
 const btc = AssetValue.from({ asset: 'BTC.BTC', value: 0.1 }); // 0.1 BTC
 
-// Token assets include the contract address
+// Tokens include the contract address
 const usdc = AssetValue.from({
   asset: 'ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
   value: 1000
@@ -117,7 +111,7 @@ const usdc = AssetValue.from({
 ```
 
 ### 3. Wallets
-SwapKit supports 20+ wallet types:
+SwapKit supports 20+ [wallet types](/start/core-concepts#wallet-types):
 
 ```typescript
 // @noErrorValidation
@@ -127,12 +121,8 @@ import { WalletOption } from '@swapkit/helpers';
 const metamask = WalletOption.METAMASK;
 const keplr = WalletOption.KEPLR;
 
-// Mobile wallets
-const walletconnect = WalletOption.WALLETCONNECT;
-
 // Hardware wallets
 const ledger = WalletOption.LEDGER;
-const trezor = WalletOption.TREZOR;
 
 // Software wallets
 const keystore = WalletOption.KEYSTORE;
@@ -189,6 +179,8 @@ console.log(`Balance: ${walletWithBalance.balance}`);
 
 ### Perform a Swap
 
+Use the [SwapKit API](/guides/api-reference) to get quotes and execute swaps:
+
 ```typescript
 // @noErrorValidation
 import { createSwapKit, SwapKitApi } from '@swapkit/sdk';
@@ -210,8 +202,8 @@ const { routes } = await SwapKitApi.getSwapQuote(quoteParams);
 
 // Step 2: Review the quote
 const bestRoute = routes[0];
-console.log(`Expected output: ${bestRoute.expectedOutput}`);
-console.log(`Fees: ${bestRoute.totalFees}`);
+console.log(`Expected output: ${bestRoute.expectedBuyAmount}`);
+console.log(`Fees:`, bestRoute.fee);
 
 // Step 3: Execute the swap
 const txHash = await swapKit.swap({
@@ -365,10 +357,25 @@ try {
 
 Now that you understand the basics:
 
+### Essential Reading
+1. **[Core Concepts](/start/core-concepts)** - Master AssetValue, error handling, and types
+2. **[Configuration](/start/configuration)** - Set up API keys and customize settings
+3. **[API Reference](/guides/api-reference)** - Explore all available API methods
+
+### Build Your Application
 1. **[Connect Wallets](/guides/actions/connect-wallet)** - Deep dive into wallet integration
-2. **[Perform Swaps](/guides/actions/swap)** - Advanced swapping techniques
-3. **[Create Custom Plugin](/guides/create-plugin)** - Extend SwapKit functionality
-4. **[Framework Integration](/guides/integrations/nextjs)** - Use with Next.js, Vite, etc.
+2. **[Perform Swaps](/guides/actions/swap)** - Implement cross-chain swaps
+3. **[Send Transactions](/guides/actions/transaction)** - Handle transfers and tracking
+
+### Advanced Topics
+1. **[THORChain Features](/guides/thorchain-features)** - Liquidity, savings, and THORNames
+2. **[Advanced Features](/guides/advanced-features)** - Multi-chain ops and synthetics
+3. **[Toolbox Usage](/start/toolbox-usage)** - Direct blockchain operations
+
+### Extend SwapKit
+1. **[Create Custom Plugin](/guides/create-plugin)** - Add new protocols
+2. **[Create Custom Wallet](/guides/create-wallet)** - Integrate new wallets
+3. **[Framework Integration](/guides/integrations/nextjs)** - Use with Next.js, Vite, etc.
 
 ## Need Help?
 

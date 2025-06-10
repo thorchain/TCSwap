@@ -1,0 +1,372 @@
+---
+title: API Reference
+description: Complete reference for SwapKit API methods and endpoints
+---
+
+import { Tabs, TabItem, Code } from '@astrojs/starlight/components';
+
+The `SwapKitApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@swapkit/helpers/api` import.
+
+## Getting Started
+
+```typescript
+import { SwapKitApi } from '@swapkit/helpers/api';
+
+// All methods are static - no initialization needed
+const price = await SwapKitApi.getPrice('ETH');
+```
+
+## Swap Quotes
+
+### getSwapQuote
+
+Get swap quotes from multiple providers with best route selection:
+
+```typescript
+const { routes } = await SwapKitApi.getSwapQuote({
+  sellAsset: 'ETH.ETH',
+  sellAmount: '1000000000000000000', // 1 ETH in base units
+  buyAsset: 'BTC.BTC',
+  sourceAddress: '0x...',             // Your ETH address
+  destinationAddress: 'bc1q...',     // Your BTC address
+  slippage: 3,                        // 3% slippage tolerance
+  providers: ['thorchain', 'chainflip', '1inch'], // Optional: specific providers
+  affiliate: 'your-affiliate-id',    // Optional: affiliate tracking
+  affiliateFee: 100                   // Optional: basis points (100 = 1%)
+});
+
+// Response structure
+{
+  routes: [{
+    providers: ['THORCHAIN'],
+    sellAsset: 'ETH.ETH',
+    sellAmount: '1000000000000000000',
+    buyAsset: 'BTC.BTC',
+    expectedBuyAmount: '62500000',        // 0.625 BTC
+    expectedBuyAmountMaxSlippage: '60625000', // With 3% slippage
+    sourceAddress: '0x...',
+    destinationAddress: 'bc1q...',
+    targetAddress: '0x...', // Contract to send to
+    memo: 'SWAP:BTC.BTC:bc1q...',
+    expiration: '2024-01-01T00:00:00Z',
+    fee: {
+      asset: 'ETH.ETH',
+      networkFee: '5000000000000000',     // Network fee
+      affiliateFee: '10000000000000000',  // Affiliate fee
+      totalFee: '15000000000000000'       // Total fees
+    },
+    estimatedTime: {
+      inbound: 600,    // 10 minutes inbound
+      outbound: 600,   // 10 minutes outbound
+      total: 1200      // 20 minutes total
+    }
+  }]
+}
+```
+
+## Price Data
+
+### getPrice
+
+Get current asset prices in USD:
+
+```typescript
+// Single asset
+const ethPrice = await SwapKitApi.getPrice('ETH');
+// Returns: 2500.50
+
+// Multiple assets
+const prices = await SwapKitApi.getPrice(['ETH', 'BTC', 'AVAX']);
+// Returns: { ETH: 2500.50, BTC: 45000.00, AVAX: 35.20 }
+
+// With specific identifiers
+const tokenPrice = await SwapKitApi.getPrice(
+  'ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+);
+```
+
+## Balance Operations
+
+### getChainBalance
+
+Get all token balances for an address on a specific chain with scam filtering:
+
+```typescript
+const balances = await SwapKitApi.getChainBalance({
+  chain: 'ETH',
+  address: '0x742d35Cc6634C0532925a3b844Bc9e7595f6E321'
+});
+
+// Response includes native and token balances
+[
+  {
+    asset: 'ETH.ETH',
+    value: '1500000000000000000', // 1.5 ETH
+    decimal: 18,
+    price: 2500.50
+  },
+  {
+    asset: 'ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    value: '1000000000', // 1000 USDC
+    decimal: 6,
+    price: 1.00
+  }
+]
+```
+
+## Gas Rates
+
+### getGasRate
+
+Get current gas rates for supported chains:
+
+```typescript
+// Get gas rates for all chains
+const gasRates = await SwapKitApi.getGasRate();
+
+// Get gas rate for specific chain
+const ethGasRate = await SwapKitApi.getGasRate('ETH');
+// Returns: '25' (gwei)
+
+// Response format varies by chain
+{
+  ETH: '25',        // Gwei
+  BTC: '10',        // Satoshis per byte
+  AVAX: '25',       // nAVAX
+  THOR: '0.02'      // RUNE
+}
+```
+
+## Token Lists
+
+### getTokenList
+
+Get comprehensive token metadata:
+
+```typescript
+// Get token by identifier
+const token = await SwapKitApi.getTokenList('ETH.USDC');
+
+// Get multiple tokens
+const tokens = await SwapKitApi.getTokenList(['ETH.USDC', 'AVAX.USDC']);
+
+// Response structure
+{
+  chain: 'ETH',
+  symbol: 'USDC',
+  ticker: 'USDC',
+  identifier: 'ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  decimals: 6,
+  logoURL: 'https://...',
+  name: 'USD Coin',
+  isNative: false
+}
+```
+
+### getTokenListProviders
+
+Get list of available token list providers:
+
+```typescript
+const providers = await SwapKitApi.getTokenListProviders();
+
+// Returns available providers
+[
+  { name: '1inch', url: 'https://...' },
+  { name: 'CoinGecko', url: 'https://...' },
+  { name: 'Uniswap', url: 'https://...' }
+]
+```
+
+## Transaction Tracking
+
+### getTrackerDetails
+
+Track transaction status and progress:
+
+```typescript
+const status = await SwapKitApi.getTrackerDetails({
+  txHash: '0x123...',
+  chain: 'ETH'
+});
+
+// Response for swap transactions
+{
+  status: 'completed',
+  startTime: 1234567890,
+  endTime: 1234568490,
+  legs: [{
+    chain: 'ETH',
+    hash: '0x123...',
+    status: 'completed',
+    inAmount: '1000000000000000000',
+    outAmount: '62500000'
+  }]
+}
+```
+
+## Provider-Specific APIs
+
+### THORChain/Maya
+
+Access THORChain and Maya protocol data:
+
+```typescript
+// Get liquidity position
+const position = await SwapKitApi.thorchainMidgard.getLiquidityPosition(
+  'thor1...'
+);
+
+// Get saver position
+const saverPosition = await SwapKitApi.thorchainMidgard.getSaverPosition(
+  'thor1...'
+);
+
+// Get THORName details
+const thorname = await SwapKitApi.thorchainMidgard.getTHORNameDetails(
+  'myname'
+);
+
+// Get inbound addresses
+const inboundAddresses = await SwapKitApi.thorchainMidgard.getInboundAddresses();
+
+// Maya equivalents
+const mayaPosition = await SwapKitApi.mayachainMidgard.getLiquidityPosition(
+  'maya1...'
+);
+```
+
+### Chainflip
+
+Create deposit channels for Chainflip swaps:
+
+```typescript
+const channel = await SwapKitApi.getChainflipDepositChannel({
+  sellAsset: 'ETH.ETH',
+  buyAsset: 'BTC.BTC',
+  destinationAddress: 'bc1q...',
+  brokerCommissionBps: 100 // 1% commission
+});
+
+// Response
+{
+  depositAddress: '0x...', // Send funds here
+  brokerCommissionBps: 100,
+  expiryBlock: 123456,
+  channelId: 'channel_123'
+}
+```
+
+## Error Handling
+
+All API methods can throw errors that should be handled:
+
+```typescript
+import { SwapKitError } from '@swapkit/helpers';
+
+try {
+  const quote = await SwapKitApi.getSwapQuote({...});
+} catch (error) {
+  if (error instanceof SwapKitError) {
+    // Handle SwapKit-specific errors
+    console.error('API Error:', error.message);
+    
+    // Check for rate limiting
+    if (error.code === 'api_rate_limit') {
+      // Wait and retry
+    }
+  }
+}
+```
+
+## Common Patterns
+
+### Best Route Selection
+
+When getting swap quotes, the first route is typically the best:
+
+```typescript
+const { routes } = await SwapKitApi.getSwapQuote({...});
+
+if (routes.length > 0) {
+  const bestRoute = routes[0];
+  
+  // Check if route meets your requirements
+  const minOutput = AssetValue.from({
+    asset: bestRoute.buyAsset,
+    value: bestRoute.expectedBuyAmountMaxSlippage,
+    fromBaseDecimal: true
+  });
+  
+  if (minOutput.gte(requiredAmount)) {
+    await swapKit.swap({ route: bestRoute });
+  }
+}
+```
+
+### Price Impact Calculation
+
+Calculate price impact for large swaps:
+
+```typescript
+const quote = await SwapKitApi.getSwapQuote({...});
+const route = quote.routes[0];
+
+// Get current prices
+const sellPrice = await SwapKitApi.getPrice(route.sellAsset);
+const buyPrice = await SwapKitApi.getPrice(route.buyAsset);
+
+// Calculate expected value
+const sellValue = Number(route.sellAmount) * sellPrice;
+const buyValue = Number(route.expectedBuyAmount) * buyPrice;
+
+// Calculate price impact
+const priceImpact = ((sellValue - buyValue) / sellValue) * 100;
+console.log(`Price impact: ${priceImpact.toFixed(2)}%`);
+```
+
+### Token Validation
+
+Validate tokens before swapping:
+
+```typescript
+async function validateToken(identifier: string) {
+  try {
+    const token = await SwapKitApi.getTokenList(identifier);
+    return {
+      valid: true,
+      decimals: token.decimals,
+      name: token.name,
+      logo: token.logoURL
+    };
+  } catch {
+    return { valid: false };
+  }
+}
+```
+
+## Rate Limits
+
+The SwapKit API has rate limits that vary by endpoint:
+
+- **Without API key**: 10 requests per minute
+- **With API key**: 100 requests per minute
+
+Configure your API key in [Configuration](/start/configuration):
+
+```typescript
+const swapKit = createSwapKit({
+  config: {
+    apiKeys: {
+      swapKit: 'your-api-key'
+    }
+  }
+});
+```
+
+## Next Steps
+
+- Implement [Cross-Chain Swaps](/guides/actions/swap) using the quote API
+- Set up [Transaction Tracking](/guides/actions/transaction) for better UX
+- Explore [THORChain Features](/guides/thorchain-features) for advanced DeFi

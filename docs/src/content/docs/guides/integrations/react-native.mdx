@@ -24,6 +24,12 @@ React Native support is currently under development and will be available in a f
 Install SwapKit and its dependencies:
 
 ```bash
+# Using bun
+bun add @swapkit/sdk
+
+# Using pnpm
+pnpm add @swapkit/sdk
+
 # Using npm
 npm install @swapkit/sdk
 
@@ -40,7 +46,37 @@ React Native requires several polyfills for crypto and Node.js functionality:
 
 ```bash
 # Core polyfills
+bun add \
+  react-native-crypto \
+  react-native-randombytes \
+  react-native-get-random-values \
+  events \
+  stream-browserify \
+  readable-stream \
+  buffer \
+  process
+# or
+pnpm add \
+  react-native-crypto \
+  react-native-randombytes \
+  react-native-get-random-values \
+  events \
+  stream-browserify \
+  readable-stream \
+  buffer \
+  process
+# or
 npm install --save \
+  react-native-crypto \
+  react-native-randombytes \
+  react-native-get-random-values \
+  events \
+  stream-browserify \
+  readable-stream \
+  buffer \
+  process
+# or
+yarn add \
   react-native-crypto \
   react-native-randombytes \
   react-native-get-random-values \
@@ -51,7 +87,22 @@ npm install --save \
   process
 
 # Additional dependencies for wallet connections
+bun add \
+  @walletconnect/react-native-compat \
+  react-native-modal \
+  react-native-svg
+# or
+pnpm add \
+  @walletconnect/react-native-compat \
+  react-native-modal \
+  react-native-svg
+# or
 npm install --save \
+  @walletconnect/react-native-compat \
+  react-native-modal \
+  react-native-svg
+# or
+yarn add \
   @walletconnect/react-native-compat \
   react-native-modal \
   react-native-svg

@@ -5,6 +5,8 @@ description: How to perform token swaps across different chains with SwapKit
 
 SwapKit provides a unified interface for swapping tokens across different chains and protocols. This guide covers how to get quotes and execute swaps using both the granular and all-in-one approaches.
 
+Before starting, make sure you understand [Core Concepts](/start/core-concepts) like [AssetValue](/start/core-concepts#assetvalue) and [Chain types](/start/core-concepts#chain-types). For detailed API methods, see the [API Reference](/guides/api-reference).
+
 ## Two Approaches for Using SwapKit
 
 You can use SwapKit in two ways:
@@ -99,7 +101,7 @@ async function connectWallets() {
 
 ## Getting a Swap Quote
 
-Before executing a swap, you need to get a quote to see available routes, prices, and fees:
+Before executing a swap, you need to get a quote to see available routes, prices, and fees. See [getSwapQuote](/guides/api-reference#getswapquote) in the API Reference for all available parameters:
 
 ```ts twoslash
 // @noErrorValidation

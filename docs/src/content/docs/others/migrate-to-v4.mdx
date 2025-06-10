@@ -253,19 +253,167 @@ await client.connectKeystore(chains, phrase);
 
 ## New Features in v4
 
-### 1. Standardized Creation Helpers
+### 1. Runtime Configuration Updates (Major Improvement)
+
+The biggest improvement in v4 is the ability to update configuration at runtime without recreating the SwapKit client.
+
+#### v3 Approach (Client Recreation Required)
+```typescript
+// v3 - Had to recreate entire client for config changes
+const client1 = SwapKit({
+  rpcUrls: { [Chain.Ethereum]: "https://public-rpc.com" },
+  apis: { [Chain.Bitcoin]: customBtcApi }
+});
+
+// To change RPC URL, needed to create new client
+const client2 = SwapKit({
+  rpcUrls: { [Chain.Ethereum]: "https://premium-rpc.com" },
+  apis: { [Chain.Bitcoin]: customBtcApi }
+});
+```
+
+#### v4 Approach (Runtime Updates)
+```typescript
+import { createSwapKit } from '@swapkit/sdk';
+import { SKConfig, Chain } from '@swapkit/helpers';
+
+// Create client once
+const swapKit = createSwapKit({
+  config: {
+    rpcUrls: { [Chain.Ethereum]: "https://public-rpc.com" },
+    apiKeys: { blockchair: "basic-key" }
+  }
+});
+
+// Update configuration at runtime - client continues working with new config
+SKConfig.setRpcUrl(Chain.Ethereum, "https://premium-rpc.com");
+SKConfig.setApiKey("blockchair", "premium-api-key");
+
+// Switch to testnet mode
+SKConfig.setEnv("isStagenet", true);
+
+// All subsequent operations automatically use new configuration!
+const balance = await swapKit.getBalance(Chain.Ethereum); // Uses premium RPC
+```
+
+### 2. Individual Configuration Updates
+
+Update specific parts of configuration without affecting others:
+
+```typescript
+// Update API keys individually
+SKConfig.setApiKey("swapKit", "your-swapkit-api-key");
+SKConfig.setApiKey("walletConnectProjectId", "your-wc-project-id");
+SKConfig.setApiKey("blockchair", "your-blockchair-key");
+
+// Update RPC URLs for specific chains
+SKConfig.setRpcUrl(Chain.Ethereum, "https://ethereum-rpc.com");
+SKConfig.setRpcUrl(Chain.Arbitrum, "https://arbitrum-rpc.com");
+SKConfig.setRpcUrl(Chain.Avalanche, "https://avalanche-rpc.com");
+
+// Update environment settings
+SKConfig.setEnv("isDev", false);
+SKConfig.setEnv("isStagenet", true);
+
+// Update integration configurations
+SKConfig.setIntegrationConfig("radix", {
+  dAppDefinitionAddress: "account_rdx...",
+  applicationName: "My DeFi App",
+  applicationVersion: "1.0.0",
+  network: { networkId: 1, networkName: "mainnet" }
+});
+```
+
+### 3. Bulk Configuration Updates
+
+Update multiple configurations at once:
+
+```typescript
+// Update multiple settings simultaneously
+SKConfig.set({
+  rpcUrls: {
+    [Chain.Ethereum]: "https://ethereum-rpc.com",
+    [Chain.Arbitrum]: "https://arbitrum-rpc.com",
+    [Chain.Avalanche]: "https://avalanche-rpc.com"
+  },
+  apiKeys: {
+    blockchair: "premium-blockchair-key",
+    swapKit: "premium-swapkit-key",
+    walletConnectProjectId: "your-project-id"
+  },
+  envs: {
+    isStagenet: false,
+    isDev: false
+  }
+});
+```
+
+### 4. Dynamic Environment Switching
+
+Switch between mainnet and testnet without recreating client:
+
+```typescript
+// Start on mainnet
+const swapKit = createSwapKit();
+
+// Switch to testnet for testing
+SKConfig.setEnv("isStagenet", true);
+SKConfig.setRpcUrl(Chain.THORChain, "https://stagenet-thornode.ninerealms.com");
+
+// All operations now use testnet
+await swapKit.connectKeystore([Chain.THORChain], phrase);
+const balance = await swapKit.getBalance(Chain.THORChain); // Testnet balance
+
+// Switch back to mainnet
+SKConfig.setEnv("isStagenet", false);
+SKConfig.setRpcUrl(Chain.THORChain, "https://thornode.ninerealms.com");
+```
+
+### 5. How Toolboxes Automatically Use Updated Config
+
+All toolboxes in v4 dynamically retrieve configuration from SKConfig:
+
+```typescript
+// When you call this...
+const ethToolbox = await getEvmToolbox(Chain.Ethereum);
+
+// Internally, it gets the RPC URL from SKConfig
+const rpcUrl = SKConfig.get("rpcUrls")[Chain.Ethereum];
+const provider = new JsonRpcProvider(rpcUrl);
+
+// So when you update the RPC URL...
+SKConfig.setRpcUrl(Chain.Ethereum, "https://new-rpc.com");
+
+// The next toolbox instance automatically uses the new URL
+const newEthToolbox = await getEvmToolbox(Chain.Ethereum); // Uses new RPC!
+```
+
+### 6. Standardized Creation Helpers
 - **`createPlugin`**: Streamlined plugin creation with consistent interface
 - **`createWallet`**: Simplified wallet adapter development
 
-### 2. Enhanced Chain Support
+### 7. Enhanced Chain Support
 - **Improved Solana Support**: Jupiter API integration for real-time token metadata
 - **Dynamic Cosmos Fees**: Automatic fee estimation when not provided
 - **Ripple Support**: Full XRP toolbox implementation
 - **OneKey Wallet**: New wallet integration
 
-### 3. Centralized Configuration
-- **SKConfig System**: Unified configuration management
-- **Runtime Updates**: Dynamic configuration changes without restart
+### 8. Configuration State Preservation
+
+Updates preserve existing configuration:
+
+```typescript
+// Set initial API key
+SKConfig.setApiKey("swapKit", "key1");
+
+// Add another API key - preserves existing ones
+SKConfig.setApiKey("blockchair", "key2");
+
+// Both keys are now available
+const apiKeys = SKConfig.get("apiKeys");
+console.log(apiKeys.swapKit);    // "key1"
+console.log(apiKeys.blockchair); // "key2"
+```
 
 ## Common Migration Issues
 
