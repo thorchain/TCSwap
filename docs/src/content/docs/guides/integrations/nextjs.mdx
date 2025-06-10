@@ -2,6 +2,7 @@
 title: Next.js
 description: A guide to integrate SwapKit with Next.js applications.
 ---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 This guide will help you integrate SwapKit into your Next.js application with proper Node.js polyfills and WebAssembly support.
 
@@ -71,7 +72,7 @@ const require = createRequire(import.meta.url);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
+
   webpack: (config, { isServer, webpack }) => {
     if (!isServer) {
       // Add polyfills for browser
@@ -196,7 +197,7 @@ export function WalletButton() {
     setIsLoading(true);
     try {
       await swapKitClient.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
-      
+
       setIsConnected(true);
       const ethAddress = await swapKitClient.getAddress(Chain.Ethereum);
       setAddress(ethAddress);
@@ -309,7 +310,7 @@ export async function TokenPrice({ symbol }: { symbol: string }) {
     identifier: symbol,
     currency: 'USD'
   });
-  
+
   return <div>Price: ${price.price_usd}</div>;
 }
 ```
@@ -336,11 +337,11 @@ export function CosmosWalletButton() {
     setIsLoading(true);
     try {
       await swapKitClient.connectCosmostation([Chain.Cosmos, Chain.THORChain, Chain.Kujira]);
-      
+
       setIsConnected(true);
       const chains = [Chain.Cosmos, Chain.THORChain, Chain.Kujira];
       const newAddresses: Record<string, string> = {};
-      
+
       for (const chain of chains) {
         try {
           const address = await swapKitClient.getAddress(chain);
@@ -351,7 +352,7 @@ export function CosmosWalletButton() {
           // Chain might not be connected, skip it
         }
       }
-      
+
       setAddresses(newAddresses);
     } catch (error) {
       console.error('Failed to connect Cosmostation:', error);

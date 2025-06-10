@@ -2,11 +2,12 @@
 title: Expo/React Native
 description: A guide to integrate SwapKit with Expo and React Native applications.
 ---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 This guide will help you integrate SwapKit into your React Native or Expo application.
 
 :::caution[Coming Soon]
-React Native support is currently under development and will be available in a future release. 
+React Native support is currently under development and will be available in a future release.
 
 **Current Status:**
 - Core SwapKit functionality works in React Native environments
@@ -51,193 +52,9 @@ Install SwapKit and its dependencies:
   </TabItem>
 </Tabs>
 
-## Required Polyfills
+## Project Setup
 
-React Native requires several polyfills for crypto and Node.js functionality:
-
-Core polyfills:
-
-<Tabs syncKey="package-manager">
-  <TabItem label="bun" icon="bun">
-    ```bash
-    bun add \
-      react-native-crypto \
-      react-native-randombytes \
-      react-native-get-random-values \
-      events \
-      stream-browserify \
-      readable-stream \
-      buffer \
-      process
-    ```
-  </TabItem>
-  <TabItem label="pnpm">
-    ```bash
-    pnpm add \
-      react-native-crypto \
-      react-native-randombytes \
-      react-native-get-random-values \
-      events \
-      stream-browserify \
-      readable-stream \
-      buffer \
-      process
-    ```
-  </TabItem>
-  <TabItem label="npm">
-    ```bash
-    npm install --save \
-      react-native-crypto \
-      react-native-randombytes \
-      react-native-get-random-values \
-      events \
-      stream-browserify \
-      readable-stream \
-      buffer \
-      process
-    ```
-  </TabItem>
-  <TabItem label="yarn">
-    ```bash
-    yarn add \
-      react-native-crypto \
-      react-native-randombytes \
-      react-native-get-random-values \
-      events \
-      stream-browserify \
-      readable-stream \
-      buffer \
-      process
-    ```
-  </TabItem>
-</Tabs>
-
-Additional dependencies for wallet connections:
-
-<Tabs syncKey="package-manager">
-  <TabItem label="bun" icon="bun">
-    ```bash
-    bun add \
-      @walletconnect/react-native-compat \
-      react-native-modal \
-      react-native-svg
-    ```
-  </TabItem>
-  <TabItem label="pnpm">
-    ```bash
-    pnpm add \
-      @walletconnect/react-native-compat \
-      react-native-modal \
-      react-native-svg
-    ```
-  </TabItem>
-  <TabItem label="npm">
-    ```bash
-    npm install --save \
-      @walletconnect/react-native-compat \
-      react-native-modal \
-      react-native-svg
-    ```
-  </TabItem>
-  <TabItem label="yarn">
-    ```bash
-    yarn add \
-      @walletconnect/react-native-compat \
-      react-native-modal \
-      react-native-svg
-    ```
-  </TabItem>
-</Tabs>
-
-## Metro Configuration
-
-**TODO**: Configure Metro bundler for crypto modules and WASM support
-
-```javascript
-// metro.config.js
-// Configuration pending - check back for updates
-```
-
-## Polyfill Setup
-
-**TODO**: Set up global polyfills in your app entry point
-
-```javascript
-// index.js or App.js
-// Import order is important!
-// Polyfill setup pending - check back for updates
-```
-
-## Basic Implementation
-
-**TODO**: Implement SwapKit in React Native components
-
-```tsx
-// @noErrorValidation
-// Example implementation coming soon
-import { createSwapKit } from '@swapkit/sdk';
-
-// React Native specific setup pending
-```
-
-## Expo Configuration
-
-**TODO**: Configure Expo plugins and build settings
-
-```json
-// app.json or app.config.js
-// Expo configuration pending
-```
-
-## Wallet Connection
-
-**TODO**: Implement mobile wallet connections
-
-- WalletConnect v2 integration
-- Deep linking setup
-- Universal links configuration
-- Mobile wallet adapters
-
-## Platform-Specific Considerations
-
-### iOS
-
-**TODO**: iOS-specific setup
-
-- Info.plist configurations
-- Universal links
-- Keychain access
-
-### Android
-
-**TODO**: Android-specific setup
-
-- AndroidManifest.xml configurations
-- Deep link intent filters
-- ProGuard rules
-
-## Common Issues
-
-**TODO**: Document common React Native integration issues
-
-- Crypto module conflicts
-- Metro bundler issues
-- Platform-specific errors
-- Performance optimizations
-
-## Testing
-
-**TODO**: Testing setup for React Native
-
-- Unit testing with Jest
-- E2E testing with Detox
-- Mocking crypto modules
-
-## Example App
-
-**TODO**: Create example React Native app
-
-A complete example application demonstrating SwapKit integration with React Native is currently in development.
+### TODO: Expo app
 
 ## Next Steps
 

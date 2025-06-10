@@ -2,6 +2,7 @@
 title: Bun + React
 description: A guide to integrate SwapKit with Bun and React applications.
 ---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 This guide will help you integrate SwapKit into your Bun-powered React application. Bun is a fast JavaScript runtime that includes a bundler, test runner, and package manager.
 
@@ -66,17 +67,17 @@ serve({
   port: PORT,
   async fetch(req) {
     const url = new URL(req.url);
-    
+
     // Serve static files
     if (url.pathname === "/") {
       return new Response(Bun.file("pages/index.html"));
     }
-    
+
     // Handle API routes if needed
     if (url.pathname.startsWith("/api/")) {
       // Add your API logic here
     }
-    
+
     // Default 404
     return new Response("Not Found", { status: 404 });
   },
@@ -104,7 +105,7 @@ export function App() {
   const connectWallet = async () => {
     try {
       await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
-      
+
       setIsConnected(true);
       const ethAddress = await swapKit.getAddress(Chain.Ethereum);
       setAddress(ethAddress);
@@ -123,7 +124,7 @@ export function App() {
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-4">SwapKit + Bun</h1>
       {!isConnected ? (
-        <button 
+        <button
           onClick={connectWallet}
           className="px-4 py-2 bg-blue-500 text-white rounded"
         >
@@ -132,7 +133,7 @@ export function App() {
       ) : (
         <div>
           <p className="mb-4">Connected: {address}</p>
-          <button 
+          <button
             onClick={disconnectWallet}
             className="px-4 py-2 bg-red-500 text-white rounded"
           >
@@ -202,41 +203,6 @@ await build({
 });
 ```
 
-## Package.json Scripts
-
-Add useful scripts to your `package.json`:
-
-```json
-{
-  "scripts": {
-    "dev": "bun --hot src/server.tsx",
-    "build": "bun run build.ts",
-    "start": "NODE_ENV=production bun src/server.tsx"
-  }
-}
-```
-
-## Using SwapKit UI Components
-
-SwapKit SDK includes pre-built UI components:
-
-```tsx
-// @noErrorValidation
-// src/Widget.tsx
-import { SwapWidget, createSwapKit } from '@swapkit/sdk';
-
-const swapKit = createSwapKit();
-
-export function Widget() {
-  return (
-    <SwapWidget 
-      swapKit={swapKit}
-      theme="dark"
-    />
-  );
-}
-```
-
 ## Environment Variables
 
 Bun uses `BUN_PUBLIC_` prefix for client-side environment variables:
@@ -256,62 +222,6 @@ import { SKConfig } from '@swapkit/sdk';
 if (process.env.BUN_PUBLIC_SWAPKIT_API_KEY) {
   SKConfig.setApiKey('swapKit', process.env.BUN_PUBLIC_SWAPKIT_API_KEY);
 }
-```
-
-## Performance Tips
-
-### Hot Module Replacement
-
-Bun supports HMR out of the box. Use the `--hot` flag:
-
-```bash
-bun --hot src/server.tsx
-```
-
-### Bundle Optimization
-
-Bun's bundler is highly optimized. For production builds:
-
-```typescript
-// @noErrorValidation
-// build.ts with optimization
-await build({
-  entrypoints: ["./pages/index.tsx"],
-  outdir: "./dist",
-  target: "browser",
-  minify: {
-    whitespace: true,
-    identifiers: true,
-    syntax: true,
-  },
-  splitting: true,
-  sourcemap: "external",
-  // Tree-shake unused code
-  treeShaking: true,
-});
-```
-
-## Testing
-
-Bun includes a built-in test runner:
-
-```typescript
-// @noErrorValidation
-// src/App.test.tsx
-import { expect, test } from "bun:test";
-import { render } from '@testing-library/react';
-import { App } from './App';
-
-test("renders without crashing", () => {
-  const { container } = render(<App />);
-  expect(container).toBeDefined();
-});
-```
-
-Run tests:
-
-```bash
-bun test
 ```
 
 ## Common Issues
