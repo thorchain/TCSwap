@@ -2,9 +2,14 @@ import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
 import { defineConfig } from "astro/config";
+import starlightOpenAPI, { openAPISidebarGroups } from "starlight-openapi";
 import { createStarlightTypeDocPlugin } from "starlight-typedoc";
 
 const { plugins: docsPlugins, sidebarItems: docsSidebarItems } = createDocs();
+
+const openApiPlugin = starlightOpenAPI([
+  { base: "api", schema: "https://api.swapkit.dev/docs/json" },
+]);
 
 // https://astro.build/config
 export default defineConfig({
@@ -38,7 +43,7 @@ export default defineConfig({
       disable404Route: true,
       expressiveCode: false,
       lastUpdated: true,
-      plugins: [...docsPlugins],
+      plugins: [openApiPlugin, ...docsPlugins],
       title: "",
       logo: {
         dark: "./src/assets/logo-vertical-white.png",
@@ -85,6 +90,7 @@ export default defineConfig({
           autogenerate: { directory: "guides/integrations" },
         },
         { label: "Others", autogenerate: { directory: "others" }, collapsed: true },
+        ...openAPISidebarGroups,
         {
           label: "References",
           collapsed: true,

@@ -22,9 +22,10 @@
     "@swapkit/sdk": "workspace:*",
     "@swapkit/toolboxes": "workspace:*",
     "@swapkit/wallets": "workspace:*",
-    "astro": "5.9.0",
+    "astro": "5.9.2",
     "sharp": "0.34.2",
     "starlight-links-validator": "0.16.0",
+    "starlight-openapi": "0.18.0",
     "starlight-typedoc": "0.21.3",
     "typedoc": "0.28.5",
     "typedoc-plugin-markdown": "4.6.4"

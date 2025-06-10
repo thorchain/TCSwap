@@ -32,10 +32,10 @@
     "micro-key-producer": "0.7.6",
     "protobufjs": "7.5.3",
     "ts-pattern": "5.7.1",
-    "xrpl": "4.2.5"
+    "xrpl": "4.3.0"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.0.8",
+    "@nomicfoundation/hardhat-ethers": "3.0.9",
     "@nomicfoundation/hardhat-toolbox": "5.0.0",
     "@polkadot/types": "15.9.2",
     "@types/bn.js": "5.2.0",

@@ -2,7 +2,7 @@
   "description": "SwapKit - Wallets",
   "files": ["src/", "dist/"],
   "dependencies": {
-    "@coinbase/wallet-sdk": "4.3.3",
+    "@coinbase/wallet-sdk": "4.3.4",
     "@cosmjs/amino": "0.33.1",
     "@cosmjs/crypto": "0.33.1",
     "@cosmjs/proto-signing": "0.33.1",
@@ -31,13 +31,13 @@
     "bitcoinjs-lib": "6.1.7",
     "blakejs": "1.2.1",
     "cosmjs-types": "0.9.0",
-    "ripple-binary-codec": "2.3.0",
+    "ripple-binary-codec": "2.4.0",
     "sats-connect": "3.5.0",
     "ts-pattern": "5.7.1"
   },
   "devDependencies": {
     "@walletconnect/logger": "2.1.2",
-    "@walletconnect/types": "2.21.1"
+    "@walletconnect/types": "2.21.2"
   },
   "exports": {
     ".": {
