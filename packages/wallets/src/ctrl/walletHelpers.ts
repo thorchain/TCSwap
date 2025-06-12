@@ -60,12 +60,14 @@ export async function getCtrlProvider<T extends Chain>(
       Chain.Polygon,
       () => window.xfi?.ethereum,
     )
-    .with(Chain.Cosmos, Chain.Kujira, Chain.Maya, Chain.THORChain, () => window.xfi?.keplr)
+    .with(Chain.Cosmos, Chain.Kujira, () => window.xfi?.keplr)
     .with(Chain.Bitcoin, () => window.xfi?.bitcoin)
     .with(Chain.BitcoinCash, () => window.xfi?.bitcoincash)
     .with(Chain.Dogecoin, () => window.xfi?.dogecoin)
     .with(Chain.Litecoin, () => window.xfi?.litecoin)
     .with(Chain.Solana, () => window.xfi?.solana)
+    .with(Chain.THORChain, () => window.xfi?.thorchain)
+    .with(Chain.Maya, () => window.xfi?.mayachain)
     .otherwise(() => undefined);
 }
 
@@ -91,72 +93,61 @@ async function transaction({
 }
 
 export async function getCtrlAddress(chain: Chain) {
-  const eipProvider = (await getCtrlProvider(chain)) as Eip1193Provider;
-  if (!eipProvider) {
-    throw new SwapKitError({
-      errorKey: "wallet_provider_not_found",
-      info: { wallet: WalletOption.CTRL, chain },
-    });
-  }
-
-  if ([Chain.Cosmos, Chain.Kujira].includes(chain)) {
-    const provider = await getCtrlProvider(Chain.Cosmos);
-    if (!provider || "request" in provider) {
+  try {
+    const eipProvider = (await getCtrlProvider(chain)) as Eip1193Provider;
+    if (!eipProvider) {
       throw new SwapKitError({
         errorKey: "wallet_provider_not_found",
         info: { wallet: WalletOption.CTRL, chain },
       });
     }
 
-    // Enabling before using the Keplr is recommended.
-    // This method will ask the user whether to allow access if they haven't visited this website.
-    // Also, it will request that the user unlock the wallet if the wallet is locked.
-    const chainId = ChainToChainId[chain];
-    await provider.enable(chainId);
+    if ([Chain.Cosmos, Chain.Kujira].includes(chain)) {
+      const provider = await getCtrlProvider(Chain.Cosmos);
+      if (!provider || "request" in provider) {
+        throw new SwapKitError({
+          errorKey: "wallet_provider_not_found",
+          info: { wallet: WalletOption.CTRL, chain },
+        });
+      }
 
-    const offlineSigner = provider.getOfflineSigner(chainId);
+      // Enabling before using the Keplr is recommended.
+      // This method will ask the user whether to allow access if they haven't visited this website.
+      // Also, it will request that the user unlock the wallet if the wallet is locked.
+      const chainId = ChainToChainId[chain];
+      await provider.enable(chainId);
 
-    const [item] = await offlineSigner.getAccounts();
-    return item?.address;
-  }
+      const offlineSigner = provider.getOfflineSigner(chainId);
 
-  if (EVMChains.includes(chain as EVMChain)) {
-    // For CTRL wallet, we need to use the request method directly on the provider
-    if ("request" in eipProvider && typeof eipProvider.request === "function") {
-      const accounts = await eipProvider.request({ method: "eth_requestAccounts" });
-      return accounts[0];
+      const [item] = await offlineSigner.getAccounts();
+      return item?.address;
     }
-    const { BrowserProvider } = await import("ethers");
-    const provider = new BrowserProvider(eipProvider, "any");
-    const [response] = await providerRequest({
-      provider,
-      method: "eth_requestAccounts",
-      params: [],
-    });
-    return response;
-  }
 
-  if (chain === Chain.Solana) {
-    const provider = await getCtrlProvider(Chain.Solana);
-
-    const accounts = await provider.connect();
-    return accounts.publicKey.toString();
-  }
-
-  try {
-    // For CTRL wallet, try direct request method first
-    if ("request" in eipProvider && typeof eipProvider.request === "function") {
-      const accounts = await eipProvider.request({ method: "eth_requestAccounts" });
-      return accounts[0];
+    if (EVMChains.includes(chain as EVMChain)) {
+      // For CTRL wallet, we need to use the request method directly on the provider
+      if ("request" in eipProvider && typeof eipProvider.request === "function") {
+        const accounts = await eipProvider.request({ method: "eth_requestAccounts" });
+        return accounts[0];
+      }
+      const { BrowserProvider } = await import("ethers");
+      const provider = new BrowserProvider(eipProvider, "any");
+      const [response] = await providerRequest({
+        provider,
+        method: "eth_requestAccounts",
+        params: [],
+      });
+      return response;
     }
-    const { BrowserProvider } = await import("ethers");
-    const provider = new BrowserProvider(eipProvider, "any");
-    const [response] = await providerRequest({
-      provider,
-      method: "eth_requestAccounts",
-      params: [],
-    });
-    return response;
+
+    if (chain === Chain.Solana) {
+      const provider = await getCtrlProvider(Chain.Solana);
+
+      const accounts = await provider.connect();
+      return accounts.publicKey.toString();
+    }
+
+    const accounts = await eipProvider.request({ method: "request_accounts", params: [] });
+    return accounts[0];
   } catch (_error) {
     throw new SwapKitError({
       errorKey: "wallet_provider_not_found",

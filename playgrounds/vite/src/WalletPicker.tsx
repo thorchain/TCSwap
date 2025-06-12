@@ -155,6 +155,7 @@ export const availableChainsByWallet = {
   [WalletOption.EXODUS]: [Chain.Ethereum, Chain.BinanceSmartChain, Chain.Polygon, Chain.Bitcoin],
   [WalletOption.LEDGER_LIVE]: [],
   [WalletOption.RADIX_WALLET]: [Chain.Radix],
+  [WalletOption.COSMOSTATION]: [],
 };
 
 export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
