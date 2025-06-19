@@ -13,7 +13,7 @@ const openApiPlugin = starlightOpenAPI([
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.REFERENCES ? "https://thorswap.github.io" : undefined,
+  site: process.env.REFERENCES ? "https://swapkit.github.io" : undefined,
   base: process.env.REFERENCES ? "/SwapKit" : undefined,
   markdown: {
     syntaxHighlight: "shiki",
