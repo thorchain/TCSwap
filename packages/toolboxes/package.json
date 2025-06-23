@@ -64,8 +64,8 @@
       "types": "./src/evm/index.ts"
     },
     "./near": {
-      "default": "./dist/near/index.js",
-      "require": "./dist/near/index.cjs",
+      "default": "./dist/src/near/index.js",
+      "require": "./dist/src/near/index.cjs",
       "types": "./src/near/index.ts"
     },
     "./radix": {

@@ -47,7 +47,6 @@ export interface NearFunctionCallParams {
 
 export interface NearCreateTransactionParams extends GenericCreateTransactionParams {
   // NEAR-specific options
-  publicKey: string; // Public key for the transaction
   attachedDeposit?: string;
   // Function call parameters
   functionCall?: {
