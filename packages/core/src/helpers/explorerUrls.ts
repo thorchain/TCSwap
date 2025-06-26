@@ -29,6 +29,7 @@ export function getExplorerTxUrl({ chain, txHash }: { txHash: string; chain: Cha
       Chain.Bitcoin,
       Chain.BitcoinCash,
       Chain.Dogecoin,
+      Chain.Zcash,
       Chain.Radix,
       () => `${baseUrl}/transaction/${txHash.toLowerCase()}`,
     )
