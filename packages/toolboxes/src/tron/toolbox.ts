@@ -12,6 +12,7 @@ import { P, match } from "ts-pattern";
 
 import { trc20ABI } from "./helpers/trc20.abi.js";
 import type {
+  TronCreateTransactionParams,
   TronSignedTransaction,
   TronSigner,
   TronToolboxOptions,
@@ -39,7 +40,9 @@ export async function getTronPrivateKeyFromMnemonic({
   const derivationPathToUse =
     customPath ||
     derivationPathToString(
-      updateDerivationPath(NetworkDerivationPath[Chain.Tron], { index: index || 0 }),
+      updateDerivationPath(NetworkDerivationPath[Chain.Tron], {
+        index: index || 0,
+      }),
     );
 
   const { HDKey } = await import("@scure/bip32");
@@ -251,16 +254,15 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
     return AssetValue.from({ chain: Chain.Tron, value: 10 }); // 10 TRX
   };
 
-  const createTransaction = async (params: TronTransferParams) => {
-    const { recipient, assetValue, memo } = params;
-    const from = await getAddress();
+  const createTransaction = async (params: TronCreateTransactionParams) => {
+    const { recipient, assetValue, memo, sender } = params;
     const isNative = assetValue.isGasAsset;
 
     if (isNative) {
       const transaction = await tronWeb.transactionBuilder.sendTrx(
         recipient,
         assetValue.getBaseValue("number"),
-        from,
+        sender,
       );
 
       if (memo) {
@@ -291,7 +293,7 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
       functionSelector,
       {},
       parameter,
-      from,
+      sender,
     );
 
     return result.transaction;

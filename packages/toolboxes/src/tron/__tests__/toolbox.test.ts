@@ -90,6 +90,7 @@ describe("TRON Address Validation", () => {
     // Create a transaction
     const transaction = await toolbox.createTransaction({
       recipient: toAddress,
+      sender: toAddress,
       assetValue: AssetValue.from({
         chain: Chain.Tron,
         value: "1", // 1 TRX

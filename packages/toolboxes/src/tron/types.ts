@@ -1,4 +1,8 @@
-import type { DerivationPathArray, GenericTransferParams } from "@swapkit/helpers";
+import type {
+  DerivationPathArray,
+  GenericCreateTransactionParams,
+  GenericTransferParams,
+} from "@swapkit/helpers";
 import type { Contract, Types } from "tronweb";
 
 // Re-export TronWeb types for convenience
@@ -19,4 +23,9 @@ export type TronToolboxOptions =
 
 export interface TronTransferParams extends GenericTransferParams {
   // No additional fields needed - all inherited from GenericTransferParams
+}
+
+export interface TronCreateTransactionParams
+  extends Omit<GenericCreateTransactionParams, "feeRate"> {
+  // No additional fields needed - all inherited from GenericCreateTransactionParams
 }
