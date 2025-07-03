@@ -396,9 +396,20 @@ const getRpcBody = (chain: Chain | StagenetChain) => {
       StagenetChain.THORChain,
       () => ({ id: 1, jsonrpc: "2.0", method: "status", params: {} }),
     )
-    .with(Chain.Polkadot, () => ({ id: 1, jsonrpc: "2.0", method: "system_health", params: [] }))
+    .with(Chain.Polkadot, Chain.Chainflip, () => ({
+      id: 1,
+      jsonrpc: "2.0",
+      method: "system_health",
+      params: [],
+    }))
     .with(Chain.Solana, () => ({ id: 1, jsonrpc: "2.0", method: "getHealth" }))
-    .with(Chain.Radix, () => "")
+    .with(Chain.Radix, Chain.Fiat, () => "")
+    .with(Chain.Near, () => ({
+      jsonrpc: "2.0",
+      id: "dontcare",
+      method: "status",
+      params: [],
+    }))
     .otherwise(() => {
       throw new SwapKitError("helpers_chain_not_supported", { chain });
     });
