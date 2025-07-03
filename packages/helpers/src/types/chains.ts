@@ -409,6 +409,12 @@ const getRpcBody = (chain: Chain | StagenetChain) => {
       method: "status",
       params: [],
     }))
+    .with(Chain.Ripple, () => ({
+      method: "ping",
+      params: [{}],
+      id: 1,
+      jsonrpc: "2.0",
+    }))
     .otherwise(() => {
       throw new SwapKitError("helpers_chain_not_supported", { chain });
     });
