@@ -20,7 +20,7 @@ import type {
   TronTransferParams,
 } from "./types.js";
 
-const { TronWeb } = require("tronweb");
+import { TronWeb } from "tronweb";
 
 export async function getTronAddressValidator() {
   return (address: string) => {

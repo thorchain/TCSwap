@@ -83,9 +83,7 @@ async function getSolanaBalance(address: string) {
 
     balances.push(
       AssetValue.from({
-        chain: Chain.Solana,
-        symbol,
-        address: mintAddress,
+        asset: `${Chain.Solana}.${symbol}-${mintAddress}`,
         value: amount,
         fromBaseDecimal: decimals,
       }),
