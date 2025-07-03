@@ -370,7 +370,6 @@ const getRpcBody = (chain: Chain | StagenetChain) => {
       Chain.Ethereum,
       Chain.Optimism,
       Chain.Polygon,
-      Chain.Tron,
       () => ({ id: 1, jsonrpc: "2.0", method: "eth_blockNumber", params: [] }),
     )
     .with(
@@ -403,7 +402,7 @@ const getRpcBody = (chain: Chain | StagenetChain) => {
       params: [],
     }))
     .with(Chain.Solana, () => ({ id: 1, jsonrpc: "2.0", method: "getHealth" }))
-    .with(Chain.Radix, Chain.Fiat, () => "")
+    .with(Chain.Tron, Chain.Radix, Chain.Fiat, () => "")
     .with(Chain.Near, () => ({
       jsonrpc: "2.0",
       id: "dontcare",
@@ -416,7 +415,10 @@ const getRpcBody = (chain: Chain | StagenetChain) => {
 };
 
 function getChainStatusEndpoint(chain: Chain | StagenetChain) {
-  return chain === Chain.Radix ? "/status/network-configuration" : "";
+  return match(chain)
+    .with(Chain.Radix, () => "/status/network-configuration")
+    .with(Chain.Tron, () => "/wallet/getnowblock")
+    .otherwise(() => "");
 }
 
 const testRPCConnection = async (chain: Chain | StagenetChain, url: string) => {
