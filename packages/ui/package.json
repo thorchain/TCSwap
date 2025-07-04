@@ -26,7 +26,10 @@
       "types": "./src/react/index.tsx"
     }
   },
-  "files": ["src/", "dist/"],
+  "files": [
+    "src/",
+    "dist/"
+  ],
   "homepage": "https://github.com/thorswap/SwapKit",
   "license": "Apache-2.0",
   "repository": {
@@ -37,9 +40,7 @@
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",
-    "clean": "rm -rf dist node_modules *.tsbuildinfo",
-    "test": "bun test",
-    "test:ci": "bun test --coverage"
+    "clean": "rm -rf dist node_modules *.tsbuildinfo"
   },
   "type": "module"
 }
