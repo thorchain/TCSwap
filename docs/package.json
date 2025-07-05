@@ -14,20 +14,20 @@
   },
   "dependencies": {
     "@astrojs/react": "4.3.0",
-    "@astrojs/starlight": "0.34.3",
-    "@shikijs/twoslash": "3.6.0",
+    "@astrojs/starlight": "0.34.4",
+    "@shikijs/twoslash": "3.7.0",
     "@swapkit/core": "workspace:*",
     "@swapkit/helpers": "workspace:*",
     "@swapkit/plugins": "workspace:*",
     "@swapkit/sdk": "workspace:*",
     "@swapkit/toolboxes": "workspace:*",
     "@swapkit/wallets": "workspace:*",
-    "astro": "5.9.2",
+    "astro": "5.11.0",
     "sharp": "0.34.2",
-    "starlight-links-validator": "0.16.0",
-    "starlight-openapi": "0.18.0",
+    "starlight-links-validator": "0.17.0",
+    "starlight-openapi": "0.19.1",
     "starlight-typedoc": "0.21.3",
-    "typedoc": "0.28.5",
-    "typedoc-plugin-markdown": "4.6.4"
+    "typedoc": "0.28.7",
+    "typedoc-plugin-markdown": "4.7.0"
   }
 }

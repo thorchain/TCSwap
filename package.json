@@ -7,7 +7,6 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "lefthook": "1.11.16",
-    "npm-check-updates": "18.0.1",
     "react": "19.1.0",
     "typescript": "5.8.3"
   },
@@ -20,8 +19,7 @@
     "build:clean": "bun --filter '!@internal/docs' --elide-lines=0 build:clean",
     "build:ci": "bun --filter '!@internal/docs' build",
     "build:debug": "DEBUG=true bun --filter '!@internal/docs' build",
-    "clean": "bun --filter '*' clean && rm -rf node_modules build; bun install",
-    "deps": "bun ncu --root -u -i -ws",
+    "clean": "bun --filter '*' clean && rm -rf bun.lock node_modules build; bun install",
     "docs": "bun --cwd ./docs",
     "generate:tokens": "bun --filter '@swapkit/helpers' build; bun --cwd packages/helpers generate-tokens; bun lint",
     "lint": "bun biome check --write .",
