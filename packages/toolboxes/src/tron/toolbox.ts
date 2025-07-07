@@ -258,6 +258,7 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
     }
   };
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const getBalance = async (address: string, _scamFilter = true) => {
     const fallbackBalance = [
       AssetValue.from({
