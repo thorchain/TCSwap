@@ -13,6 +13,9 @@ import { P, match } from "ts-pattern";
 import { trc20ABI } from "./helpers/trc20.abi.js";
 import { fetchAccountFromTronGrid } from "./helpers/trongrid.js";
 import type {
+  ApproveParams,
+  ApprovedParams,
+  IsApprovedParams,
   TronCreateTransactionParams,
   TronSignedTransaction,
   TronSigner,
@@ -30,6 +33,8 @@ const TRC20_TRANSFER_BANDWIDTH = 345; // Bandwidth consumed by TRC20 transfer
 
 // Known TRON tokens
 const TRON_USDT_CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
+
+const MAX_APPROVAL = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
 
 export async function getTronAddressValidator() {
   return (address: string) => {
@@ -71,9 +76,11 @@ export async function getTronPrivateKeyFromMnemonic({
 async function createKeysForPath({
   phrase,
   derivationPath,
+  tronWeb,
 }: {
   phrase: string;
   derivationPath: string;
+  tronWeb: TronWeb;
 }) {
   const { HDKey } = await import("@scure/bip32");
   const { mnemonicToSeedSync } = await import("@scure/bip39");
@@ -89,18 +96,14 @@ async function createKeysForPath({
   // Convert private key to hex string for TronWeb
   const privateKeyHex = Buffer.from(derived.privateKey).toString("hex");
 
-  // Create TronWeb instance with the derived private key
-  const tronWebWithKey = new TronWeb({
-    fullHost: SKConfig.get("rpcUrls")[Chain.Tron],
-    privateKey: privateKeyHex,
-  });
+  tronWeb.setPrivateKey(privateKeyHex);
 
-  const address = tronWebWithKey.address.fromPrivateKey(privateKeyHex);
+  const address = tronWeb?.address.fromPrivateKey(privateKeyHex);
 
   return {
     getAddress: () => Promise.resolve(typeof address === "string" ? address : ""),
     signTransaction: async (transaction: TronTransaction) => {
-      const signedTx = await tronWebWithKey.trx.sign(transaction, privateKeyHex);
+      const signedTx = await tronWeb.trx.sign(transaction, privateKeyHex);
       return signedTx;
     },
   };
@@ -127,7 +130,9 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
 
   // Create signer based on options using pattern matching
   const signer: TronSigner | undefined = await match(options)
-    .with({ phrase: P.string }, async ({ phrase }) => createKeysForPath({ phrase, derivationPath }))
+    .with({ phrase: P.string }, async ({ phrase }) =>
+      createKeysForPath({ phrase, derivationPath, tronWeb }),
+    )
     .with({ signer: P.any }, ({ signer }) => Promise.resolve(signer as TronSigner))
     .otherwise(() => Promise.resolve(undefined));
 
@@ -342,6 +347,7 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
     if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
 
     const from = await getAddress();
+    tronWeb.setAddress(from);
     const isNative = assetValue.isGasAsset;
 
     if (isNative) {
@@ -369,26 +375,16 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
       return txid;
     }
 
-    // TRC20 Token Transfer
-    const contractAddress = assetValue.address;
-    if (!contractAddress) {
-      throw new SwapKitError("toolbox_tron_invalid_token_identifier", {
-        identifier: assetValue.toString(),
-      });
-    }
-
-    const feeLimit = calculateFeeLimit();
-    const contract = tronWeb.contract(trc20ABI, contractAddress);
-
-    if (!contract.methods?.transfer) {
-      throw new SwapKitError("toolbox_tron_token_transfer_failed");
-    }
-
-    const txid = await contract.transfer(recipient, assetValue.getBaseValue("string")).send({
-      from,
-      feeLimit,
-      callValue: 0,
+    // TRC20 Token Transfer - always use createTransaction + sign pattern
+    const transaction = await createTransaction({
+      recipient,
+      assetValue,
+      memo,
+      sender: from,
     });
+
+    const signedTx = await signer.signTransaction(transaction);
+    const { txid } = await tronWeb.trx.sendRawTransaction(signedTx);
 
     if (!txid) {
       throw new SwapKitError("toolbox_tron_token_transfer_failed");
@@ -505,6 +501,7 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
       return transaction;
     }
 
+    tronWeb.setAddress(sender); // Set address for contract calls
     // For TRC20, we would need to build the transaction manually
     // This is a simplified version - in practice, you'd build the contract call transaction
     const contractAddress = assetValue.address;
@@ -557,6 +554,85 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
     return txid;
   };
 
+  /**
+   * Check the current allowance for a spender on a token
+   */
+  const getApprovedAmount = async ({ assetAddress, spenderAddress, from }: ApprovedParams) => {
+    try {
+      const contract = tronWeb.contract(trc20ABI, assetAddress);
+
+      if (!contract.methods?.allowance) {
+        throw new SwapKitError("toolbox_tron_invalid_token_contract");
+      }
+
+      const allowance = (
+        await contract.methods.allowance(from, spenderAddress).call()
+      )[0] as string;
+      return BigInt(allowance || 0);
+    } catch (error) {
+      throw new SwapKitError("toolbox_tron_allowance_check_failed", { error });
+    }
+  };
+
+  /**
+   * Check if a spender is approved for a specific amount
+   */
+  const isApproved = async ({ assetAddress, spenderAddress, from, amount }: IsApprovedParams) => {
+    const allowance = await getApprovedAmount({ assetAddress, spenderAddress, from });
+
+    if (!amount) {
+      // If no amount specified, check if there's any approval
+      return allowance > 0n;
+    }
+
+    const amountBigInt = BigInt(amount);
+    return allowance >= amountBigInt;
+  };
+
+  /**
+   * Approve a spender to transfer tokens
+   */
+  const approve = async ({ assetAddress, spenderAddress, amount, from }: ApproveParams) => {
+    if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
+
+    const fromAddress = from || (await getAddress());
+    const approvalAmount = amount !== undefined ? BigInt(amount).toString() : MAX_APPROVAL;
+
+    // Build approve transaction using triggerSmartContract
+    const functionSelector = "approve(address,uint256)";
+    const parameter = [
+      { type: "address", value: spenderAddress },
+      { type: "uint256", value: approvalAmount },
+    ];
+
+    const feeLimit = calculateFeeLimit();
+    const options = {
+      feeLimit,
+      callValue: 0,
+    };
+
+    try {
+      const { transaction } = await tronWeb.transactionBuilder.triggerSmartContract(
+        assetAddress,
+        functionSelector,
+        options,
+        parameter,
+        fromAddress,
+      );
+
+      const signedTx = await signer.signTransaction(transaction);
+      const { txid } = await tronWeb.trx.sendRawTransaction(signedTx);
+
+      if (!txid) {
+        throw new SwapKitError("toolbox_tron_approve_failed");
+      }
+
+      return txid;
+    } catch (error) {
+      throw new SwapKitError("toolbox_tron_approve_failed", { error });
+    }
+  };
+
   return {
     tronWeb,
     getAddress,
@@ -567,5 +643,8 @@ export const createTronToolbox = async (options: TronToolboxOptions = {}) => {
     createTransaction,
     signTransaction,
     broadcastTransaction,
+    approve,
+    isApproved,
+    getApprovedAmount,
   };
 };

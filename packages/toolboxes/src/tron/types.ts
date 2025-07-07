@@ -1,5 +1,6 @@
 import type {
   DerivationPathArray,
+  FeeOption,
   GenericCreateTransactionParams,
   GenericTransferParams,
 } from "@swapkit/helpers";
@@ -29,6 +30,27 @@ export interface TronCreateTransactionParams
   extends Omit<GenericCreateTransactionParams, "feeRate"> {
   // No additional fields needed - all inherited from GenericCreateTransactionParams
 }
+
+// Same as EVM types for consistency
+export type ApproveParams = {
+  assetAddress: string;
+  spenderAddress: string;
+  feeOptionKey?: FeeOption;
+  amount?: bigint | string | number; // BigNumberish equivalent for Tron
+  from?: string;
+  gasLimitFallback?: bigint | string | number;
+  nonce?: number;
+};
+
+export type ApprovedParams = {
+  assetAddress: string;
+  spenderAddress: string;
+  from: string;
+};
+
+export type IsApprovedParams = ApprovedParams & {
+  amount?: bigint | string | number;
+};
 
 // TronGrid API Types
 export type TronGridTRC20Balance = Array<{

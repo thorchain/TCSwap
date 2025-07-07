@@ -346,6 +346,9 @@ const errorCodes = {
   toolbox_tron_transaction_creation_failed: 50804,
   toolbox_tron_fee_estimation_failed: 50805,
   toolbox_tron_trongrid_api_error: 50806,
+  toolbox_tron_approve_failed: 50807,
+  toolbox_tron_invalid_token_contract: 50808,
+  toolbox_tron_allowance_check_failed: 50809,
   /**
    * Toolboxes - Near
    */
