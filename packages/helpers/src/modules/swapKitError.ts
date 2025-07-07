@@ -238,6 +238,15 @@ const errorCodes = {
   wallet_near_extensions_not_found: 22003,
   wallet_near_method_not_supported: 22003,
   /**
+   * Wallets - Xaman
+   */
+  wallet_xaman_not_configured: 23001,
+  wallet_xaman_not_connected: 23002,
+  wallet_xaman_auth_failed: 23003,
+  wallet_xaman_connection_failed: 23004,
+  wallet_xaman_transaction_failed: 23005,
+  wallet_xaman_monitoring_failed: 23006,
+  /**
    * Chainflip
    */
   chainflip_channel_error: 30001,
@@ -257,6 +266,7 @@ const errorCodes = {
    */
   thorchain_chain_halted: 40001,
   thorchain_trading_halted: 40002,
+  thorchain_asset_is_not_tcy: 40003,
   /**
    * THORChain - Swap
    */
@@ -334,6 +344,7 @@ const errorCodes = {
   toolbox_tron_invalid_token_identifier: 50802,
   toolbox_tron_token_transfer_failed: 50803,
   toolbox_tron_transaction_creation_failed: 50804,
+  toolbox_tron_fee_estimation_failed: 50805,
   /**
    * Toolboxes - Near
    */

@@ -19,6 +19,14 @@ export type InboundAddressesItem = {
   halted: boolean;
   pub_key: string;
   router?: string;
+  global_trading_paused: boolean;
+  chain_trading_paused: boolean;
+  chain_lp_actions_paused: boolean;
+  observed_fee_rate?: string;
+  gas_rate_units: string;
+  outbound_tx_size: string;
+  outbound_fee: string;
+  dust_threshold: string;
 };
 
 export type LastBlockItem<T extends THORNodeType = "thorchain"> = {
@@ -240,3 +248,29 @@ export type RunePoolProviderInfo = {
   last_deposit_height: number;
   last_withdraw_height: number;
 };
+
+export type TCYStakerSummary = {
+  amount: string;
+};
+
+export type TCYStaker = {
+  address?: string;
+  amount: string;
+};
+
+export type TCYStakerResponse = TCYStaker;
+export type TCYStakersResponse = TCYStakerSummary[];
+
+export type TCYClaimerSummary = {
+  amount: string;
+  asset: string;
+};
+
+export type TCYClaimer = {
+  l1_address?: string;
+  amount: string;
+  asset: string;
+};
+
+export type TCYClaimerResponse = TCYClaimer;
+export type TCYClaimersResponse = TCYClaimerSummary[];
