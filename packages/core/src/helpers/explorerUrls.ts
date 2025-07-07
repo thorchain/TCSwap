@@ -35,6 +35,7 @@ export function getExplorerTxUrl({ chain, txHash }: { txHash: string; chain: Cha
     )
     .with(Chain.Near, () => `${baseUrl}/txns/${txHash}`)
     .with(Chain.Ripple, () => `${baseUrl}/transactions/${txHash}`)
+    .with(Chain.Tron, () => `${baseUrl}/#/transaction/${txHash}`)
     .otherwise(() => "");
 
   return explorerUrl;
@@ -45,6 +46,7 @@ export function getExplorerAddressUrl({ chain, address }: { address: string; cha
 
   const explorerUrl = match(chain)
     .with(Chain.Solana, Chain.Radix, () => `${baseUrl}/account/${address}`)
+    .with(Chain.Tron, () => `${baseUrl}/#/address/${address}`)
     .otherwise(() => `${baseUrl}/address/${address}`);
 
   return explorerUrl;
