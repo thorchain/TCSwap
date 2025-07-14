@@ -177,7 +177,8 @@ async function fetchUtxosBatch({
   const fields = "is_spent,transaction_hash,index,value,script_hex,block_id,spending_signature_hex";
 
   const response = await blockchairRequest<BlockchairOutputsResponse[]>(
-    `${baseUrl(chain)}/outputs?q=recipient(${address}),is_spent(false)&s=value(desc)&fields=${fields}&limit=${limit}&offset=${offset}`,
+    // TODO - remove max value limit once we updated bitcoinjs-lib to support larger values
+    `${baseUrl(chain)}/outputs?q=recipient(${address}),is_spent(false),value(..2000000000000000)&s=value(desc)&fields=${fields}&limit=${limit}&offset=${offset}`,
     apiKey,
   );
 
