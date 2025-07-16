@@ -1,6 +1,4 @@
 name: Release
-permissions:
-  contents: read
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
