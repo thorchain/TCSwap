@@ -14,6 +14,7 @@ import type { ledgerWallet } from "@swapkit/wallet-hardware/ledger";
 import type { trezorWallet } from "@swapkit/wallet-hardware/trezor";
 
 import type { SubstrateInjectedExtension } from "@swapkit/toolboxes/substrate";
+import type { TronSignedTransaction, TronTransaction } from "@swapkit/toolboxes/tron";
 import type { bitgetWallet } from "./bitget";
 import type { coinbaseWallet } from "./coinbase";
 import type { cosmostationWallet } from "./cosmostation";
@@ -30,7 +31,7 @@ import type { phantomWallet } from "./phantom";
 import type { polkadotWallet } from "./polkadotjs";
 import type { radixWallet } from "./radix";
 import type { talismanWallet } from "./talisman";
-import type { tronlinkWallet } from "./tronlink";
+import type { TronLinkResponse, tronlinkWallet } from "./tronlink";
 import type { vultisigWallet } from "./vultisig";
 import type { walletconnectWallet } from "./walletconnect";
 import type { xamanWallet } from "./xaman";
@@ -280,5 +281,25 @@ declare global {
           };
         }
       | EthereumWindowProvider;
+    tronlink?: {
+      ready: boolean;
+      request: (args: { method: string; params?: unknown }) => Promise<TronLinkResponse>;
+      tronWeb: {
+        defaultAddress: {
+          base58: string;
+          hex: string;
+        };
+        fullNode?: {
+          host: string;
+        };
+        trx: {
+          sign: (transaction: TronTransaction) => Promise<TronSignedTransaction>;
+          sendRawTransaction: (signedTx: TronSignedTransaction) => Promise<string>;
+          getBalance: (address: string) => Promise<number>;
+          getAccountResources: (address: string) => Promise<unknown>;
+        };
+      };
+      sunWeb?: unknown; // For sidechain support
+    };
   }
 }

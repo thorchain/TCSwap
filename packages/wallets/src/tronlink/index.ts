@@ -55,3 +55,6 @@ export const tronlinkWallet = createWallet({
 });
 
 export const TRONLINK_SUPPORTED_CHAINS = getWalletSupportedChains(tronlinkWallet);
+
+export * from "./types.js";
+export * from "./helpers.js";

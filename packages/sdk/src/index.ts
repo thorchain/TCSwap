@@ -23,6 +23,7 @@ import { polkadotWallet } from "@swapkit/wallets/polkadotjs";
 import { radixWallet } from "@swapkit/wallets/radix";
 import { talismanWallet } from "@swapkit/wallets/talisman";
 import { trezorWallet } from "@swapkit/wallets/trezor";
+import { tronlinkWallet } from "@swapkit/wallets/tronlink";
 import { vultisigWallet } from "@swapkit/wallets/vultisig";
 import { walletconnectWallet } from "@swapkit/wallets/walletconnect";
 import { xamanWallet } from "@swapkit/wallets/xaman";
@@ -65,6 +66,7 @@ export {
   radixWallet,
   talismanWallet,
   trezorWallet,
+  tronlinkWallet,
   vultisigWallet,
   walletconnectWallet,
   xamanWallet,
@@ -98,6 +100,7 @@ export const defaultWallets = {
   ...radixWallet,
   ...talismanWallet,
   ...trezorWallet,
+  ...tronlinkWallet,
   ...vultisigWallet,
   ...walletconnectWallet,
   ...xamanWallet,
