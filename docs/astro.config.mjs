@@ -102,7 +102,7 @@ export default defineConfig({
 function createDocs() {
   // TODO: skip this for now
   if (process.env.REFERENCES !== "enable") {
-    return { plugins: [], items: [] };
+    return { plugins: [], sidebarItems: [] };
   }
 
   const pluginNames = ["chainflip", "evm", "radix", "thorchain"];

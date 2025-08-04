@@ -29,7 +29,6 @@ const ethGasChains = [
   Chain.Base,
   Chain.Ethereum,
   Chain.Optimism,
-  Chain.Polygon,
 ] as const;
 
 async function getContractDecimals({ chain, to }: { chain: EVMChain; to: string }) {
@@ -150,7 +149,7 @@ export const getCommonAssetInfo = (assetString: CommonAssetString) => {
       (asset) => ({ identifier: `${asset}.${asset}`, decimal }),
     )
     .with(Chain.Radix, "XRD.XRD", () => ({ identifier: "XRD.XRD", decimal }))
-
+    .with(Chain.Polygon, "POL.POL", () => ({ identifier: "POL.POL", decimal }))
     .with("KUJI.USK", (asset) => ({ identifier: asset, decimal: 6 }))
     .with("ETH.FLIP", () => ({
       identifier: "ETH.FLIP-0x826180541412D574cf1336d22c0C0a287822678A",
