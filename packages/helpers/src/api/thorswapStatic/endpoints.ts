@@ -1,20 +1,9 @@
-import {
-  AssetValue,
-  Chain,
-  type ProviderName,
-  RequestClient,
-  getChainIdentifier,
-} from "@swapkit/helpers";
+import { AssetValue, Chain, type ProviderName, getChainIdentifier } from "@swapkit/helpers";
 
 import { getTokenListProviders } from "../swapkitApi/endpoints";
 import type { TokenListProvidersResponse } from "../swapkitApi/types";
-import type { TokensResponse } from "./types";
 
 const baseUrl = "https://static.thorswap.net";
-
-export function getStaticTokenList(tokenListName: string) {
-  return RequestClient.get<TokensResponse>(`${baseUrl}/token-list/${tokenListName}.json`);
-}
 
 export function getLogoForAsset(assetString: string) {
   const mappedAssetIcon = getMappedAssetIcon(assetString);

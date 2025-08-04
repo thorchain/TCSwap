@@ -27,8 +27,8 @@ import {
   QuoteResponseSchema,
   type TokenListProvidersResponse,
   type TokensResponseV2,
-  type TrackerParams,
   type TrackerResponse,
+  type TrackingRequest,
 } from "./types";
 
 const SKRequestClient = RequestClient.extend({
@@ -38,7 +38,7 @@ const SKRequestClient = RequestClient.extend({
   },
 });
 
-export function getTrackerDetails(json: TrackerParams) {
+export function getTrackerDetails(json: TrackingRequest) {
   return SKRequestClient.post<TrackerResponse>(getApiUrl("/track"), { json });
 }
 

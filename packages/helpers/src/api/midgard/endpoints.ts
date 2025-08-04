@@ -1,5 +1,28 @@
 import { AssetValue, BaseDecimal, Chain, RequestClient, SwapKitNumber } from "@swapkit/helpers";
-import type { MemberDetailsMayachain, MemberDetailsThorchain, THORNameDetails } from "./types";
+import type {
+  Action,
+  ActionQuery,
+  Balance,
+  Constants,
+  DepthHistory,
+  EarningsHistory,
+  HealthInfo,
+  HistoryQuery,
+  MemberDetailsMayachain,
+  MemberDetailsThorchain,
+  MimirVote,
+  NetworkInfo,
+  Node,
+  PagedResponse,
+  Pool,
+  PoolStats,
+  SaverDetails,
+  SaversHistory,
+  Stats,
+  SwapHistory,
+  THORNameDetails,
+  TVLHistory,
+} from "./types";
 
 function getMidgardBaseUrl(isThorchain = true) {
   return isThorchain ? "https://midgard.ninerealms.com" : "https://midgard.mayachain.info";
@@ -10,6 +33,153 @@ function getNameServiceBaseUrl(isThorchain = true) {
   return isThorchain ? `${baseUrl}/v2/thorname` : `${baseUrl}/v2/mayaname`;
 }
 
+// Pool endpoints
+function getPools(baseUrl: string) {
+  return function getPools(status?: string): Promise<Pool[]> {
+    const params = status ? `?status=${status}` : "";
+    return RequestClient.get<Pool[]>(`${baseUrl}/v2/pools${params}`);
+  };
+}
+
+function getPool(baseUrl: string) {
+  return function getPool(asset: string): Promise<Pool> {
+    return RequestClient.get<Pool>(`${baseUrl}/v2/pool/${asset}`);
+  };
+}
+
+function getPoolStats(baseUrl: string) {
+  return function getPoolStats(asset: string, period?: string): Promise<PoolStats> {
+    const params = period ? `?period=${period}` : "";
+    return RequestClient.get<PoolStats>(`${baseUrl}/v2/pool/${asset}/stats${params}`);
+  };
+}
+
+function getPoolDepthHistory(baseUrl: string) {
+  return function getPoolDepthHistory(asset: string, query?: HistoryQuery): Promise<DepthHistory> {
+    const params = new URLSearchParams();
+    if (query?.interval) params.append("interval", query.interval);
+    if (query?.count) params.append("count", query.count.toString());
+    if (query?.from) params.append("from", query.from.toString());
+    if (query?.to) params.append("to", query.to.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : "";
+    return RequestClient.get<DepthHistory>(`${baseUrl}/v2/history/depths/${asset}${queryString}`);
+  };
+}
+
+// Network endpoints
+function getNetworkInfo(baseUrl: string) {
+  return function getNetworkInfo(): Promise<NetworkInfo> {
+    return RequestClient.get<NetworkInfo>(`${baseUrl}/v2/network`);
+  };
+}
+
+function getHealth(baseUrl: string) {
+  return function getHealth(): Promise<HealthInfo> {
+    return RequestClient.get<HealthInfo>(`${baseUrl}/v2/health`);
+  };
+}
+
+function getNodes(baseUrl: string) {
+  return function getNodes(): Promise<Node[]> {
+    return RequestClient.get<Node[]>(`${baseUrl}/v2/nodes`);
+  };
+}
+
+function getNode(baseUrl: string) {
+  return function getNode(address: string): Promise<Node> {
+    return RequestClient.get<Node>(`${baseUrl}/v2/node/${address}`);
+  };
+}
+
+function getMimirVotes(baseUrl: string) {
+  return function getMimirVotes(): Promise<MimirVote[]> {
+    return RequestClient.get<MimirVote[]>(`${baseUrl}/v2/mimir/votes`);
+  };
+}
+
+function getMimir(baseUrl: string) {
+  return function getMimir(): Promise<Record<string, string>> {
+    return RequestClient.get<Record<string, string>>(`${baseUrl}/v2/mimir`);
+  };
+}
+
+function getConstants(baseUrl: string) {
+  return function getConstants(): Promise<Constants> {
+    return RequestClient.get<Constants>(`${baseUrl}/v2/constants`);
+  };
+}
+
+// Stats endpoints
+function getStats(baseUrl: string) {
+  return function getStats(): Promise<Stats> {
+    return RequestClient.get<Stats>(`${baseUrl}/v2/stats`);
+  };
+}
+
+function getEarningsHistory(baseUrl: string) {
+  return function getEarningsHistory(query?: HistoryQuery): Promise<EarningsHistory> {
+    const params = new URLSearchParams();
+    if (query?.interval) params.append("interval", query.interval);
+    if (query?.count) params.append("count", query.count.toString());
+    if (query?.from) params.append("from", query.from.toString());
+    if (query?.to) params.append("to", query.to.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : "";
+    return RequestClient.get<EarningsHistory>(`${baseUrl}/v2/history/earnings${queryString}`);
+  };
+}
+
+function getSwapHistory(baseUrl: string) {
+  return function getSwapHistory(pool?: string, query?: HistoryQuery): Promise<SwapHistory> {
+    const params = new URLSearchParams();
+    if (query?.interval) params.append("interval", query.interval);
+    if (query?.count) params.append("count", query.count.toString());
+    if (query?.from) params.append("from", query.from.toString());
+    if (query?.to) params.append("to", query.to.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : "";
+    const poolPath = pool ? `/swaps/${pool}` : "/swaps";
+    return RequestClient.get<SwapHistory>(`${baseUrl}/v2/history${poolPath}${queryString}`);
+  };
+}
+
+function getTVLHistory(baseUrl: string) {
+  return function getTVLHistory(query?: HistoryQuery): Promise<TVLHistory> {
+    const params = new URLSearchParams();
+    if (query?.interval) params.append("interval", query.interval);
+    if (query?.count) params.append("count", query.count.toString());
+    if (query?.from) params.append("from", query.from.toString());
+    if (query?.to) params.append("to", query.to.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : "";
+    return RequestClient.get<TVLHistory>(`${baseUrl}/v2/history/tvl${queryString}`);
+  };
+}
+
+// Action endpoints
+function buildActionParams(query?: ActionQuery): string {
+  if (!query) return "";
+  const params = new URLSearchParams();
+  const appendParam = (key: keyof ActionQuery, value: any) => {
+    if (value !== undefined) {
+      params.append(key, typeof value === "number" ? value.toString() : value);
+    }
+  };
+  appendParam("address", query.address);
+  appendParam("txid", query.txid);
+  appendParam("asset", query.asset);
+  appendParam("type", query.type);
+  appendParam("affiliate", query.affiliate);
+  appendParam("limit", query.limit);
+  appendParam("offset", query.offset);
+  return params.toString() ? `?${params.toString()}` : "";
+}
+
+function getActions(baseUrl: string) {
+  return function getActions(query?: ActionQuery): Promise<PagedResponse<Action>> {
+    const queryString = buildActionParams(query);
+    return RequestClient.get<PagedResponse<Action>>(`${baseUrl}/v2/actions${queryString}`);
+  };
+}
+
+// Member endpoints
 function getLiquidityPositionRaw<Chain extends Chain.THORChain | Chain.Maya>(baseUrl: string) {
   return function getLiquidityPosition(
     address: string,
@@ -20,6 +190,50 @@ function getLiquidityPositionRaw<Chain extends Chain.THORChain | Chain.Maya>(bas
   };
 }
 
+function getMembers(baseUrl: string) {
+  return function getMembers(pool?: string): Promise<string[]> {
+    const poolPath = pool ? `/${pool}` : "";
+    return RequestClient.get<string[]>(`${baseUrl}/v2/members${poolPath}`);
+  };
+}
+
+// Saver endpoints
+function getSaverDetails(baseUrl: string) {
+  return function getSaverDetails(address: string, pool?: string): Promise<SaverDetails[]> {
+    const poolPath = pool ? `&asset=${pool}` : "";
+    return RequestClient.get<SaverDetails[]>(
+      `${baseUrl}/v2/saver/${address}${poolPath ? `?${poolPath.substring(1)}` : ""}`,
+    );
+  };
+}
+
+function getSavers(baseUrl: string) {
+  return function getSavers(pool: string): Promise<string[]> {
+    return RequestClient.get<string[]>(`${baseUrl}/v2/savers/${pool}`);
+  };
+}
+
+function getSaversHistory(baseUrl: string) {
+  return function getSaversHistory(pool?: string, query?: HistoryQuery): Promise<SaversHistory> {
+    const params = new URLSearchParams();
+    if (query?.interval) params.append("interval", query.interval);
+    if (query?.count) params.append("count", query.count.toString());
+    if (query?.from) params.append("from", query.from.toString());
+    if (query?.to) params.append("to", query.to.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : "";
+    const poolPath = pool ? `/savers/${pool}` : "/savers";
+    return RequestClient.get<SaversHistory>(`${baseUrl}/v2/history${poolPath}${queryString}`);
+  };
+}
+
+// Balance endpoint
+function getBalance(baseUrl: string) {
+  return function getBalance(address: string): Promise<Balance[]> {
+    return RequestClient.get<Balance[]>(`${baseUrl}/v2/balance/${address}`);
+  };
+}
+
+// THORName/MAYAName endpoints
 function getNameDetails(baseUrl: string) {
   return function getNameDetails(name: string) {
     return RequestClient.get<THORNameDetails>(`${baseUrl}/lookup/${name}`);
@@ -38,6 +252,7 @@ function getNamesByOwner(baseUrl: string) {
   };
 }
 
+// Helper functions
 function getPoolAsset({ asset, value }: { asset: string; value: string }) {
   return AssetValue.from({ asset, value, fromBaseDecimal: BaseDecimal.THOR });
 }
@@ -71,6 +286,7 @@ function getLiquidityPosition<IsThorchain extends boolean = true>({
   };
 }
 
+// Main export function
 function getMidgardMethodsForProtocol<T extends Chain.THORChain | Chain.Maya>(chain: T) {
   const isThorchain = chain === Chain.THORChain;
   const midgardBaseUrl = getMidgardBaseUrl(isThorchain);
@@ -78,11 +294,47 @@ function getMidgardMethodsForProtocol<T extends Chain.THORChain | Chain.Maya>(ch
   const liquidityPositionGetter = getLiquidityPositionRaw<T>(midgardBaseUrl);
 
   return {
+    // Pool endpoints
+    getPools: getPools(midgardBaseUrl),
+    getPool: getPool(midgardBaseUrl),
+    getPoolStats: getPoolStats(midgardBaseUrl),
+    getPoolDepthHistory: getPoolDepthHistory(midgardBaseUrl),
+
+    // Network endpoints
+    getNetworkInfo: getNetworkInfo(midgardBaseUrl),
+    getHealth: getHealth(midgardBaseUrl),
+    getNodes: getNodes(midgardBaseUrl),
+    getNode: getNode(midgardBaseUrl),
+    getMimirVotes: getMimirVotes(midgardBaseUrl),
+    getMimir: getMimir(midgardBaseUrl),
+    getConstants: getConstants(midgardBaseUrl),
+
+    // Stats endpoints
+    getStats: getStats(midgardBaseUrl),
+    getEarningsHistory: getEarningsHistory(midgardBaseUrl),
+    getSwapHistory: getSwapHistory(midgardBaseUrl),
+    getTVLHistory: getTVLHistory(midgardBaseUrl),
+
+    // Action endpoints
+    getActions: getActions(midgardBaseUrl),
+
+    // Member endpoints
     getLiquidityPositionRaw: liquidityPositionGetter,
+    getLiquidityPosition: getLiquidityPosition({ liquidityPositionGetter, isThorchain }),
+    getMembers: getMembers(midgardBaseUrl),
+
+    // Saver endpoints
+    getSaverDetails: getSaverDetails(midgardBaseUrl),
+    getSavers: getSavers(midgardBaseUrl),
+    getSaversHistory: getSaversHistory(midgardBaseUrl),
+
+    // Balance endpoint
+    getBalance: getBalance(midgardBaseUrl),
+
+    // Name service endpoints
     getNameDetails: getNameDetails(nameServiceBaseUrl),
     getNamesByAddress: getNamesByAddress(nameServiceBaseUrl),
     getNamesByOwner: getNamesByOwner(nameServiceBaseUrl),
-    getLiquidityPosition: getLiquidityPosition({ liquidityPositionGetter, isThorchain }),
   };
 }
 

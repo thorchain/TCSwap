@@ -1,5 +1,4 @@
 import {
-  type AssetValue,
   Chain,
   ChainId,
   ErrorCode,
@@ -12,15 +11,14 @@ import {
   array,
   boolean,
   coerce,
-  nativeEnum,
   number,
   object,
   optional,
   string,
   union,
   unknown,
-  type z,
-} from "zod";
+  z,
+} from "zod/v4";
 
 export enum PriorityLabel {
   CHEAPEST = "CHEAPEST",
@@ -101,50 +99,62 @@ export type TokensResponseV2 = {
   name: string;
   provider: ProviderName;
   timestamp: string;
-  tokens: TokenV2[];
+  tokens: Token[];
   version: TokenProviderVersion;
 };
 
-export type TokenV2 = {
-  address?: string;
-  chain: string;
-  shortCode?: string;
-  chainId: string;
-  decimals: number;
-  extensions?: {};
-  identifier: string;
-  logoURI: string;
-  name?: string;
-  symbol: string;
-  ticker: string;
-};
+export const TokenSchema = object({
+  chain: z.enum(Chain).optional(),
+  address: optional(string()),
+  chainId: z.enum(ChainId),
+  ticker: string(),
+  identifier: string(),
+  symbol: optional(string()),
+  name: optional(string()),
+  decimals: coerce.number(),
+  logoURI: optional(string()),
+  extensions: optional(z.looseObject({})),
+  shortCode: optional(string()),
+  coingeckoId: optional(string()),
+});
 
-export interface TransactionProps {
-  chainId: ChainId;
-  hash: string;
-  block: number;
-  type?: TxnType;
-  status?: TxnStatus;
-  trackingStatus?: TrackingStatus;
-  fromAsset: AssetValue | null;
-  fromAddress: string;
-  toAsset: AssetValue | null;
-  toAddress: string;
-  finalisedAt?: number;
-  meta?: Partial<TxnMeta>;
-  payload?: Partial<TxnPayload>;
-}
+export type Token = z.infer<typeof TokenSchema>;
 
-export type TrackerParams = {
-  chainId: ChainId;
-  hash: string;
-  block?: number;
-};
+export const TrackingRequestSchema = z
+  .object({
+    hash: z.optional(
+      z
+        .string()
+        .describe(
+          "Hash for the first transaction broadcasted by the end user. e.g. `88D1819378ECD09E5284C54937CDC1E99B52F253C007617A02DD1200710CE677`",
+        ),
+    ),
+    chainId: z.optional(z.string().describe("ChainId for the hash. e.g. `thorchain-1`")),
+    block: z.optional(
+      z.number().describe("Block number. Required for Polkadot chain. e.g. `123456`"),
+    ),
+    depositChannelId: z.optional(
+      z
+        .string()
+        .describe(
+          "Deposit channel ID, required for Chainflip if tx was broadcasted without wallet connection",
+        ),
+    ),
+  })
+  .refine((data) => (data.hash && data.chainId) || data.depositChannelId, {
+    message: "Either `hash` and `chainId` or `depositChannelId` must be provided",
+  });
 
-export type TrackerResponse = TransactionProps & {
-  legs: TransactionLegDTO[];
-  transient?: TxnTransient;
-};
+export const TrackingRequestQuerySchema = z.object({
+  forceUpdate: z
+    .string()
+    .toLowerCase()
+    .transform((x) => x === "true")
+    .pipe(z.boolean())
+    .optional(),
+});
+
+export type TrackingRequest = z.infer<typeof TrackingRequestSchema>;
 
 export const ApiV2ErrorSchema = object({
   error: string(),
@@ -152,7 +162,7 @@ export const ApiV2ErrorSchema = object({
 });
 
 export const AssetValueSchema = object({
-  chain: nativeEnum(Chain),
+  chain: z.enum(Chain),
   symbol: string(),
   ticker: string(),
   decimal: optional(number()),
@@ -186,44 +196,46 @@ export const PriceResponseSchema = array(
 export type PriceResponse = z.infer<typeof PriceResponseSchema>;
 
 export const QuoteRequestSchema = object({
-  sellAsset: string({ description: "Asset to sell" }),
-  buyAsset: string({ description: "Asset to buy" }),
-  sellAmount: string({ description: "Amount of asset to sell" }).refine((amount) => +amount > 0, {
-    message: "sellAmount must be greater than 0",
-    path: ["sellAmount"],
-  }),
+  sellAsset: string().describe("Asset to sell"),
+  buyAsset: string().describe("Asset to buy"),
+  sellAmount: string()
+    .describe("Amount of asset to sell")
+    .refine((amount) => +amount > 0, {
+      message: "sellAmount must be greater than 0",
+      path: ["sellAmount"],
+    }),
   providers: optional(
     array(
-      string({ description: "List of providers to use" }).refine(
-        (provider) => ProviderName[provider as ProviderName] !== undefined,
-        { message: "Invalid provider", path: ["providers"] },
-      ),
+      string()
+        .describe("List of providers to use")
+        .refine((provider) => ProviderName[provider as ProviderName] !== undefined, {
+          message: "Invalid provider",
+          path: ["providers"],
+        }),
     ),
   ),
-  sourceAddress: optional(string({ description: "Address to send asset from" })),
-  destinationAddress: optional(string({ description: "Address to send asset to" })),
-  slippage: optional(number({ description: "Slippage tolerance as a percentage. Default is 3%." })),
-  affiliate: optional(string({ description: "Affiliate thorname" })),
+  sourceAddress: optional(string().describe("Address to send asset from")),
+  destinationAddress: optional(string().describe("Address to send asset to")),
+  slippage: optional(number().describe("Slippage tolerance as a percentage. Default is 3%.")),
+  affiliate: optional(string().describe("Affiliate thorname")),
   affiliateFee: optional(
-    number({ description: "Affiliate fee in basis points" }).refine(
-      (fee) => fee === Math.floor(fee) && fee >= 0,
-      { message: "affiliateFee must be a positive integer", path: ["affiliateFee"] },
-    ),
+    number()
+      .describe("Affiliate fee in basis points")
+      .refine((fee) => fee === Math.floor(fee) && fee >= 0, {
+        message: "affiliateFee must be a positive integer",
+        path: ["affiliateFee"],
+      }),
   ),
-  allowSmartContractSender: optional(boolean({ description: "Allow smart contract as sender" })),
-  allowSmartContractReceiver: optional(
-    boolean({ description: "Allow smart contract as recipient" }),
-  ),
-  disableSecurityChecks: optional(boolean({ description: "Disable security checks" })),
+  allowSmartContractSender: optional(boolean().describe("Allow smart contract as sender")),
+  allowSmartContractReceiver: optional(boolean().describe("Allow smart contract as recipient")),
+  disableSecurityChecks: optional(boolean().describe("Disable security checks")),
   includeTx: optional(
-    boolean({ description: "Set to true to include an transaction object (EVM only)" }),
+    boolean().describe("Set to true to include an transaction object (EVM only)"),
   ),
   cfBoost: optional(
-    boolean({
-      description: "Set to true to enable CF boost to speed up Chainflip swaps. BTC only.",
-    }),
+    boolean().describe("Set to true to enable CF boost to speed up Chainflip swaps. BTC only."),
   ),
-  referrer: optional(string({ description: "Referrer address (referral program)" })),
+  referrer: optional(string().describe("Referrer address (referral program)")),
 }).refine((data) => data.sellAsset !== data.buyAsset, {
   message: "Must be different",
   path: ["sellAsset", "buyAsset"],
@@ -376,7 +388,7 @@ const TxnMetaSchema = object({
   explorerUrl: optional(string()),
   affiliate: optional(string()),
   fees: optional(TransactionFeesSchema),
-  provider: optional(nativeEnum(ProviderName)),
+  provider: optional(z.enum(ProviderName)),
   images: optional(
     object({
       from: optional(string()),
@@ -389,31 +401,37 @@ const TxnMetaSchema = object({
 
 export type TxnMeta = z.infer<typeof TxnMetaSchema>;
 
-const TransactionLegDTOSchema = object({
-  chainId: nativeEnum(ChainId),
-  hash: string(),
-  block: number(),
-  type: nativeEnum(TxnType),
-  status: nativeEnum(TxnStatus),
-  trackingStatus: optional(nativeEnum(TrackingStatus)),
+const TransactionLegDTOSchema = z.object({
+  chainId: z.enum(ChainId),
+  hash: z.string(),
+  block: z.number(),
+  type: z.enum(TxnType),
+  status: z.enum(TxnStatus),
+  trackingStatus: z.optional(z.enum(TrackingStatus)),
 
-  fromAsset: string(),
-  fromAmount: string(),
-  fromAddress: string(),
-  toAsset: string(),
-  toAmount: string(),
-  toAddress: string(),
-  finalAsset: optional(AssetValueSchema),
-  finalAddress: optional(string()),
+  fromAsset: z.string(),
+  fromAmount: z.string(),
+  fromAddress: z.string(),
+  toAsset: z.string(),
+  toAmount: z.string(),
+  toAddress: z.string(),
+  finalAsset: z.optional(AssetValueSchema),
+  finalAddress: z.optional(z.string()),
 
-  finalisedAt: number(),
+  finalisedAt: z.number(),
 
-  transient: optional(TxnTransientSchema),
-  meta: optional(TxnMetaSchema),
-  payload: optional(TxnPayloadSchema),
+  transient: z.optional(TxnTransientSchema),
+  meta: z.optional(TxnMetaSchema),
+  payload: z.optional(TxnPayloadSchema),
 });
 
 export type TransactionLegDTO = z.infer<typeof TransactionLegDTOSchema>;
+
+export const TrackerResponseSchema: z.ZodType<TransactionDTO> = TransactionLegDTOSchema.extend({
+  legs: z.array(TransactionLegDTOSchema),
+});
+
+export type TrackerResponse = z.infer<typeof TrackerResponseSchema>;
 
 export const TransactionSchema = TransactionLegDTOSchema.extend({
   legs: array(TransactionLegDTOSchema),
@@ -429,30 +447,30 @@ export const TransactionDTOSchema: ZodType<TransactionDTO> = TransactionLegDTOSc
 
 export const FeesSchema = array(
   object({
-    type: nativeEnum(FeeTypeEnum),
+    type: z.enum(FeeTypeEnum),
     amount: string(),
     asset: string(),
     chain: string(),
-    protocol: nativeEnum(ProviderName),
+    protocol: z.enum(ProviderName),
   }),
 );
 
 export type Fees = z.infer<typeof FeesSchema>;
 
-export const EstimatedTimeSchema = object({
-  inbound: optional(number({ description: "Time to receive inbound asset in seconds" })),
-  swap: optional(number({ description: "Time to swap assets in seconds" })),
-  outbound: optional(number({ description: "Time to receive outbound asset in seconds" })),
-  total: number({ description: "Total time in seconds" }),
+export const EstimatedTimeSchema = z.object({
+  inbound: z.optional(z.number().describe("Time to receive inbound asset in seconds")),
+  swap: z.optional(z.number().describe("Time to swap assets in seconds")),
+  outbound: z.optional(z.number().describe("Time to receive outbound asset in seconds")),
+  total: z.number().describe("Total time in seconds"),
 });
 
 export type EstimatedTime = z.infer<typeof EstimatedTimeSchema>;
 
 export const EVMTransactionSchema = object({
-  to: string({ description: "Address of the recipient" }),
-  from: string({ description: "Address of the sender" }),
-  value: string({ description: "Value to send" }),
-  data: string({ description: "Data to send" }),
+  to: string().describe("Address of the recipient"),
+  from: string().describe("Address of the sender"),
+  value: string().describe("Value to send"),
+  data: string().describe("Data to send"),
 });
 
 export type EVMTransaction = z.infer<typeof EVMTransactionSchema>;
@@ -471,14 +489,14 @@ export const EVMTransactionDetailsParamsSchema = array(
 export type EVMTransactionDetailsParams = z.infer<typeof EVMTransactionDetailsParamsSchema>;
 
 export const EVMTransactionDetailsSchema = object({
-  contractAddress: string({ description: "Address of the contract to interact with" }),
-  contractMethod: string({ description: "Name of the method to call" }),
+  contractAddress: string().describe("Address of the contract to interact with"),
+  contractMethod: string().describe("Name of the method to call"),
   contractParams: EVMTransactionDetailsParamsSchema,
   contractParamNames: array(
-    string({ description: "Names of the parameters to pass to the contract method" }),
+    string().describe("Names of the parameters to pass to the contract method"),
   ),
-  approvalToken: optional(string({ description: "Address of the token to approve spending of" })),
-  approvalSpender: optional(string({ description: "Address of the spender to approve" })),
+  approvalToken: optional(string().describe("Address of the token to approve spending of")),
+  approvalSpender: optional(string().describe("Address of the spender to approve")),
 });
 
 export type EVMTransactionDetails = z.infer<typeof EVMTransactionDetailsSchema>;
@@ -497,7 +515,7 @@ export const CosmosTransactionSchema = object({
   memo: string(),
   accountNumber: number(),
   sequence: number(),
-  chainId: nativeEnum(ChainId),
+  chainId: z.enum(ChainId),
   msgs: array(EncodeObjectSchema),
   fee: FeeSchema,
 });
@@ -505,15 +523,15 @@ export const CosmosTransactionSchema = object({
 export type CosmosTransaction = z.infer<typeof CosmosTransactionSchema>;
 
 export const RouteLegSchema = object({
-  sellAsset: string({ description: "Asset to sell" }),
-  buyAsset: string({ description: "Asset to buy" }),
-  provider: nativeEnum(ProviderName),
-  sourceAddress: string({ description: "Source address" }),
-  destinationAddress: string({ description: "Destination address" }),
+  sellAsset: string().describe("Asset to sell"),
+  buyAsset: string().describe("Asset to buy"),
+  provider: z.enum(ProviderName),
+  sourceAddress: string().describe("Source address"),
+  destinationAddress: string().describe("Destination address"),
   estimatedTime: EstimatedTimeSchema.optional(),
-  affiliate: string({ description: "Affiliate address" }).optional(),
-  affiliateFee: number({ description: "Affiliate fee" }).optional(),
-  slipPercentage: number({ description: "Slippage as a percentage" }),
+  affiliate: string().describe("Affiliate address").optional(),
+  affiliateFee: number().describe("Affiliate fee").optional(),
+  slipPercentage: number().describe("Slippage as a percentage"),
 });
 
 export type RouteLeg = z.infer<typeof RouteLegSchema>;
@@ -527,9 +545,9 @@ export const RouteLegWithoutAddressesSchema = RouteLegSchema.omit({
 export type RouteLegWithoutAddresses = z.infer<typeof RouteLegWithoutAddressesSchema>;
 
 export const RouteQuoteMetadataAssetSchema = object({
-  asset: string({ description: "Asset name" }),
-  price: number({ description: "Price in USD" }),
-  image: string({ description: "Asset image" }),
+  asset: string().describe("Asset name"),
+  price: number().describe("Price in USD"),
+  image: string().describe("Asset image"),
 });
 
 export type RouteQuoteMetadataAsset = z.infer<typeof RouteQuoteMetadataAssetSchema>;
@@ -540,71 +558,71 @@ export type ChainflipMetadata = z.infer<typeof ChainflipMetadataSchema>;
 
 export const RouteQuoteMetadataSchema = object({
   assets: optional(array(RouteQuoteMetadataAssetSchema)),
-  tags: array(nativeEnum(PriorityLabel)),
+  tags: array(z.enum(PriorityLabel)),
   streamingInterval: number().optional(),
   maxStreamingQuantity: number().optional(),
   referrer: string().optional(),
 });
 
 export const RouteQuoteMetadataV2Schema = RouteQuoteMetadataSchema.extend({
-  priceImpact: optional(number({ description: "Price impact" })),
-  approvalAddress: optional(string({ description: "Approval address for swap" })),
+  priceImpact: optional(number().describe("Price impact")),
+  approvalAddress: optional(string().describe("Approval address for swap")),
   affiliate: optional(string()),
   affiliateFee: optional(string()),
-  txType: optional(nativeEnum(RouteQuoteTxType)),
+  txType: optional(z.enum(RouteQuoteTxType)),
   chainflip: ChainflipMetadataSchema.optional(),
   near: NearDepositChannelParamsSchema.optional(),
   referrer: optional(string()),
 });
 
 export const RouteQuoteWarningSchema = array(
-  object({ code: nativeEnum(WarningCodeEnum), display: string(), tooltip: string().optional() }),
+  object({ code: z.enum(WarningCodeEnum), display: string(), tooltip: string().optional() }),
 );
 
 export type RouteQuoteWarning = z.infer<typeof RouteQuoteWarningSchema>;
 
 const QuoteResponseRouteLegItem = object({
-  provider: nativeEnum(ProviderName),
-  sellAsset: string({ description: "Asset to sell" }),
-  sellAmount: string({ description: "Sell amount" }),
-  buyAsset: string({ description: "Asset to buy" }),
-  buyAmount: string({ description: "Buy amount" }),
-  buyAmountMaxSlippage: string({ description: "Buy amount max slippage" }),
+  provider: z.enum(ProviderName),
+  sellAsset: string().describe("Asset to sell"),
+  sellAmount: string().describe("Sell amount"),
+  buyAsset: string().describe("Asset to buy"),
+  buyAmount: string().describe("Buy amount"),
+  buyAmountMaxSlippage: string().describe("Buy amount max slippage"),
   fees: optional(FeesSchema),
 });
 
 const QuoteResponseRouteItem = object({
-  providers: array(nativeEnum(ProviderName)),
-  sellAsset: string({ description: "Asset to sell" }),
-  sellAmount: string({ description: "Sell amount" }),
-  buyAsset: string({ description: "Asset to buy" }),
-  expectedBuyAmount: string({ description: "Expected Buy amount" }),
-  expectedBuyAmountMaxSlippage: string({ description: "Expected Buy amount max slippage" }),
-  sourceAddress: string({ description: "Source address" }),
-  destinationAddress: string({ description: "Destination address" }),
-  targetAddress: optional(string({ description: "Target address" })),
-  inboundAddress: optional(string({ description: "Inbound address" })),
-  expiration: optional(string({ description: "Expiration" })),
-  memo: optional(string({ description: "Memo" })),
+  providers: array(z.enum(ProviderName)),
+  sellAsset: string().describe("Asset to sell"),
+  sellAmount: string().describe("Sell amount"),
+  buyAsset: string().describe("Asset to buy"),
+  expectedBuyAmount: string().describe("Expected Buy amount"),
+  expectedBuyAmountMaxSlippage: string().describe("Expected Buy amount max slippage"),
+  sourceAddress: string().describe("Source address"),
+  destinationAddress: string().describe("Destination address"),
+  targetAddress: optional(string().describe("Target address")),
+  inboundAddress: optional(string().describe("Inbound address")),
+  expiration: optional(string().describe("Expiration")),
+  memo: optional(string().describe("Memo")),
   fees: FeesSchema,
-  txType: optional(nativeEnum(RouteQuoteTxType)),
+  txType: optional(z.enum(RouteQuoteTxType)),
   tx: optional(union([EVMTransactionSchema, CosmosTransactionSchema, string()])),
   estimatedTime: optional(EstimatedTimeSchema),
-  totalSlippageBps: number({ description: "Total slippage in bps" }),
+  totalSlippageBps: number().describe("Total slippage in bps"),
   legs: array(QuoteResponseRouteLegItem),
   warnings: RouteQuoteWarningSchema,
   meta: RouteQuoteMetadataV2Schema,
 });
 
 export const QuoteResponseSchema = object({
-  quoteId: string({ description: "Quote ID" }),
+  quoteId: string().describe("Quote ID"),
   routes: array(QuoteResponseRouteItem),
-  error: optional(string({ description: "Error message" })),
+  error: optional(string().describe("Error message")),
   providerErrors: optional(
     array(
       object({
-        provider: nativeEnum(ProviderName).optional(),
-        errorCode: optional(nativeEnum(ErrorCode)),
+        provider: z.enum(ProviderName).optional(),
+        errorCode: optional(z.enum(ErrorCode)),
         message: optional(string()),
       }),
     ),
@@ -615,15 +633,23 @@ export type QuoteResponse = z.infer<typeof QuoteResponseSchema>;
 export type QuoteResponseRoute = z.infer<typeof QuoteResponseRouteItem>;
 export type QuoteResponseRouteLeg = z.infer<typeof QuoteResponseRouteLegItem>;
 
-export const GasResponseSchema = array(
-  object({ id: number(), chainId: string(), value: string(), unit: string(), createdAt: string() }),
-);
+export const GasSchema = z.object({
+  id: z.number(),
+  chainId: z.enum(ChainId),
+  value: z.string(),
+  unit: z.string(),
+  createdAt: z.date(),
+});
+
+const GasSchemaArray = z.array(GasSchema);
+
+export const GasResponseSchema = z.union([GasSchema, GasSchemaArray]);
 
 export type GasResponse = z.infer<typeof GasResponseSchema>;
 
 const BalanceResponseSchema = array(
   object({
-    chain: nativeEnum(Chain),
+    chain: z.enum(Chain),
     decimal: number(),
     ticker: string(),
     symbol: string(),
