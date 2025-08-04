@@ -1,4 +1,4 @@
-import { Chain, ProviderName, SKConfig } from "@swapkit/helpers";
+import { Chain, ChainIdToChain, ProviderName, SKConfig } from "@swapkit/helpers";
 import { SwapKitApi } from "@swapkit/helpers/api";
 
 SKConfig.set({
@@ -37,7 +37,7 @@ for (const { provider } of providers) {
     const tokens = tokenList.tokens
       .map((token) => ({
         address: token.address,
-        chain: parseChain(token.chain),
+        chain: parseChain(ChainIdToChain[token.chainId]),
         chainId: token.chainId,
         decimals: token.decimals,
         identifier: parseIdentifier(token.identifier),

@@ -115,7 +115,8 @@ export async function getGasRate() {
       throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
     }
 
-    return parsedResponse.data;
+    const gasRates = Array.isArray(parsedResponse) ? parsedResponse : [parsedResponse];
+    return gasRates;
   } catch (error) {
     throw new SwapKitError("api_v2_invalid_response", error);
   }
