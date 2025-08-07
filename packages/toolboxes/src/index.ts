@@ -53,8 +53,14 @@ export async function getAddressValidator() {
         Chain.Polygon,
         () => evmValidateAddress({ address }),
       )
-      .with(Chain.Litecoin, Chain.Dash, Chain.Dogecoin, Chain.BitcoinCash, Chain.Bitcoin, () =>
-        utxoValidateAddress({ address, chain: chain as UTXOChain }),
+      .with(
+        Chain.Litecoin,
+        Chain.Dash,
+        Chain.Dogecoin,
+        Chain.BitcoinCash,
+        Chain.Bitcoin,
+        Chain.Zcash,
+        () => utxoValidateAddress({ address, chain: chain as UTXOChain }),
       )
       .with(Chain.Cosmos, Chain.Kujira, Chain.Noble, Chain.Maya, Chain.THORChain, () =>
         cosmosValidateAddress({ address, chain: chain as CosmosChain }),
