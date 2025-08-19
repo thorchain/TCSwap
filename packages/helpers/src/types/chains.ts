@@ -267,7 +267,7 @@ export const RPC_URLS: Record<Chain | StagenetChain, string> = {
   [Chain.BitcoinCash]: "https://node-router.thorswap.net/bitcoin-cash",
   [Chain.Bitcoin]: "https://bitcoin-rpc.publicnode.com",
   [Chain.Chainflip]: "wss://mainnet-archive.chainflip.io",
-  [Chain.Cosmos]: "https://node-router.thorswap.net/cosmos/rpc",
+  [Chain.Cosmos]: "https://cosmos-rpc.publicnode.com:443",
   [Chain.Dash]: "https://dash-rpc.publicnode.com",
   [Chain.Dogecoin]: "https://node-router.thorswap.net/dogecoin",
   [Chain.Ethereum]: "https://ethereum-rpc.publicnode.com",

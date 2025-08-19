@@ -23,33 +23,65 @@ type BlockchairFetchUnspentUtxoParams = BlockchairParams<{
 }>;
 
 async function broadcastUTXOTx({ chain, txHash }: { chain: Chain; txHash: string }) {
-  const rpcUrl = SKConfig.get("rpcUrls")[chain];
-  const body = JSON.stringify({
-    jsonrpc: "2.0",
-    method: "sendrawtransaction",
-    params: [txHash],
-    id: uniqid(),
-  });
+  // Use Blockchair's push transaction endpoint (no API key needed)
+  const url = `${baseUrl(chain)}/push/transaction`;
+  const body = JSON.stringify({ data: txHash });
 
-  const response = await RequestClient.post<{
-    id: string;
-    result: string;
-    error: { message: string; code?: number } | null;
-  }>(rpcUrl, { headers: { "Content-Type": "application/json" }, body });
-
-  if (response.error) {
-    throw new SwapKitError("toolbox_utxo_broadcast_failed", {
-      error: response.error?.message,
+  try {
+    const response = await RequestClient.post<{
+      data: {
+        transaction_hash: string;
+      } | null;
+      context: {
+        code: number;
+        error?: string;
+      };
+    }>(url, {
+      headers: { "Content-Type": "application/json" },
+      body,
     });
-  }
 
-  if (response.result.includes('"code":-26')) {
-    throw new SwapKitError("toolbox_utxo_invalid_transaction", {
-      error: "Transaction amount was too low",
-    });
-  }
+    if (response.context.code !== 200) {
+      throw new SwapKitError("toolbox_utxo_broadcast_failed", {
+        error: response.context.error || "Transaction broadcast failed",
+      });
+    }
 
-  return response.result;
+    return response.data?.transaction_hash || txHash;
+  } catch (error) {
+    // Fallback to RPC if Blockchair fails
+    const rpcUrl = SKConfig.get("rpcUrls")[chain];
+    if (rpcUrl) {
+      const rpcBody = JSON.stringify({
+        jsonrpc: "2.0",
+        method: "sendrawtransaction",
+        params: [txHash],
+        id: uniqid(),
+      });
+
+      const rpcResponse = await RequestClient.post<{
+        id: string;
+        result: string;
+        error: { message: string; code?: number } | null;
+      }>(rpcUrl, { headers: { "Content-Type": "application/json" }, body: rpcBody });
+
+      if (rpcResponse.error) {
+        throw new SwapKitError("toolbox_utxo_broadcast_failed", {
+          error: rpcResponse.error?.message,
+        });
+      }
+
+      if (rpcResponse.result.includes('"code":-26')) {
+        throw new SwapKitError("toolbox_utxo_invalid_transaction", {
+          error: "Transaction amount was too low",
+        });
+      }
+
+      return rpcResponse.result;
+    }
+
+    throw error;
+  }
 }
 
 function baseUrl(chain: Chain) {

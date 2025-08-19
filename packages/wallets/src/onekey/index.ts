@@ -1,7 +1,6 @@
 import {
   Chain,
   type NetworkParams,
-  SKConfig,
   SwapKitError,
   WalletOption,
   addEVMWalletNetwork,
@@ -133,10 +132,8 @@ async function getWalletMethodsForExtension(chain: Chain) {
       const { BrowserProvider } = await import("ethers");
       const provider = new BrowserProvider(window.$onekey.ethereum, "any");
 
-      const rpcUrl = SKConfig.get("rpcUrls")[chain];
-
       await provider.send("eth_requestAccounts", []);
-      const jsonRpcProvider = await getProvider(chain, rpcUrl);
+      const jsonRpcProvider = await getProvider(chain);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
 

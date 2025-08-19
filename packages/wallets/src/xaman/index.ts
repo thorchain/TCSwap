@@ -38,12 +38,10 @@ export const xamanWallet = createWallet({
             const address = await connectXamanWalletMethod(xumm);
 
             const promises = supportedChains.map(async (chain) => {
-              const rpcUrl = SKConfig.get("rpcUrls")[chain];
               const walletMethods = await getWalletForChain({
                 xumm,
                 chain,
                 address,
-                rpcUrl,
               });
 
               addChain({

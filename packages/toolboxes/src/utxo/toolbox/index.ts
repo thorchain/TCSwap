@@ -41,7 +41,7 @@ export type UtxoToolboxParams = {
   [Chain.Litecoin]: { signer: ChainSigner<Psbt, Psbt> };
   [Chain.Dash]: { signer: ChainSigner<Psbt, Psbt> };
   [Chain.Zcash]: {
-    signer?: ChainSigner<{ psbt: ZcashPsbt; inputs: UTXOType[] }, string>;
+    signer?: ChainSigner<ZcashPsbt, ZcashPsbt>;
   };
 };
 

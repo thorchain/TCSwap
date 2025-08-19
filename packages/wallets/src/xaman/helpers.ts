@@ -5,17 +5,16 @@ import { sendXamanTransaction } from "./walletMethods";
 interface GetWalletForChainParams {
   chain: Chain;
   address: string;
-  rpcUrl?: string;
   xumm: Xumm;
 }
 
-export async function getWalletForChain({ xumm, chain, address, rpcUrl }: GetWalletForChainParams) {
+export async function getWalletForChain({ xumm, chain, address }: GetWalletForChainParams) {
   switch (chain) {
     case Chain.Ripple: {
       const { getRippleToolbox } = await import("@swapkit/toolboxes/ripple");
 
       // const api = apis?.[chain]; // Unused for now
-      const toolbox = await getRippleToolbox({ rpcUrl });
+      const toolbox = await getRippleToolbox({});
 
       // Override transfer method to use Xaman transaction flow
       const transfer = async (params: {

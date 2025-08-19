@@ -63,13 +63,7 @@ export function validateZcashAddress(address: string): boolean {
   }
 }
 
-type ZcashSigner = ChainSigner<
-  {
-    inputs: UTXOType[];
-    psbt: ZcashPsbt;
-  },
-  string
->;
+type ZcashSigner = ChainSigner<ZcashPsbt, ZcashPsbt>;
 
 function createZcashSignerFromPhrase({
   phrase,
@@ -106,35 +100,10 @@ function createZcashSignerFromPhrase({
   return {
     getAddress: () => Promise.resolve(address),
 
-    signTransaction: ({ inputs, psbt }) => {
-      const txBuilder = bitgo.createTransactionBuilderForNetwork(getZcashNetwork());
-      txBuilder.setVersion(4);
+    signTransaction: (psbt) => {
+      const signedPsbt = psbt.signAllInputs(keyPair);
 
-      for (const input of psbt.txInputs) {
-        const txHash =
-          typeof input.hash === "string" ? Buffer.from(input.hash, "hex").reverse() : input.hash;
-
-        txBuilder.addInput(txHash, input.index);
-      }
-
-      const outs = psbt.txOutputs || [];
-      for (const out of outs) {
-        if (!out.script) {
-          throw new SwapKitError("toolbox_utxo_invalid_params", {
-            message: "PSBT output script is missing",
-          });
-        }
-
-        txBuilder.addOutput(out.script, Number(out.value));
-      }
-
-      for (let i = 0; i < inputs.length; i++) {
-        const input = inputs[i];
-        txBuilder.sign(i, keyPair, undefined, undefined, input?.value);
-      }
-
-      const tx = txBuilder.build();
-      return Promise.resolve(tx.toHex());
+      return Promise.resolve(signedPsbt);
     },
   };
 }
@@ -152,7 +121,6 @@ function addInputsAndOutputs({
   sender: string;
   compiledMemo: Buffer<ArrayBufferLike> | null;
 }) {
-  psbt.setVersion(4, true);
   for (const utxo of inputs) {
     const witnessInfo = !!utxo.witnessUtxo && {
       witnessUtxo: { ...utxo.witnessUtxo, value: BigInt(utxo.value) },
@@ -224,6 +192,27 @@ async function createTransaction(buildTxParams: UTXOBuildTxParams) {
     { version: 455 },
   ) as ZcashPsbt;
 
+  psbt.setVersion(4, true);
+
+  const CONSENSUS_BRANCH_ID_KEY = Buffer.concat([
+    Buffer.of(0xfc),
+    Buffer.of(0x05),
+    Buffer.from("BITGO"),
+    Buffer.of(0),
+  ]);
+
+  // NU6 branch id (decimal 3370586197 = 0xC8E71055)
+  const branchId = 0xc8e71055;
+
+  // PSBT value must be 4-byte little-endian
+  const value = Buffer.allocUnsafe(4);
+  value.writeUInt32LE(branchId >>> 0, 0);
+
+  psbt.addUnknownKeyValToGlobal({
+    key: CONSENSUS_BRANCH_ID_KEY,
+    value,
+  });
+
   const { psbt: mappedPsbt, inputs: mappedInputs } = await addInputsAndOutputs({
     inputs,
     outputs,
@@ -277,7 +266,7 @@ export async function createZcashToolbox(
 
     const feeRate = rest.feeRate || (await baseToolbox.getFeeRates())[feeOptionKey];
 
-    const { inputs, psbt } = await createTransaction({
+    const { psbt } = await createTransaction({
       ...rest,
       assetValue,
       feeRate,
@@ -285,9 +274,11 @@ export async function createZcashToolbox(
       sender: from,
     });
 
-    const signedTxHex = await signer.signTransaction({ inputs, psbt });
+    const signedPsbt = await signer.signTransaction(psbt);
 
-    return baseToolbox.broadcastTx(signedTxHex);
+    signedPsbt.finalizeAllInputs();
+
+    return baseToolbox.broadcastTx(signedPsbt.extractTransaction().toHex());
   }
 
   function createKeysForPath({
