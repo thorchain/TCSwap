@@ -1,5 +1,5 @@
 import { createStore } from "zustand/vanilla";
-import { Chain, EXPLORER_URLS, NODE_URLS, RPC_URLS, WalletOption } from "../types";
+import { Chain, EXPLORER_URLS, FALLBACK_URLS, NODE_URLS, RPC_URLS, WalletOption } from "../types";
 import type { FeeMultiplierConfig } from "./feeMultiplier";
 
 export type SKConfigIntegrations = {
@@ -34,6 +34,7 @@ const initialState = {
   explorerUrls: EXPLORER_URLS,
   nodeUrls: NODE_URLS,
   rpcUrls: RPC_URLS,
+  fallbackRpcUrls: FALLBACK_URLS,
 
   apiKeys: {
     blockchair: "",
@@ -41,6 +42,11 @@ const initialState = {
     swapKit: "",
     walletConnectProjectId: "",
     xaman: "",
+  },
+
+  requestOptions: {
+    retry: { maxRetries: 3, baseDelay: 300, maxDelay: 5000, backoffMultiplier: 2 },
+    timeoutMs: 30000,
   },
 
   envs: {
@@ -75,6 +81,7 @@ export type SKConfigState = {
   integrations?: Partial<SKConfigIntegrations>;
   nodeUrls?: Partial<SKState["nodeUrls"]>;
   rpcUrls?: Partial<SKState["rpcUrls"]>;
+  fallbackRpcUrls?: Partial<SKState["fallbackRpcUrls"]>;
   wallets?: SKState["wallets"];
   feeMultipliers?: FeeMultiplierConfig;
 };
@@ -86,6 +93,11 @@ type SwapKitConfigStore = SKState & {
   setExplorerUrl: (chain: keyof SKState["explorerUrls"], url: string) => void;
   setNodeUrl: (chain: keyof SKState["nodeUrls"], url: string) => void;
   setRpcUrl: (chain: keyof SKState["rpcUrls"], url: string) => void;
+  setRequestOptions: (options: Partial<SKState["requestOptions"]>) => void;
+  setFallbackRpcUrls: <T extends keyof SKState["fallbackRpcUrls"]>(
+    chain: T,
+    urls: SKState["fallbackRpcUrls"][T],
+  ) => void;
   setIntegrationConfig: (
     integration: keyof SKState["integrations"],
     config: SKConfigIntegrations[keyof SKConfigIntegrations],
@@ -102,6 +114,15 @@ const swapKitState = createStore<SwapKitConfigStore>((set) => ({
     set((s) => ({ explorerUrls: { ...s.explorerUrls, [chain]: url } })),
   setNodeUrl: (chain, url) => set((s) => ({ nodeUrls: { ...s.nodeUrls, [chain]: url } })),
   setRpcUrl: (chain, url) => set((s) => ({ rpcUrls: { ...s.rpcUrls, [chain]: url } })),
+  setRequestOptions: (options) =>
+    set((s) => ({
+      requestOptions: {
+        retry: { ...s.requestOptions.retry, ...options.retry },
+        timeoutMs: options.timeoutMs || s.requestOptions.timeoutMs,
+      },
+    })),
+  setFallbackRpcUrls: (chain, urls) =>
+    set((s) => ({ fallbackRpcUrls: { ...s.fallbackRpcUrls, [chain]: urls } })),
   setIntegrationConfig: (integration, config) =>
     set((s) => ({ integrations: { ...s.integrations, [integration]: config } })),
   setFeeMultipliers: (multipliers) => set(() => ({ feeMultipliers: multipliers })),
@@ -134,6 +155,12 @@ export const SKConfig = {
     swapKitState.getState().setNodeUrl(chain, url),
   setRpcUrl: <T extends keyof SKState["rpcUrls"]>(chain: T, url: string) =>
     swapKitState.getState().setRpcUrl(chain, url),
+  setRequestOptions: (options: SKState["requestOptions"]) =>
+    swapKitState.getState().setRequestOptions(options),
+  setFallbackRpcUrls: <T extends keyof SKState["fallbackRpcUrls"]>(
+    chain: T,
+    urls: SKState["fallbackRpcUrls"][T],
+  ) => swapKitState.getState().setFallbackRpcUrls(chain, urls),
   setIntegrationConfig: <T extends keyof SKState["integrations"]>(
     integration: T,
     config: SKConfigIntegrations[T],
