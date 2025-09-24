@@ -1,4 +1,4 @@
-import { AssetValue, BaseDecimal, Chain, getRPCUrl, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, getChainConfig, getRPCUrl, SwapKitError } from "@swapkit/helpers";
 import type { Account, Contract } from "near-api-js";
 import type { SignedTransaction, Transaction } from "near-api-js/lib/transaction";
 import { getBalance } from "../utils";
@@ -237,12 +237,9 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams): Promise
 
       // NEAR doesn't support fee multipliers - gas price is fixed by the network
       const totalCostYocto = totalGasUnits * BigInt(gasPrice.toString());
+      const { baseDecimal } = getChainConfig(Chain.Near);
 
-      return AssetValue.from({
-        chain: Chain.Near,
-        fromBaseDecimal: BaseDecimal[Chain.Near],
-        value: totalCostYocto.toString(),
-      });
+      return AssetValue.from({ chain: Chain.Near, fromBaseDecimal: baseDecimal, value: totalCostYocto.toString() });
     }
 
     // Handle new gas estimation params
@@ -348,6 +345,8 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams): Promise
   }
 
   async function estimateGas(params: NearGasEstimateParams, account?: Account) {
+    const { baseDecimal } = getChainConfig(Chain.Near);
+
     const gasInTGas = await match(params)
       .when(isSimpleTransfer, () => GAS_COSTS.SIMPLE_TRANSFER)
       .when(isContractCall, (p) => getContractMethodGas(p.methodName))
@@ -367,7 +366,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams): Promise
     const gasInUnits = BigInt(gasInTGas) * BigInt(10 ** 12);
     const costInYoctoNear = gasInUnits;
 
-    return AssetValue.from({ chain: Chain.Near, fromBaseDecimal: BaseDecimal[Chain.Near], value: costInYoctoNear });
+    return AssetValue.from({ chain: Chain.Near, fromBaseDecimal: baseDecimal, value: costInYoctoNear });
   }
 
   // Get current gas price from network
