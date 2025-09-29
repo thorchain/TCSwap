@@ -31,6 +31,7 @@ export const NetworkDerivationPath: Record<Chain, DerivationPathArray> = {
   FLIP: [0, 0, 0, 0, 0],
   GAIA: [44, 118, 0, 0, 0],
   GNO: [44, 60, 0, 0, 0],
+  HARBOR: [44, 931, 0, 0, 0],
   KUJI: [44, 118, 0, 0, 0],
   LTC: [84, 2, 0, 0, 0],
   MAYA: [44, 931, 0, 0, 0],

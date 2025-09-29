@@ -1,4 +1,5 @@
-import { Chain, StagenetChain } from "@swapkit/types";
+import { Chain, getChainConfig, StagenetChain } from "@swapkit/types";
+
 /**
  * @deprecated use getChainConfig instead
  * @example
@@ -22,6 +23,8 @@ export const RPC_URLS: Record<Chain | StagenetChain, string> = {
   [Chain.Dogecoin]: "https://node-router.thorswap.net/dogecoin",
   [Chain.Ethereum]: "https://ethereum-rpc.publicnode.com",
   [Chain.Gnosis]: "https://gnosis-rpc.publicnode.com",
+  // WIP - might change
+  [Chain.Harbor]: getChainConfig(Chain.Harbor).rpcUrl,
   [Chain.Kujira]: "https://kujira-rpc.ibs.team",
   [Chain.Litecoin]: "https://node-router.thorswap.net/litecoin",
   [Chain.Maya]: "https://tendermint.mayachain.info",
@@ -40,11 +43,15 @@ export const RPC_URLS: Record<Chain | StagenetChain, string> = {
     "https://api.tatum.io/v3/blockchain/node/zcash-mainnet/t-6894a2ae7fc90cccfd3ce71b-2fce88aa7f4a41a5b1e93874",
   [StagenetChain.Maya]: "",
   [StagenetChain.THORChain]: "https://stagenet-rpc.ninerealms.com",
+  // WIP - might change
+  [StagenetChain.Harbor]: getChainConfig(Chain.Harbor).rpcUrl,
 };
 
 export const NODE_URLS = {
   [Chain.THORChain]: "https://thornode.ninerealms.com",
   [Chain.Maya]: "https://mayanode.mayachain.info",
+  // WIP - might change
+  [Chain.Harbor]: getChainConfig(Chain.Harbor).rpcUrl,
   [StagenetChain.THORChain]: "https://stagenet-thornode.ninerealms.com",
   [StagenetChain.Maya]: "https://stagenet.mayanode.mayachain.info",
 };
@@ -67,6 +74,7 @@ export const FALLBACK_URLS: Record<Chain | StagenetChain, string[]> = {
   [Chain.Dogecoin]: ["https://doge.getblock.io/mainnet", "https://dogecoin.publicnode.com"],
   [Chain.Ethereum]: ["https://eth.llamarpc.com", "https://cloudflare-eth.com"],
   [Chain.Gnosis]: ["https://gnosis.drpc.org", "https://rpc.ankr.com/gnosis"],
+  [Chain.Harbor]: [],
   [Chain.Kujira]: ["https://kujira-rpc.polkachu.com", "https://rpc-kujira.synergynodes.com/"],
   [Chain.Litecoin]: ["https://ltc.getblock.io/mainnet", "https://litecoin.publicnode.com"],
   [Chain.Maya]: ["https://tendermint.mayachain.info", "https://maya-tendermint.publicnode.com"],
@@ -84,6 +92,7 @@ export const FALLBACK_URLS: Record<Chain | StagenetChain, string[]> = {
   [Chain.Ripple]: ["wss://s1.ripple.com/", "wss://s2.ripple.com/"],
   [Chain.THORChain]: ["https://thornode.ninerealms.com", NODE_URLS[Chain.THORChain]],
   [StagenetChain.THORChain]: [],
+  [StagenetChain.Harbor]: [],
   [Chain.Solana]: ["https://api.mainnet-beta.solana.com", "https://solana-mainnet.rpc.extrnode.com"],
   [Chain.Tron]: ["https://api.tronstack.io", "https://api.tron.network"],
   [Chain.Zcash]: [],
@@ -111,6 +120,7 @@ export const EXPLORER_URLS: Record<Chain, string> = {
   [Chain.Dogecoin]: "https://blockchair.com/dogecoin",
   [Chain.Ethereum]: "https://etherscan.io",
   [Chain.Gnosis]: "https://gnosisscan.io",
+  [Chain.Harbor]: "",
   [Chain.Kujira]: "https://finder.kujira.network/kaiyo-1",
   [Chain.Litecoin]: "https://blockchair.com/litecoin",
   [Chain.Maya]: "https://www.mayascan.org",

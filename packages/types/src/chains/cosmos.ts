@@ -120,12 +120,19 @@ export const NOBLEConfig = createChain({
   type,
 });
 
-export const CosmosChainConfigs = [GAIAConfig, THORConfig, MAYAConfig, KUJIConfig, NOBLEConfig] as const;
-export const CosmosChains = [Chain.Cosmos, Chain.Kujira, Chain.Maya, Chain.Noble, Chain.THORChain] as const;
+export const CosmosChainConfigs = [GAIAConfig, THORConfig, MAYAConfig, KUJIConfig, NOBLEConfig, HARBORConfig] as const;
+export const CosmosChains = [
+  Chain.Cosmos,
+  Chain.Kujira,
+  Chain.Maya,
+  Chain.Noble,
+  Chain.THORChain,
+  Chain.Harbor,
+] as const;
 export type CosmosChain = (typeof CosmosChains)[number];
 
 export const StagenetCosmosChainConfigs = [StagenetTHORConfig, StagenetMAYAConfig] as const;
-export const StagenetCosmosChains = [StagenetChain.Maya, StagenetChain.THORChain] as const;
+export const StagenetCosmosChains = [StagenetChain.Maya, StagenetChain.THORChain, StagenetChain.Harbor] as const;
 export type StagenetCosmosChain = (typeof StagenetCosmosChains)[number];
 
 export const CosmosChainPrefixes: Record<CosmosChain, string> = {
@@ -134,6 +141,7 @@ export const CosmosChainPrefixes: Record<CosmosChain, string> = {
   [MAYAConfig.chain]: "maya",
   [KUJIConfig.chain]: "kujira",
   [NOBLEConfig.chain]: "noble",
+  [HARBORConfig.chain]: "harbor",
 };
 
 export const TCLikeChains = [THORConfig.chain, MAYAConfig.chain] as const;
