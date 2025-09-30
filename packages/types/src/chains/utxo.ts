@@ -43,7 +43,7 @@ const LTC = createChain({
 const DOGE = createChain({
   baseDecimal: 8,
   blockExplorerUrl: "https://blockchair.com/dogecoin",
-  blockTime: 600,
+  blockTime: 60,
   chain: Chain.Dogecoin,
   chainId: ChainId.Dogecoin,
   explorerUrl: "https://blockchair.com/dogecoin",
@@ -69,7 +69,7 @@ const DASH = createChain({
 const ZEC = createChain({
   baseDecimal: 8,
   blockExplorerUrl: "https://blockchair.com/zcash",
-  blockTime: 150,
+  blockTime: 75,
   chain: Chain.Zcash,
   chainId: ChainId.Zcash,
   explorerUrl: "https://blockchair.com/zcash",

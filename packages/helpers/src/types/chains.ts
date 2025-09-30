@@ -106,7 +106,7 @@ export const FALLBACK_URLS: Record<Chain | StagenetChain, string[]> = {
  * @example
  * ```diff
  * -const explorerUrl = EXPLORER_URLS[Chain.Ethereum];
- * +const { blockExplorerUrl } = getChainConfig(Chain.Ethereum);
+ * +const { explorerUrl } = getChainConfig(Chain.Ethereum);
  * ```
  */
 export const EXPLORER_URLS: Record<Chain, string> = {
