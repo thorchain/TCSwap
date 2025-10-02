@@ -58,7 +58,7 @@ export function getChainConfig<T extends keyof ChainConfigMap>(chainOrChainId: T
 export const ChainToChainId = Object.fromEntries(
   AllChainConfigs.flatMap(({ chain, chainId }) => [[chain, chainId] as const]),
 ) as {
-  readonly [K in Chain]: Extract<ChainConfig, { chain: K }>["chainId"];
+  readonly [K in Chain | StagenetChain]: Extract<ChainConfig, { chain: K }>["chainId"];
 };
 
 /**
