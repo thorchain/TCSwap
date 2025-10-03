@@ -20,7 +20,8 @@
       "!**/coverage",
       "!**/MsgCompiled.ts",
       "!**/.astro",
-      "!**/docs"
+      "!**/docs",
+      "!*.lock"
     ],
     "maxSize": 5242880
   },
@@ -96,5 +97,6 @@
       }
     }
   },
-  "overrides": [{ "includes": ["playgrounds/**"], "linter": { "rules": { "a11y": "off" } } }]
+  "overrides": [{ "includes": ["playgrounds/**"], "linter": { "rules": { "a11y": "off" } } }],
+  "vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true }
 }
