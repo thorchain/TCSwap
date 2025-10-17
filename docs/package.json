@@ -18,7 +18,8 @@
     "starlight-openapi": "0.20.0",
     "starlight-typedoc": "0.21.3",
     "typedoc": "0.28.10",
-    "typedoc-plugin-markdown": "4.8.1"
+    "typedoc-plugin-markdown": "4.8.1",
+    "unist-util-visit": "^5.0.0"
   },
   "name": "@internal/docs",
   "private": true,
