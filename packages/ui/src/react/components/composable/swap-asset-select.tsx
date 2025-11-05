@@ -41,6 +41,7 @@ export function SwapAssetSelect({
       ?.slice(0, canShowMore ? visibleNetworksAmount : visibleNetworksAmount + 2);
   }, [canShowMore, visibleNetworksAmount]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: @Drakeoon check deps please
   const assetsToRender = useMemo(() => {
     return chains
       ?.flatMap?.((chain) => {
