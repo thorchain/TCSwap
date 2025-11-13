@@ -47,7 +47,7 @@ beforeEach(async () => {
 });
 
 describe("Ethereum toolkit", () => {
-  test.skip("Get Balances", async () => {
+  test("Get Balances", async () => {
     const balances = await context.toolbox.getBalance(testAddress);
     expect(balances.find((balance) => balance.symbol === "ETH")?.getBaseValue("string")).toBe("20526000000000000");
     expect(

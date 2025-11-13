@@ -488,8 +488,7 @@ export const createTronToolbox = async (
       return txWithData;
     } catch (error) {
       throw new SwapKitError("toolbox_tron_transaction_creation_failed", {
-        message:
-          "Failed to create TRC20 transaction. This might be due to TronWeb 6.0.3 bug. Use the transfer method directly instead.",
+        message: "Failed to create TRC20 transaction.",
         originalError: error instanceof Error ? error.message : String(error),
       });
     }
