@@ -22,7 +22,7 @@ const CASE_SENSITIVE_CHAINS: Chain[] = [Chain.Solana, Chain.Tron, Chain.Near, Ch
 const TC_CHAINS: Chain[] = [Chain.THORChain, Chain.Maya];
 
 const staticTokensMap = new Map<
-  TokenNames | string,
+  TokenNames | (string & {}),
   { tax?: TokenTax; decimal: number; identifier: string; logoURI?: string }
 >();
 
@@ -297,6 +297,10 @@ or by passing asyncTokenLookup: true to the from() function, which will make it 
       }
     }
     return true;
+  }
+
+  static get staticAssets() {
+    return staticTokensMap;
   }
 }
 

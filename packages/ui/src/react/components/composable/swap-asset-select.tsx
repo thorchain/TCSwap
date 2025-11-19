@@ -1,10 +1,11 @@
 "use client";
 
-import { Chain } from "@swapkit/sdk";
+import { AllChains, type Chain } from "@swapkit/sdk";
 import { SearchIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { match } from "ts-pattern";
-import { cn } from "../../../lib/utils";
+import { cn, formatCurrency } from "../../../lib/utils";
+import { useFilteredSortedAssets } from "../../hooks/use-filtered-sorted-assets";
 import { showModal } from "../../hooks/use-modal";
 import { useSwapKit } from "../../swapkit-context";
 import { ChainIcon } from "../chain-icon";
@@ -22,43 +23,24 @@ export function SwapAssetSelect({
   setSelectedAsset: (asset: string) => void;
 }) {
   const [isNetworkListExpanded, setIsNetworkListExpanded] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedNetworks, setSelectedNetworks] = useState<Chain[]>([]);
   const [open, setOpen] = useState(false);
-  const { chains, balanceGroupedByChain, isWalletConnected } = useSwapKit();
+  const { isWalletConnected } = useSwapKit();
+
+  const { assets, filters, setFilters } = useFilteredSortedAssets();
 
   // 8 cols * 2 rows - 1 (button "all") - 2 (button "hide/show more")
   const collapsedNetworksAmount = 8 * 2 - 1 - 2;
-  const totalNetworksAmount = Object.values(Chain).length;
+  const totalNetworksAmount = AllChains.length;
   const visibleNetworksAmount = isNetworkListExpanded ? totalNetworksAmount : collapsedNetworksAmount;
   const canShowMore = collapsedNetworksAmount < totalNetworksAmount - 2;
 
-  const lowerSearchQuery = searchQuery.toLowerCase();
-
   const networksToRender = useMemo(() => {
-    return Object.values(Chain)
-      ?.sort((a, b) => a?.localeCompare(b))
-      ?.slice(0, canShowMore ? visibleNetworksAmount : visibleNetworksAmount + 2);
+    return AllChains?.sort((a, b) => a?.localeCompare(b))?.slice(
+      0,
+      canShowMore ? visibleNetworksAmount : visibleNetworksAmount + 2,
+    );
   }, [canShowMore, visibleNetworksAmount]);
-
-  const assetsToRender = useMemo(() => {
-    return chains
-      ?.flatMap?.((chain) => {
-        if (selectedNetworks.length > 0 && !selectedNetworks?.includes(chain)) return null;
-        if (!balanceGroupedByChain?.[chain]?.length) return null;
-
-        const filteredAssets = balanceGroupedByChain?.[chain]?.filter?.((assetValue) => {
-          return (
-            assetValue?.symbol?.toLowerCase()?.includes(lowerSearchQuery) ||
-            assetValue?.ticker?.toLowerCase()?.includes(lowerSearchQuery) ||
-            assetValue?.chain?.toLowerCase()?.includes(lowerSearchQuery)
-          );
-        });
-
-        return filteredAssets;
-      })
-      ?.filter((assetValue) => assetValue !== null);
-  }, [balanceGroupedByChain, selectedNetworks, lowerSearchQuery, chains]);
 
   const handleDialogTriggerClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -81,40 +63,40 @@ export function SwapAssetSelect({
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger
-        className="-ml-2 mt-1 w-auto min-w-48 max-w-1/2 rounded-lg px-2 transition-colors duration-100 hover:bg-white/[0.08]"
+        className="sk-ui--ml-2 sk-ui-mt-1 sk-ui-w-auto sk-ui-min-w-48 sk-ui-max-w-1/2 sk-ui-rounded-lg sk-ui-px-2 sk-ui-transition-colors sk-ui-duration-100 hover:sk-ui-bg-white/[0.08]"
         onClick={handleDialogTriggerClick}>
         <SwapAssetItem asset={selectedAsset} />
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="sk-ui-flex sk-ui-flex-col">
         <DialogHeader>
           <DialogTitle>Select Token</DialogTitle>
         </DialogHeader>
 
-        <div className="relative">
+        <div className="sk-ui-relative">
           <Input
-            className="h-10 bg-secondary pl-9 placeholer:text-muted-foreground text-base text-foreground"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            className="sk-ui-h-10 sk-ui-bg-secondary sk-ui-pl-9 placeholer:sk-ui-text-muted-foreground sk-ui-text-base sk-ui-text-foreground"
+            onChange={(e) => setFilters({ searchQuery: e.target.value })}
             placeholder="Search token name"
-            value={searchQuery}
+            value={filters?.searchQuery ?? ""}
           />
 
-          <SearchIcon className="-translate-y-1/2 absolute top-1/2 left-3 size-4 text-muted-foreground" />
+          <SearchIcon className="sk-ui--translate-y-1/2 sk-ui-absolute sk-ui-top-1/2 sk-ui-left-3 sk-ui-size-4 sk-ui-text-muted-foreground" />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <span className="text-muted-foreground text-sm">
+        <div className="sk-ui-flex sk-ui-flex-col sk-ui-gap-2">
+          <span className="sk-ui-text-muted-foreground sk-ui-text-sm">
             Network:{" "}
-            <span className="font-medium text-foreground">
+            <span className="sk-ui-font-medium sk-ui-text-foreground">
               {selectedNetworks?.length ? selectedNetworks?.map((network) => network.toString()).join(", ") : "All"}
             </span>
           </span>
 
-          <div className="grid grid-cols-8 gap-2">
+          <div className="sk-ui-grid sk-ui-grid-cols-8 sk-ui-gap-2">
             <Button
               className={cn(
-                "aspect-[1.3/1] h-auto border border-transparent",
-                selectedNetworks?.length === 0 && "border-foreground text-foreground",
+                "sk-ui-h-auto sk-ui-border sk-ui-border-transparent sk-ui-aspect-[1.3/1]",
+                selectedNetworks?.length === 0 && "sk-ui-border-foreground sk-ui-text-foreground",
               )}
               onClick={() => setSelectedNetworks([])}>
               All
@@ -122,13 +104,14 @@ export function SwapAssetSelect({
 
             {networksToRender?.map((chain) => {
               const isSelected = selectedNetworks?.includes(chain);
+
               return (
                 <Button
                   className={cn(
-                    "aspect-[1.3/1] h-auto border border-transparent p-0",
-                    isSelected && "border-foreground text-foreground",
+                    "sk-ui-h-auto sk-ui-border sk-ui-border-transparent sk-ui-p-0 sk-ui-aspect-[1.3/1]",
+                    isSelected && "sk-ui-border-foreground sk-ui-text-foreground",
                   )}
-                  key={`swap-asset-item-${chain}`}
+                  key={`swap-asset-network-${chain}`}
                   onClick={() => {
                     setSelectedNetworks((selectedNetworks) => {
                       if (isSelected) {
@@ -138,14 +121,14 @@ export function SwapAssetSelect({
                       return Array.from(new Set([...selectedNetworks, chain]));
                     });
                   }}>
-                  <ChainIcon chain={chain} className="size-5" />
+                  <ChainIcon chain={chain} className="sk-ui-size-5" />
                 </Button>
               );
             })}
 
             {canShowMore && (
               <Button
-                className="col-span-2 col-start-7 h-auto"
+                className="sk-ui-col-span-2 sk-ui-col-start-7 sk-ui-h-auto"
                 onClick={() => setIsNetworkListExpanded((isNetworkListExpanded) => !isNetworkListExpanded)}>
                 {isNetworkListExpanded ? "Hide" : "Show More"}
               </Button>
@@ -153,47 +136,58 @@ export function SwapAssetSelect({
           </div>
         </div>
 
-        <DialogFooter className="mt-2 flex flex-col">
-          {match({ assetsToRender, isWalletConnected })
+        <DialogFooter className="sk-ui-mt-2 sk-ui-overflow-y-auto sk-ui-overflow-x-hidden sk-ui-max-h-[clamp(16rem,50svh,32rem)]">
+          {match({ assets, isWalletConnected })
             .with({ isWalletConnected: false }, () => (
-              <div className="flex h-40 flex-col items-center justify-center gap-1">
-                <header className="font-medium">Connect your wallet</header>
+              <div className="sk-ui-flex sk-ui-h-40 sk-ui-flex-col sk-ui-items-center sk-ui-justify-center sk-ui-gap-1">
+                <header className="sk-ui-font-medium">Connect your wallet</header>
 
-                <p className="text-muted-foreground text-sm">Please connect your wallet to see your assets</p>
+                <p className="sk-ui-text-muted-foreground sk-ui-text-sm">
+                  Please connect your wallet to see your assets
+                </p>
               </div>
             ))
             .when(
-              ({ assetsToRender }) => assetsToRender?.length <= 0,
+              ({ assets }) => assets?.length <= 0,
               () => (
-                <div className="flex h-40 flex-col items-center justify-center gap-1">
-                  <header className="font-medium">No assets found</header>
+                <div className="sk-ui-flex sk-ui-h-40 sk-ui-flex-col sk-ui-items-center sk-ui-justify-center sk-ui-gap-1">
+                  <header className="sk-ui-font-medium">No assets found</header>
 
-                  <p className="text-muted-foreground text-sm">
+                  <p className="sk-ui-text-muted-foreground sk-ui-text-sm">
                     Try changing the selected networks or the search query
                   </p>
                 </div>
               ),
             )
             .otherwise(() => (
-              <div className="flex flex-col gap-2">
-                {assetsToRender?.map((assetValue) => {
-                  const assetValueString = assetValue?.toString();
+              <div className="sk-ui-flex sk-ui-w-auto sk-ui-flex-1 sk-ui-flex-col">
+                {assets?.slice(0, 100)?.map((asset) => {
+                  const assetIdentifier = asset.toString();
 
                   return (
                     <Button
-                      className="-mx-4 w-auto flex-1 justify-between rounded-lg px-4 py-2"
-                      key={`swap-asset-item-${assetValueString}`}
+                      className="sk-ui--mx-4 sk-ui-h-auto sk-ui-w-auto sk-ui-justify-between sk-ui-rounded-lg sk-ui-px-4 sk-ui-py-2"
+                      key={`swap-asset-item-${assetIdentifier}-${asset.chainId}`}
                       onClick={() => {
-                        setSelectedAsset(assetValueString);
+                        setSelectedAsset(assetIdentifier);
                         setOpen(false);
                       }}
                       variant="ghost">
-                      <SwapAssetItem asset={assetValueString} />
+                      <SwapAssetItem asset={assetIdentifier} />
 
-                      <div className="flex flex-col items-end">
-                        <span className="font-medium text-base text-foreground">Label</span>
+                      <div
+                        className={cn(
+                          "sk-ui-flex sk-ui-flex-col sk-ui-items-end",
+                          asset?.getValue("number") <= 0 && "sk-ui-opacity-50",
+                        )}>
+                        <span className="sk-ui-font-medium sk-ui-text-base sk-ui-text-foreground">
+                          {asset?.getValue("number")?.toFixed(6) || "0.00"}
+                        </span>
 
-                        <span className="-mt-0.5 text-muted-foreground text-sm">Label</span>
+                        <span className="sk-ui--mt-0.5 sk-ui-text-muted-foreground sk-ui-text-sm">
+                          {/* TODO: show the correct USD balance value */}
+                          {formatCurrency(asset?.getValue("number") || 0)}
+                        </span>
                       </div>
                     </Button>
                   );
