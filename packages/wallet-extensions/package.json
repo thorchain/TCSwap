@@ -29,7 +29,7 @@
       "bun": "./src/index.ts",
       "default": "./dist/src/index.js",
       "require": "./dist/src/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/types.d.ts"
     },
     "./bitget": {
       "bun": "./src/bitget/index.ts",
