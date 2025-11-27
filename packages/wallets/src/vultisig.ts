@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-extensions/vultisig";
+export * from "@uswap/wallet-extensions/vultisig";

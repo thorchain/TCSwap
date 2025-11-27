@@ -1,1 +1,1 @@
-export * from "@swapkit/tokens";
+export * from "@uswap/tokens";

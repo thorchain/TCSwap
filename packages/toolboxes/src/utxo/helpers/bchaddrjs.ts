@@ -1,4 +1,4 @@
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 import base58check from "bs58check";
 // @ts-expect-error
 import cashaddr from "cashaddrjs";

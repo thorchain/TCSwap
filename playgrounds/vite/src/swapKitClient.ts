@@ -1,4 +1,4 @@
-import { AssetValue, createSwapKit, SKConfig } from "@swapkit/sdk";
+import { AssetValue, createSwapKit, SKConfig } from "@uswap/sdk";
 
 let skClient: ReturnType<typeof createSwapKit> | undefined;
 let currentConfig: { walletConnectProjectId?: string; brokerEndpoint?: string; swapKit?: string } = {};

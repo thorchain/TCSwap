@@ -1,4 +1,4 @@
-import { PriorityLabel } from "@swapkit/sdk";
+import { PriorityLabel } from "@uswap/sdk";
 import { TimerIcon } from "lucide-react";
 import { match } from "ts-pattern";
 import { cn } from "../../../lib/utils";

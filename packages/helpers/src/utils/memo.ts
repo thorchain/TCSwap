@@ -1,4 +1,4 @@
-import { Chain } from "@swapkit/types";
+import { Chain } from "@uswap/types";
 import { match } from "ts-pattern";
 import { MemoType } from "../types/sdk";
 

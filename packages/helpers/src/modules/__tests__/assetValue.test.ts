@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { Chain, getChainConfig } from "@swapkit/types";
+import { Chain, getChainConfig } from "@uswap/types";
 import { AssetValue, getMinAmountByChain } from "../assetValue";
 
 describe("AssetValue", () => {
@@ -880,7 +880,7 @@ describe("fromUrl", () => {
 });
 
 describe("fromIdentifierSync", () => {
-  test("(same as fromIdentifier) - creates AssetValue from string via `@swapkit/tokens` lists", async () => {
+  test("(same as fromIdentifier) - creates AssetValue from string via `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const thor = AssetValue.from({ asset: "ARB.USDT-0XFD086BC7CD5C481DCC9C85EBE478A1C0B69FCBB9" });
 
@@ -900,7 +900,7 @@ describe("fromIdentifierSync", () => {
 });
 
 describe("fromStringSync", () => {
-  test("creates AssetValue from string via `@swapkit/tokens` lists", async () => {
+  test("creates AssetValue from string via `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const thor = AssetValue.from({ asset: "ETH.THOR-0xa5f2211b9b8170f694421f2046281775e8468044" });
 
@@ -932,7 +932,7 @@ describe("fromStringSync", () => {
     );
   });
 
-  test("returns safe decimals if string is not in `@swapkit/tokens` lists", async () => {
+  test("returns safe decimals if string is not in `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const fakeAvaxUSDCAssetString = "AVAX.USDC-1234";
     const fakeAvaxUSDCAsset = AssetValue.from({ asset: fakeAvaxUSDCAssetString });
@@ -951,7 +951,7 @@ describe("fromStringSync", () => {
     );
   });
 
-  test("returns safe decimals if string is not in `@swapkit/tokens` lists with multiple dashes", async () => {
+  test("returns safe decimals if string is not in `@uswap/tokens` lists with multiple dashes", async () => {
     await AssetValue.loadStaticAssets();
     const fakeAvaxUSDCAssetString = "AVAX.USDC-LPT-1234";
     const fakeAvaxUSDCAsset2 = AssetValue.from({ asset: fakeAvaxUSDCAssetString });
@@ -970,7 +970,7 @@ describe("fromStringSync", () => {
     );
   });
 
-  test("returns proper avax string with address from `@swapkit/tokens` lists", async () => {
+  test("returns proper avax string with address from `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const avaxBTCb = "AVAX.BTC.b-0x152b9d0fdc40c096757f570a51e494bd4b943e50";
     const AvaxBTCb = AssetValue.from({ asset: avaxBTCb });
@@ -991,7 +991,7 @@ describe("fromStringSync", () => {
 });
 
 describe("fromStringWithBaseSync", () => {
-  test("creates AssetValue from string with base decimals via `@swapkit/tokens` lists", async () => {
+  test("creates AssetValue from string with base decimals via `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const btc = AssetValue.from({ asset: "BTC.BTC", fromBaseDecimal: 8, value: 5200000000000 });
 
@@ -1011,7 +1011,7 @@ describe("fromStringWithBaseSync", () => {
     expect(btc.getBaseValue("string")).toBe("5200000000000");
   });
 
-  test("returns safe decimals if string is not in `@swapkit/tokens` lists", async () => {
+  test("returns safe decimals if string is not in `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const fakeAvaxUSDCAssetString = "AVAX.USDC-1234";
     const fakeAvaxUSDCAsset = AssetValue.from({ asset: fakeAvaxUSDCAssetString, fromBaseDecimal: 8, value: 1 });
@@ -1033,7 +1033,7 @@ describe("fromStringWithBaseSync", () => {
     expect(fakeAvaxUSDCAsset.getBaseValue("string")).toBe("10000000000");
   });
 
-  test("returns proper avax string with address from `@swapkit/tokens` lists", async () => {
+  test("returns proper avax string with address from `@uswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const avaxUSDC = "AVAX.USDC-0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e";
     const AvaxUSDC = AssetValue.from({ asset: avaxUSDC, fromBaseDecimal: 8, value: 100000000 });

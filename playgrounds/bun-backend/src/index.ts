@@ -1,6 +1,6 @@
-import { Chain } from "@swapkit/helpers";
-import { keystoreWallet, SwapKit } from "@swapkit/sdk";
-import { KEYSTORE_SUPPORTED_CHAINS } from "@swapkit/wallets/keystore";
+import { Chain } from "@uswap/helpers";
+import { keystoreWallet, SwapKit } from "@uswap/sdk";
+import { KEYSTORE_SUPPORTED_CHAINS } from "@uswap/wallets/keystore";
 
 const swapKit = SwapKit({ wallets: keystoreWallet });
 

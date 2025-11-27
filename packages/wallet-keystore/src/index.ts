@@ -9,9 +9,9 @@ import {
   UTXOChains,
   updateDerivationPath,
   WalletOption,
-} from "@swapkit/helpers";
-import type { FullWallet } from "@swapkit/toolboxes";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+} from "@uswap/helpers";
+import type { FullWallet } from "@uswap/toolboxes";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 export {
   decryptFromKeystore,
@@ -74,7 +74,7 @@ export async function createKeystoreWallet<T extends Chain[]>({
 
   const wallets = await Promise.all(
     filteredChains.map(async (chain) => {
-      const { getToolbox } = await import("@swapkit/toolboxes");
+      const { getToolbox } = await import("@uswap/toolboxes");
 
       const derivationPathIndex = typeof derivationPathMapOrIndex === "number" ? derivationPathMapOrIndex : 0;
       const derivationPathFromMap =

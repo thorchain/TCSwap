@@ -20,8 +20,8 @@ import {
   SwapKitNumber,
   type TCLikeChain,
   updateDerivationPath,
-} from "@swapkit/helpers";
-import { SwapKitApi } from "@swapkit/helpers/api";
+} from "@uswap/helpers";
+import { SwapKitApi } from "@uswap/helpers/api";
 import { match, P } from "ts-pattern";
 import type { CosmosToolboxParams } from "../types";
 import {

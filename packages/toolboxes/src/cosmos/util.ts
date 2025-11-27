@@ -1,6 +1,6 @@
 import type { OfflineSigner } from "@cosmjs/proto-signing";
 import type { SigningStargateClientOptions } from "@cosmjs/stargate";
-import { AssetValue, Chain, type CosmosChain, getChainConfig, getRPCUrl, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, type CosmosChain, getChainConfig, getRPCUrl, SwapKitError } from "@uswap/helpers";
 import type { CosmosCreateTransactionParams } from "./types";
 
 export const USK_KUJIRA_FACTORY_DENOM =

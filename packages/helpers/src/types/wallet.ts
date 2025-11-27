@@ -1,4 +1,4 @@
-import type { Chain, getChainConfig } from "@swapkit/types";
+import type { Chain, getChainConfig } from "@uswap/types";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 
 import type { AssetValue } from "../modules/assetValue";

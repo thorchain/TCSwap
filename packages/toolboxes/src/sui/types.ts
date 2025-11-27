@@ -1,5 +1,5 @@
 import type { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
-import type { GenericCreateTransactionParams, GenericTransferParams } from "@swapkit/helpers";
+import type { GenericCreateTransactionParams, GenericTransferParams } from "@uswap/helpers";
 import type { getSuiToolbox } from "./toolbox";
 
 export type SuiWallet = Awaited<ReturnType<typeof getSuiToolbox>>;

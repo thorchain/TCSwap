@@ -1,10 +1,10 @@
 {
   "author": "swapkit-oss",
   "dependencies": {
-    "@swapkit/helpers": "workspace:*",
-    "@swapkit/tokens": "workspace:*",
-    "@swapkit/toolboxes": "workspace:*",
-    "@swapkit/wallet-keystore": "workspace:*"
+    "@uswap/helpers": "workspace:*",
+    "@uswap/tokens": "workspace:*",
+    "@uswap/toolboxes": "workspace:*",
+    "@uswap/wallet-keystore": "workspace:*"
   },
   "description": "SwapKit - Server SDK",
   "exports": {
@@ -18,7 +18,7 @@
   "files": ["dist/", "src/"],
   "homepage": "https://github.com/swapkit/SwapKit",
   "license": "Apache-2.0",
-  "name": "@swapkit/server",
+  "name": "@uswap/server",
   "repository": { "directory": "packages/server", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
   "scripts": {
     "build": "bun run ./build.ts",

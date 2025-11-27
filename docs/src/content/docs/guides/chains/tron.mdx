@@ -23,10 +23,10 @@ Tron is a blockchain platform designed for high throughput and smart contract su
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapKit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const tronWallet = await swapKit.getWallet(Chain.Tron);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getTronToolbox } from '@swapkit/toolboxes/tron';
+import { getTronToolbox } from '@uswap/toolboxes/tron';
 
 
 const tronToolbox = await getTronToolbox({
@@ -74,7 +74,7 @@ Connect to Tron using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.Tron], "your mnemonic phrase");
 
@@ -94,7 +94,7 @@ const tronAddress = swapKit.getAddress(Chain.Tron);
 
 console.log("Tron address:", tronAddress);
 
-import { validateTronAddress } from "@swapkit/toolboxes/tron";
+import { validateTronAddress } from "@uswap/toolboxes/tron";
 
 const isValidAddress = validateTronAddress(tronAddress);
 console.log("Valid TRX address:", isValidAddress);
@@ -112,7 +112,7 @@ console.log("Account info:", {
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapKit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "TLyqzVGLV1srkB7dToTAEqgDSfPtXRJZYH",

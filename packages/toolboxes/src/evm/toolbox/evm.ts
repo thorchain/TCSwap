@@ -1,4 +1,4 @@
-import { Chain, type EVMChain, FeeOption, getRPCUrl } from "@swapkit/helpers";
+import { Chain, type EVMChain, FeeOption, getRPCUrl } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 
 import { getEvmApi } from "../api";

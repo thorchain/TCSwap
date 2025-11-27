@@ -2,7 +2,7 @@
     KeepKey Specific bip32 path conventions
 */
 
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 
 const HARDENED = 0x80000000;
 

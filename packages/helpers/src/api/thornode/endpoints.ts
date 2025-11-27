@@ -1,5 +1,5 @@
-import { AssetValue, RequestClient, SKConfig } from "@swapkit/helpers";
-import { MAYAConfig, StagenetMAYAConfig, StagenetTHORConfig, THORConfig } from "@swapkit/types";
+import { AssetValue, RequestClient, SKConfig } from "@uswap/helpers";
+import { MAYAConfig, StagenetMAYAConfig, StagenetTHORConfig, THORConfig } from "@uswap/types";
 import type {
   InboundAddressesItem,
   LastBlockItem,

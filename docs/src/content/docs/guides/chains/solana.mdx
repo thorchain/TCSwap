@@ -23,10 +23,10 @@ Solana is a high-performance blockchain known for fast transactions and low fees
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const solWallet = await swapKit.getWallet(Chain.Solana);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getSolanaToolbox } from '@swapkit/toolboxes/solana';
+import { getSolanaToolbox } from '@uswap/toolboxes/solana';
 
 
 const solToolbox = await getSolanaToolbox({
@@ -73,7 +73,7 @@ Connect to Solana using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.Solana], "your mnemonic phrase");
 
@@ -95,7 +95,7 @@ const solanaAddress = swapKit.getAddress(Chain.Solana);
 
 console.log("Solana address:", solanaAddress);
 
-import { validateSolanaAddress } from "@swapkit/toolboxes/solana";
+import { validateSolanaAddress } from "@uswap/toolboxes/solana";
 
 const isValidAddress = validateSolanaAddress(solanaAddress);
 console.log("Valid SOL address:", isValidAddress);
@@ -108,7 +108,7 @@ console.log("Public key:", publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapkit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
@@ -462,7 +462,7 @@ const listNFT = async (nftMint: string, price: number) => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Solana, [
@@ -509,7 +509,7 @@ Handle Solana-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({

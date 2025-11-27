@@ -1,7 +1,7 @@
 import "../styles/index.css";
 
-import { Chain, WalletOption } from "@swapkit/core";
-import { SwapKitProvider, useSwapKit } from "@swapkit/ui/react";
+import { Chain, WalletOption } from "@uswap/core";
+import { SwapKitProvider, useSwapKit } from "@uswap/ui/react";
 import { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

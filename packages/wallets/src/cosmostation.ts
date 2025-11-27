@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-extensions/cosmostation";
+export * from "@uswap/wallet-extensions/cosmostation";

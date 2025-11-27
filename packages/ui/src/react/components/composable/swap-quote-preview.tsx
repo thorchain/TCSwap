@@ -1,6 +1,6 @@
 "use client";
 
-import { PriorityLabel } from "@swapkit/sdk";
+import { PriorityLabel } from "@uswap/sdk";
 import { ArrowLeftRight, ChevronRight, InfoIcon, TimerIcon } from "lucide-react";
 import { match } from "ts-pattern";
 import { showModal } from "../../hooks/use-modal";

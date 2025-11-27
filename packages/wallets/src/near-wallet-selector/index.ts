@@ -1,9 +1,9 @@
 import type { Wallet, WalletModuleFactory } from "@near-wallet-selector/core";
 import "@near-wallet-selector/modal-ui-js/styles.css";
 import type { Transaction } from "@near-js/transactions";
-import { Chain, filterSupportedChains, SKConfig, SwapKitError, WalletOption } from "@swapkit/helpers";
-import { getNearToolbox } from "@swapkit/toolboxes/near";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+import { Chain, filterSupportedChains, SKConfig, SwapKitError, WalletOption } from "@uswap/helpers";
+import { getNearToolbox } from "@uswap/toolboxes/near";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 function createNearSigner(wallet: Wallet) {
   return {

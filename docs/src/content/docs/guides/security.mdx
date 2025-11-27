@@ -16,10 +16,10 @@ SwapKit is designed to work with secure wallet providers that manage private key
 <Tabs>
   <TabItem label="✅ Secure Approach">
     ```typescript
-    import { SwapKit } from '@swapkit/core';
-    import { evmWallet } from '@swapkit/wallets/evm-extensions';
-    import { ledgerWallet } from '@swapkit/wallets/ledger';
-    import { Chain } from '@swapkit/types';
+    import { SwapKit } from '@uswap/core';
+    import { evmWallet } from '@uswap/wallets/evm-extensions';
+    import { ledgerWallet } from '@uswap/wallets/ledger';
+    import { Chain } from '@uswap/types';
 
     const swapKit = SwapKit({
       wallets: {
@@ -58,8 +58,8 @@ When using keystore wallets, follow security best practices:
 
 ```typescript
 // @noErrorValidation
-import { SwapKit } from "@swapkit/core";
-import { keystoreWallet } from "@swapkit/wallets/keystore";
+import { SwapKit } from "@uswap/core";
+import { keystoreWallet } from "@uswap/wallets/keystore";
 
 const swapKit = SwapKit({
   wallets: { keystore: keystoreWallet },
@@ -105,10 +105,10 @@ For server-side applications, use environment variables securely:
     # API Keys (never commit actual values)
     SWAPKIT_API_KEY=your_api_key_here
     THORNODE_API_KEY=your_thornode_key_here
-    
+
     # Wallet Connect (for dApp integration)
     WALLETCONNECT_PROJECT_ID=your_project_id_here
-    
+
     # For testing only - never use in production
     TEST_PHRASE=your_test_phrase_for_development
     ```
@@ -116,7 +116,7 @@ For server-side applications, use environment variables securely:
   <TabItem label="Environment Setup">
     ```typescript
 
-    import { SKConfig } from '@swapkit/helpers';
+    import { SKConfig } from '@uswap/helpers';
 
     export function configureSecurely() {
 
@@ -151,9 +151,9 @@ Hardware wallets provide the highest security for transaction signing:
 
 ```typescript
 // @noErrorValidation
-import { SwapKit } from "@swapkit/core";
-import { ledgerWallet, trezorWallet } from "@swapkit/wallets";
-import { Chain, AssetValue, SwapKitError } from "@swapkit/helpers";
+import { SwapKit } from "@uswap/core";
+import { ledgerWallet, trezorWallet } from "@uswap/wallets";
+import { Chain, AssetValue, SwapKitError } from "@uswap/helpers";
 
 const swapKit = SwapKit({
   wallets: {
@@ -273,7 +273,7 @@ Always validate transactions before signing:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, SwapKitError } from "@uswap/helpers";
 
 interface TransactionValidation {
   isValid: boolean;

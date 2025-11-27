@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test";
-import { AssetValue, Chain, SKConfig } from "@swapkit/helpers";
+import { AssetValue, Chain, SKConfig } from "@uswap/helpers";
 import { createTronToolbox, getTronAddressValidator } from "../toolbox";
 
 const context: {

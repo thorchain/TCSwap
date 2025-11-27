@@ -1,7 +1,7 @@
 "use client";
-import { type EVMTransaction, type QuoteResponseRoute, SwapKitApi } from "@swapkit/helpers/api";
-import type { AssetValue, Chain, SwapKit } from "@swapkit/sdk";
-import { ProviderName, SwapKitNumber } from "@swapkit/sdk";
+import { type EVMTransaction, type QuoteResponseRoute, SwapKitApi } from "@uswap/helpers/api";
+import type { AssetValue, Chain, SwapKit } from "@uswap/sdk";
+import { ProviderName, SwapKitNumber } from "@uswap/sdk";
 import { useCallback, useState } from "react";
 
 type Props = {

@@ -25,7 +25,7 @@ When creating a SwapKit instance, you can provide configuration options:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit } from '@swapkit/sdk';
+import { createSwapKit } from '@uswap/sdk';
 
 const swapKit = createSwapKit({
   config: {
@@ -107,7 +107,7 @@ SwapKit provides default RPC URLs for all supported chains, but you can override
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit({
   config: {
@@ -131,7 +131,7 @@ Override the default Midgard endpoints:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit({
   config: {
@@ -154,7 +154,7 @@ Add custom headers for Midgard API authentication:
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from "@swapkit/sdk";
+import { SKConfig } from "@uswap/sdk";
 
 SKConfig.setApiHeaders("midgard", {
   "X-Client-ID": "your-client-id",
@@ -183,7 +183,7 @@ Update Midgard configuration at runtime:
 
 ```typescript
 // @noErrorValidation
-import { SKConfig, Chain } from '@swapkit/sdk';
+import { SKConfig, Chain } from '@uswap/sdk';
 
 
 SKConfig.setMidgardUrl(Chain.THORChain, 'https:
@@ -216,7 +216,7 @@ SwapKit supports custom headers for all API endpoints (Midgard, THORNode, and Sw
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from "@swapkit/sdk";
+import { SKConfig } from "@uswap/sdk";
 
 SKConfig.set({
   apiHeaders: {
@@ -271,7 +271,7 @@ You can update configuration after initialization using `SKConfig`:
 
 ```typescript
 // @noErrorValidation
-import { SKConfig, Chain } from '@swapkit/sdk';
+import { SKConfig, Chain } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Ethereum, 'https:
@@ -341,7 +341,7 @@ Provide custom API implementations for specific chains:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@swapkit/sdk";
+import { Chain } from "@uswap/sdk";
 
 const customBitcoinApi = {
   getBalance: async (address: string) => {},
@@ -437,7 +437,7 @@ Here's a production-ready configuration example:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, SKConfig, Chain } from '@swapkit/sdk';
+import { createSwapKit, SKConfig, Chain } from '@uswap/sdk';
 
 
 const config = {
@@ -526,7 +526,7 @@ Verify your API keys are working:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@swapkit/sdk";
+import { SwapKitApi } from "@uswap/sdk";
 
 try {
   const price = await SwapKitApi.getPrice("ETH");

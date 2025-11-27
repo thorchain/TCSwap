@@ -5,7 +5,7 @@ import type {
   DerivationPathArray,
   GenericCreateTransactionParams,
   GenericTransferParams,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 
 export interface NearSigner extends Signer, Omit<ChainSigner<Transaction, SignedTransaction>, "signTransaction"> {
   signAndSendTransactions?(params: { transactions: Transaction[] }): Promise<string>;

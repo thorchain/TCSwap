@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { KEYSTORE_SUPPORTED_CHAINS, type Keystore } from "@swapkit/wallet-keystore";
+import { KEYSTORE_SUPPORTED_CHAINS, type Keystore } from "@uswap/wallet-keystore";
 import { CheckIcon, UploadIcon } from "lucide-react";
 import { useCallback, useId } from "react";
 import { useForm } from "react-hook-form";

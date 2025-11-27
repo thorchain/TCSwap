@@ -1,4 +1,4 @@
-import { Chain } from "@swapkit/types";
+import { Chain } from "@uswap/types";
 import { type ErrorKeys, SwapKitError } from "../modules/swapKitError";
 
 // 10 rune for register, 1 rune per year

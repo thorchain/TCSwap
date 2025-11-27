@@ -1,8 +1,8 @@
 "use client";
 
-import "@swapkit/ui/swapkit.css";
+import "@uswap/ui/swapkit.css";
 
-import { AssetValue, type QuoteResponseRoute, SwapKitApi, useSwapKitStore } from "@swapkit/sdk";
+import { AssetValue, type QuoteResponseRoute, SwapKitApi, useSwapKitStore } from "@uswap/sdk";
 import { ArrowDownUpIcon, Loader2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { match, P } from "ts-pattern";

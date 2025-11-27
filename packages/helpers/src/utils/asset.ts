@@ -1,5 +1,5 @@
-import type { TokenNames } from "@swapkit/tokens";
-import { Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@swapkit/types";
+import type { TokenNames } from "@uswap/tokens";
+import { Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@uswap/types";
 import { match } from "ts-pattern";
 import type { AssetValue } from "../modules/assetValue";
 import { RequestClient } from "../modules/requestClient";

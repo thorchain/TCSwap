@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { Chain } from "@swapkit/helpers";
+import { Chain } from "@uswap/helpers";
 import { getEvmToolbox } from "../toolbox";
 
 const TEST_PHRASE = "test test test test test test test test test test test junk";

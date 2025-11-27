@@ -1,6 +1,6 @@
 import type { Account, Contract } from "@near-js/accounts";
 import type { SignedTransaction, Transaction } from "@near-js/transactions";
-import { AssetValue, Chain, getChainConfig, getRPCUrl, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, getChainConfig, getRPCUrl, SwapKitError } from "@uswap/helpers";
 import { getBalance } from "../utils";
 import {
   getFullAccessPublicKey,

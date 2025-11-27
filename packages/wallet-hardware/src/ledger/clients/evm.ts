@@ -5,7 +5,7 @@ import {
   derivationPathToString,
   NetworkDerivationPath,
   SwapKitError,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import { AbstractSigner, type Provider, type TransactionRequest } from "ethers";
 
 import { getLedgerTransport } from "../helpers/getLedgerTransport";

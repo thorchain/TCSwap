@@ -4,7 +4,7 @@
  */
 
 import type { ZcashPsbt } from "@bitgo/utxo-lib/dist/src/bitgo";
-import { Chain, type ChainSigner } from "@swapkit/helpers";
+import { Chain, type ChainSigner } from "@uswap/helpers";
 import type { Psbt } from "bitcoinjs-lib";
 import type { TransactionBuilderType, TransactionType, UTXOType } from "../types";
 

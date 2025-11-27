@@ -7,7 +7,7 @@ import {
   RequestClient,
   SKConfig,
   SwapKitError,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 import {
   type BalanceResponse,

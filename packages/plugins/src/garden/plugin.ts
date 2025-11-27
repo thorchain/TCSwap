@@ -1,14 +1,6 @@
 import { VersionedTransaction } from "@solana/web3.js";
-import {
-  ApproveMode,
-  AssetValue,
-  Chain,
-  EVMChains,
-  ProviderName,
-  SwapKitError,
-  type SwapParams,
-} from "@swapkit/helpers";
-import type { EVMTransaction, QuoteResponseRoute } from "@swapkit/helpers/api";
+import { ApproveMode, AssetValue, Chain, EVMChains, ProviderName, SwapKitError, type SwapParams } from "@uswap/helpers";
+import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
 import { match } from "ts-pattern";
 import { approve, createPlugin } from "../utils";
 

@@ -1,5 +1,5 @@
-import type { ApproveMode, ApproveReturnType, EVMChain, ProviderName } from "@swapkit/helpers";
-import { type AssetValue, EVMChains, SwapKitError } from "@swapkit/helpers";
+import type { ApproveMode, ApproveReturnType, EVMChain, ProviderName } from "@uswap/helpers";
+import { type AssetValue, EVMChains, SwapKitError } from "@uswap/helpers";
 import type { SwapKitPluginParams } from "./types";
 
 export function createPlugin<

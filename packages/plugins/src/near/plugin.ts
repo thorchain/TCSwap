@@ -1,6 +1,6 @@
-import { AssetValue, Chain, ProviderName, SwapKitError, type SwapParams } from "@swapkit/helpers";
-import type { QuoteResponseRoute } from "@swapkit/helpers/api";
-import type { NearWallet } from "@swapkit/toolboxes/near";
+import { AssetValue, Chain, ProviderName, SwapKitError, type SwapParams } from "@uswap/helpers";
+import type { QuoteResponseRoute } from "@uswap/helpers/api";
+import type { NearWallet } from "@uswap/toolboxes/near";
 import { createPlugin } from "../utils";
 import { calculateNearNameCost, validateNearName } from "./nearNames";
 import type { NearAccountInfo, NearNameRegistrationParams } from "./types";

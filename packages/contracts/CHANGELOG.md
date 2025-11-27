@@ -1,4 +1,4 @@
-# @swapkit/contracts
+# @uswap/contracts
 
 ## 4.0.1
 

@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const chainImports = selectedChains.map(chain => `Chain.${chain}`).join(', ');
     
-    let code = `import { createSwapKit, Chain, WalletOption } from '@swapkit/sdk';\n\n`;
+    let code = `import { createSwapKit, Chain, WalletOption } from '@uswap/sdk';\n\n`;
     code += `const swapKit = createSwapKit();\n\n`;
     
     if (selectedWallet === 'metamask') {

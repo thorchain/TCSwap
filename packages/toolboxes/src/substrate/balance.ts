@@ -1,5 +1,5 @@
 import type { ApiPromise } from "@polkadot/api";
-import { AssetValue, Chain, SwapKitNumber } from "@swapkit/helpers";
+import { AssetValue, Chain, SwapKitNumber } from "@uswap/helpers";
 
 /**
  * Get balance for standard Substrate chains (Polkadot, etc.)

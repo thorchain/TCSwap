@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-extensions/keplr";
+export * from "@uswap/wallet-extensions/keplr";

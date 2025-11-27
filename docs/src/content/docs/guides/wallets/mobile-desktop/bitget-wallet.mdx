@@ -52,7 +52,7 @@ Bitget Wallet works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -67,7 +67,7 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -83,7 +83,7 @@ const swapKit = createSwapKit({
 #### Single Chain Connection
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -110,7 +110,7 @@ async function connectBitgetEthereum() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -159,7 +159,7 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -202,7 +202,7 @@ async function connectBitgetSolana() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -240,7 +240,7 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -277,7 +277,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -318,7 +318,7 @@ async function sendBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -355,7 +355,7 @@ async function sendSolana() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -390,7 +390,7 @@ async function sendSPLToken() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -426,7 +426,7 @@ async function sendOnPolygon() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -461,7 +461,7 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapKit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -496,7 +496,7 @@ async function sendTron() {
 ### EVM Chain Management
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -539,7 +539,7 @@ async function manageEVMChains() {
 ### Multi-Chain Portfolio View
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -591,7 +591,7 @@ async function getPortfolioOverview() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...bitgetWallet },
@@ -752,7 +752,7 @@ async function handleChainSpecificIssues(chain: Chain) {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -860,7 +860,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface BitgetWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

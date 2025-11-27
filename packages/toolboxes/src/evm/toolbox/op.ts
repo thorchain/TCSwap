@@ -1,11 +1,4 @@
-import {
-  applyFeeMultiplierToBigInt,
-  Chain,
-  FeeOption,
-  getChainConfig,
-  getRPCUrl,
-  SwapKitError,
-} from "@swapkit/helpers";
+import { applyFeeMultiplierToBigInt, Chain, FeeOption, getChainConfig, getRPCUrl, SwapKitError } from "@uswap/helpers";
 import type { Authorization, BrowserProvider, JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 import { Contract, HDNodeWallet } from "ethers";
 import { match, P } from "ts-pattern";

@@ -1,6 +1,6 @@
 ---
-"@swapkit/toolboxes": patch
-"@swapkit/helpers": patch
+"@uswap/toolboxes": patch
+"@uswap/helpers": patch
 ---
 
 Fix tronweb import

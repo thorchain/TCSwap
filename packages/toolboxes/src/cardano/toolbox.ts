@@ -1,4 +1,4 @@
-import { AssetValue, Chain, type DerivationPathArray, getChainConfig, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, type DerivationPathArray, getChainConfig, SwapKitError } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 import type { CardanoProvider } from "./index";
 

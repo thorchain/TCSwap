@@ -1,5 +1,5 @@
-import { AssetValue, type Chain, getChainConfig } from "@swapkit/helpers";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { AssetValue, type Chain, getChainConfig } from "@uswap/helpers";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 const pid = typeof process !== "undefined" && process.pid ? process.pid.toString(36) : "";
 

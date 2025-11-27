@@ -1,5 +1,5 @@
-import type { Chain } from "@swapkit/helpers";
-import type { FullWallet } from "@swapkit/toolboxes";
+import type { Chain } from "@uswap/helpers";
+import type { FullWallet } from "@uswap/toolboxes";
 import type { ChainflipPlugin } from "./chainflip";
 import type { EVMPlugin } from "./evm";
 import type { NearPlugin } from "./near";

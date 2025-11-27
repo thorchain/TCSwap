@@ -48,7 +48,7 @@ Phantom works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -63,7 +63,7 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -79,7 +79,7 @@ const swapKit = createSwapKit({
 #### Single Chain Connection
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -106,7 +106,7 @@ async function connectPhantomSolana() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -142,7 +142,7 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -185,7 +185,7 @@ async function connectPhantomBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -222,7 +222,7 @@ async function sendSol() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -276,7 +276,7 @@ async function sendToPDA() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -329,7 +329,7 @@ async function sendERC20FromPhantom() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -368,7 +368,7 @@ async function sendBitcoinFromPhantom() {
 ### Solana-Specific Operations
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -432,7 +432,7 @@ async function handleSPLTokenAccount() {
 ### Network Switching
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -467,7 +467,7 @@ async function switchBetweenChains() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -607,7 +607,7 @@ async function handleNetworkSpecificIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -715,7 +715,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface PhantomWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

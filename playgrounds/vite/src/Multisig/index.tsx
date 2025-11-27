@@ -1,5 +1,5 @@
-import { type AssetValue, Chain } from "@swapkit/helpers";
-import { buildAminoMsg, getCosmosToolbox } from "@swapkit/toolboxes/cosmos";
+import { type AssetValue, Chain } from "@uswap/helpers";
+import { buildAminoMsg, getCosmosToolbox } from "@uswap/toolboxes/cosmos";
 import { fromByteArray } from "base64-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SwapKitClient } from "../swapKitClient";

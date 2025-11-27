@@ -24,7 +24,7 @@ import {
   SwapKitError,
   createPlugin,
   type EVMChain,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 type SwapParams = {
   route: {
@@ -103,7 +103,7 @@ import {
   SwapKitError,
   createPlugin,
   type QuoteResponseRoute
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 
 const approve = ({ approveMode, getWallet }) =>
@@ -241,7 +241,7 @@ export const ExchangePlugin = createPlugin({
 Once you've created your plugin, you can use it with the SwapKit client:
 
 ```ts twoslash
-import { createSwapKit, Chain, keystoreWallet } from "@swapkit/sdk";
+import { createSwapKit, Chain, keystoreWallet } from "@uswap/sdk";
 
 import { ExamplePlugin } from "./example-plugin";
 

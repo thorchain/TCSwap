@@ -1,4 +1,4 @@
-import { type AssetValue, getExplorerTxUrl } from "@swapkit/core";
+import { type AssetValue, getExplorerTxUrl } from "@uswap/core";
 import { useCallback, useState } from "react";
 import type { SwapKitClient } from "../swapKitClient";
 

@@ -15,8 +15,8 @@ Fetch balances across all connected chains efficiently:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from "@swapkit/sdk";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { createSwapKit, Chain } from "@uswap/sdk";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 const swapKit = createSwapKit();
 
@@ -63,7 +63,7 @@ Execute multiple transactions across different chains:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, FeeOption } from "@swapkit/sdk";
+import { AssetValue, FeeOption } from "@uswap/sdk";
 
 const transactions = [
   {
@@ -119,7 +119,7 @@ Convert L1 assets to synthetics for faster swaps:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 const mintQuote = await SwapKitApi.getSwapQuote({
   sellAsset: "BTC.BTC",
@@ -199,7 +199,7 @@ const thornameeMemo = "~:name:chain:address";
 
 ```typescript
 // @noErrorValidation
-import { getMemoForDeposit, getMemoForWithdraw, MemoType } from "@swapkit/sdk";
+import { getMemoForDeposit, getMemoForWithdraw, MemoType } from "@uswap/sdk";
 
 const depositMemo = getMemoForDeposit({
   chain: Chain.Bitcoin,
@@ -262,8 +262,8 @@ await swapKit.swap({ route: modifiedRoute });
 Optimize gas usage across different chains:
 
 ```typescript
-import { Chain, ChainId } from '@swapkit/sdk';
-import { SwapKitApi } from '@swapkit/helpers/api';
+import { Chain, ChainId } from '@uswap/sdk';
+import { SwapKitApi } from '@uswap/helpers/api';
 
 const gasRatesArray = await SwapKitApi.getGasRate();
 
@@ -316,8 +316,8 @@ Manage custom token lists and metadata:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, ProviderName } from '@swapkit/sdk';
-import { SwapKitApi } from '@swapkit/helpers/api';
+import { AssetValue, ProviderName } from '@uswap/sdk';
+import { SwapKitApi } from '@uswap/helpers/api';
 
 
 async function loadTokenList(provider: ProviderName) {
@@ -396,8 +396,8 @@ registry.addCustomToken({
 Implement advanced transaction tracking:
 
 ```typescript
-import { ChainId } from '@swapkit/types';
-import { SwapKitApi } from '@swapkit/helpers/api';
+import { ChainId } from '@uswap/types';
+import { SwapKitApi } from '@uswap/helpers/api';
 
 class TransactionTracker {
   private pendingTxs: Map<string, any> = new Map();
@@ -443,7 +443,7 @@ Implement robust error handling and recovery:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 class SwapKitRetry {
   async executeWithRetry<T>(

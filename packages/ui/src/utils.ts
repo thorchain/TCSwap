@@ -7,7 +7,7 @@ import {
   SwapKit,
   SwapKitError,
   type WalletOption,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 export async function getSkClient<W extends WalletOption, P extends PluginName[]>({
   walletOption,

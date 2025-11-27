@@ -23,10 +23,10 @@ Bitcoin Cash is a peer-to-peer electronic cash system that focuses on fast, low-
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const bchWallet = await swapKit.getWallet(Chain.BitcoinCash);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getBitcoinCashToolbox } from '@swapkit/toolboxes/utxo';
+import { getBitcoinCashToolbox } from '@uswap/toolboxes/utxo';
 
 
 const bchToolbox = await getBitcoinCashToolbox({
@@ -73,7 +73,7 @@ Connect to Bitcoin Cash using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.BitcoinCash], "your mnemonic phrase");
 
@@ -99,7 +99,7 @@ const addresses = {
 
 console.log("Bitcoin Cash addresses:", addresses);
 
-import { convertBCHAddress } from "@swapkit/toolboxes/utxo";
+import { convertBCHAddress } from "@uswap/toolboxes/utxo";
 
 const cashAddr = "bitcoincash:qp3wjpa3tjlj042z2wv7hahsldgwhwy0rq9sywjpyy";
 const legacy = convertBCHAddress(cashAddr, "legacy");
@@ -110,7 +110,7 @@ console.log("Legacy format:", legacy);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapkit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "bitcoincash:qp3wjpa3tjlj042z2wv7hahsldgwhwy0rq9sywjpyy",
@@ -315,7 +315,7 @@ import {
   convertBCHAddress,
   validateCashAddr,
   decodeCashAddr,
-} from "@swapkit/toolboxes/utxo";
+} from "@uswap/toolboxes/utxo";
 
 const cashAddr = "bitcoincash:qp3wjpa3tjlj042z2wv7hahsldgwhwy0rq9sywjpyy";
 const legacy = "1KXrWXciRDrSAvuajXN8u4vBKbLQ9xhNSa";
@@ -394,7 +394,7 @@ const slpTokenTransfer = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.BitcoinCash, [
@@ -441,7 +441,7 @@ Handle Bitcoin Cash specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({
@@ -556,7 +556,7 @@ const manageUTXOs = async () => {
 3. **Validate Address Formats**:
 
    ```typescript
-   import { validateCashAddr } from "@swapkit/toolboxes/utxo";
+   import { validateCashAddr } from "@uswap/toolboxes/utxo";
 
    const recipient = "bitcoincash:qp3wjpa3tjlj042z2wv7hahsldgwhwy0rq9sywjpyy";
    if (!validateCashAddr(recipient)) {
@@ -579,7 +579,7 @@ const manageUTXOs = async () => {
 
 ```typescript
 // @noErrorValidation
-import { validateCashAddr, convertBCHAddress } from "@swapkit/toolboxes/utxo";
+import { validateCashAddr, convertBCHAddress } from "@uswap/toolboxes/utxo";
 
 const validateBCHAddress = (address: string): boolean => {
   if (validateCashAddr(address)) {

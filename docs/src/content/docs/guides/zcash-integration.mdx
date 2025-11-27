@@ -23,7 +23,7 @@ The Zcash integration in SwapKit supports:
 SwapKit supports Zcash transparent addresses which provide Bitcoin-like functionality on the Zcash network:
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function validateZcashAddresses() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -52,7 +52,7 @@ async function validateZcashAddresses() {
 Zcash uses 2-byte version prefixes for addresses, which requires custom generation logic:
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function generateZcashAddress() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -81,7 +81,7 @@ async function generateZcashAddress() {
 ### Basic Initialization
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
 
@@ -99,7 +99,7 @@ const customToolbox = await getUtxoToolbox(Chain.Zcash, {
 ### Address and Key Management
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function zcashKeyManagement() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -140,7 +140,7 @@ async function zcashKeyManagement() {
 ### Basic Transfer
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
 
 async function sendZcash() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -169,7 +169,7 @@ async function sendZcash() {
 Zcash supports memos via OP_RETURN outputs in transparent transactions:
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
 
 async function sendZcashWithMemo() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -197,7 +197,7 @@ async function sendZcashWithMemo() {
 For advanced use cases, you can build transactions manually:
 
 ```ts twoslash
-import { AssetValue, Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function buildZcashTransaction() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -228,7 +228,7 @@ async function buildZcashTransaction() {
 ### Getting Fee Rates
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function getZcashFees() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -247,7 +247,7 @@ async function getZcashFees() {
 ### Estimating Transaction Fees
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
 
 async function estimateZcashFees() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -280,7 +280,7 @@ async function estimateZcashFees() {
 ### Maximum Sendable Amount
 
 ```ts twoslash
-import { Chain, FeeOption, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
 
 async function getMaxSendable() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -304,7 +304,7 @@ async function getMaxSendable() {
 ### Checking Balances
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function getZcashBalance() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -321,7 +321,7 @@ async function getZcashBalance() {
 ### Advanced UTXO Operations
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function analyzeUtxos() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -350,7 +350,7 @@ async function analyzeUtxos() {
 The Zcash toolbox automatically detects network based on SwapKit configuration:
 
 ```ts twoslash
-import { Chain, SKConfig, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, SKConfig, getUtxoToolbox } from "@uswap/sdk";
 
 SKConfig.set({
   envs: { isStagenet: false },
@@ -380,7 +380,7 @@ console.log("Testnet address:", testnetAddress);
 ### Common Error Patterns
 
 ```ts twoslash
-import { AssetValue, Chain, SwapKitError, getUtxoToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, SwapKitError, getUtxoToolbox } from "@uswap/sdk";
 
 async function handleZcashErrors() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -420,7 +420,7 @@ async function handleZcashErrors() {
 ### Validation Best Practices
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function validateInputs() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -459,7 +459,7 @@ async function validateInputs() {
 ### Cross-Chain Operations
 
 ```ts twoslash
-import { AssetValue, Chain, getUtxoToolbox, getEvmToolbox } from "@swapkit/sdk";
+import { AssetValue, Chain, getUtxoToolbox, getEvmToolbox } from "@uswap/sdk";
 
 async function crossChainExample() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -495,7 +495,7 @@ async function crossChainExample() {
 ### Performance Considerations
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 async function optimizePerformance() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash);
@@ -527,7 +527,7 @@ SwapKit has evolved to use modern cryptographic libraries for Zcash operations:
 All existing Zcash integration code continues to work without changes:
 
 ```ts twoslash
-import { Chain, getUtxoToolbox } from "@swapkit/sdk";
+import { Chain, getUtxoToolbox } from "@uswap/sdk";
 
 const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
   phrase: "your mnemonic here",

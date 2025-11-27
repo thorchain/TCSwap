@@ -59,7 +59,7 @@ EVM extensions work in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -74,7 +74,7 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -90,7 +90,7 @@ const swapKit = createSwapKit({
 #### Basic Connection
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -117,7 +117,7 @@ async function connectMetaMask() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -158,7 +158,7 @@ async function connectMultipleEVMChains() {
 #### Brave Wallet
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -182,7 +182,7 @@ async function connectBraveWallet() {
 #### Coinbase Wallet Extension
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -206,7 +206,7 @@ async function connectCoinbaseWallet() {
 #### Trust Wallet Extension
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -233,7 +233,7 @@ async function connectTrustWallet() {
 #### EIP-6963 Compatible Wallets
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -293,7 +293,7 @@ async function showAvailableWallets() {
 
 ```ts twoslash
 
-import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -336,7 +336,7 @@ import {
   Chain,
   AssetValue,
   WalletOption,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -396,7 +396,7 @@ async function sendAnyERC20Token(
 
 ```ts twoslash
 
-import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -451,7 +451,7 @@ async function sendOnArbitrum() {
 ### Automatic Network Switching
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -523,7 +523,7 @@ async function addCustomNetwork() {
 ### Connection Issues
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -776,7 +776,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, evmWallet, Chain, WalletOption, AssetValue } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption, AssetValue } from "@uswap/sdk";
 
 interface MetaMaskWalletProps {
   onConnect: (address: string) => void;

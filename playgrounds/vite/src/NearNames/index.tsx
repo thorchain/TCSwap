@@ -1,4 +1,4 @@
-import { Chain } from "@swapkit/helpers";
+import { Chain } from "@uswap/helpers";
 import { useCallback, useEffect, useState } from "react";
 import type { SwapKitClient } from "../swapKitClient";
 

@@ -5,8 +5,8 @@ import {
   type GenericTransferParams,
   SwapKitError,
   WalletOption,
-} from "@swapkit/helpers";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+} from "@uswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 export const phantomWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>
@@ -47,7 +47,7 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
         throw new SwapKitError("wallet_phantom_not_found");
       }
 
-      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
       const [{ address }] = await provider.requestAccounts();
       const toolbox = await getUtxoToolbox(chain);
 
@@ -56,8 +56,8 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
 
     case Chain.Ethereum:
     case Chain.Monad: {
-      const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
-      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@swapkit/helpers");
+      const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@uswap/helpers");
       const { BrowserProvider } = await import("ethers");
 
       const provider = new BrowserProvider(phantom?.ethereum, "any");
@@ -75,7 +75,7 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
     }
 
     case Chain.Solana: {
-      const { getSolanaToolbox } = await import("@swapkit/toolboxes/solana");
+      const { getSolanaToolbox } = await import("@uswap/toolboxes/solana");
       const provider = phantom?.solana;
       if (!provider?.isPhantom) {
         throw new SwapKitError("wallet_phantom_not_found");

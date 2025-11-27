@@ -50,7 +50,7 @@ export default defineConfig({
         ...openAPISidebarGroups,
         {
           collapsed: true,
-          items: process.env.REFERENCES ? [{ items: docsSidebarItems, label: "@swapkit" }] : [],
+          items: process.env.REFERENCES ? [{ items: docsSidebarItems, label: "@uswap" }] : [],
           label: "References",
         },
       ],

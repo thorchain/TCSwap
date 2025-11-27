@@ -1,11 +1,6 @@
 import type TronApp from "@ledgerhq/hw-app-trx";
-import {
-  type DerivationPathArray,
-  derivationPathToString,
-  NetworkDerivationPath,
-  SwapKitError,
-} from "@swapkit/helpers";
-import type { TronSignedTransaction, TronSigner, TronTransaction } from "@swapkit/toolboxes/tron";
+import { type DerivationPathArray, derivationPathToString, NetworkDerivationPath, SwapKitError } from "@uswap/helpers";
+import type { TronSignedTransaction, TronSigner, TronTransaction } from "@uswap/toolboxes/tron";
 
 import { getLedgerTransport } from "../helpers/getLedgerTransport";
 

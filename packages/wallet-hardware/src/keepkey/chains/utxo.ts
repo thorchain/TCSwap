@@ -8,8 +8,8 @@ import {
   type GenericTransferParams,
   SwapKitError,
   type UTXOChain,
-} from "@swapkit/helpers";
-import type { UTXOToolboxes } from "@swapkit/toolboxes/utxo";
+} from "@uswap/helpers";
+import type { UTXOToolboxes } from "@uswap/toolboxes/utxo";
 import type { Psbt } from "bitcoinjs-lib";
 import { bip32ToAddressNList, ChainToKeepKeyName } from "../coins";
 
@@ -36,7 +36,7 @@ export async function utxoWalletMethods({
     signTransaction: (psbt: Psbt, inputs: KeepKeyInputObject[], memo?: string) => Promise<string>;
   }
 > {
-  const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+  const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
   // This might not work for BCH
   const toolbox = await getUtxoToolbox(chain);
   const scriptType = [Chain.Bitcoin, Chain.Litecoin].includes(chain as typeof Chain.Bitcoin)

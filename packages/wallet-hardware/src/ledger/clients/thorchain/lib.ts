@@ -1,5 +1,5 @@
 import type Transport from "@ledgerhq/hw-transport";
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 /** ******************************************************************************
  *  (c) 2019 ZondaX GmbH
  *  (c) 2016-2017 Ledger

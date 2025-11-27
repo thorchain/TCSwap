@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { AllChains, Chain, getChainConfig } from "@swapkit/types";
+import { AllChains, Chain, getChainConfig } from "@uswap/types";
 
 import { assetFromString, fetchTokenInfo, getAssetType } from "../asset";
 

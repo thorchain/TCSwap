@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test } from "bun:test";
-import { Chain } from "@swapkit/helpers";
+import { Chain } from "@uswap/helpers";
 import { getEvmToolbox } from "../toolbox";
 
 const context: { validateAddress: (address: string) => boolean } = {} as any;

@@ -24,22 +24,22 @@ Before starting, ensure you have:
 <Tabs>
   <TabItem label="bun">
     ```bash
-    bun add @swapkit/sdk
+    bun add @uswap/sdk
     ```
   </TabItem>
   <TabItem label="pnpm">
     ```bash
-    pnpm add @swapkit/sdk
+    pnpm add @uswap/sdk
     ```
   </TabItem>
   <TabItem label="npm">
     ```bash
-    npm install @swapkit/sdk
+    npm install @uswap/sdk
     ```
   </TabItem>
   <TabItem label="yarn">
     ```bash
-    yarn add @swapkit/sdk
+    yarn add @uswap/sdk
     ```
   </TabItem>
 </Tabs>
@@ -51,7 +51,7 @@ Before starting, ensure you have:
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit } from "@swapkit/sdk";
+import { createSwapKit } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 ```
@@ -74,7 +74,7 @@ For production applications, you'll want to add your own API keys and custom set
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit } from "@swapkit/sdk";
+import { createSwapKit } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -102,7 +102,7 @@ SwapKit supports 20+ blockchain networks with a unified [Chain](/start/core-conc
 ```typescript
 // @noErrorValidation
 
-import { Chain } from "@swapkit/sdk";
+import { Chain } from "@uswap/sdk";
 
 const ethereum = Chain.Ethereum;
 const bitcoin = Chain.Bitcoin;
@@ -117,7 +117,7 @@ const thorchain = Chain.THORChain;
 ```typescript
 // @noErrorValidation
 
-import { AssetValue } from "@swapkit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const eth = AssetValue.from({ asset: "ETH.ETH", value: 1 });
 const btc = AssetValue.from({ asset: "BTC.BTC", value: 0.1 });
@@ -135,7 +135,7 @@ SwapKit supports 20+ [wallet types](/start/core-concepts#wallet-types):
 ```typescript
 // @noErrorValidation
 
-import { WalletOption } from "@swapkit/sdk";
+import { WalletOption } from "@uswap/sdk";
 
 const metamask = WalletOption.METAMASK;
 const keplr = WalletOption.KEPLR;
@@ -152,7 +152,7 @@ const keystore = WalletOption.KEYSTORE;
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, WalletOption } from "@swapkit/sdk";
+import { createSwapKit, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -175,7 +175,7 @@ const wallets = swapKit.getAllWallets();
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -196,7 +196,7 @@ Use the [SwapKit API](/guides/api-reference) to get quotes and execute swaps:
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, FeeOption, SwapKitApi } from "@swapkit/sdk";
+import { createSwapKit, Chain, FeeOption, SwapKitApi } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -223,7 +223,7 @@ const txHash = await swapKit.swap({
 console.log(`Swap transaction: ${txHash}`);
 ```
 
-<StepByStepGuide 
+<StepByStepGuide
   title="🚀 Your First Cross-Chain Swap"
   description="Follow this interactive tutorial to perform your first swap with SwapKit"
   playgroundUrl="https://stackblitz.com/github/swapkit/swapkit/tree/develop/playgrounds/nextjs"
@@ -231,7 +231,7 @@ console.log(`Swap transaction: ${txHash}`);
     {
       title: "Install and Initialize SwapKit",
       description: "Set up SwapKit in your project with the required dependencies",
-      code: `bun add @swapkit/sdk\n\nimport { createSwapKit } from '@swapkit/sdk';\n\nconst swapKit = createSwapKit({
+      code: `bun add @uswap/sdk\n\nimport { createSwapKit } from '@uswap/sdk';\n\nconst swapKit = createSwapKit({
   config: {
     apiKeys: {
       swapKit: 'your-api-key-here'
@@ -270,7 +270,7 @@ console.log('Connected:', ethAddress);`,
     {
       title: "Get a Swap Quote",
       description: "Fetch quotes from multiple DEX aggregators to find the best rate",
-      code: `import { SwapKitApi } from '@swapkit/sdk';
+      code: `import { SwapKitApi } from '@uswap/sdk';
 
 const quoteResponse = await SwapKitApi.getSwapQuote({
 sellAsset: 'ETH.ETH',
@@ -294,7 +294,7 @@ console.log('Expected output:', bestRoute.expectedBuyAmount);`,
     {
       title: "Execute the Swap",
       description: "Perform the cross-chain swap using the selected route",
-      code: `import { FeeOption } from '@swapkit/sdk';
+      code: `import { FeeOption } from '@uswap/sdk';
 
 const txHash = await swapKit.swap({
 route: bestRoute,
@@ -323,7 +323,7 @@ tips: [
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, AssetValue, FeeOption, Chain } from "@swapkit/sdk";
+import { createSwapKit, AssetValue, FeeOption, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -368,7 +368,7 @@ import {
   ThorchainPlugin,
   keystoreWallet,
   ledgerWallet,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   plugins: {
@@ -388,7 +388,7 @@ For low-level blockchain operations:
 ```typescript
 // @noErrorValidation
 
-import { getToolbox, Chain } from "@swapkit/sdk";
+import { getToolbox, Chain } from "@uswap/sdk";
 
 const address = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
 const btcToolbox = getToolbox(Chain.Bitcoin);
@@ -405,7 +405,7 @@ Create your own plugin to extend SwapKit:
 ```typescript
 // @noErrorValidation
 
-import { SwapKit } from "@swapkit/sdk";
+import { SwapKit } from "@uswap/sdk";
 
 const MyCustomPlugin = {
   myCustomMethod: async (params: any) => {
@@ -435,7 +435,7 @@ SwapKit uses typed errors for better debugging:
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, SwapKitError, FeeOption } from "@swapkit/sdk";
+import { createSwapKit, SwapKitError, FeeOption } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 

@@ -55,7 +55,7 @@ Before using KeepKey, you need to configure the integration settings:
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -82,7 +82,7 @@ const swapKit = SwapKit({
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -119,7 +119,7 @@ async function connectKeepKeyBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -162,7 +162,7 @@ import {
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keepkeyWallet },
@@ -199,7 +199,7 @@ async function connectWithCustomPaths() {
 ### Bitcoin Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keepkeyWallet },
@@ -234,7 +234,7 @@ async function sendBitcoin() {
 ### Ethereum Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keepkeyWallet },
@@ -285,7 +285,7 @@ async function sendERC20Token() {
 ### Cosmos Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keepkeyWallet },
@@ -316,7 +316,7 @@ async function sendCosmos() {
 ### THORChain Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keepkeyWallet },
@@ -368,7 +368,7 @@ async function depositToThorchain() {
 ### EVM Chains Configuration
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...keepkeyWallet } });
 
@@ -411,7 +411,7 @@ import {
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...keepkeyWallet } });
 
@@ -452,7 +452,7 @@ async function setupUTXOChains() {
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
 
 async function diagnosticConnection() {
   try {
@@ -772,7 +772,7 @@ class KeepKeyAccountManager {
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface KeepKeyWalletProps {
   onConnect: (addresses: Record<Chain, string>) => void;

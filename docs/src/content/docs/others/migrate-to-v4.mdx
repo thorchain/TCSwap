@@ -16,21 +16,21 @@ v4 fundamentally changes how packages are organized:
 **v3 Structure**: Individual packages for each component
 
 ```bash
-@swapkit/plugin-chainflip
-@swapkit/plugin-evm
-@swapkit/toolbox-cosmos
-@swapkit/wallet-keystore
-@swapkit/api
+@uswap/plugin-chainflip
+@uswap/plugin-evm
+@uswap/toolbox-cosmos
+@uswap/wallet-keystore
+@uswap/api
 ```
 
 **v4 Structure**: Consolidated monolithic packages with submodule exports
 
 ```bash
-@swapkit/plugins/*     # All plugins in one package
-@swapkit/toolboxes/*   # All toolboxes in one package
-@swapkit/wallets/*     # All wallets in one package
-@swapkit/helpers       # Utilities and API (previously @swapkit/api)
-@swapkit/sdk          # Complete bundle with everything
+@uswap/plugins/*     # All plugins in one package
+@uswap/toolboxes/*   # All toolboxes in one package
+@uswap/wallets/*     # All wallets in one package
+@uswap/helpers       # Utilities and API (previously @uswap/api)
+@uswap/sdk          # Complete bundle with everything
 ```
 
 ### 2. Import Path Changes
@@ -39,24 +39,24 @@ All imports must be updated:
 
 ```diff
 
-- import { ChainflipPlugin } from "@swapkit/plugin-chainflip";
-- import { EVMPlugin } from "@swapkit/plugin-evm";
-+ import { ChainflipPlugin } from "@swapkit/plugins/chainflip";
-+ import { EVMPlugin } from "@swapkit/plugins/evm";
+- import { ChainflipPlugin } from "@uswap/plugin-chainflip";
+- import { EVMPlugin } from "@uswap/plugin-evm";
++ import { ChainflipPlugin } from "@uswap/plugins/chainflip";
++ import { EVMPlugin } from "@uswap/plugins/evm";
 
 
-- import { getToolboxByChain } from "@swapkit/toolbox-cosmos";
-- import { EVMToolbox } from "@swapkit/toolbox-evm";
-+ import { getCosmosToolbox } from "@swapkit/toolboxes/cosmos";
-+ import { getEvmToolbox } from "@swapkit/toolboxes/evm";
+- import { getToolboxByChain } from "@uswap/toolbox-cosmos";
+- import { EVMToolbox } from "@uswap/toolbox-evm";
++ import { getCosmosToolbox } from "@uswap/toolboxes/cosmos";
++ import { getEvmToolbox } from "@uswap/toolboxes/evm";
 
 
-- import { keystoreWallet } from "@swapkit/wallet-keystore";
-+ import { keystoreWallet } from "@swapkit/wallets/keystore";
+- import { keystoreWallet } from "@uswap/wallet-keystore";
++ import { keystoreWallet } from "@uswap/wallets/keystore";
 
 
-- import { SwapKitApi } from "@swapkit/api";
-+ import { SwapKitApi } from "@swapkit/helpers/api";
+- import { SwapKitApi } from "@uswap/api";
++ import { SwapKitApi } from "@uswap/helpers/api";
 ```
 
 ### 3. Client Initialization Changes
@@ -65,7 +65,7 @@ The SwapKit client initialization has changed:
 
 ```diff
 
-- import { SwapKit } from "@swapkit/core";
+- import { SwapKit } from "@uswap/core";
 - const client = SwapKit({
 -   apis: { /* custom APIs */ },
 -   rpcUrls: { /* RPC URLs */ },
@@ -75,7 +75,7 @@ The SwapKit client initialization has changed:
 - });
 
 
-+ import { SwapKit } from "@swapkit/core";
++ import { SwapKit } from "@uswap/core";
 + const client = SwapKit({
 +   config: {
 +     rpcUrls: { /* RPC URLs */ },
@@ -98,7 +98,7 @@ v4 introduces a centralized configuration system:
 - });
 
 
-+ import { SKConfig } from "@swapkit/helpers";
++ import { SKConfig } from "@uswap/helpers";
 + SKConfig.set({
 +   rpcUrls: { [Chain.Ethereum]: "https:
 +   apiKeys: {
@@ -122,7 +122,7 @@ Plugins now use the `createPlugin` helper:
 - }
 
 
-+ import { createPlugin } from "@swapkit/plugins";
++ import { createPlugin } from "@uswap/plugins";
 + export const MyPlugin = createPlugin({
 +   name: "myPlugin",
 +   properties: { supportedSwapkitProviders: [ProviderName.THORCHAIN] },
@@ -142,7 +142,7 @@ Wallets now use the `createWallet` helper:
 -   };
 
 
-+ import { createWallet } from "@swapkit/wallets";
++ import { createWallet } from "@uswap/wallets";
 + export const keystoreWallet = createWallet({
 +   name: "keystore",
 +   hooks: ({ config }) => ({
@@ -174,12 +174,12 @@ Several type imports have changed:
 
 ```diff
 
-- import type { EVMWallets } from "@swapkit/toolbox-evm";
-+ import type { EVMToolboxes } from "@swapkit/toolboxes/evm";
+- import type { EVMWallets } from "@uswap/toolbox-evm";
++ import type { EVMToolboxes } from "@uswap/toolboxes/evm";
 
 
-- import type { QuoteRequest } from "@swapkit/api";
-+ import type { QuoteRequest } from "@swapkit/helpers/api";
+- import type { QuoteRequest } from "@uswap/api";
++ import type { QuoteRequest } from "@uswap/helpers/api";
 
 
 - SwapKitPluginParams<ConnectConfig>
@@ -201,48 +201,48 @@ Several type imports have changed:
   <TabItem label="bun" icon="bun">
     ```bash
     # Remove v3 packages
-    bun remove @swapkit/plugin-* @swapkit/toolbox-* @swapkit/wallet-*
+    bun remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
 
     # Install v4 packages
-    bun add @swapkit/sdk
+    bun add @uswap/sdk
     # or individual packages
-    bun add @swapkit/core @swapkit/plugins @swapkit/toolboxes @swapkit/wallets
+    bun add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
     ```
 
   </TabItem>
   <TabItem label="pnpm">
     ```bash
     # Remove v3 packages
-    pnpm remove @swapkit/plugin-* @swapkit/toolbox-* @swapkit/wallet-*
+    pnpm remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
 
     # Install v4 packages
-    pnpm add @swapkit/sdk
+    pnpm add @uswap/sdk
     # or individual packages
-    pnpm add @swapkit/core @swapkit/plugins @swapkit/toolboxes @swapkit/wallets
+    pnpm add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
     ```
 
   </TabItem>
   <TabItem label="npm">
     ```bash
     # Remove v3 packages
-    npm uninstall @swapkit/plugin-* @swapkit/toolbox-* @swapkit/wallet-*
+    npm uninstall @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
 
     # Install v4 packages
-    npm install @swapkit/sdk
+    npm install @uswap/sdk
     # or individual packages
-    npm install @swapkit/core @swapkit/plugins @swapkit/toolboxes @swapkit/wallets
+    npm install @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
     ```
 
   </TabItem>
   <TabItem label="yarn">
     ```bash
     # Remove v3 packages
-    yarn remove @swapkit/plugin-* @swapkit/toolbox-* @swapkit/wallet-*
+    yarn remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
 
     # Install v4 packages
-    yarn add @swapkit/sdk
+    yarn add @uswap/sdk
     # or individual packages
-    yarn add @swapkit/core @swapkit/plugins @swapkit/toolboxes @swapkit/wallets
+    yarn add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
     ```
 
   </TabItem>
@@ -253,20 +253,20 @@ Several type imports have changed:
 Replace all v3 imports with v4 equivalents:
 
 ```diff
--import { THORChainPlugin } from "@swapkit/plugin-thorchain";
--import { EVMToolbox } from "@swapkit/toolbox-evm";
--import { ledgerWallet } from "@swapkit/wallet-ledger";
+-import { THORChainPlugin } from "@uswap/plugin-thorchain";
+-import { EVMToolbox } from "@uswap/toolbox-evm";
+-import { ledgerWallet } from "@uswap/wallet-ledger";
 
-+import { ThorchainPlugin } from "@swapkit/plugins/thorchain";
-+import { getEvmToolbox } from "@swapkit/toolboxes/evm";
-+import { ledgerWallet } from "@swapkit/wallets/ledger";
++import { ThorchainPlugin } from "@uswap/plugins/thorchain";
++import { getEvmToolbox } from "@uswap/toolboxes/evm";
++import { ledgerWallet } from "@uswap/wallets/ledger";
 ```
 
 ### Step 3: Update Client Initialization
 
 ```diff
--import { SwapKitCore } from "@swapkit/core";
-+import { createSwapKit } from "@swapkit/sdk";
+-import { SwapKitCore } from "@uswap/core";
++import { createSwapKit } from "@uswap/sdk";
 
 -const client = new SwapKitCore({
 +const client = createSwapKit({
@@ -281,7 +281,7 @@ The wallet connection pattern remains similar but uses the new import paths:
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const client = createSwapKit({});
 
@@ -319,7 +319,7 @@ const client2 = SwapKit({
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, SKConfig, Chain } from '@swapkit/sdk';
+import { createSwapKit, SKConfig, Chain } from '@uswap/sdk';
 
 
 const swapKit = createSwapKit({
@@ -471,7 +471,7 @@ console.log(apiKeys.blockchair);
 ```typescript
 // @noErrorValidation
 
-import { SwapKitApi } from "@swapkit/sdk";
+import { SwapKitApi } from "@uswap/sdk";
 ```
 
 ### 2. Missing RPC URL Parameter
@@ -482,7 +482,7 @@ import { SwapKitApi } from "@swapkit/sdk";
 
 
 
-import { SKConfig, Chain, getEvmToolbox } from "@swapkit/sdk";
+import { SKConfig, Chain, getEvmToolbox } from "@uswap/sdk";
 
 SKConfig.set({ rpcUrls: { [Chain.Ethereum]: "https:
 const signer = /* your signer instance */;
@@ -494,7 +494,7 @@ const toolbox = getEvmToolbox(Chain.Ethereum, { signer });
 ```typescript
 // @noErrorValidation
 
-import { createPlugin } from "@swapkit/sdk";
+import { createPlugin } from "@uswap/sdk";
 
 const swap = async (params) => {
   /* implementation */

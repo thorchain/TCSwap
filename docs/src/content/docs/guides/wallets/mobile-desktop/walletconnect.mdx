@@ -62,7 +62,7 @@ WalletConnect works in all modern browsers:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -78,7 +78,7 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -95,7 +95,7 @@ const swapKit = createSwapKit({
 #### Basic Connection
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -132,7 +132,7 @@ async function connectWalletConnect() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -185,7 +185,7 @@ async function connectMultipleChains() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -230,7 +230,7 @@ async function connectWithAdvancedOptions() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -273,7 +273,7 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -315,7 +315,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -380,7 +380,7 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -422,7 +422,7 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -486,7 +486,7 @@ async function depositToTHORChain() {
 ### EVM Chain Support
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -534,7 +534,7 @@ async function connectEVMChains() {
 ### Cosmos Ecosystem Support
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -575,7 +575,7 @@ async function connectCosmosEcosystem() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -729,7 +729,7 @@ async function handleSessionIssues() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
 
 
 const swapKit = SwapKit({
@@ -847,7 +847,7 @@ const swapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface WalletConnectProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

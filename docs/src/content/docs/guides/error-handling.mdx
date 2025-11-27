@@ -17,7 +17,7 @@ The `SwapKitError` class extends the native `Error` class with additional contex
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 
 try {
   await swapKit.swap({ route });
@@ -91,8 +91,8 @@ Handle wallet connection failures gracefully:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/helpers";
-import { Chain } from "@swapkit/types";
+import { SwapKitError } from "@uswap/helpers";
+import { Chain } from "@uswap/types";
 
 async function connectWallet() {
   try {
@@ -146,7 +146,7 @@ Handle transaction-related failures:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError, AssetValue } from "@swapkit/helpers";
+import { SwapKitError, AssetValue } from "@uswap/helpers";
 
 async function executeTransaction(params: TransactionParams) {
   try {
@@ -220,7 +220,7 @@ Handle swap-specific errors with context:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 
 async function performSwap(route: SwapRoute) {
   try {

@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test } from "bun:test";
-import { AssetValue, Chain } from "@swapkit/helpers";
+import { AssetValue, Chain } from "@uswap/helpers";
 import { getSuiToolbox } from "../toolbox";
 
 const TEST_PHRASE = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";

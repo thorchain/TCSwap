@@ -1,5 +1,5 @@
-import { Chain, ChainId, ChainToChainId, filterSupportedChains, SwapKitError, WalletOption } from "@swapkit/helpers";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+import { Chain, ChainId, ChainToChainId, filterSupportedChains, SwapKitError, WalletOption } from "@uswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 import { chainRegistry } from "./chainRegistry";
 
 const keplrSupportedChainIds = [ChainId.Cosmos, ChainId.Kujira, ChainId.Noble, ChainId.THORChain] as const;
@@ -29,7 +29,7 @@ export const keplrWallet = createWallet({
           const signer = keplrClient?.getOfflineSignerOnlyAmino(chainId);
           if (!signer) throw new SwapKitError("wallet_keplr_signer_not_found");
 
-          const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
+          const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
 
           const accounts = await signer.getAccounts();
           if (!accounts?.[0]?.address) throw new SwapKitError("wallet_keplr_no_accounts");

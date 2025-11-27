@@ -12,11 +12,11 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
 <CardGrid>
   <Card title="Runtime Configuration Updates" icon="setting">
     <Badge text="Game Changer" variant="success" size="small" />
-    
+
     Update API keys, RPC URLs, and settings without recreating the SwapKit client. Perfect for production environments and dynamic configuration management.
-    
+
     ```typescript
-    import { SKConfig } from '@swapkit/sdk';
+    import { SKConfig } from '@uswap/sdk';
 
 
     SKConfig.setRpcUrl(Chain.Ethereum, "https:
@@ -26,41 +26,41 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
     [Learn more →](/others/migrate-to-v4#major-breaking-changes)
 
   </Card>
-  
+
   <Card title="Monolithic Package Structure" icon="puzzle">
     <Badge text="Breaking Change" variant="caution" size="small" />
-    
+
     Simplified package management with consolidated packages for better maintainability and smaller bundle sizes when using the full SDK.
-    
+
     ```typescript
 
-    import { createSwapKit, Chain } from '@swapkit/sdk';
-    import { ThorchainPlugin } from '@swapkit/plugins/thorchain';
+    import { createSwapKit, Chain } from '@uswap/sdk';
+    import { ThorchainPlugin } from '@uswap/plugins/thorchain';
     ```
 
     [Migration guide →](/others/migrate-to-v4)
 
   </Card>
-  
+
   <Card title="Enhanced Chain Support" icon="rocket">
     <Badge text="New" variant="success" size="small" />
-    
+
     Improved support for Solana with Jupiter API integration, dynamic Cosmos fees, full Ripple support, and OneKey wallet integration.
-    
+
     - **Solana**: Real-time token metadata via Jupiter API
     - **Cosmos**: Automatic fee estimation
     - **Ripple**: Complete XRP toolbox implementation
     - **OneKey**: New wallet integration
   </Card>
-  
+
   <Card title="Standardized Creation Helpers" icon="star">
     <Badge text="Developer Experience" variant="tip" size="small" />
-    
+
     New `createPlugin` and `createWallet` helpers provide consistent interfaces for extending SwapKit functionality.
-    
+
     ```typescript
-    import { createPlugin } from '@swapkit/plugins';
-    
+    import { createPlugin } from '@uswap/plugins';
+
     export const MyPlugin = createPlugin({
       name: "myPlugin",
       methods: ({ getWallet }) => ({ customMethod })

@@ -1,7 +1,7 @@
 import type BitcoinApp from "@ledgerhq/hw-app-btc";
 import type { CreateTransactionArg } from "@ledgerhq/hw-app-btc/lib-es/createTransaction";
-import { type DerivationPathArray, derivationPathToString, getWalletFormatFor, SwapKitError } from "@swapkit/helpers";
-import type { UTXOType } from "@swapkit/toolboxes/utxo";
+import { type DerivationPathArray, derivationPathToString, getWalletFormatFor, SwapKitError } from "@uswap/helpers";
+import type { UTXOType } from "@uswap/toolboxes/utxo";
 import type { Psbt } from "bitcoinjs-lib";
 
 import { getLedgerTransport } from "../helpers/getLedgerTransport";
@@ -90,7 +90,7 @@ const BaseLedgerUTXO = ({
         btcApp = new BitcoinApp({ currency: chain, transport });
       },
       getAddress: async () => {
-        const { toCashAddress } = await import("@swapkit/toolboxes/utxo");
+        const { toCashAddress } = await import("@uswap/toolboxes/utxo");
 
         await checkBtcAppAndCreateTransportWebUSB(false);
 

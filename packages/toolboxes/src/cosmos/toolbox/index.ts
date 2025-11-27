@@ -1,4 +1,4 @@
-import { Chain, type CosmosChain, SwapKitError } from "@swapkit/helpers";
+import { Chain, type CosmosChain, SwapKitError } from "@uswap/helpers";
 
 import type { CosmosToolboxParams } from "../types";
 import { createCosmosToolbox } from "./cosmos";

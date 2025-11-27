@@ -1,4 +1,4 @@
-import type { Chain } from "@swapkit/types";
+import type { Chain } from "@uswap/types";
 import { SKConfig } from "../modules/swapKitConfig";
 import { SwapKitError } from "../modules/swapKitError";
 

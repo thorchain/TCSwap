@@ -22,7 +22,7 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  transpilePackages: ["@swapkit/ui"],
+  transpilePackages: ["@uswap/ui"],
   typescript: { ignoreBuildErrors: true },
 
   webpack: (config, { isServer, webpack }) => {

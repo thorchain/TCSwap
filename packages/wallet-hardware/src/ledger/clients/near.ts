@@ -1,11 +1,11 @@
 import type { SignedTransaction, Transaction } from "@near-js/transactions";
-import type { DerivationPathArray } from "@swapkit/helpers";
-import type { NearSigner } from "@swapkit/toolboxes/near";
+import type { DerivationPathArray } from "@uswap/helpers";
+import type { NearSigner } from "@uswap/toolboxes/near";
 import { getLedgerTransport } from "../helpers/getLedgerTransport";
 
 export async function getNearLedgerClient(derivationPath?: DerivationPathArray) {
   const Near = (await import("@ledgerhq/hw-app-near")).default;
-  const { Chain, NetworkDerivationPath, SwapKitError } = await import("@swapkit/helpers");
+  const { Chain, NetworkDerivationPath, SwapKitError } = await import("@uswap/helpers");
   const transport = await getLedgerTransport();
   const nearApp = new Near(transport);
 

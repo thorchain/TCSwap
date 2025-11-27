@@ -1,4 +1,4 @@
-import type { AssetValue, TokenNames } from "@swapkit/sdk";
+import type { AssetValue, TokenNames } from "@uswap/sdk";
 import { useMemo, useState } from "react";
 import { assetsMap, useSwapKit } from "../swapkit-context";
 import type { UseFilteredSortedAssetsFilters } from "../types";

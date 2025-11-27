@@ -1,4 +1,4 @@
-import type { AssetValue, DerivationPathArray, GenericTransferParams } from "@swapkit/helpers";
+import type { AssetValue, DerivationPathArray, GenericTransferParams } from "@uswap/helpers";
 import type { getTONToolbox } from "./toolbox";
 
 export type TONSigner = { publicKey: any; secretKey: any };

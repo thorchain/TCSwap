@@ -64,7 +64,7 @@ dom.webusb.enabled = true
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -79,7 +79,7 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -100,7 +100,7 @@ import {
   ledgerWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -127,7 +127,7 @@ async function connectLedgerBitcoin() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -165,7 +165,7 @@ import {
   ledgerWallet,
   Chain,
   type DerivationPathArray,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -203,7 +203,7 @@ const DERIVATION_PATHS = {
 ### Bitcoin Transaction
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -234,7 +234,7 @@ async function sendBitcoin() {
 ### Ethereum Transaction
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -285,7 +285,7 @@ async function sendERC20Token() {
 ### Cosmos Transaction
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -320,7 +320,7 @@ async function sendCosmos() {
 For Bitcoin transactions, ensure you have the Bitcoin app installed on your Ledger:
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain, FeeOption } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain, FeeOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...ledgerWallet } });
 await swapKit.connectLedger([Chain.Bitcoin]);
@@ -348,7 +348,7 @@ async function bitcoinTransactionWithCustomFee() {
 For Ethereum and EVM chains, install the Ethereum app:
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...ledgerWallet } });
 
@@ -379,7 +379,7 @@ async function setupEVMChains() {
 For Cosmos and THORChain, install the respective apps:
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...ledgerWallet } });
 
@@ -406,7 +406,7 @@ async function setupCosmosEcosystem() {
 ### Connection Issues
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...ledgerWallet } });
 
@@ -477,7 +477,7 @@ async function handleTransactionErrors() {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 async function verifyAddressOnDevice() {
   const swapKit = SwapKit({ wallets: { ...ledgerWallet } });
@@ -578,7 +578,7 @@ class LedgerManager {
 ### Custom Transport Configuration
 
 ```ts twoslash
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -596,7 +596,7 @@ const swapKit = SwapKit({
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { SwapKit, ledgerWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, ledgerWallet, Chain } from "@uswap/sdk";
 
 interface LedgerWalletProps {
   onConnect: (address: string) => void;

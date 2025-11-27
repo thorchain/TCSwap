@@ -1,4 +1,4 @@
-import { type Chain, type FullWallet, getExplorerAddressUrl } from "@swapkit/sdk";
+import { type Chain, type FullWallet, getExplorerAddressUrl } from "@uswap/sdk";
 
 type Props = {
   walletData: FullWallet[Chain];

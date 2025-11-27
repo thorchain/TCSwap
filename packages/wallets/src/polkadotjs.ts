@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-extensions/polkadotjs";
+export * from "@uswap/wallet-extensions/polkadotjs";

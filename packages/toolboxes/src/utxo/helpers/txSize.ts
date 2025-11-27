@@ -1,4 +1,4 @@
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 import { opcodes, script } from "bitcoinjs-lib";
 import type { TargetOutput, UTXOCalculateTxSizeParams, UTXOInputWithScriptType, UTXOType } from "../types";
 

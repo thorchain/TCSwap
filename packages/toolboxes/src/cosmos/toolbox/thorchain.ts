@@ -15,7 +15,7 @@ import {
   SwapKitNumber,
   type TCLikeChain,
   updateDerivationPath,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 
 import { match, P } from "ts-pattern";
 import {

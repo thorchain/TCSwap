@@ -4,4 +4,4 @@
  * - Add dynamic wallets
  */
 
-export * from "@swapkit/core";
+export * from "@uswap/core";

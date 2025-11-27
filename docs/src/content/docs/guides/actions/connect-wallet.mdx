@@ -21,12 +21,12 @@ You can use SwapKit in two ways:
 1. **Granular approach** - Import only what you need from individual packages:
 
    ```ts
-   import { SwapKit, keystoreWallet } from "@swapkit/sdk";
+   import { SwapKit, keystoreWallet } from "@uswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createSwapKit } from "@swapkit/sdk";
+   import { createSwapKit } from "@uswap/sdk";
    ```
 
 The granular approach is recommended for frontend applications as it results in smaller bundle sizes.
@@ -36,7 +36,7 @@ The granular approach is recommended for frontend applications as it results in 
 ### Granular Approach (Frontend Recommended)
 
 ```ts twoslash
-import { SwapKit, keystoreWallet, ledgerWallet, evmWallet } from "@swapkit/sdk";
+import { SwapKit, keystoreWallet, ledgerWallet, evmWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -52,7 +52,7 @@ const swapKit = SwapKit({
 ### All-in-one Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit } from "@swapkit/sdk";
+import { createSwapKit } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -75,7 +75,7 @@ import {
   keystoreWallet,
   decryptFromKeystore,
   type Keystore,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keystoreWallet },
@@ -116,7 +116,7 @@ import {
   createSwapKit,
   decryptFromKeystore,
   type Keystore,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -142,7 +142,7 @@ async function connectWithKeystore(
 ### Ledger Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, ledgerWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, ledgerWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...ledgerWallet },
@@ -169,7 +169,7 @@ import {
   NetworkDerivationPath,
   SwapKit,
   trezorWallet,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -193,7 +193,7 @@ async function connectTrezor(chains: Chain[]) {
 ### MetaMask / EVM Wallets
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -215,7 +215,7 @@ async function connectEVMWallet() {
 ### Keplr (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, keplrWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, keplrWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...keplrWallet },
@@ -237,7 +237,7 @@ async function connectKeplr() {
 ### Cosmostation (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, cosmostationWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, cosmostationWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...cosmostationWallet },
@@ -259,7 +259,7 @@ async function connectCosmostation() {
 ### Phantom (Solana) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, phantomWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, phantomWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...phantomWallet },
@@ -281,7 +281,7 @@ async function connectPhantom() {
 ## Managing Wallet Connections
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -304,7 +304,7 @@ function disconnectAll() {
 ## Getting Wallet Balances
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -336,7 +336,7 @@ async function getAllBalances(chains: Chain[]) {
 ## Using WalletConnect
 
 ```ts twoslash
-import { Chain, SwapKit, walletconnectWallet } from "@swapkit/sdk";
+import { Chain, SwapKit, walletconnectWallet } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -373,7 +373,7 @@ import {
   evmWallet,
   keplrWallet,
   keystoreWallet,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet, ...keplrWallet, ...keystoreWallet },

@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-extensions/tronlink";
+export * from "@uswap/wallet-extensions/tronlink";

@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-hardware/ledger";
+export * from "@uswap/wallet-hardware/ledger";

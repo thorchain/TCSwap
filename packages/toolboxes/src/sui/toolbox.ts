@@ -1,4 +1,4 @@
-import { AssetValue, Chain, getChainConfig, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, getChainConfig, SwapKitError } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 import type { SuiCreateTransactionParams, SuiToolboxParams, SuiTransferParams } from "./types";
 

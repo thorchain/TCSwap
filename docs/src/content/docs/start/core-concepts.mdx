@@ -15,7 +15,7 @@ Before diving into SwapKit's features, it's essential to understand its core con
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapkit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const oneEth = AssetValue.from({
   asset: "ETH.ETH",
@@ -124,7 +124,7 @@ synthEth.isSynthetic();
 
 ```typescript
 // @noErrorValidation
-import { SwapKitNumber } from "@swapkit/sdk";
+import { SwapKitNumber } from "@uswap/sdk";
 
 const num1 = new SwapKitNumber(123.456);
 const num2 = new SwapKitNumber("789.012");
@@ -143,7 +143,7 @@ SwapKit uses consistent chain identifiers across the entire SDK:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@swapkit/sdk";
+import { Chain } from "@uswap/sdk";
 
 Chain.Ethereum;
 Chain.Avalanche;
@@ -182,7 +182,7 @@ The base error class with additional context:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.swap({ route });
@@ -243,7 +243,7 @@ SwapKit supports various wallet types through the `WalletOption` enum:
 
 ```typescript
 // @noErrorValidation
-import { WalletOption } from "@swapkit/sdk";
+import { WalletOption } from "@uswap/sdk";
 
 WalletOption.METAMASK;
 WalletOption.LEDGER;
@@ -258,7 +258,7 @@ Control transaction fees with the `FeeOption` enum:
 
 ```typescript
 // @noErrorValidation
-import { FeeOption } from "@swapkit/sdk";
+import { FeeOption } from "@uswap/sdk";
 
 FeeOption.Average;
 FeeOption.Fast;
@@ -277,7 +277,7 @@ SwapKit integrates with multiple swap providers:
 
 ```typescript
 // @noErrorValidation
-import { ProviderName } from "@swapkit/sdk";
+import { ProviderName } from "@uswap/sdk";
 
 ProviderName.THORCHAIN;
 ProviderName.CHAINFLIP;

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { Chain } from "@swapkit/types";
+import { Chain } from "@uswap/types";
 import { FeeOption } from "../../types";
 import { SKConfig } from "../swapKitConfig";
 

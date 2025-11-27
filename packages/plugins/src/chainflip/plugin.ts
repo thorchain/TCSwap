@@ -1,5 +1,5 @@
-import { AssetValue, type Chain, ProviderName, SwapKitError } from "@swapkit/helpers";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { AssetValue, type Chain, ProviderName, SwapKitError } from "@uswap/helpers";
+import { SwapKitApi } from "@uswap/helpers/api";
 import { createPlugin } from "../utils";
 import type { RequestSwapDepositAddressParams } from "./types";
 

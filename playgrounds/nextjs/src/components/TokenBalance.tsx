@@ -1,7 +1,7 @@
 "use client";
 
-import type { AssetValue } from "@swapkit/helpers";
-import { AssetIcon } from "@swapkit/ui/react";
+import type { AssetValue } from "@uswap/helpers";
+import { AssetIcon } from "@uswap/ui/react";
 import { cn } from "~/lib/utils";
 
 interface TokenBalanceProps {

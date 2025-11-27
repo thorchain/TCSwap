@@ -1,7 +1,7 @@
 "use client";
 
-import type { Chain, EVMChain, SKConfigState, TokenNames } from "@swapkit/sdk";
-import { AssetValue, NetworkDerivationPath, WalletOption } from "@swapkit/sdk";
+import type { Chain, EVMChain, SKConfigState, TokenNames } from "@uswap/sdk";
+import { AssetValue, NetworkDerivationPath, WalletOption } from "@uswap/sdk";
 import { useCallback, useEffect, useMemo } from "react";
 import { create } from "zustand";
 import type { BalanceDetails, KeystoreFile, SwapKitState } from "./types";
@@ -51,7 +51,7 @@ export const useSwapKit = () => {
 
   const loadSwapKit = useCallback(
     async (params?: { config: SKConfigState | undefined }) => {
-      const { createSwapKit } = await import("@swapkit/sdk");
+      const { createSwapKit } = await import("@uswap/sdk");
 
       const swapKitClient = createSwapKit({ config: params?.config });
 
@@ -181,7 +181,7 @@ export const useSwapKit = () => {
       try {
         setIsConnectingWallet(true);
 
-        const { decryptFromKeystore } = await import("@swapkit/wallet-keystore");
+        const { decryptFromKeystore } = await import("@uswap/wallet-keystore");
         const phrase = await decryptFromKeystore(keystoreFile.keystore, password);
 
         if (!phrase) throw new Error("Failed to decrypt keystore");

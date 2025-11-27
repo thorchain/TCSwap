@@ -10,8 +10,8 @@ import {
   isGasAsset,
   SwapKitError,
   SwapKitNumber,
-} from "@swapkit/helpers";
-import { erc20ABI } from "@swapkit/helpers/contracts";
+} from "@uswap/helpers";
+import { erc20ABI } from "@uswap/helpers/contracts";
 import {
   BrowserProvider,
   Contract,

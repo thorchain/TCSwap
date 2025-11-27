@@ -84,16 +84,16 @@ The fastest way to integrate SwapKit into your application.
    Choose your package manager:
 
    <Tabs syncKey="package-manager">
-     <TabItem label="bun">```bash bun add @swapkit/sdk ```</TabItem>
-     <TabItem label="pnpm">```bash pnpm add @swapkit/sdk ```</TabItem>
-     <TabItem label="npm">```bash npm install @swapkit/sdk ```</TabItem>
-     <TabItem label="yarn">```bash yarn add @swapkit/sdk ```</TabItem>
+     <TabItem label="bun">```bash bun add @uswap/sdk ```</TabItem>
+     <TabItem label="pnpm">```bash pnpm add @uswap/sdk ```</TabItem>
+     <TabItem label="npm">```bash npm install @uswap/sdk ```</TabItem>
+     <TabItem label="yarn">```bash yarn add @uswap/sdk ```</TabItem>
    </Tabs>
 
 2. **Initialize SwapKit**
 
    ```typescript
-   import { createSwapKit } from "@swapkit/sdk";
+   import { createSwapKit } from "@uswap/sdk";
 
    const defaultSwapKit = createSwapKit();
 
@@ -111,7 +111,7 @@ The fastest way to integrate SwapKit into your application.
    Connect a wallet:
 
    ```typescript
-   import { createSwapKit, Chain } from "@swapkit/sdk";
+   import { createSwapKit, Chain } from "@uswap/sdk";
 
    const swapKit = createSwapKit({
      config: { apiKeys: { swapKit: "your-swapkit-api-key" } },
@@ -138,10 +138,10 @@ For developers who need more control and custom configurations.
    Start with the core package:
 
    <Tabs syncKey="package-manager">
-     <TabItem label="bun">```bash bun add @swapkit/core ```</TabItem>
-     <TabItem label="pnpm">```bash pnpm add @swapkit/core ```</TabItem>
-     <TabItem label="npm">```bash npm install @swapkit/core ```</TabItem>
-     <TabItem label="yarn">```bash yarn add @swapkit/core ```</TabItem>
+     <TabItem label="bun">```bash bun add @uswap/core ```</TabItem>
+     <TabItem label="pnpm">```bash pnpm add @uswap/core ```</TabItem>
+     <TabItem label="npm">```bash npm install @uswap/core ```</TabItem>
+     <TabItem label="yarn">```bash yarn add @uswap/core ```</TabItem>
    </Tabs>
 
 2. **Install Required Components**
@@ -153,28 +153,28 @@ For developers who need more control and custom configurations.
        <Tabs syncKey="package-manager">
          <TabItem label="bun">
            ```bash
-           bun add @swapkit/wallets
+           bun add @uswap/wallets
            ```
          </TabItem>
          <TabItem label="pnpm">
            ```bash
-           pnpm add @swapkit/wallets
+           pnpm add @uswap/wallets
            ```
          </TabItem>
          <TabItem label="npm">
            ```bash
-           npm install @swapkit/wallets
+           npm install @uswap/wallets
            ```
          </TabItem>
          <TabItem label="yarn">
            ```bash
-           yarn add @swapkit/wallets
+           yarn add @uswap/wallets
            ```
          </TabItem>
        </Tabs>
 
        Install to add integrations with specific wallets.
-       Import specific wallet integrations as needed (e.g., `keystoreWallet` from `@swapkit/sdk`).
+       Import specific wallet integrations as needed (e.g., `keystoreWallet` from `@uswap/sdk`).
        Supports around 20+ wallets, including Ledger, Trezor, Coinbase, WalletConnect and more.
      </TabItem>
 
@@ -182,35 +182,35 @@ For developers who need more control and custom configurations.
        <Tabs syncKey="package-manager">
          <TabItem label="bun">
            ```bash
-           bun add @swapkit/plugins
+           bun add @uswap/plugins
            ```
          </TabItem>
          <TabItem label="pnpm">
            ```bash
-           pnpm add @swapkit/plugins
+           pnpm add @uswap/plugins
            ```
          </TabItem>
          <TabItem label="npm">
            ```bash
-           npm install @swapkit/plugins
+           npm install @uswap/plugins
            ```
          </TabItem>
          <TabItem label="yarn">
            ```bash
-           yarn add @swapkit/plugins
+           yarn add @uswap/plugins
            ```
          </TabItem>
        </Tabs>
 
        Install for interactions with specific protocols or products.
-       Install the main plugins package below; you can then import specific plugin integrations as needed (e.g., `ThorchainPlugin` from `@swapkit/sdk`).
+       Install the main plugins package below; you can then import specific plugin integrations as needed (e.g., `ThorchainPlugin` from `@uswap/sdk`).
        By building your own plugins, you can extend SwapKit to support new protocols, products or actions.
        Currently SwapKit includes plugins for Chainflip, Thorchain, EVM, Radix, and more.
      </TabItem>
 
      <TabItem label="Toolboxes">
        Toolboxes provide foundational, chain-specific functionalities used internally by wallets and plugins.
-       They are included when you install `@swapkit/core` and typically **don't need separate installation** unless you are building custom integrations or need direct access to low-level chain functions.
+       They are included when you install `@uswap/core` and typically **don't need separate installation** unless you are building custom integrations or need direct access to low-level chain functions.
        Check out [Toolbox Usage](/start/toolbox-usage) for more information on advanced scenarios.
      </TabItem>
    </Tabs>
@@ -218,11 +218,11 @@ For developers who need more control and custom configurations.
 3. **Configure SwapKit**
 
    ```typescript
-   import { SwapKit, Chain, ThorchainPlugin, EVMPlugin, keystoreWallet, ledgerWallet } from '@swapkit/sdk';
+   import { SwapKit, Chain, ThorchainPlugin, EVMPlugin, keystoreWallet, ledgerWallet } from '@uswap/sdk';
 
    const swapKit = SwapKit({
-     config: { 
-       apiKeys: { swapKit: 'your-swapkit-api-key' } 
+     config: {
+       apiKeys: { swapKit: 'your-swapkit-api-key' }
      },
      plugins: { ...ThorchainPlugin, ...EVMPlugin },
      wallets: { ...keystoreWallet, ...ledgerWallet },
@@ -247,7 +247,7 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Check Balances" icon="seti:database">
     ```typescript
 
-    import { SwapKit, Chain } from '@swapkit/sdk';
+    import { SwapKit, Chain } from '@uswap/sdk';
 
     const swapKit = SwapKit({
       config: { apiKeys: { swapKit: 'your-swapkit-api-key' } },
@@ -264,7 +264,7 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Transfer Assets" icon="seti:send">
     ```typescript
 
-    import { AssetValue, Chain, SwapKit, keystoreWallet } from '@swapkit/sdk';
+    import { AssetValue, Chain, SwapKit, keystoreWallet } from '@uswap/sdk';
 
 
     const swapKit = SwapKit({
@@ -294,7 +294,7 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Perform Swaps" icon="seti:swap">
     ```typescript
 
-    import { AssetValue, Chain, SwapKitApi, SwapKit, keystoreWallet } from '@swapkit/sdk';
+    import { AssetValue, Chain, SwapKitApi, SwapKit, keystoreWallet } from '@uswap/sdk';
 
 
     const swapKit = SwapKit({

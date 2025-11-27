@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { Chain, DerivationPath } from "@swapkit/helpers";
+import { Chain, DerivationPath } from "@uswap/helpers";
 import { getUtxoToolbox } from "../toolbox";
 
 describe("UTXO Toolbox Zcash Integration", () => {

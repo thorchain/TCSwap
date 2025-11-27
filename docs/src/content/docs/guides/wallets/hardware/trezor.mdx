@@ -57,7 +57,7 @@ Trezor Connect works in modern browsers:
 
 ```ts twoslash
 
-import { SwapKit, trezorWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
 
 
 const swapKit = SwapKit({
@@ -82,7 +82,7 @@ const swapKit = SwapKit({
 
 ```ts twoslash
 
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 
 const swapKit = createSwapKit({
@@ -111,7 +111,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -145,7 +145,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -176,7 +176,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -215,7 +215,7 @@ import {
   trezorWallet,
   Chain,
   type DerivationPathArray,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -258,7 +258,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -318,7 +318,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -375,7 +375,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -413,7 +413,7 @@ import {
   Chain,
   NetworkDerivationPath,
   FeeOption,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...trezorWallet } });
 
@@ -451,7 +451,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 const swapKit = SwapKit({ wallets: { ...trezorWallet } });
 
@@ -490,7 +490,7 @@ async function setupEVMChains() {
 
 ```ts twoslash
 
-import { SwapKit, trezorWallet, Chain, NetworkDerivationPath } from "@swapkit/sdk";
+import { SwapKit, trezorWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...trezorWallet },
@@ -609,7 +609,7 @@ async function handleBrowserIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, trezorWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
 
 async function verifyAddressOnDevice() {
   const swapKit = SwapKit({ wallets: { ...trezorWallet } });
@@ -705,7 +705,7 @@ const swapKit = SwapKit({
 ### Custom Coin Support
 
 ```ts twoslash
-import { SwapKit, trezorWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
 
 class CustomTrezorWallet {
   private swapKit: any;
@@ -760,7 +760,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 
 interface TrezorWalletProps {
   onConnect: (address: string) => void;

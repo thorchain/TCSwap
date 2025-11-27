@@ -1,5 +1,5 @@
 import { base64 } from "@scure/base";
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 
 export const getSignature = (signatureArray: any) => {
   // Check Type Length Value encoding

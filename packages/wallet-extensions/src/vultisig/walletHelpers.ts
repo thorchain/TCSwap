@@ -12,11 +12,11 @@ import {
   SwapKitError,
   type UTXOChain,
   WalletOption,
-} from "@swapkit/helpers";
-import { erc20ABI } from "@swapkit/helpers/contracts";
-import type { getCosmosToolbox } from "@swapkit/toolboxes/cosmos";
-import type { ApproveParams, CallParams, EVMTxParams } from "@swapkit/toolboxes/evm";
-import type { SolanaProvider } from "@swapkit/toolboxes/solana";
+} from "@uswap/helpers";
+import { erc20ABI } from "@uswap/helpers/contracts";
+import type { getCosmosToolbox } from "@uswap/toolboxes/cosmos";
+import type { ApproveParams, CallParams, EVMTxParams } from "@uswap/toolboxes/evm";
+import type { SolanaProvider } from "@uswap/toolboxes/solana";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 import type { VultisigCosmosProvider } from "../types";
 
@@ -178,7 +178,7 @@ export async function walletTransfer(
 export function getVultisigMethods(provider: BrowserProvider, chain: EVMChain) {
   return {
     approve: async ({ assetAddress, spenderAddress, amount, from }: ApproveParams) => {
-      const { MAX_APPROVAL, getCreateContractTxObject } = await import("@swapkit/toolboxes/evm");
+      const { MAX_APPROVAL, getCreateContractTxObject } = await import("@uswap/toolboxes/evm");
       const funcParams = [spenderAddress, BigInt(amount || MAX_APPROVAL)];
       const txOverrides = { from };
 
@@ -201,7 +201,7 @@ export function getVultisigMethods(provider: BrowserProvider, chain: EVMChain) {
       if (!contractAddress) {
         throw new SwapKitError("wallet_vultisig_contract_address_not_provided");
       }
-      const { createContract, getCreateContractTxObject, isStateChangingCall } = await import("@swapkit/toolboxes/evm");
+      const { createContract, getCreateContractTxObject, isStateChangingCall } = await import("@uswap/toolboxes/evm");
 
       const isStateChanging = isStateChangingCall({ abi, funcName });
 

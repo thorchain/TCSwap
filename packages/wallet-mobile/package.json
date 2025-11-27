@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "dependencies": { "@swapkit/helpers": "workspace:*", "@swapkit/toolboxes": "workspace:*" },
+  "dependencies": { "@uswap/helpers": "workspace:*", "@uswap/toolboxes": "workspace:*" },
   "description": "SwapKit - Wallet Mobile",
   "exports": {
     ".": {
@@ -13,7 +13,7 @@
   "files": ["dist/", "src/"],
   "homepage": "https://github.com/swapkit/SwapKit",
   "license": "Apache-2.0",
-  "name": "@swapkit/wallet-mobile",
+  "name": "@uswap/wallet-mobile",
   "repository": {
     "directory": "packages/wallet-mobile",
     "type": "git",

@@ -1,4 +1,4 @@
-import { Chain, SwapKitError, type UTXOChain } from "@swapkit/helpers";
+import { Chain, SwapKitError, type UTXOChain } from "@uswap/helpers";
 
 import {
   calculateTxSize,

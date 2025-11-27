@@ -7,8 +7,8 @@ import {
   prepareNetworkSwitch,
   SwapKitError,
   switchEVMWalletNetwork,
-} from "@swapkit/helpers";
-import type { TronSigner, TronTransaction } from "@swapkit/toolboxes/tron";
+} from "@uswap/helpers";
+import type { TronSigner, TronTransaction } from "@uswap/toolboxes/tron";
 import { Psbt } from "bitcoinjs-lib";
 import type { Eip1193Provider } from "ethers";
 
@@ -18,7 +18,7 @@ const cosmosTransfer =
     if (!(window.okxwallet && "keplr" in window.okxwallet)) {
       throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Cosmos });
     }
-    const { createSigningStargateClient } = await import("@swapkit/toolboxes/cosmos");
+    const { createSigningStargateClient } = await import("@uswap/toolboxes/cosmos");
 
     const { keplr: wallet } = window.okxwallet;
     const offlineSigner = wallet?.getOfflineSignerOnlyAmino(getChainConfig(Chain.Cosmos).chainId);
@@ -40,7 +40,7 @@ async function getWeb3WalletMethods({
   walletProvider: Eip1193Provider | undefined;
   chain: EVMChain;
 }) {
-  const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
+  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
   const { BrowserProvider } = await import("ethers");
   if (!walletProvider) throw new SwapKitError("wallet_okx_not_found");
 
@@ -94,7 +94,7 @@ export async function getWalletMethods(chain: Chain) {
           throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Bitcoin });
         }
 
-        const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+        const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
 
         const { bitcoin: wallet } = window.okxwallet;
         const address = (await wallet.connect()).address;
@@ -130,7 +130,7 @@ export async function getWalletMethods(chain: Chain) {
           });
         }
 
-        const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
+        const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
         const [{ address }] = accounts;
         const toolbox = await getCosmosToolbox(Chain.Cosmos);
 
@@ -143,7 +143,7 @@ export async function getWalletMethods(chain: Chain) {
       //   }
 
       //   const { createNearSignerFromProvider } = await import("../helpers/near");
-      //   const { getNearToolbox } = await import("@swapkit/toolboxes/near");
+      //   const { getNearToolbox } = await import("@uswap/toolboxes/near");
 
       //   const provider = window.okxwallet.near;
       //   const signer = await createNearSignerFromProvider(provider, "OKX");
@@ -157,7 +157,7 @@ export async function getWalletMethods(chain: Chain) {
           throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Tron });
         }
 
-        const { createTronToolbox } = await import("@swapkit/toolboxes/tron");
+        const { createTronToolbox } = await import("@uswap/toolboxes/tron");
 
         const tronLink = window.okxwallet.tronLink;
 

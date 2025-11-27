@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "dependencies": { "@swapkit/helpers": "workspace:*" },
+  "dependencies": { "@uswap/helpers": "workspace:*" },
   "description": "SwapKit - Wallet Core",
   "exports": {
     ".": {
@@ -13,7 +13,7 @@
   "files": ["dist/", "src/"],
   "homepage": "https://github.com/swapkit/SwapKit",
   "license": "Apache-2.0",
-  "name": "@swapkit/wallet-core",
+  "name": "@uswap/wallet-core",
   "repository": {
     "directory": "packages/wallet-core",
     "type": "git",

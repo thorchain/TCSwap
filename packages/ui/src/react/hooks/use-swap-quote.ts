@@ -8,7 +8,7 @@ import {
   type QuoteResponseRoute,
   SwapKitApi,
   useSwapKitConfig,
-} from "@swapkit/sdk";
+} from "@uswap/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatCurrency } from "../../lib/utils";

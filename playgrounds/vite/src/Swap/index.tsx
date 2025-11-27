@@ -1,5 +1,5 @@
 "use client";
-import { type AssetValue, FeeOption, getExplorerTxUrl, type QuoteResponseRoute } from "@swapkit/sdk";
+import { type AssetValue, FeeOption, getExplorerTxUrl, type QuoteResponseRoute } from "@uswap/sdk";
 import { useCallback } from "react";
 
 import type { SwapKitClient } from "../swapKitClient";

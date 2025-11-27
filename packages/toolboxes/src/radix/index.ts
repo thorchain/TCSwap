@@ -5,7 +5,7 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, SKConfig, type SKConfigIntegrations, SwapKitError } from "@swapkit/helpers";
+import { AssetValue, Chain, SKConfig, type SKConfigIntegrations, SwapKitError } from "@uswap/helpers";
 
 export type RadixWallet = Awaited<ReturnType<typeof RadixToolbox>>;
 

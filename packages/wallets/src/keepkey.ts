@@ -1,1 +1,1 @@
-export * from "@swapkit/wallet-hardware/keepkey";
+export * from "@uswap/wallet-hardware/keepkey";

@@ -6,8 +6,8 @@ import {
   ProviderName,
   SwapKitError,
   type SwapParams,
-} from "@swapkit/helpers";
-import type { EVMTransaction, QuoteResponseRoute } from "@swapkit/helpers/api";
+} from "@uswap/helpers";
+import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
 import { approve, createPlugin } from "../utils";
 
 export const EVMPlugin = createPlugin({

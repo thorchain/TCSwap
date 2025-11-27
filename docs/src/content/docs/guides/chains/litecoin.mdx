@@ -23,10 +23,10 @@ Litecoin is a peer-to-peer cryptocurrency based on Bitcoin with faster block tim
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const ltcWallet = await swapKit.getWallet(Chain.Litecoin);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getLitecoinToolbox } from '@swapkit/toolboxes/utxo';
+import { getLitecoinToolbox } from '@uswap/toolboxes/utxo';
 
 
 const ltcToolbox = await getLitecoinToolbox({
@@ -73,7 +73,7 @@ Connect to Litecoin using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.Litecoin], "your mnemonic phrase");
 
@@ -106,7 +106,7 @@ console.log("Litecoin addresses:", addresses);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapKit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
@@ -375,7 +375,7 @@ const lightningExample = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Litecoin, [
@@ -422,7 +422,7 @@ Handle Litecoin-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({
@@ -566,7 +566,7 @@ const consolidateUTXOs = async () => {
 
 ```typescript
 // @noErrorValidation
-import { validateLitecoinAddress } from "@swapkit/toolboxes/utxo";
+import { validateLitecoinAddress } from "@uswap/toolboxes/utxo";
 
 const addresses = [
   "ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",

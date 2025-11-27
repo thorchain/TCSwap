@@ -1,4 +1,4 @@
-import { AllChains, type Chain, getChainConfig } from "@swapkit/types";
+import { AllChains, type Chain, getChainConfig } from "@uswap/types";
 
 export type DerivationPathArray = ReturnType<typeof getChainConfig>["networkDerivationPath"];
 

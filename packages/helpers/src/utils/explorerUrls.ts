@@ -1,4 +1,4 @@
-import { Chain, CosmosChains, EVMChains, getChainConfig, SubstrateChains, UTXOChains } from "@swapkit/types";
+import { Chain, CosmosChains, EVMChains, getChainConfig, SubstrateChains, UTXOChains } from "@uswap/types";
 import { match } from "ts-pattern";
 
 export function getExplorerTxUrl({ chain, txHash }: { txHash: string; chain: Chain }) {

@@ -1,6 +1,6 @@
-import type { AssetValue, Chain, ChainWallet, createSwapKit, SKConfigState, WalletOption } from "@swapkit/sdk";
+import type { AssetValue, Chain, ChainWallet, createSwapKit, SKConfigState, WalletOption } from "@uswap/sdk";
 
-export type KeystoreFile = { keystore: import("@swapkit/sdk/wallets").Keystore | null; file: File; chains: Chain[] };
+export type KeystoreFile = { keystore: import("@uswap/sdk/wallets").Keystore | null; file: File; chains: Chain[] };
 
 export interface SwapKitState {
   swapKit: ReturnType<typeof createSwapKit> | null;

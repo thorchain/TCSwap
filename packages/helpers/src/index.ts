@@ -1,5 +1,5 @@
-export * from "@swapkit/tokens";
-export * from "@swapkit/types";
+export * from "@uswap/tokens";
+export * from "@uswap/types";
 /**
  * Modules
  */

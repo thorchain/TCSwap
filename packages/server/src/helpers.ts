@@ -1,3 +1,3 @@
-export * from "@swapkit/helpers";
-export * from "@swapkit/helpers/api";
-export * from "@swapkit/helpers/contracts";
+export * from "@uswap/helpers";
+export * from "@uswap/helpers/api";
+export * from "@uswap/helpers/contracts";

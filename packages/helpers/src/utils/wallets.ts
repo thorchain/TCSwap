@@ -1,4 +1,4 @@
-import { type Chain, getChainConfig } from "@swapkit/types";
+import { type Chain, getChainConfig } from "@uswap/types";
 import type { BrowserProvider, JsonRpcProvider } from "ethers";
 import { SwapKitError } from "../modules/swapKitError";
 import {

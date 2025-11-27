@@ -3,13 +3,13 @@ title: API Reference
 description: Complete reference for SwapKitApi methods including swap quotes, price feeds, token lists, and essential data access.
 ---
 
-The `SwapKitApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@swapkit/helpers/api` import.
+The `SwapKitApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@uswap/helpers/api` import.
 
 ## Getting Started
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 const price = await SwapKitApi.getPrice({
   identifier: "ETH.ETH",
@@ -714,7 +714,7 @@ Configure your API key in [Configuration](/start/configuration):
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit } from "@swapkit/sdk";
+import { createSwapKit } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -731,7 +731,7 @@ All API methods can throw errors that should be handled:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from '@swapkit/sdk';
+import { SwapKitError } from '@uswap/sdk';
 
 try {
   const quote = await SwapKitApi.getSwapQuote({...});
@@ -756,7 +756,7 @@ When getting swap quotes, the first route is typically the best:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from '@swapkit/sdk';
+import { AssetValue } from '@uswap/sdk';
 
 const { routes } = await SwapKitApi.getSwapQuote({...});
 
@@ -829,7 +829,7 @@ The `SKConfig` API provides methods to manage SwapKit's configuration at runtime
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 const rpcUrls = SKConfig.get('rpcUrls');
@@ -860,7 +860,7 @@ SKConfig.setApiKey("walletConnectProjectId", "your-wc-id");
 
 ```typescript
 // @noErrorValidation
-import { Chain } from '@swapkit/sdk';
+import { Chain } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Ethereum, 'https:
@@ -871,7 +871,7 @@ SKConfig.setRpcUrl(Chain.Avalanche, 'https:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from '@swapkit/sdk';
+import { Chain } from '@uswap/sdk';
 
 
 SKConfig.setMidgardUrl(Chain.THORChain, 'https:
@@ -949,7 +949,7 @@ SKConfig.setExplorerUrl(Chain.Bitcoin, 'https:
 
 ```typescript
 // @noErrorValidation
-import { SKConfig, Chain, StagenetChain } from '@swapkit/sdk';
+import { SKConfig, Chain, StagenetChain } from '@uswap/sdk';
 
 
 SKConfig.set({
@@ -992,7 +992,7 @@ SwapKit provides a unified fee multiplier system across all chains:
 
 ```typescript
 // @noErrorValidation
-import { FeeOption, getFeeMultiplier } from "@swapkit/sdk";
+import { FeeOption, getFeeMultiplier } from "@uswap/sdk";
 
 const slowMultiplier = getFeeMultiplier(FeeOption.Slow);
 const avgMultiplier = getFeeMultiplier(FeeOption.Average);

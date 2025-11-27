@@ -1,4 +1,4 @@
-import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@swapkit/types";
+import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@uswap/types";
 import { match } from "ts-pattern";
 import { SKConfig } from "../modules/swapKitConfig";
 import { SwapKitError } from "../modules/swapKitError";

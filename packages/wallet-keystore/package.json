@@ -2,9 +2,9 @@
   "author": "swapkit-oss",
   "dependencies": {
     "@scure/bip39": "2.0.1",
-    "@swapkit/helpers": "workspace:*",
-    "@swapkit/toolboxes": "workspace:*",
-    "@swapkit/wallet-core": "workspace:*",
+    "@uswap/helpers": "workspace:*",
+    "@uswap/toolboxes": "workspace:*",
+    "@uswap/wallet-core": "workspace:*",
     "blakejs": "1.2.1"
   },
   "description": "SwapKit - Wallet Keystore",
@@ -19,7 +19,7 @@
   "files": ["dist/", "src/"],
   "homepage": "https://github.com/swapkit/SwapKit",
   "license": "Apache-2.0",
-  "name": "@swapkit/wallet-keystore",
+  "name": "@uswap/wallet-keystore",
   "repository": {
     "directory": "packages/wallet-keystore",
     "type": "git",

@@ -2,8 +2,8 @@
 
 import type { Account } from "@near-js/accounts";
 import { type Action, SignedTransaction, type Transaction } from "@near-js/transactions";
-import { SwapKitError } from "@swapkit/helpers";
-import type { NearSigner } from "@swapkit/toolboxes/near";
+import { SwapKitError } from "@uswap/helpers";
+import type { NearSigner } from "@uswap/toolboxes/near";
 
 /**
  * NEAR Browser Wallet Provider Interface

@@ -1,5 +1,5 @@
-import { Chain, ProviderName, SKConfig } from "@swapkit/helpers";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { Chain, ProviderName, SKConfig } from "@uswap/helpers";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 SKConfig.set({ apiKeys: { swapKit: process.env.TEST_API_KEY || "" }, envs: { isDev: false } });
 

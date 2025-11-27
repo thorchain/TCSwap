@@ -23,10 +23,10 @@ Avalanche is a high-performance blockchain platform with sub-second finality and
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const avaxWallet = await swapKit.getWallet(Chain.Avalanche);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getAvalancheToolbox } from '@swapkit/toolboxes/evm';
+import { getAvalancheToolbox } from '@uswap/toolboxes/evm';
 
 
 const avaxToolbox = await getAvalancheToolbox({
@@ -73,7 +73,7 @@ Connect to Avalanche using Ethereum-compatible wallets:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.Avalanche], "your mnemonic phrase");
 
@@ -90,7 +90,7 @@ AVAX is the native gas and utility token of Avalanche:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapkit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -424,7 +424,7 @@ const subnetInteraction = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Avalanche, [
@@ -464,7 +464,7 @@ Handle Avalanche-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({

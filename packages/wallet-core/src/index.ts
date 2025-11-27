@@ -1,4 +1,4 @@
-import type { AddChainType, Chain, WalletOption } from "@swapkit/helpers";
+import type { AddChainType, Chain, WalletOption } from "@uswap/helpers";
 
 export function createWallet<
   ConnectParams extends any[],

@@ -1,5 +1,5 @@
 import { base64, bech32 } from "@scure/base";
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 import { fromByteArray, toByteArray } from "base64-js";
 
 export function bech32ToBase64(address: string) {

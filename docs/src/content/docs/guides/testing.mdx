@@ -57,7 +57,7 @@ Configure test environment variables:
 // @noErrorValidation
 
 import { beforeAll, beforeEach } from "bun:test";
-import { SKConfig } from "@swapkit/helpers";
+import { SKConfig } from "@uswap/helpers";
 
 beforeAll(() => {
   SKConfig.set({
@@ -85,8 +85,8 @@ Test configuration management:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from 'bun:test';
-import { SKConfig } from '@swapkit/helpers';
-import { Chain } from '@swapkit/types';
+import { SKConfig } from '@uswap/helpers';
+import { Chain } from '@uswap/types';
 
 describe('SwapKit Configuration', () => {
   beforeEach(() => {
@@ -130,7 +130,7 @@ Test asset value calculations:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { AssetValue } from "@swapkit/helpers";
+import { AssetValue } from "@uswap/helpers";
 
 describe("AssetValue", () => {
   test("should create AssetValue from string", () => {
@@ -187,7 +187,7 @@ Test error creation and handling:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitError } from "@swapkit/helpers";
+import { SwapKitError } from "@uswap/helpers";
 
 describe("SwapKitError", () => {
   test("should create error with string key", () => {
@@ -234,8 +234,8 @@ Test helper functions:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { validateAddress, isValidAssetIdentifier } from "@swapkit/helpers";
-import { Chain } from "@swapkit/types";
+import { validateAddress, isValidAssetIdentifier } from "@uswap/helpers";
+import { Chain } from "@uswap/types";
 
 describe("Validators", () => {
   test("should validate Ethereum addresses", () => {
@@ -293,9 +293,9 @@ Test wallet connection functionality:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from "bun:test";
-import { SwapKit } from "@swapkit/core";
-import { keystoreWallet } from "@swapkit/wallets/keystore";
-import { Chain } from "@swapkit/types";
+import { SwapKit } from "@uswap/core";
+import { keystoreWallet } from "@uswap/wallets/keystore";
+import { Chain } from "@uswap/types";
 
 describe("Wallet Integration", () => {
   let swapKit: ReturnType<typeof SwapKit>;
@@ -364,7 +364,7 @@ Test API calls and responses:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 describe("API Integration", () => {
   test(
@@ -426,10 +426,10 @@ Test end-to-end swap functionality:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from "bun:test";
-import { SwapKit } from "@swapkit/core";
-import { ThorchainPlugin } from "@swapkit/plugins/thorchain";
-import { keystoreWallet } from "@swapkit/wallets/keystore";
-import { Chain, AssetValue } from "@swapkit/helpers";
+import { SwapKit } from "@uswap/core";
+import { ThorchainPlugin } from "@uswap/plugins/thorchain";
+import { keystoreWallet } from "@uswap/wallets/keystore";
+import { Chain, AssetValue } from "@uswap/helpers";
 
 describe("Swap Integration", () => {
   let swapKit: ReturnType<typeof SwapKit>;
@@ -596,7 +596,7 @@ Mock toolbox operations:
 // @noErrorValidation
 
 import { mock } from "bun:test";
-import { Chain } from "@swapkit/types";
+import { Chain } from "@uswap/types";
 
 export const createMockToolbox = (chain: Chain) => ({
   chain,
@@ -646,8 +646,8 @@ Test Bitcoin-specific functionality:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { getUtxoToolbox } from "@swapkit/toolboxes/utxo";
-import { Chain } from "@swapkit/types";
+import { getUtxoToolbox } from "@uswap/toolboxes/utxo";
+import { Chain } from "@uswap/types";
 
 describe("Bitcoin Integration", () => {
   test("should create Bitcoin toolbox", async () => {
@@ -693,8 +693,8 @@ Test Ethereum-specific functionality:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { getEvmToolbox } from "@swapkit/toolboxes/evm";
-import { Chain } from "@swapkit/types";
+import { getEvmToolbox } from "@uswap/toolboxes/evm";
+import { Chain } from "@uswap/types";
 
 describe("Ethereum Integration", () => {
   test("should create Ethereum toolbox", async () => {
@@ -760,8 +760,8 @@ Test THORChain-specific functionality:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { getCosmosToolbox } from "@swapkit/toolboxes/cosmos";
-import { Chain } from "@swapkit/types";
+import { getCosmosToolbox } from "@uswap/toolboxes/cosmos";
+import { Chain } from "@uswap/types";
 
 describe("THORChain Integration", () => {
   test("should create THORChain toolbox", async () => {
@@ -834,8 +834,8 @@ Create reusable test utilities:
 ```typescript
 // @noErrorValidation
 
-import { AssetValue, SwapKitError } from "@swapkit/helpers";
-import { Chain } from "@swapkit/types";
+import { AssetValue, SwapKitError } from "@uswap/helpers";
+import { Chain } from "@uswap/types";
 
 export const testAssets = {
   ETH: AssetValue.fromString("ETH.ETH", "1"),
@@ -896,7 +896,7 @@ Test performance under load:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitApi } from "@swapkit/helpers/api";
+import { SwapKitApi } from "@uswap/helpers/api";
 
 describe("Performance Tests", () => {
   test(

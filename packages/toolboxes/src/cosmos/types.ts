@@ -6,7 +6,7 @@ import type {
   DerivationPathArray,
   GenericCreateTransactionParams,
   TCLikeChain,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import type { buildAminoMsg } from "./thorchainUtils";
 import type { createCosmosToolbox } from "./toolbox/cosmos";
 import type { createThorchainToolbox } from "./toolbox/thorchain";

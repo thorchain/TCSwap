@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { Chain } from "@swapkit/types";
+import { Chain } from "@uswap/types";
 
 import { findAssetBy } from "../asset";
 import { getTHORNameCost } from "../others";

@@ -1,4 +1,4 @@
-import { Chain, type CosmosChain, type EVMChain, SKConfig } from "@swapkit/helpers";
+import { Chain, type CosmosChain, type EVMChain, SKConfig } from "@uswap/helpers";
 
 import {
   ARBITRUM_ONE_MAINNET_ID,

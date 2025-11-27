@@ -13,7 +13,7 @@ import {
   type SubstrateChain,
   SwapKitError,
   SwapKitNumber,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 
 import { match, P } from "ts-pattern";
 import { createBalanceGetter } from "./balance";

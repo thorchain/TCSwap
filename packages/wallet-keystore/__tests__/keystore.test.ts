@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
-import { SKConfig } from "@swapkit/helpers";
+import { SKConfig } from "@uswap/helpers";
 import { createKeystoreWallet, KEYSTORE_SUPPORTED_CHAINS } from "../src";
 import { testKeystoreWalletData } from "./fixtures";
 

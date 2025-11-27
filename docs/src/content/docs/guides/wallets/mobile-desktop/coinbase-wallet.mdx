@@ -52,7 +52,7 @@ For browser extension:
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 
 const swapKit = SwapKit({
@@ -77,7 +77,7 @@ const swapKit = SwapKit({
 
 ```ts twoslash
 
-import { createSwapKit, Chain } from "@swapkit/sdk";
+import { createSwapKit, Chain } from "@uswap/sdk";
 
 
 const swapKit = createSwapKit({
@@ -101,7 +101,7 @@ const swapKit = createSwapKit({
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -142,7 +142,7 @@ async function connectCoinbaseWallet() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -198,7 +198,7 @@ async function connectMultipleChains() {
 #### Browser Extension Connection
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   wallets: { ...evmWallet },
@@ -225,7 +225,7 @@ async function connectCoinbaseExtension() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@swapKit/sdk";
+import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -272,7 +272,7 @@ async function sendEther() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -316,7 +316,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -379,7 +379,7 @@ async function sendBaseToken() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -445,7 +445,7 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -502,7 +502,7 @@ async function manageNetworks() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, evmWallet, Chain, WalletOption } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
 function detectCoinbaseWalletType() {
 
@@ -565,7 +565,7 @@ async function connectOptimalCoinbaseWallet() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 const swapKit = SwapKit({
   config: {
@@ -725,7 +725,7 @@ async function handleSDKIssues() {
 
 ```ts twoslash
 
-import { SwapKit, coinbaseWallet, Chain } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain } from "@uswap/sdk";
 
 
 const swapKit = SwapKit({
@@ -835,7 +835,7 @@ async function mobileSecurityChecks() {
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@swapkit/sdk";
+import { SwapKit, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface CoinbaseWalletProps {
   onConnect: (address: string) => void;

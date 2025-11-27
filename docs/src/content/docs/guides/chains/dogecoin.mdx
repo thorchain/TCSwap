@@ -23,10 +23,10 @@ Dogecoin is a fun, friendly cryptocurrency originally created as a joke but has 
 
 ```bash
 # Full SDK (recommended)
-bun add @swapkit/sdk
+bun add @uswap/sdk
 
 # Individual packages for smaller bundles
-bun add @swapkit/toolboxes @swapkit/plugins
+bun add @uswap/toolboxes @uswap/plugins
 ```
 
 ### Basic Setup
@@ -35,7 +35,7 @@ bun add @swapkit/toolboxes @swapkit/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@swapkit/sdk';
+import { createSwapKit, Chain } from '@uswap/sdk';
 
 const swapKit = createSwapKit();
 
@@ -46,7 +46,7 @@ const dogeWallet = await swapKit.getWallet(Chain.Dogecoin);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getDogecoinToolbox } from '@swapkit/toolboxes/utxo';
+import { getDogecoinToolbox } from '@uswap/toolboxes/utxo';
 
 
 const dogeToolbox = await getDogecoinToolbox({
@@ -73,7 +73,7 @@ Connect to Dogecoin using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@swapkit/sdk";
+import { Chain, FeeOption } from "@uswap/sdk";
 
 await swapKit.connectKeystore([Chain.Dogecoin], "your mnemonic phrase");
 
@@ -104,7 +104,7 @@ console.log("Valid DOGE address:", validateDogeAddress(dogeAddress));
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@swapKit/sdk";
+import { AssetValue } from "@uswap/sdk";
 
 const txHash = await swapKit.transfer({
   recipient: "DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L",
@@ -523,7 +523,7 @@ const gamingRewards = {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@swapkit/sdk';
+import { SKConfig } from '@uswap/sdk';
 
 
 SKConfig.setRpcUrl(Chain.Dogecoin, [
@@ -570,7 +570,7 @@ Handle Dogecoin-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@swapkit/sdk";
+import { SwapKitError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({
@@ -776,7 +776,7 @@ const bulkOperations = async () => {
 
 ```typescript
 // @noErrorValidation
-import { validateDogecoinAddress } from "@swapkit/toolboxes/utxo";
+import { validateDogecoinAddress } from "@uswap/toolboxes/utxo";
 
 const validateDogeAddr = (address: string): boolean => {
   if (!address.startsWith("D") || address.length !== 34) {

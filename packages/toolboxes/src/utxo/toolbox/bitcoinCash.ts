@@ -13,7 +13,7 @@ import {
   NetworkDerivationPath,
   SwapKitError,
   updateDerivationPath,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import { Psbt } from "bitcoinjs-lib";
 import { accumulative, compileMemo, getUtxoApi, getUtxoNetwork, toCashAddress, toLegacyAddress } from "../helpers";
 import type {

@@ -1,4 +1,4 @@
-import { AllChains, AssetValue, Chain, getExplorerTxUrl, SwapKitApi, type THORNameDetails } from "@swapkit/sdk";
+import { AllChains, AssetValue, Chain, getExplorerTxUrl, SwapKitApi, type THORNameDetails } from "@uswap/sdk";
 import { useCallback, useState } from "react";
 import type { SwapKitClient } from "../swapKitClient";
 

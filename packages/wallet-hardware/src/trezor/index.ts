@@ -9,9 +9,9 @@ import {
   SKConfig,
   SwapKitError,
   WalletOption,
-} from "@swapkit/helpers";
-import type { UTXOToolboxes, UTXOType } from "@swapkit/toolboxes/utxo";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+} from "@uswap/helpers";
+import type { UTXOToolboxes, UTXOType } from "@uswap/toolboxes/utxo";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 import { type Psbt, script } from "bitcoinjs-lib";
 
 function getScriptType(derivationPath: DerivationPathArray) {
@@ -45,7 +45,7 @@ async function getTrezorWallet<T extends Chain>({
     case Chain.Optimism:
     case Chain.Polygon:
     case Chain.XLayer: {
-      const { getProvider, getEvmToolbox } = await import("@swapkit/toolboxes/evm");
+      const { getProvider, getEvmToolbox } = await import("@uswap/toolboxes/evm");
       const { getEVMSigner } = await import("./evmSigner");
 
       const provider = await getProvider(chain);
@@ -57,7 +57,7 @@ async function getTrezorWallet<T extends Chain>({
     }
 
     case Chain.Zcash: {
-      const { getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
 
       const derivationPathStr = derivationPathToString(derivationPath);
 
@@ -172,7 +172,7 @@ async function getTrezorWallet<T extends Chain>({
     case Chain.Dash:
     case Chain.Dogecoin:
     case Chain.Litecoin: {
-      const { toCashAddress, getUtxoToolbox } = await import("@swapkit/toolboxes/utxo");
+      const { toCashAddress, getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
       const scriptType = getScriptType(derivationPath);
 
       if (!scriptType) {

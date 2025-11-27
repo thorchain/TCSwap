@@ -1,4 +1,4 @@
-# @swapkit/types
+# @uswap/types
 
 ## 0.4.0
 
@@ -40,7 +40,7 @@
 
 - [#1516](https://github.com/swapkit/SwapKit/pull/1516) [`053ea04`](https://github.com/swapkit/SwapKit/commit/053ea04567dc10a6df3e0869262056a856ab966e) Thanks [@towanTG](https://github.com/towanTG)! - Updates Tracker types
 
-- [#1498](https://github.com/swapkit/SwapKit/pull/1498) [`3192cc0`](https://github.com/swapkit/SwapKit/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Migrate to @swapkit/types
+- [#1498](https://github.com/swapkit/SwapKit/pull/1498) [`3192cc0`](https://github.com/swapkit/SwapKit/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Migrate to @uswap/types
 
 ## 0.1.4
 
@@ -64,4 +64,4 @@
 
 ### Patch Changes
 
-- [#1452](https://github.com/swapkit/SwapKit/pull/1452) [`d18b78d`](https://github.com/swapkit/SwapKit/commit/d18b78d91f05a840829539e94bd2877e26078f3f) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Migrate to @swapkit/types
+- [#1452](https://github.com/swapkit/SwapKit/pull/1452) [`d18b78d`](https://github.com/swapkit/SwapKit/commit/d18b78d91f05a840829539e94bd2877e26078f3f) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Migrate to @uswap/types

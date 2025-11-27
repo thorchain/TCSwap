@@ -1,6 +1,6 @@
 "use client";
 
-import { AssetValue } from "@swapkit/helpers";
+import { AssetValue } from "@uswap/helpers";
 import { cn } from "../../lib/utils";
 
 interface AssetIconProps {

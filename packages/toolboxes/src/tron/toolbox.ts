@@ -8,7 +8,7 @@ import {
   SwapKitError,
   updateDerivationPath,
   warnOnce,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import type { TronWeb } from "tronweb";
 import { match, P } from "ts-pattern";
 import { trc20ABI } from "./helpers/trc20.abi";

@@ -1,4 +1,4 @@
-import { Chain, type DerivationPathArray, SwapKitError, type UTXOChain } from "@swapkit/helpers";
+import { Chain, type DerivationPathArray, SwapKitError, type UTXOChain } from "@uswap/helpers";
 import { createBCHToolbox } from "./bitcoinCash";
 import type { UtxoToolboxParams } from "./params";
 import { createUTXOToolbox } from "./utxo";

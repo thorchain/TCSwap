@@ -6,7 +6,7 @@ import {
   derivationPathToString,
   NetworkDerivationPath,
   SwapKitError,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 import { AbstractSigner } from "ethers";
 
@@ -73,7 +73,7 @@ export class KeepKeySigner extends AbstractSigner {
     if (!(isEIP1559 || gasPrice))
       throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing gasPrice" });
 
-    const { toHexString } = await import("@swapkit/toolboxes/evm");
+    const { toHexString } = await import("@uswap/toolboxes/evm");
 
     const nonceValue = nonce
       ? BigInt(nonce)

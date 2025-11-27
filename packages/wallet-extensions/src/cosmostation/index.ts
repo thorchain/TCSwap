@@ -1,6 +1,6 @@
 import type { Keplr } from "@keplr-wallet/types";
-import { Chain, ChainId, ChainToChainId, filterSupportedChains, SwapKitError, WalletOption } from "@swapkit/helpers";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+import { Chain, ChainId, ChainToChainId, filterSupportedChains, SwapKitError, WalletOption } from "@uswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 const cosmostationSupportedChainIds = [ChainId.Cosmos, ChainId.Kujira, ChainId.Noble, ChainId.THORChain] as const;
 const cosmostationSupportedEVMChains = [
@@ -29,7 +29,7 @@ async function connectCosmosChains(chains: Chain[], addChain: any, keplrProvider
       const signer = keplrProvider.getOfflineSignerOnlyAmino(chainId);
       if (!signer) throw new SwapKitError("wallet_cosmostation_signer_not_found");
 
-      const { getCosmosToolbox } = await import("@swapkit/toolboxes/cosmos");
+      const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
 
       const accounts = await signer.getAccounts();
       if (!accounts?.[0]?.address) throw new SwapKitError("wallet_cosmostation_no_accounts");
@@ -55,7 +55,7 @@ async function connectEvmChains(chains: Chain[], addChain: any) {
     throw new SwapKitError("wallet_cosmostation_no_evm_accounts");
   }
 
-  const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
+  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
 
   for (const chain of chains) {
     const toolbox = getEvmToolbox(chain as any, { provider });

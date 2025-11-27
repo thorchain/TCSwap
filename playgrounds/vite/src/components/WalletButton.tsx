@@ -1,4 +1,4 @@
-import type { WalletOption } from "@swapkit/helpers";
+import type { WalletOption } from "@uswap/helpers";
 import { availableChainsByWallet } from "../WalletPicker";
 
 type Props = { option: WalletOption; disabled: boolean; onClick: () => void };

@@ -63,7 +63,7 @@ export function validatePhrase(phrase: string) {
 }
 
 export async function decryptFromKeystore(keystore: Keystore, password: string) {
-  const { SwapKitError } = await import("@swapkit/helpers");
+  const { SwapKitError } = await import("@uswap/helpers");
 
   switch (keystore.version) {
     case 1: {

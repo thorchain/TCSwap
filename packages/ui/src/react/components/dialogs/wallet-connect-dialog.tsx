@@ -1,8 +1,8 @@
 "use client";
 
-import { Chain, EVMChains, WalletOption } from "@swapkit/helpers";
-import { BITGET_SUPPORTED_CHAINS } from "@swapkit/wallets/bitget";
-import { PHANTOM_SUPPORTED_CHAINS } from "@swapkit/wallets/phantom";
+import { Chain, EVMChains, WalletOption } from "@uswap/helpers";
+import { BITGET_SUPPORTED_CHAINS } from "@uswap/wallets/bitget";
+import { PHANTOM_SUPPORTED_CHAINS } from "@uswap/wallets/phantom";
 import { SearchIcon, WalletMinimalIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";

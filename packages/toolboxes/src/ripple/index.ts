@@ -7,7 +7,7 @@ import {
   getRPCUrl,
   SwapKitError,
   SwapKitNumber,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import type { Transaction } from "xrpl";
 import { Client, isValidAddress, type Payment, Wallet, xrpToDrops } from "xrpl";
 

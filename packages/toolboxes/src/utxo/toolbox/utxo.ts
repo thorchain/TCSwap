@@ -17,7 +17,7 @@ import {
   SwapKitNumber,
   type UTXOChain,
   updateDerivationPath,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import { address as btcLibAddress, initEccLib, Psbt, payments } from "bitcoinjs-lib";
 import type { ECPairInterface } from "ecpair";
 import { ECPairFactory } from "ecpair";

@@ -1,5 +1,5 @@
-import { AssetValue, RequestClient, SwapKitNumber } from "@swapkit/helpers";
-import { Chain, getChainConfig, type TCLikeChain } from "@swapkit/types";
+import { AssetValue, RequestClient, SwapKitNumber } from "@uswap/helpers";
+import { Chain, getChainConfig, type TCLikeChain } from "@uswap/types";
 import type {
   Action,
   ActionQuery,

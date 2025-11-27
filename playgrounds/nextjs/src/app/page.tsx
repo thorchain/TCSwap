@@ -1,7 +1,7 @@
 "use client";
 
-import { type QuoteResponse, type QuoteResponseRoute, RequestClient } from "@swapkit/sdk";
-import { SwapKitWidget } from "@swapkit/ui/react";
+import { type QuoteResponse, type QuoteResponseRoute, RequestClient } from "@uswap/sdk";
+import { SwapKitWidget } from "@uswap/ui/react";
 import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";

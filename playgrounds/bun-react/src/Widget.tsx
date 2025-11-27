@@ -1,7 +1,7 @@
 import "../styles/index.css";
 
-import { Chain, WalletOption } from "@swapkit/helpers";
-import { SwapKitWidget } from "@swapkit/ui/react";
+import { Chain, WalletOption } from "@uswap/helpers";
+import { SwapKitWidget } from "@uswap/ui/react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function Widget() {

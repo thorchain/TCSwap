@@ -39,7 +39,7 @@ SwapKit provides everything you need to integrate blockchain functionality into 
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, SwapKitApi } from "@swapkit/sdk";
+import { createSwapKit, Chain, SwapKitApi } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -146,11 +146,11 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
 
 <Tabs syncKey="package-manager">
   <TabItem label="bun" icon="bun">
-    ```bash bun add @swapkit/sdk ```
+    ```bash bun add @uswap/sdk ```
   </TabItem>
-  <TabItem label="pnpm">```bash pnpm add @swapkit/sdk ```</TabItem>
-  <TabItem label="npm">```bash npm install @swapkit/sdk ```</TabItem>
-  <TabItem label="yarn">```bash yarn add @swapkit/sdk ```</TabItem>
+  <TabItem label="pnpm">```bash pnpm add @uswap/sdk ```</TabItem>
+  <TabItem label="npm">```bash npm install @uswap/sdk ```</TabItem>
+  <TabItem label="yarn">```bash yarn add @uswap/sdk ```</TabItem>
 </Tabs>
 
 ### 2. Initialize the SDK
@@ -158,7 +158,7 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit } from "@swapkit/sdk";
+import { createSwapKit } from "@uswap/sdk";
 
 const swapKit = createSwapKit({
   config: {
@@ -174,7 +174,7 @@ const swapKit = createSwapKit({
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, AssetValue, FeeOption } from "@swapkit/sdk";
+import { createSwapKit, Chain, AssetValue, FeeOption } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 

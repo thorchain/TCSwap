@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sellAmount = sellAmountInput.value;
     const slippage = slippageInput.value;
     
-    return `import { SwapKitApi } from '@swapkit/helpers/api';
+    return `import { SwapKitApi } from '@uswap/helpers/api';
 
 const quoteResponse = await SwapKitApi.getSwapQuote({
   sellAsset: '${sellAsset}',

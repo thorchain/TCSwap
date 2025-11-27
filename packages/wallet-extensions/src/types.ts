@@ -1,8 +1,8 @@
 import type { AminoSignResponse, OfflineAminoSigner, StdSignature, StdSignDoc } from "@cosmjs/amino";
 import type { Keplr } from "@keplr-wallet/types";
-import type { EthereumWindowProvider } from "@swapkit/helpers";
-import type { SolanaProvider } from "@swapkit/toolboxes/solana";
-import type { SubstrateInjectedExtension } from "@swapkit/toolboxes/substrate";
+import type { EthereumWindowProvider } from "@uswap/helpers";
+import type { SolanaProvider } from "@uswap/toolboxes/solana";
+import type { SubstrateInjectedExtension } from "@uswap/toolboxes/substrate";
 import type { Eip1193Provider } from "ethers";
 import type { NearBrowserWalletProvider } from "./helpers/near";
 import type { TronLinkWindow } from "./tronlink";

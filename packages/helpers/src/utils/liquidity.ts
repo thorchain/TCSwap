@@ -1,4 +1,4 @@
-import { Chain, getChainConfig } from "@swapkit/types";
+import { Chain, getChainConfig } from "@uswap/types";
 import { SwapKitNumber } from "../modules/swapKitNumber";
 
 type ShareParams<T extends {}> = T & { liquidityUnits: string; poolUnits: string };

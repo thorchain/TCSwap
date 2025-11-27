@@ -8,8 +8,8 @@ import {
   SwapKitError,
   switchEVMWalletNetwork,
   WalletOption,
-} from "@swapkit/helpers";
-import { createWallet, getWalletSupportedChains } from "@swapkit/wallet-core";
+} from "@uswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 
 export type EVMWalletOptions =
@@ -51,7 +51,7 @@ export const getWeb3WalletMethods = async ({
   provider: BrowserProvider;
 }) => {
   if (!walletProvider) throw new SwapKitError("wallet_evm_extensions_not_found");
-  const { getEvmToolbox } = await import("@swapkit/toolboxes/evm");
+  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
 
   const signer = await provider.getSigner();
   const toolbox = await getEvmToolbox(chain, { provider, signer });

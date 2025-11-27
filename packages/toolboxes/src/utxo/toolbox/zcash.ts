@@ -12,7 +12,7 @@ import {
   SKConfig,
   SwapKitError,
   updateDerivationPath,
-} from "@swapkit/helpers";
+} from "@uswap/helpers";
 import bs58check from "bs58check";
 import { match, P } from "ts-pattern";
 import { accumulative, compileMemo, getUtxoApi } from "../helpers";

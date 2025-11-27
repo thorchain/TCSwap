@@ -1,4 +1,4 @@
-import { Chain } from "@swapkit/helpers";
+import { Chain } from "@uswap/helpers";
 import type { CoreTxParams } from "./types";
 
 export function validateAddressType({ chain, address }: { chain?: Chain; address?: string }) {

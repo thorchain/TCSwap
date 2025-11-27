@@ -5,7 +5,7 @@ import {
   StagenetChain,
   StagenetMAYAConfig,
   StagenetTHORConfig,
-} from "@swapkit/types";
+} from "@uswap/types";
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import type { BalanceResponse, QuoteRequest, QuoteResponse, QuoteResponseRoute } from "../api";
