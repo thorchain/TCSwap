@@ -183,7 +183,8 @@ export class BigIntArithmetics {
     const valueStr = this.getValue("string");
     const isNegative = valueStr.startsWith("-");
     const [int = "0", dec = ""] = (isNegative ? valueStr.slice(1) : valueStr).split(".");
-    const sign = isNegative ? "-" : "";
+    const valueRoundsToZero = int === "0" && Number.parseInt(dec.slice(0, fixedDigits), 10) === 0;
+    const sign = isNegative && !valueRoundsToZero ? "-" : "";
 
     if (fixedDigits === 0) {
       if (int === "0" && !dec) return "0";
@@ -219,34 +220,27 @@ export class BigIntArithmetics {
 
   toCurrency(
     currency = "$",
-    { currencyPosition = "start", decimal = 2, decimalSeparator = ".", thousandSeparator = "," } = {},
+    {
+      currencyPosition = "start",
+      decimal = 2,
+      decimalSeparator = ".",
+      thousandSeparator = ",",
+      trimTrailingZeros = true,
+    } = {},
   ) {
-    const valueStr = this.getValue("string");
-    const isNegative = valueStr.startsWith("-");
-    const absValueStr = isNegative ? valueStr.slice(1) : valueStr;
-    const [int = "0", dec = ""] = absValueStr.split(".");
-    const sign = isNegative ? "-" : "";
+    const fixedValue = this.toFixed(decimal);
+    const isCurrencyAtEnd = currencyPosition === "end";
+    const [int = "0", dec = ""] = fixedValue.split(".");
 
-    if (int === "0" && dec) {
-      const trimmedDec = dec.replace(/0+$/, "");
-      const formatted = trimmedDec ? `${sign}0${decimalSeparator}${trimmedDec}` : "0";
+    const formattedInt = int.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+    const hasDecimals = dec && Number.parseInt(dec, 10) > 0;
+    const formattedValue = hasDecimals ? `${formattedInt}${decimalSeparator}${dec}` : formattedInt;
 
-      return match(currencyPosition)
-        .with("start", () => `${currency}${formatted}`)
-        .with("end", () => `${formatted}${currency}`)
-        .otherwise(() => `${currency}${formatted}`);
-    }
+    // Prevent regex from taking too long for large values
+    const canTrimTrailingZeros = formattedValue.length < 100 && trimTrailingZeros && hasDecimals;
+    const value = canTrimTrailingZeros ? formattedValue.replace(/\.?0*$/, "") : formattedValue;
 
-    const roundedStr = this.toFixed(decimal);
-    const [roundedInt = "0", roundedDec = ""] = roundedStr.split(".");
-    const formattedInt = roundedInt.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
-    const hasDecimals = roundedDec && Number.parseInt(roundedDec, 10) > 0;
-    const value = hasDecimals ? `${formattedInt}${decimalSeparator}${roundedDec}` : formattedInt;
-
-    return match(currencyPosition)
-      .with("start", () => `${currency}${value}`)
-      .with("end", () => `${value}${currency}`)
-      .otherwise(() => `${currency}${value}`);
+    return isCurrencyAtEnd ? `${value}${currency}` : `${currency}${value}`;
   }
 
   formatBigIntToSafeValue(value: bigint, decimal?: number) {
