@@ -10,7 +10,7 @@
     "zod": "3.25.74",
     "zustand": "5.0.8"
   },
-  "description": "SwapKit - Helpers",
+  "description": "USwap - Helpers",
   "devDependencies": {
     "@near-js/providers": "2.5.0",
     "@uswap/toolboxes": "workspace:*",
@@ -44,10 +44,14 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/helpers",
-  "repository": { "directory": "packages/helpers", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/helpers",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

@@ -26,7 +26,7 @@
     "ts-pattern": "^5.9.0",
     "xumm": "1.8.0"
   },
-  "description": "SwapKit - Wallets",
+  "description": "USwap - Wallets",
   "devDependencies": {
     "@coinbase/wallet-sdk": "4.3.7",
     "@cosmjs/amino": "0.37.0",
@@ -204,10 +204,10 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/wallets",
-  "repository": { "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/horizontalsystems/USwap.git" },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

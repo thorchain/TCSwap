@@ -1,7 +1,7 @@
 {
   "author": "swapkit-oss",
   "dependencies": { "ts-pattern": "^5.9.0" },
-  "description": "SwapKit - Tokens",
+  "description": "USwap - Tokens",
   "devDependencies": { "@uswap/helpers": "workspace:*", "ts-pattern": "5.9.0" },
   "exports": {
     ".": {
@@ -12,10 +12,14 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/tokens",
-  "repository": { "directory": "packages/tokens", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/tokens",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

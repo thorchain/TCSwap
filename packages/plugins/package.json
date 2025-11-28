@@ -9,7 +9,7 @@
     "@uswap/toolboxes": "workspace:*",
     "ts-pattern": "^5.9.0"
   },
-  "description": "SwapKit Plugin - Chainflip",
+  "description": "USwap Plugin - Chainflip",
   "devDependencies": {
     "@near-js/utils": "2.5.0",
     "@polkadot/keyring": "13.5.7",
@@ -68,10 +68,14 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/plugins",
-  "repository": { "directory": "packages/plugins", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/plugins",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

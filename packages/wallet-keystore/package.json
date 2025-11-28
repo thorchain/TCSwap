@@ -7,7 +7,7 @@
     "@uswap/wallet-core": "workspace:*",
     "blakejs": "1.2.1"
   },
-  "description": "SwapKit - Wallet Keystore",
+  "description": "USwap - Wallet Keystore",
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -17,13 +17,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/wallet-keystore",
   "repository": {
     "directory": "packages/wallet-keystore",
     "type": "git",
-    "url": "git+https://github.com/swapkit/SwapKit.git"
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

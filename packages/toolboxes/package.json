@@ -49,7 +49,7 @@
     "ts-pattern": "^5.9.0",
     "xrpl": "~4.4.2"
   },
-  "description": "SwapKit - Toolboxes",
+  "description": "USwap - Toolboxes",
   "devDependencies": {
     "@bitcoinerlab/secp256k1": "1.2.0",
     "@bitgo/utxo-lib": "11.13.1",
@@ -187,10 +187,10 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/toolboxes",
-  "repository": { "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/horizontalsystems/USwap.git" },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

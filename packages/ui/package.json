@@ -33,7 +33,7 @@
     "zod": "3.25.74",
     "zustand": "5.0.8"
   },
-  "description": "SwapKit - UI",
+  "description": "USwap - UI",
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -50,11 +50,15 @@
     "./swapkit.css": { "bun": "./src/swapkit.css", "default": "./dist/swapkit.css" }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/ui",
   "private": true,
-  "repository": { "directory": "packages/ui", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/ui",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

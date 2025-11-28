@@ -55,7 +55,7 @@ export default defineConfig({
         },
       ],
       social: [
-        { href: "https://github.com/swapkit/SwapKit", icon: "github", label: "GitHub" },
+        { href: "https://github.com/horizontalsystems/USwap", icon: "github", label: "GitHub" },
         { href: "https://x.com/SwapKitPowered", icon: "x.com", label: "X" },
         { href: "https://discord.gg/swapkit", icon: "discord", label: "Discord" },
       ],

@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "description": "SwapKit - Shared Types",
+  "description": "USwap - Shared Types",
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -10,10 +10,14 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/types",
-  "repository": { "directory": "packages/types", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/types",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

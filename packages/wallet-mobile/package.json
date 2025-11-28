@@ -1,7 +1,7 @@
 {
   "author": "swapkit-oss",
   "dependencies": { "@uswap/helpers": "workspace:*", "@uswap/toolboxes": "workspace:*" },
-  "description": "SwapKit - Wallet Mobile",
+  "description": "USwap - Wallet Mobile",
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -11,13 +11,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/wallet-mobile",
   "repository": {
     "directory": "packages/wallet-mobile",
     "type": "git",
-    "url": "git+https://github.com/swapkit/SwapKit.git"
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

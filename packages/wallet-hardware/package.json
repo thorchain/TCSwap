@@ -27,7 +27,7 @@
     "ripple-binary-codec": "2.5.1",
     "ts-pattern": "^5.9.0"
   },
-  "description": "SwapKit - Wallet Hardware",
+  "description": "USwap - Wallet Hardware",
   "devDependencies": {
     "@cosmjs/crypto": "0.37.0",
     "@keepkey/keepkey-sdk": "0.2.62",
@@ -79,13 +79,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/wallet-hardware",
   "repository": {
     "directory": "packages/wallet-hardware",
     "type": "git",
-    "url": "git+https://github.com/swapkit/SwapKit.git"
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

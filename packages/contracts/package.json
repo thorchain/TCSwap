@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "description": "SwapKit - Contracts",
+  "description": "USwap - Contracts",
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -10,13 +10,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/contracts",
   "repository": {
     "directory": "packages/contracts",
     "type": "git",
-    "url": "git+https://github.com/swapkit/SwapKit.git"
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",
@@ -28,5 +28,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.0.1"
+  "version": "4.0.2"
 }

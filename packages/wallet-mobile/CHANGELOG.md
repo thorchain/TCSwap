@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`a49664e`](https://github.com/swapkit/SwapKit/commit/a49664e1e6ea20164fd4bfade21557f5fbb22603)]:
+- Updated dependencies [[`a49664e`](https://github.com/horizontalsystems/USwap/commit/a49664e1e6ea20164fd4bfade21557f5fbb22603)]:
   - @uswap/toolboxes@4.3.6
   - @uswap/helpers@4.5.6
 
@@ -12,7 +12,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`d38864a`](https://github.com/swapkit/SwapKit/commit/d38864a0d82f65f52e75cb4360b3880801b2b9cc)]:
+- Updated dependencies [[`d38864a`](https://github.com/horizontalsystems/USwap/commit/d38864a0d82f65f52e75cb4360b3880801b2b9cc)]:
   - @uswap/helpers@4.5.5
   - @uswap/toolboxes@4.3.5
 
@@ -20,7 +20,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`0244423`](https://github.com/swapkit/SwapKit/commit/02444235e172e3227688a3bc6a25e863a52f97e4)]:
+- Updated dependencies [[`0244423`](https://github.com/horizontalsystems/USwap/commit/02444235e172e3227688a3bc6a25e863a52f97e4)]:
   - @uswap/helpers@4.5.4
   - @uswap/toolboxes@4.3.4
 
@@ -36,7 +36,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`948bc18`](https://github.com/swapkit/SwapKit/commit/948bc1889870c1bf4fb00abf72e8ad1fe13474a0), [`5c84d8a`](https://github.com/swapkit/SwapKit/commit/5c84d8a6525973692b23676a01995091df4a7a7d)]:
+- Updated dependencies [[`948bc18`](https://github.com/horizontalsystems/USwap/commit/948bc1889870c1bf4fb00abf72e8ad1fe13474a0), [`5c84d8a`](https://github.com/horizontalsystems/USwap/commit/5c84d8a6525973692b23676a01995091df4a7a7d)]:
   - @uswap/toolboxes@4.3.2
   - @uswap/helpers@4.5.2
 
@@ -52,7 +52,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`e6f25c7`](https://github.com/swapkit/SwapKit/commit/e6f25c78b0469131c9ff6895cc506075ead6290c), [`bcb9509`](https://github.com/swapkit/SwapKit/commit/bcb9509cb004f80a7b22fdeafb2ce7d34d831c99), [`2f181c6`](https://github.com/swapkit/SwapKit/commit/2f181c6d891d963854c5b7702a3de583c38d9317)]:
+- Updated dependencies [[`e6f25c7`](https://github.com/horizontalsystems/USwap/commit/e6f25c78b0469131c9ff6895cc506075ead6290c), [`bcb9509`](https://github.com/horizontalsystems/USwap/commit/bcb9509cb004f80a7b22fdeafb2ce7d34d831c99), [`2f181c6`](https://github.com/horizontalsystems/USwap/commit/2f181c6d891d963854c5b7702a3de583c38d9317)]:
   - @uswap/toolboxes@4.3.0
   - @uswap/helpers@4.5.0
 
@@ -60,7 +60,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`ad97c7f`](https://github.com/swapkit/SwapKit/commit/ad97c7fac861bf86ebb0eac7dd6d8e369965cd61)]:
+- Updated dependencies [[`ad97c7f`](https://github.com/horizontalsystems/USwap/commit/ad97c7fac861bf86ebb0eac7dd6d8e369965cd61)]:
   - @uswap/helpers@4.4.5
   - @uswap/toolboxes@4.2.1
 
@@ -68,7 +68,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`9bc18fc`](https://github.com/swapkit/SwapKit/commit/9bc18fcd4724a1c09731feca3e0a3e1926a8b2a4)]:
+- Updated dependencies [[`9bc18fc`](https://github.com/horizontalsystems/USwap/commit/9bc18fcd4724a1c09731feca3e0a3e1926a8b2a4)]:
   - @uswap/toolboxes@4.2.0
   - @uswap/helpers@4.4.4
 
@@ -76,7 +76,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`955172a`](https://github.com/swapkit/SwapKit/commit/955172a033d7b5989d84e8e6f28d20a0b322952b)]:
+- Updated dependencies [[`955172a`](https://github.com/horizontalsystems/USwap/commit/955172a033d7b5989d84e8e6f28d20a0b322952b)]:
   - @uswap/toolboxes@4.1.13
   - @uswap/helpers@4.4.3
 
@@ -84,7 +84,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`2c328fd`](https://github.com/swapkit/SwapKit/commit/2c328fd19a23c16d241ca1c6bd5abe163e502b85)]:
+- Updated dependencies [[`2c328fd`](https://github.com/horizontalsystems/USwap/commit/2c328fd19a23c16d241ca1c6bd5abe163e502b85)]:
   - @uswap/toolboxes@4.1.12
   - @uswap/helpers@4.4.2
 
@@ -92,7 +92,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`aef8b5a`](https://github.com/swapkit/SwapKit/commit/aef8b5a1b83861d3b99941ac82136294fb85d8d8)]:
+- Updated dependencies [[`aef8b5a`](https://github.com/horizontalsystems/USwap/commit/aef8b5a1b83861d3b99941ac82136294fb85d8d8)]:
   - @uswap/helpers@4.4.1
   - @uswap/toolboxes@4.1.11
 
@@ -100,7 +100,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`3536550`](https://github.com/swapkit/SwapKit/commit/3536550dc088c491d2d5efb874439bbf39005186)]:
+- Updated dependencies [[`3536550`](https://github.com/horizontalsystems/USwap/commit/3536550dc088c491d2d5efb874439bbf39005186)]:
   - @uswap/helpers@4.4.0
   - @uswap/toolboxes@4.1.10
 
@@ -108,7 +108,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`ad9ddce`](https://github.com/swapkit/SwapKit/commit/ad9ddceab07c1fb4dbce12da34ce6ce486ee483b)]:
+- Updated dependencies [[`ad9ddce`](https://github.com/horizontalsystems/USwap/commit/ad9ddceab07c1fb4dbce12da34ce6ce486ee483b)]:
   - @uswap/toolboxes@4.1.9
   - @uswap/helpers@4.3.4
 
@@ -116,7 +116,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`19f4248`](https://github.com/swapkit/SwapKit/commit/19f42485c528c006e78e1bd335e7911b90481949)]:
+- Updated dependencies [[`19f4248`](https://github.com/horizontalsystems/USwap/commit/19f42485c528c006e78e1bd335e7911b90481949)]:
   - @uswap/toolboxes@4.1.8
   - @uswap/helpers@4.3.3
 
@@ -124,7 +124,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`68cb4ce`](https://github.com/swapkit/SwapKit/commit/68cb4cef9ee3a4451a44eea45f52dca34506b973)]:
+- Updated dependencies [[`68cb4ce`](https://github.com/horizontalsystems/USwap/commit/68cb4cef9ee3a4451a44eea45f52dca34506b973)]:
   - @uswap/toolboxes@4.1.7
   - @uswap/helpers@4.3.2
 
@@ -140,7 +140,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`357a262`](https://github.com/swapkit/SwapKit/commit/357a2625fe7d528b377b2cac954dcab7a6adc421), [`0d56165`](https://github.com/swapkit/SwapKit/commit/0d56165668372c41711bb3fbea21436cb1c7bbec)]:
+- Updated dependencies [[`357a262`](https://github.com/horizontalsystems/USwap/commit/357a2625fe7d528b377b2cac954dcab7a6adc421), [`0d56165`](https://github.com/horizontalsystems/USwap/commit/0d56165668372c41711bb3fbea21436cb1c7bbec)]:
   - @uswap/toolboxes@4.1.5
   - @uswap/helpers@4.3.0
 
@@ -148,7 +148,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`921364f`](https://github.com/swapkit/SwapKit/commit/921364f65a63df09734a7b79472d1c732446c508), [`d7b12b5`](https://github.com/swapkit/SwapKit/commit/d7b12b5d9b521672598c1372ce8801699c1f751d)]:
+- Updated dependencies [[`921364f`](https://github.com/horizontalsystems/USwap/commit/921364f65a63df09734a7b79472d1c732446c508), [`d7b12b5`](https://github.com/horizontalsystems/USwap/commit/d7b12b5d9b521672598c1372ce8801699c1f751d)]:
   - @uswap/toolboxes@4.1.4
   - @uswap/helpers@4.2.3
 
@@ -156,7 +156,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`41ea03c`](https://github.com/swapkit/SwapKit/commit/41ea03cc82888137680b97f1fba986f5750692c2)]:
+- Updated dependencies [[`41ea03c`](https://github.com/horizontalsystems/USwap/commit/41ea03cc82888137680b97f1fba986f5750692c2)]:
   - @uswap/helpers@4.2.2
   - @uswap/toolboxes@4.1.3
 
@@ -164,7 +164,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`0700c2b`](https://github.com/swapkit/SwapKit/commit/0700c2b7f1990e6ddebe77df88506ae3c08ff8e1)]:
+- Updated dependencies [[`0700c2b`](https://github.com/horizontalsystems/USwap/commit/0700c2b7f1990e6ddebe77df88506ae3c08ff8e1)]:
   - @uswap/helpers@4.2.1
   - @uswap/toolboxes@4.1.2
 
@@ -172,7 +172,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`327aefe`](https://github.com/swapkit/SwapKit/commit/327aefe0d5fd97cac3c3e999b3fb1eed5de2eb79)]:
+- Updated dependencies [[`327aefe`](https://github.com/horizontalsystems/USwap/commit/327aefe0d5fd97cac3c3e999b3fb1eed5de2eb79)]:
   - @uswap/helpers@4.2.0
   - @uswap/toolboxes@4.1.1
 
@@ -180,7 +180,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`3192cc0`](https://github.com/swapkit/SwapKit/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f), [`053ea04`](https://github.com/swapkit/SwapKit/commit/053ea04567dc10a6df3e0869262056a856ab966e), [`3192cc0`](https://github.com/swapkit/SwapKit/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f), [`da3ca10`](https://github.com/swapkit/SwapKit/commit/da3ca102dabe00ea14b811ca2f55e1d94b185c09)]:
+- Updated dependencies [[`3192cc0`](https://github.com/horizontalsystems/USwap/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f), [`053ea04`](https://github.com/horizontalsystems/USwap/commit/053ea04567dc10a6df3e0869262056a856ab966e), [`3192cc0`](https://github.com/horizontalsystems/USwap/commit/3192cc00a132dfc02715829586b3cb6ed94ca15f), [`da3ca10`](https://github.com/horizontalsystems/USwap/commit/da3ca102dabe00ea14b811ca2f55e1d94b185c09)]:
   - @uswap/toolboxes@4.1.0
   - @uswap/helpers@4.1.0
 
@@ -188,7 +188,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`080de9c`](https://github.com/swapkit/SwapKit/commit/080de9c07a893a97ff537b7599012dd71ddcd1ca)]:
+- Updated dependencies [[`080de9c`](https://github.com/horizontalsystems/USwap/commit/080de9c07a893a97ff537b7599012dd71ddcd1ca)]:
   - @uswap/helpers@4.0.27
   - @uswap/toolboxes@4.0.27
 
@@ -196,7 +196,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`83f2caf`](https://github.com/swapkit/SwapKit/commit/83f2caf27e3a652e45a034ea0540b718767efe97)]:
+- Updated dependencies [[`83f2caf`](https://github.com/horizontalsystems/USwap/commit/83f2caf27e3a652e45a034ea0540b718767efe97)]:
   - @uswap/helpers@4.0.26
   - @uswap/toolboxes@4.0.26
 
@@ -204,7 +204,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`8814bad`](https://github.com/swapkit/SwapKit/commit/8814bad42e06568e759c66f71d25679bb7ac8021)]:
+- Updated dependencies [[`8814bad`](https://github.com/horizontalsystems/USwap/commit/8814bad42e06568e759c66f71d25679bb7ac8021)]:
   - @uswap/toolboxes@4.0.25
   - @uswap/helpers@4.0.25
 
@@ -212,7 +212,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`c9fea0f`](https://github.com/swapkit/SwapKit/commit/c9fea0f45d8eaeb2e9ed857eaefe4691e15454e6)]:
+- Updated dependencies [[`c9fea0f`](https://github.com/horizontalsystems/USwap/commit/c9fea0f45d8eaeb2e9ed857eaefe4691e15454e6)]:
   - @uswap/toolboxes@4.0.24
   - @uswap/helpers@4.0.24
 
@@ -220,7 +220,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`67c3786`](https://github.com/swapkit/SwapKit/commit/67c3786b4d6a0ceebfd6f8de014f770933c79903)]:
+- Updated dependencies [[`67c3786`](https://github.com/horizontalsystems/USwap/commit/67c3786b4d6a0ceebfd6f8de014f770933c79903)]:
   - @uswap/helpers@4.0.23
   - @uswap/toolboxes@4.0.23
 
@@ -236,7 +236,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`d18b78d`](https://github.com/swapkit/SwapKit/commit/d18b78d91f05a840829539e94bd2877e26078f3f)]:
+- Updated dependencies [[`d18b78d`](https://github.com/horizontalsystems/USwap/commit/d18b78d91f05a840829539e94bd2877e26078f3f)]:
   - @uswap/toolboxes@4.0.21
   - @uswap/helpers@4.0.21
 
@@ -244,7 +244,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`1977b48`](https://github.com/swapkit/SwapKit/commit/1977b483b4f806f353e97fa4ab5d1f2d846b25f2)]:
+- Updated dependencies [[`1977b48`](https://github.com/horizontalsystems/USwap/commit/1977b483b4f806f353e97fa4ab5d1f2d846b25f2)]:
   - @uswap/toolboxes@4.0.20
   - @uswap/helpers@4.0.20
 
@@ -252,7 +252,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`6365b50`](https://github.com/swapkit/SwapKit/commit/6365b506e3ed6587298fa6ba71c846bdf7341391)]:
+- Updated dependencies [[`6365b50`](https://github.com/horizontalsystems/USwap/commit/6365b506e3ed6587298fa6ba71c846bdf7341391)]:
   - @uswap/helpers@4.0.19
   - @uswap/toolboxes@4.0.19
 
@@ -260,7 +260,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`69ca725`](https://github.com/swapkit/SwapKit/commit/69ca725828d4adf996d627e494c560a71fdefc4b)]:
+- Updated dependencies [[`69ca725`](https://github.com/horizontalsystems/USwap/commit/69ca725828d4adf996d627e494c560a71fdefc4b)]:
   - @uswap/toolboxes@4.0.18
   - @uswap/helpers@4.0.18
 
@@ -268,7 +268,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`98afc83`](https://github.com/swapkit/SwapKit/commit/98afc83feacf172b495e460d4e7e3f331e3dd953)]:
+- Updated dependencies [[`98afc83`](https://github.com/horizontalsystems/USwap/commit/98afc83feacf172b495e460d4e7e3f331e3dd953)]:
   - @uswap/toolboxes@4.0.17
   - @uswap/helpers@4.0.17
 
@@ -276,7 +276,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`99aa35e`](https://github.com/swapkit/SwapKit/commit/99aa35e985b7f04738ce12199ac9106c2ad8707c)]:
+- Updated dependencies [[`99aa35e`](https://github.com/horizontalsystems/USwap/commit/99aa35e985b7f04738ce12199ac9106c2ad8707c)]:
   - @uswap/toolboxes@4.0.16
   - @uswap/helpers@4.0.16
 
@@ -300,7 +300,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`c048f39`](https://github.com/swapkit/SwapKit/commit/c048f39a74b21182d2093e97883c1dc8971293f3)]:
+- Updated dependencies [[`c048f39`](https://github.com/horizontalsystems/USwap/commit/c048f39a74b21182d2093e97883c1dc8971293f3)]:
   - @uswap/helpers@4.0.13
   - @uswap/toolboxes@4.0.13
 
@@ -316,7 +316,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`229c06d`](https://github.com/swapkit/SwapKit/commit/229c06dde2fe6a65542aecffddbd38e64fd139d0)]:
+- Updated dependencies [[`229c06d`](https://github.com/horizontalsystems/USwap/commit/229c06dde2fe6a65542aecffddbd38e64fd139d0)]:
   - @uswap/helpers@4.0.11
   - @uswap/toolboxes@4.0.11
 
@@ -332,7 +332,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`27a3f83`](https://github.com/swapkit/SwapKit/commit/27a3f8387d518d2eeb10262495ae7c3663318d77)]:
+- Updated dependencies [[`27a3f83`](https://github.com/horizontalsystems/USwap/commit/27a3f8387d518d2eeb10262495ae7c3663318d77)]:
   - @uswap/toolboxes@4.0.9
   - @uswap/helpers@4.0.9
 
@@ -340,7 +340,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`b6b826a`](https://github.com/swapkit/SwapKit/commit/b6b826aa586f0e7cc88533f25fa91627dc954b06)]:
+- Updated dependencies [[`b6b826a`](https://github.com/horizontalsystems/USwap/commit/b6b826aa586f0e7cc88533f25fa91627dc954b06)]:
   - @uswap/toolboxes@4.0.8
   - @uswap/helpers@4.0.8
 
@@ -356,7 +356,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`c4605c6`](https://github.com/swapkit/SwapKit/commit/c4605c667d3737691d348dde8c8d9d677b79f2ec)]:
+- Updated dependencies [[`c4605c6`](https://github.com/horizontalsystems/USwap/commit/c4605c667d3737691d348dde8c8d9d677b79f2ec)]:
   - @uswap/helpers@4.0.6
   - @uswap/toolboxes@4.0.6
 
@@ -364,7 +364,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`5d334e6`](https://github.com/swapkit/SwapKit/commit/5d334e69299e3aca21329ff71287498fed4d41a7), [`5d334e6`](https://github.com/swapkit/SwapKit/commit/5d334e69299e3aca21329ff71287498fed4d41a7)]:
+- Updated dependencies [[`5d334e6`](https://github.com/horizontalsystems/USwap/commit/5d334e69299e3aca21329ff71287498fed4d41a7), [`5d334e6`](https://github.com/horizontalsystems/USwap/commit/5d334e69299e3aca21329ff71287498fed4d41a7)]:
   - @uswap/toolboxes@4.0.5
   - @uswap/helpers@4.0.5
 
@@ -372,7 +372,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`8d3a6a9`](https://github.com/swapkit/SwapKit/commit/8d3a6a975645f205dcb3c0711319d6405e759533)]:
+- Updated dependencies [[`8d3a6a9`](https://github.com/horizontalsystems/USwap/commit/8d3a6a975645f205dcb3c0711319d6405e759533)]:
   - @uswap/helpers@4.0.4
   - @uswap/toolboxes@4.0.4
 
@@ -388,7 +388,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`bc7dc5a`](https://github.com/swapkit/SwapKit/commit/bc7dc5a01e65564aad8fa6745937254dfeaab699)]:
+- Updated dependencies [[`bc7dc5a`](https://github.com/horizontalsystems/USwap/commit/bc7dc5a01e65564aad8fa6745937254dfeaab699)]:
   - @uswap/helpers@4.0.2
   - @uswap/toolboxes@4.0.2
 
@@ -396,9 +396,9 @@
 
 ### Patch Changes
 
-- [#1448](https://github.com/swapkit/SwapKit/pull/1448) [`c1b3ac4`](https://github.com/swapkit/SwapKit/commit/c1b3ac42119519bc42b1f3949ae64b8710db995c) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Fix cycling dependencies & update biome to v2
+- [#1448](https://github.com/horizontalsystems/USwap/pull/1448) [`c1b3ac4`](https://github.com/horizontalsystems/USwap/commit/c1b3ac42119519bc42b1f3949ae64b8710db995c) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Fix cycling dependencies & update biome to v2
 
-- Updated dependencies [[`1d11e7f`](https://github.com/swapkit/SwapKit/commit/1d11e7fa5280aa5eb7d42df3f9e944d49b2c0d08), [`c1b3ac4`](https://github.com/swapkit/SwapKit/commit/c1b3ac42119519bc42b1f3949ae64b8710db995c)]:
+- Updated dependencies [[`1d11e7f`](https://github.com/horizontalsystems/USwap/commit/1d11e7fa5280aa5eb7d42df3f9e944d49b2c0d08), [`c1b3ac4`](https://github.com/horizontalsystems/USwap/commit/c1b3ac42119519bc42b1f3949ae64b8710db995c)]:
   - @uswap/helpers@4.0.1
   - @uswap/toolboxes@4.0.1
 
@@ -406,11 +406,11 @@
 
 ### Patch Changes
 
-- [#1426](https://github.com/swapkit/SwapKit/pull/1426) [`bd61ef7`](https://github.com/swapkit/SwapKit/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Update for new exports and usability
+- [#1426](https://github.com/horizontalsystems/USwap/pull/1426) [`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Update for new exports and usability
 
-- [#1404](https://github.com/swapkit/SwapKit/pull/1404) [`0c7a3a2`](https://github.com/swapkit/SwapKit/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Server/Client split, type definitions and new goodies
+- [#1404](https://github.com/horizontalsystems/USwap/pull/1404) [`0c7a3a2`](https://github.com/horizontalsystems/USwap/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Server/Client split, type definitions and new goodies
 
-- Updated dependencies [[`1ad81e7`](https://github.com/swapkit/SwapKit/commit/1ad81e76e6848a9e1ea8346da1b6ea8fab602436), [`f97daf0`](https://github.com/swapkit/SwapKit/commit/f97daf02e7e9961a55d0ba9a0f4bac7dd6b3392d), [`cc7514f`](https://github.com/swapkit/SwapKit/commit/cc7514fa39cc2a0f91be28fe51415a56ac657ce5), [`c963338`](https://github.com/swapkit/SwapKit/commit/c96333881e81b8a14937dcde5f0d98c005981bb8), [`bd61ef7`](https://github.com/swapkit/SwapKit/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2), [`0d8f498`](https://github.com/swapkit/SwapKit/commit/0d8f498f7450552067aa95f27d513c71775ea67d), [`3c3a3da`](https://github.com/swapkit/SwapKit/commit/3c3a3da284989bc6209fcd10af4b328d89a11b92), [`52a6412`](https://github.com/swapkit/SwapKit/commit/52a6412c95e14430c33d66de09ef1242028442af), [`3fdd6c3`](https://github.com/swapkit/SwapKit/commit/3fdd6c396f486a4cb9b1a84820cabef752e7904f), [`0c7a3a2`](https://github.com/swapkit/SwapKit/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc), [`66d9b26`](https://github.com/swapkit/SwapKit/commit/66d9b2611b7eba507209c119a254b6cdd8d23197), [`23c9e54`](https://github.com/swapkit/SwapKit/commit/23c9e549d3591266efd9727aef349ef602ac1a18), [`a333581`](https://github.com/swapkit/SwapKit/commit/a333581318eeb6c8d47be567e84d1efaab790cc5), [`0f2e55a`](https://github.com/swapkit/SwapKit/commit/0f2e55aba9efcdbfa74fcf9a4311534b9da780ed), [`ec8cc57`](https://github.com/swapkit/SwapKit/commit/ec8cc5726d5adb9e9fbb07eab743de1d7bd64773)]:
+- Updated dependencies [[`1ad81e7`](https://github.com/horizontalsystems/USwap/commit/1ad81e76e6848a9e1ea8346da1b6ea8fab602436), [`f97daf0`](https://github.com/horizontalsystems/USwap/commit/f97daf02e7e9961a55d0ba9a0f4bac7dd6b3392d), [`cc7514f`](https://github.com/horizontalsystems/USwap/commit/cc7514fa39cc2a0f91be28fe51415a56ac657ce5), [`c963338`](https://github.com/horizontalsystems/USwap/commit/c96333881e81b8a14937dcde5f0d98c005981bb8), [`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2), [`0d8f498`](https://github.com/horizontalsystems/USwap/commit/0d8f498f7450552067aa95f27d513c71775ea67d), [`3c3a3da`](https://github.com/horizontalsystems/USwap/commit/3c3a3da284989bc6209fcd10af4b328d89a11b92), [`52a6412`](https://github.com/horizontalsystems/USwap/commit/52a6412c95e14430c33d66de09ef1242028442af), [`3fdd6c3`](https://github.com/horizontalsystems/USwap/commit/3fdd6c396f486a4cb9b1a84820cabef752e7904f), [`0c7a3a2`](https://github.com/horizontalsystems/USwap/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc), [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197), [`23c9e54`](https://github.com/horizontalsystems/USwap/commit/23c9e549d3591266efd9727aef349ef602ac1a18), [`a333581`](https://github.com/horizontalsystems/USwap/commit/a333581318eeb6c8d47be567e84d1efaab790cc5), [`0f2e55a`](https://github.com/horizontalsystems/USwap/commit/0f2e55aba9efcdbfa74fcf9a4311534b9da780ed), [`ec8cc57`](https://github.com/horizontalsystems/USwap/commit/ec8cc5726d5adb9e9fbb07eab743de1d7bd64773)]:
   - @uswap/toolboxes@4.0.0
   - @uswap/helpers@4.0.0
 
@@ -418,7 +418,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`1ad81e7`](https://github.com/swapkit/SwapKit/commit/1ad81e76e6848a9e1ea8346da1b6ea8fab602436)]:
+- Updated dependencies [[`1ad81e7`](https://github.com/horizontalsystems/USwap/commit/1ad81e76e6848a9e1ea8346da1b6ea8fab602436)]:
   - @uswap/toolboxes@4.0.0-beta.67
   - @uswap/helpers@4.0.0-beta.50
 
@@ -426,7 +426,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`cc7514f`](https://github.com/swapkit/SwapKit/commit/cc7514fa39cc2a0f91be28fe51415a56ac657ce5)]:
+- Updated dependencies [[`cc7514f`](https://github.com/horizontalsystems/USwap/commit/cc7514fa39cc2a0f91be28fe51415a56ac657ce5)]:
   - @uswap/toolboxes@4.0.0-beta.66
   - @uswap/helpers@4.0.0-beta.49
 
@@ -434,7 +434,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`ec8cc57`](https://github.com/swapkit/SwapKit/commit/ec8cc5726d5adb9e9fbb07eab743de1d7bd64773)]:
+- Updated dependencies [[`ec8cc57`](https://github.com/horizontalsystems/USwap/commit/ec8cc5726d5adb9e9fbb07eab743de1d7bd64773)]:
   - @uswap/helpers@4.0.0-beta.48
   - @uswap/toolboxes@4.0.0-beta.65
 
@@ -442,7 +442,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`23c9e54`](https://github.com/swapkit/SwapKit/commit/23c9e549d3591266efd9727aef349ef602ac1a18)]:
+- Updated dependencies [[`23c9e54`](https://github.com/horizontalsystems/USwap/commit/23c9e549d3591266efd9727aef349ef602ac1a18)]:
   - @uswap/toolboxes@4.0.0-beta.64
   - @uswap/helpers@4.0.0-beta.47
 
@@ -450,7 +450,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`0d8f498`](https://github.com/swapkit/SwapKit/commit/0d8f498f7450552067aa95f27d513c71775ea67d)]:
+- Updated dependencies [[`0d8f498`](https://github.com/horizontalsystems/USwap/commit/0d8f498f7450552067aa95f27d513c71775ea67d)]:
   - @uswap/toolboxes@4.0.0-beta.63
   - @uswap/helpers@4.0.0-beta.46
 
@@ -458,7 +458,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`c963338`](https://github.com/swapkit/SwapKit/commit/c96333881e81b8a14937dcde5f0d98c005981bb8)]:
+- Updated dependencies [[`c963338`](https://github.com/horizontalsystems/USwap/commit/c96333881e81b8a14937dcde5f0d98c005981bb8)]:
   - @uswap/helpers@4.0.0-beta.45
   - @uswap/toolboxes@4.0.0-beta.62
 
@@ -474,7 +474,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`0f2e55a`](https://github.com/swapkit/SwapKit/commit/0f2e55aba9efcdbfa74fcf9a4311534b9da780ed)]:
+- Updated dependencies [[`0f2e55a`](https://github.com/horizontalsystems/USwap/commit/0f2e55aba9efcdbfa74fcf9a4311534b9da780ed)]:
   - @uswap/toolboxes@4.0.0-beta.60
   - @uswap/helpers@4.0.0-beta.43
 
@@ -482,7 +482,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`3c3a3da`](https://github.com/swapkit/SwapKit/commit/3c3a3da284989bc6209fcd10af4b328d89a11b92)]:
+- Updated dependencies [[`3c3a3da`](https://github.com/horizontalsystems/USwap/commit/3c3a3da284989bc6209fcd10af4b328d89a11b92)]:
   - @uswap/helpers@4.0.0-beta.42
   - @uswap/toolboxes@4.0.0-beta.59
 
@@ -490,9 +490,9 @@
 
 ### Patch Changes
 
-- [#1426](https://github.com/swapkit/SwapKit/pull/1426) [`bd61ef7`](https://github.com/swapkit/SwapKit/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Update for new exports and usability
+- [#1426](https://github.com/horizontalsystems/USwap/pull/1426) [`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Update for new exports and usability
 
-- Updated dependencies [[`bd61ef7`](https://github.com/swapkit/SwapKit/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2), [`66d9b26`](https://github.com/swapkit/SwapKit/commit/66d9b2611b7eba507209c119a254b6cdd8d23197)]:
+- Updated dependencies [[`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2), [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197)]:
   - @uswap/toolboxes@4.0.0-beta.58
   - @uswap/helpers@4.0.0-beta.41
 
@@ -508,7 +508,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`3fdd6c3`](https://github.com/swapkit/SwapKit/commit/3fdd6c396f486a4cb9b1a84820cabef752e7904f)]:
+- Updated dependencies [[`3fdd6c3`](https://github.com/horizontalsystems/USwap/commit/3fdd6c396f486a4cb9b1a84820cabef752e7904f)]:
   - @uswap/helpers@4.0.0-beta.39
   - @uswap/toolboxes@4.0.0-beta.56
 
@@ -516,7 +516,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`52a6412`](https://github.com/swapkit/SwapKit/commit/52a6412c95e14430c33d66de09ef1242028442af)]:
+- Updated dependencies [[`52a6412`](https://github.com/horizontalsystems/USwap/commit/52a6412c95e14430c33d66de09ef1242028442af)]:
   - @uswap/helpers@4.0.0-beta.38
   - @uswap/toolboxes@4.0.0-beta.55
 
@@ -524,7 +524,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`f97daf0`](https://github.com/swapkit/SwapKit/commit/f97daf02e7e9961a55d0ba9a0f4bac7dd6b3392d)]:
+- Updated dependencies [[`f97daf0`](https://github.com/horizontalsystems/USwap/commit/f97daf02e7e9961a55d0ba9a0f4bac7dd6b3392d)]:
   - @uswap/toolboxes@4.0.0-beta.54
   - @uswap/helpers@4.0.0-beta.37
 
@@ -540,7 +540,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`a333581`](https://github.com/swapkit/SwapKit/commit/a333581318eeb6c8d47be567e84d1efaab790cc5)]:
+- Updated dependencies [[`a333581`](https://github.com/horizontalsystems/USwap/commit/a333581318eeb6c8d47be567e84d1efaab790cc5)]:
   - @uswap/helpers@4.0.0-beta.35
   - @uswap/toolboxes@4.0.0-beta.52
 
@@ -548,8 +548,8 @@
 
 ### Patch Changes
 
-- [#1404](https://github.com/swapkit/SwapKit/pull/1404) [`0c7a3a2`](https://github.com/swapkit/SwapKit/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Server/Client split, type definitions and new goodies
+- [#1404](https://github.com/horizontalsystems/USwap/pull/1404) [`0c7a3a2`](https://github.com/horizontalsystems/USwap/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Server/Client split, type definitions and new goodies
 
-- Updated dependencies [[`0c7a3a2`](https://github.com/swapkit/SwapKit/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc)]:
+- Updated dependencies [[`0c7a3a2`](https://github.com/horizontalsystems/USwap/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc)]:
   - @uswap/toolboxes@4.0.0-beta.51
   - @uswap/helpers@4.0.0-beta.34

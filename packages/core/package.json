@@ -7,7 +7,7 @@
     "@uswap/wallets": "workspace:*",
     "ts-pattern": "^5.9.0"
   },
-  "description": "SwapKit - Core",
+  "description": "USwap - Core",
   "devDependencies": { "ts-pattern": "5.9.0" },
   "exports": {
     ".": {
@@ -18,10 +18,14 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/swapkit/SwapKit",
+  "homepage": "https://github.com/horizontalsystems/USwap",
   "license": "Apache-2.0",
   "name": "@uswap/core",
-  "repository": { "directory": "packages/core", "type": "git", "url": "git+https://github.com/swapkit/SwapKit.git" },
+  "repository": {
+    "directory": "packages/core",
+    "type": "git",
+    "url": "git+https://github.com/horizontalsystems/USwap.git"
+  },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

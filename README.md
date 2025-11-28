@@ -70,4 +70,4 @@ bun changeset
 After PR is merged to `develop` branch with changeset file, github action will create new PR with updated versions of packages and changelogs.
 
 ### Attribution
-This project is based on code from SwapKit (https://github.com/swapkit/SwapKit), licensed under the Apache License 2.0. Our version contains modifications specific to Unstoppable Swap.
+This project is based on code from SwapKit (https://github.com/horizontalsystems/USwap), licensed under the Apache License 2.0. Our version contains modifications specific to Unstoppable Swap.
