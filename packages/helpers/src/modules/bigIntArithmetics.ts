@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { match } from "ts-pattern";
 import type { SwapKitNumber } from "./swapKitNumber";
 
@@ -172,7 +178,7 @@ export class BigIntArithmetics {
     if (int.length >= significantDigits) return int.slice(0, significantDigits).padEnd(int.length, "0");
     if (hasInteger) return `${int}.${dec.slice(0, significantDigits - int.length)}`;
 
-    const trimmed = Number.parseInt(dec, 10).toString();
+    const trimmed = BigInt(dec).toString();
     const sliced = trimmed.slice(0, significantDigits);
     const leadingZeros = dec.length - trimmed.length;
 
