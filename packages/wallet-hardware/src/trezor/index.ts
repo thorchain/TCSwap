@@ -42,6 +42,7 @@ async function getTrezorWallet<T extends Chain>({
     case Chain.BinanceSmartChain:
     case Chain.Ethereum:
     case Chain.Gnosis:
+    case Chain.Monad:
     case Chain.Optimism:
     case Chain.Polygon:
     case Chain.XLayer: {
@@ -88,7 +89,7 @@ async function getTrezorWallet<T extends Chain>({
 
           const version = 5;
           const versionGroupId = 0x26a7270a;
-          const branchId = 0xc8e71055;
+          const branchId = 0x4dec4df0;
 
           const inputs = zcashPsbt.txInputs.map((input, idx) => ({
             address_n,
@@ -336,6 +337,7 @@ export const trezorWallet = createWallet({
     Chain.Ethereum,
     Chain.Gnosis,
     Chain.Litecoin,
+    Chain.Monad,
     Chain.Optimism,
     Chain.Polygon,
     Chain.XLayer,
