@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { SignedTransaction, Transaction } from "@near-js/transactions";
 import type { DerivationPathArray } from "@uswap/helpers";
 import type { NearSigner } from "@uswap/toolboxes/near";
@@ -5,7 +11,7 @@ import { getLedgerTransport } from "../helpers/getLedgerTransport";
 
 export async function getNearLedgerClient(derivationPath?: DerivationPathArray) {
   const Near = (await import("@ledgerhq/hw-app-near")).default;
-  const { Chain, NetworkDerivationPath, SwapKitError } = await import("@uswap/helpers");
+  const { Chain, NetworkDerivationPath, USwapError } = await import("@uswap/helpers");
   const transport = await getLedgerTransport();
   const nearApp = new Near(transport);
 
@@ -24,7 +30,7 @@ export async function getNearLedgerClient(derivationPath?: DerivationPathArray) 
 
     signDelegateAction(_delegateAction: any) {
       return Promise.reject(
-        new SwapKitError("wallet_ledger_method_not_supported", { method: "signDelegateAction", wallet: "Ledger" }),
+        new USwapError("wallet_ledger_method_not_supported", { method: "signDelegateAction", wallet: "Ledger" }),
       );
     },
 
@@ -36,7 +42,7 @@ export async function getNearLedgerClient(derivationPath?: DerivationPathArray) 
       _callbackUrl?: string,
     ) {
       return Promise.reject(
-        new SwapKitError("wallet_ledger_method_not_supported", { method: "signNep413Message", wallet: "Ledger" }),
+        new USwapError("wallet_ledger_method_not_supported", { method: "signNep413Message", wallet: "Ledger" }),
       );
     },
 
@@ -54,7 +60,7 @@ export async function getNearLedgerClient(derivationPath?: DerivationPathArray) 
 
         return [signatureArray, signedTransaction] as [Uint8Array<ArrayBufferLike>, SignedTransaction];
       } catch (error) {
-        throw new SwapKitError("wallet_ledger_signing_error", { error });
+        throw new USwapError("wallet_ledger_signing_error", { error });
       }
     },
   };

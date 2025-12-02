@@ -464,14 +464,14 @@ Handle Avalanche-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/sdk";
+import { USwapError } from "@uswap/sdk";
 
 try {
   await swapKit.transfer({
     /* ... */
   });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     switch (error.code) {
       case "toolbox_evm_insufficient_funds":
         console.error("Insufficient AVAX for gas");

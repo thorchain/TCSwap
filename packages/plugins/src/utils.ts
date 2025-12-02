@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { ApproveMode, ApproveReturnType, EVMChain, ProviderName } from "@uswap/helpers";
-import { type AssetValue, EVMChains, SwapKitError } from "@uswap/helpers";
+import { type AssetValue, EVMChains, USwapError } from "@uswap/helpers";
 import type { SwapKitPluginParams } from "./types";
 
 export function createPlugin<
@@ -29,7 +35,7 @@ export function approve<T extends ApproveMode>({ approveMode, getWallet }: { app
     const walletAction = approveMode === "checkOnly" ? wallet.isApproved : wallet.approve;
 
     if (!(assetValue.address && wallet.address)) {
-      throw new SwapKitError("core_approve_asset_address_or_from_not_found");
+      throw new USwapError("core_approve_asset_address_or_from_not_found");
     }
 
     return walletAction({

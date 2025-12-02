@@ -56,26 +56,26 @@ Always validate user inputs:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, SwapKitError } from "@uswap/sdk";
+import { createSwapKit, USwapError } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
 function validateSwapInput(params: any): void {
   if (!swapKit.validateAddress(params.recipient, params.chain)) {
-    throw new SwapKitError("core_swap_invalid_params", {
+    throw new USwapError("core_swap_invalid_params", {
       message: "Invalid recipient address",
     });
   }
 
   const amount = Number(params.amount);
   if (isNaN(amount) || amount <= 0) {
-    throw new SwapKitError("core_swap_invalid_params", {
+    throw new USwapError("core_swap_invalid_params", {
       message: "Invalid amount",
     });
   }
 
   if (params.slippage < 0 || params.slippage > 50) {
-    throw new SwapKitError("core_swap_invalid_params", {
+    throw new USwapError("core_swap_invalid_params", {
       message: "Slippage must be between 0 and 50%",
     });
   }
@@ -203,14 +203,14 @@ Handle all error scenarios gracefully:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/sdk";
+import { USwapError } from "@uswap/sdk";
 
 async function executeSwap(route: SwapRoute) {
   try {
     const txHash = await swapKit.swap({ route });
     return { success: true, txHash };
   } catch (error) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       switch (error.code) {
         case "wallet_not_connected":
           return { success: false, error: "Please connect your wallet" };
@@ -242,7 +242,7 @@ Implement retry logic for transient failures:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError, SwapKitApi } from "@uswap/sdk";
+import { USwapError, SwapKitApi } from "@uswap/sdk";
 
 async function withRetry<T>(
   fn: () => Promise<T>,
@@ -256,7 +256,7 @@ async function withRetry<T>(
     } catch (error) {
       lastError = error as Error;
 
-      if (error instanceof SwapKitError && error.code === "user_rejected") {
+      if (error instanceof USwapError && error.code === "user_rejected") {
         throw error;
       }
 

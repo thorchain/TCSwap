@@ -1,10 +1,16 @@
-import { SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { USwapError } from "@uswap/helpers";
 import type { Xumm } from "xumm";
 import type { XamanPaymentParams } from "./types";
 
 export const connectXamanWallet = async (xumm: Xumm) => {
   if (!xumm) {
-    throw new SwapKitError("wallet_xaman_not_configured");
+    throw new USwapError("wallet_xaman_not_configured");
   }
 
   try {
@@ -15,10 +21,10 @@ export const connectXamanWallet = async (xumm: Xumm) => {
       return account;
     }
 
-    throw new SwapKitError("wallet_xaman_auth_failed");
+    throw new USwapError("wallet_xaman_auth_failed");
   } catch (error) {
     console.error("Xaman wallet connection failed:", error);
-    throw new SwapKitError("wallet_xaman_connection_failed");
+    throw new USwapError("wallet_xaman_connection_failed");
   }
 };
 
@@ -26,7 +32,7 @@ export const sendXamanTransaction = async (xumm: Xumm, params: XamanPaymentParam
   try {
     // Validate required parameters
     if (!(params.destination && params.amount && params.from)) {
-      throw new SwapKitError("wallet_xaman_connection_failed");
+      throw new USwapError("wallet_xaman_connection_failed");
     }
 
     // Convert XRP to drops (1 XRP = 1,000,000 drops)
@@ -54,7 +60,7 @@ export const sendXamanTransaction = async (xumm: Xumm, params: XamanPaymentParam
     });
 
     if (!subscription) {
-      throw new SwapKitError("wallet_xaman_transaction_failed");
+      throw new USwapError("wallet_xaman_transaction_failed");
     }
 
     const { created } = subscription;
@@ -72,14 +78,14 @@ export const sendXamanTransaction = async (xumm: Xumm, params: XamanPaymentParam
     const resolved = await subscription.resolved;
 
     if (!resolved || typeof resolved !== "object" || !("signed" in resolved) || !resolved.signed) {
-      throw new SwapKitError("wallet_xaman_transaction_failed");
+      throw new USwapError("wallet_xaman_transaction_failed");
     }
 
     // Fetch the full payload result using the UUID from resolved data
     const payloadDetails = await xumm.payload?.get((resolved as any).payload_uuidv4);
 
     if (!payloadDetails) {
-      throw new SwapKitError("wallet_xaman_monitoring_failed");
+      throw new USwapError("wallet_xaman_monitoring_failed");
     }
 
     // Extract transaction ID from response
@@ -87,7 +93,7 @@ export const sendXamanTransaction = async (xumm: Xumm, params: XamanPaymentParam
     const account = payloadDetails.response?.account || "";
 
     if (!transactionId) {
-      throw new SwapKitError("wallet_xaman_transaction_failed");
+      throw new USwapError("wallet_xaman_transaction_failed");
     }
 
     // Return comprehensive result
@@ -102,9 +108,9 @@ export const sendXamanTransaction = async (xumm: Xumm, params: XamanPaymentParam
     };
   } catch (error) {
     console.error("Xaman payment creation and subscription failed:", error);
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       throw error;
     }
-    throw new SwapKitError("wallet_xaman_transaction_failed");
+    throw new USwapError("wallet_xaman_transaction_failed");
   }
 };

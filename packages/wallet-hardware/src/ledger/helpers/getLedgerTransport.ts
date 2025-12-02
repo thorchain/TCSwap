@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type Transport from "@ledgerhq/hw-transport";
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 
 const getNavigatorUsb = () =>
   navigator?.usb as unknown as {
@@ -26,7 +32,7 @@ export const getLedgerTransport = async (): Promise<Transport> => {
   const device = await getLedgerDevices();
 
   if (!device) {
-    throw new SwapKitError("wallet_ledger_device_not_found");
+    throw new USwapError("wallet_ledger_device_not_found");
   }
 
   device.opened || (await device.open());
@@ -50,7 +56,7 @@ export const getLedgerTransport = async (): Promise<Transport> => {
 
   if (!iface) {
     await device.close();
-    throw new SwapKitError("wallet_ledger_connection_error");
+    throw new USwapError("wallet_ledger_connection_error");
   }
 
   const klass0x03 = (iface.alternates as any[])?.find(
@@ -67,7 +73,7 @@ export const getLedgerTransport = async (): Promise<Transport> => {
     const supported = await TransportWebHID.isSupported();
     if (!supported) {
       await device.close();
-      throw new SwapKitError("wallet_ledger_webhid_not_supported");
+      throw new USwapError("wallet_ledger_webhid_not_supported");
     }
     const transport = await TransportWebHID.create();
     return transport;
@@ -78,12 +84,12 @@ export const getLedgerTransport = async (): Promise<Transport> => {
   } catch (error: unknown) {
     await device.close();
 
-    throw new SwapKitError("wallet_ledger_connection_claimed", error);
+    throw new USwapError("wallet_ledger_connection_claimed", error);
   }
 
   const Transport = (await import("@ledgerhq/hw-transport-webusb")).default;
   const isSupported = await Transport.isSupported();
-  if (!isSupported) throw new SwapKitError("wallet_ledger_webusb_not_supported");
+  if (!isSupported) throw new USwapError("wallet_ledger_webusb_not_supported");
 
   const { DisconnectedDevice } = await import("@ledgerhq/errors");
 

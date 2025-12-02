@@ -1,6 +1,12 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { OfflineSigner } from "@cosmjs/proto-signing";
 import type { SigningStargateClientOptions } from "@cosmjs/stargate";
-import { AssetValue, Chain, type CosmosChain, getChainConfig, getRPCUrl, SwapKitError } from "@uswap/helpers";
+import { AssetValue, Chain, type CosmosChain, getChainConfig, getRPCUrl, USwapError } from "@uswap/helpers";
 import type { CosmosCreateTransactionParams } from "./types";
 
 export const USK_KUJIRA_FACTORY_DENOM =
@@ -110,7 +116,7 @@ const getTransferMsgTypeByChain = (chain: CosmosChain) => {
     case Chain.Noble:
       return "/cosmos.bank.v1beta1.MsgSend";
     default:
-      throw new SwapKitError("toolbox_cosmos_not_supported", { chain });
+      throw new USwapError("toolbox_cosmos_not_supported", { chain });
   }
 };
 
@@ -133,7 +139,7 @@ export async function cosmosCreateTransaction({
   const accountOnChain = await client.getAccount(sender);
 
   if (!accountOnChain) {
-    throw new SwapKitError("toolbox_cosmos_account_not_found", { sender });
+    throw new USwapError("toolbox_cosmos_account_not_found", { sender });
   }
 
   const gasAsset = AssetValue.from({ chain });

@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { KeepKeySdk, TypesThorchainSignDocDeposit, TypesThorchainSignDocTransfer } from "@keepkey/keepkey-sdk";
 import {
   type AssetValue,
@@ -7,8 +13,8 @@ import {
   derivationPathToString,
   type GenericTransferParams,
   getRPCUrl,
-  SwapKitError,
   THORConfig,
+  USwapError,
 } from "@uswap/helpers";
 import type { ThorchainDepositParams } from "@uswap/toolboxes/cosmos";
 
@@ -38,7 +44,7 @@ export async function thorchainWalletMethods({
 
   const signTransaction = async ({ assetValue, recipient, sender, memo }: SignTransactionParams) => {
     const account = await toolbox.getAccount(sender);
-    if (!account) throw new SwapKitError("wallet_keepkey_account_not_found");
+    if (!account) throw new USwapError("wallet_keepkey_account_not_found");
     const { accountNumber, sequence = 0 } = account;
 
     const isTransfer = recipient && recipient !== "";

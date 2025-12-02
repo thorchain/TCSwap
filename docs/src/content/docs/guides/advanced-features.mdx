@@ -443,7 +443,7 @@ Implement robust error handling and recovery:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/sdk";
+import { USwapError } from "@uswap/sdk";
 
 class SwapKitRetry {
   async executeWithRetry<T>(
@@ -460,7 +460,7 @@ class SwapKitRetry {
         lastError = error as Error;
 
         if (
-          error instanceof SwapKitError &&
+          error instanceof USwapError &&
           error.message === "wallet_connection_rejected_by_user"
         ) {
           throw error;

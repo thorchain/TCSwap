@@ -1,4 +1,10 @@
-import { AssetValue, Chain, ProviderName, SwapKitError, type SwapParams } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { AssetValue, Chain, ProviderName, type SwapParams, USwapError } from "@uswap/helpers";
 import type { QuoteResponseRoute } from "@uswap/helpers/api";
 import type { NearWallet } from "@uswap/toolboxes/near";
 import { createPlugin } from "../utils";
@@ -12,14 +18,14 @@ export const NearPlugin = createPlugin({
         const normalizedName = name.toLowerCase().replace(/\.near$/, "");
 
         if (!validateNearName(normalizedName)) {
-          throw new SwapKitError("plugin_near_invalid_name");
+          throw new USwapError("plugin_near_invalid_name");
         }
 
         const accountId = `${normalizedName}.near`;
         const wallet = getWallet(Chain.Near);
 
         if (!wallet) {
-          throw new SwapKitError("plugin_near_no_connection");
+          throw new USwapError("plugin_near_no_connection");
         }
 
         try {
@@ -64,7 +70,7 @@ export const NearPlugin = createPlugin({
         const wallet = getWallet(Chain.Near);
 
         if (!wallet) {
-          throw new SwapKitError("plugin_near_no_connection");
+          throw new USwapError("plugin_near_no_connection");
         }
 
         try {
@@ -88,7 +94,7 @@ export const NearPlugin = createPlugin({
         const normalizedName = name.toLowerCase().replace(/\.near$/, "");
 
         if (!validateNearName(normalizedName)) {
-          throw new SwapKitError("plugin_near_invalid_name");
+          throw new USwapError("plugin_near_invalid_name");
         }
 
         const wallet = getWallet(Chain.Near) as NearWallet;
@@ -108,14 +114,14 @@ export const NearPlugin = createPlugin({
         const normalizedName = name.toLowerCase().replace(/\.near$/, "");
 
         if (!validateNearName(normalizedName)) {
-          throw new SwapKitError("plugin_near_invalid_name");
+          throw new USwapError("plugin_near_invalid_name");
         }
 
         const accountId = `${normalizedName}.near`;
         const wallet = getWallet(Chain.Near);
 
         if (!wallet) {
-          throw new SwapKitError("plugin_near_no_connection");
+          throw new USwapError("plugin_near_no_connection");
         }
 
         try {
@@ -137,7 +143,7 @@ export const NearPlugin = createPlugin({
         const normalizedName = name.toLowerCase().replace(/\.near$/, "");
 
         if (!validateNearName(normalizedName)) {
-          throw new SwapKitError("plugin_near_invalid_name");
+          throw new USwapError("plugin_near_invalid_name");
         }
 
         const wallet = getWallet(Chain.Near) as NearWallet;
@@ -162,11 +168,11 @@ export const NearPlugin = createPlugin({
       } = swapParams;
 
       if (!(sellAssetString && buyAssetString && near?.sellAsset)) {
-        throw new SwapKitError("core_swap_asset_not_recognized");
+        throw new USwapError("core_swap_asset_not_recognized");
       }
 
       if (!inboundAddress) {
-        throw new SwapKitError("core_swap_invalid_params", { missing: ["inboundAddress"] });
+        throw new USwapError("core_swap_invalid_params", { missing: ["inboundAddress"] });
       }
 
       const sellAsset = await AssetValue.from({ asset: sellAssetString, value: sellAmount });
@@ -178,7 +184,7 @@ export const NearPlugin = createPlugin({
       if (sellAssetChain === Chain.Near && !sellAsset.isGasAsset) {
         const wallet = getWallet(sellAsset.chain as Chain.Near);
         if (!wallet) {
-          throw new SwapKitError("core_wallet_connection_not_found");
+          throw new USwapError("core_wallet_connection_not_found");
         }
 
         const unsignedTransaction = await wallet.createContractFunctionCall({
@@ -198,7 +204,7 @@ export const NearPlugin = createPlugin({
       }
 
       if (!wallet) {
-        throw new SwapKitError("core_wallet_connection_not_found");
+        throw new USwapError("core_wallet_connection_not_found");
       }
 
       const tx = await wallet.transfer({

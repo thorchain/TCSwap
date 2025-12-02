@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { describe, expect, test } from "bun:test";
 import { Chain } from "@uswap/types";
 
@@ -66,7 +72,7 @@ describe("wrapWithThrow", () => {
     ).toBeUndefined();
   });
 
-  test("throws SwapKitError when errorKey provided", () => {
+  test("throws USwapError when errorKey provided", () => {
     expect(() =>
       wrapWithThrow(() => {
         throw new Error("test");

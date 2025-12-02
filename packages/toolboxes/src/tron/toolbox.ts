@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   AssetValue,
   BaseDecimal,
@@ -5,7 +11,7 @@ import {
   derivationPathToString,
   getRPCUrl,
   NetworkDerivationPath,
-  SwapKitError,
+  USwapError,
   updateDerivationPath,
   warnOnce,
 } from "@uswap/helpers";
@@ -65,7 +71,7 @@ export async function getTronPrivateKeyFromMnemonic({
   const derived = hdKey.derive(derivationPathToUse);
 
   if (!derived.privateKey) {
-    throw new SwapKitError("toolbox_tron_no_signer");
+    throw new USwapError("toolbox_tron_no_signer");
   }
 
   return Buffer.from(derived.privateKey).toString("hex");
@@ -88,7 +94,7 @@ async function createKeysForPath({
   const derived = hdKey.derive(derivationPath);
 
   if (!derived.privateKey) {
-    throw new SwapKitError("toolbox_tron_no_signer");
+    throw new USwapError("toolbox_tron_no_signer");
   }
 
   // Convert private key to hex string for TronWeb
@@ -147,7 +153,7 @@ export const createTronToolbox = async (
     .otherwise(() => Promise.resolve(undefined));
 
   const getAddress = async () => {
-    if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
+    if (!signer) throw new USwapError("toolbox_tron_no_signer");
     return await signer.getAddress();
   };
 
@@ -338,7 +344,7 @@ export const createTronToolbox = async (
   };
 
   const transfer = async ({ recipient, assetValue, memo, expiration }: TronTransferParams) => {
-    if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
+    if (!signer) throw new USwapError("toolbox_tron_no_signer");
 
     const from = await getAddress();
     tronWeb.setAddress(from);
@@ -348,7 +354,7 @@ export const createTronToolbox = async (
     const { txid } = await tronWeb.trx.sendRawTransaction(signedTx);
 
     if (!txid) {
-      throw new SwapKitError("toolbox_tron_token_transfer_failed");
+      throw new USwapError("toolbox_tron_token_transfer_failed");
     }
 
     return txid;
@@ -422,7 +428,7 @@ export const createTronToolbox = async (
         }`,
       });
 
-      throw new SwapKitError("toolbox_tron_fee_estimation_failed", { error });
+      throw new USwapError("toolbox_tron_fee_estimation_failed", { error });
     }
   };
 
@@ -464,7 +470,7 @@ export const createTronToolbox = async (
     tronWeb.setAddress(sender);
     const contractAddress = assetValue.address;
     if (!contractAddress) {
-      throw new SwapKitError("toolbox_tron_invalid_token_identifier", { identifier: assetValue.toString() });
+      throw new USwapError("toolbox_tron_invalid_token_identifier", { identifier: assetValue.toString() });
     }
 
     try {
@@ -487,7 +493,7 @@ export const createTronToolbox = async (
       const txWithData = addTxData({ expiration, memo, transaction });
       return txWithData;
     } catch (error) {
-      throw new SwapKitError("toolbox_tron_transaction_creation_failed", {
+      throw new USwapError("toolbox_tron_transaction_creation_failed", {
         message: "Failed to create TRC20 transaction.",
         originalError: error instanceof Error ? error.message : String(error),
       });
@@ -495,7 +501,7 @@ export const createTronToolbox = async (
   };
 
   const signTransaction = async (transaction: TronTransaction) => {
-    if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
+    if (!signer) throw new USwapError("toolbox_tron_no_signer");
     return await signer.signTransaction(transaction);
   };
 
@@ -509,14 +515,14 @@ export const createTronToolbox = async (
       const contract = tronWeb.contract(trc20ABI, assetAddress);
 
       if (!contract.methods?.allowance) {
-        throw new SwapKitError("toolbox_tron_invalid_token_contract");
+        throw new USwapError("toolbox_tron_invalid_token_contract");
       }
 
       const [allowance] = await contract.methods.allowance(from, spenderAddress).call();
 
       return allowance ? (typeof allowance === "bigint" ? allowance : BigInt(allowance)) : 0n;
     } catch (error) {
-      throw new SwapKitError("toolbox_tron_allowance_check_failed", { error });
+      throw new USwapError("toolbox_tron_allowance_check_failed", { error });
     }
   };
 
@@ -532,7 +538,7 @@ export const createTronToolbox = async (
   };
 
   const approve = async ({ assetAddress, spenderAddress, amount, from }: TronApproveParams) => {
-    if (!signer) throw new SwapKitError("toolbox_tron_no_signer");
+    if (!signer) throw new USwapError("toolbox_tron_no_signer");
 
     const fromAddress = from || (await getAddress());
     const approvalAmount = amount !== undefined ? BigInt(amount).toString() : MAX_APPROVAL;
@@ -559,12 +565,12 @@ export const createTronToolbox = async (
       const { txid } = await tronWeb.trx.sendRawTransaction(signedTx);
 
       if (!txid) {
-        throw new SwapKitError("toolbox_tron_approve_failed");
+        throw new USwapError("toolbox_tron_approve_failed");
       }
 
       return txid;
     } catch (error) {
-      throw new SwapKitError("toolbox_tron_approve_failed", { error });
+      throw new USwapError("toolbox_tron_approve_failed", { error });
     }
   };
 

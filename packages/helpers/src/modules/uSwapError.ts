@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 /** biome-ignore-all assist/source/useSortedKeys: its sorted by type */
 const errorCodes = {
   /**
@@ -438,7 +444,7 @@ const errorCodes = {
 
 export type ErrorKeys = keyof typeof errorCodes;
 
-export class SwapKitError extends Error {
+export class USwapError extends Error {
   static ErrorCode = errorCodes;
 
   constructor(
@@ -451,9 +457,9 @@ export class SwapKitError extends Error {
     const message = `${errorKey}${info ? `: ${JSON.stringify(info)}` : ""}`;
 
     super(message);
-    Object.setPrototypeOf(this, SwapKitError.prototype);
+    Object.setPrototypeOf(this, USwapError.prototype);
 
-    this.name = "SwapKitError";
+    this.name = "USwapError";
     this.cause = sourceErrorOrInfo;
 
     // Log errors for debugging - bundlers can strip this in production if needed
@@ -462,9 +468,9 @@ export class SwapKitError extends Error {
         sourceErrorOrInfo instanceof Error
           ? `${sourceErrorOrInfo.message}${sourceErrorOrInfo.cause ? ` (${sourceErrorOrInfo.cause})` : ""}`
           : JSON.stringify(sourceErrorOrInfo);
-      console.error(`SwapKitError [${errorKey}]: ${errorMsg}`);
+      console.error(`USwapError [${errorKey}]: ${errorMsg}`);
     } else if (info) {
-      console.error(`SwapKitError [${errorKey}]: ${JSON.stringify(info)}`);
+      console.error(`USwapError [${errorKey}]: ${JSON.stringify(info)}`);
     }
   }
 }

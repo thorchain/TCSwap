@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   Chain,
   type CosmosChain,
@@ -5,8 +11,8 @@ import {
   filterSupportedChains,
   type GenericTransferParams,
   type SubstrateChain,
-  SwapKitError,
   type TCLikeChain,
+  USwapError,
   type UTXOChain,
   UTXOChains,
   WalletOption,
@@ -90,7 +96,7 @@ async function getWalletMethods(chain: (typeof VULTISIG_SUPPORTED_CHAINS)[number
     .with(Chain.Solana, async () => {
       const { getSolanaToolbox } = await import("@uswap/toolboxes/solana");
       const solanaProvider = window.vultisig?.solana;
-      if (!solanaProvider) throw new SwapKitError("wallet_vultisig_not_found");
+      if (!solanaProvider) throw new USwapError("wallet_vultisig_not_found");
       const toolbox = await getSolanaToolbox({ signer: solanaProvider });
       return { ...toolbox };
     })
@@ -135,7 +141,7 @@ async function getWalletMethods(chain: (typeof VULTISIG_SUPPORTED_CHAINS)[number
         const ethereumWindowProvider = await getVultisigProvider(chain as EVMChain);
 
         if (!ethereumWindowProvider) {
-          throw new SwapKitError("wallet_vultisig_not_found");
+          throw new USwapError("wallet_vultisig_not_found");
         }
 
         const provider = new BrowserProvider(ethereumWindowProvider, "any");
@@ -149,7 +155,7 @@ async function getWalletMethods(chain: (typeof VULTISIG_SUPPORTED_CHAINS)[number
             await switchEVMWalletNetwork(provider, chain, networkParams);
           }
         } catch {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_failed_to_add_or_switch_network",
             info: { chain, wallet: WalletOption.VULTISIG },
           });

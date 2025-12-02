@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Keplr } from "@keplr-wallet/types";
 import {
   type AssetValue,
@@ -8,8 +14,8 @@ import {
   EVMChains,
   type FeeOption,
   providerRequest,
-  SwapKitError,
   type TCLikeChain,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import type { SolanaProvider } from "@uswap/toolboxes/solana";
@@ -47,7 +53,7 @@ type CtrlProviderType<T> = T extends typeof Chain.Solana
         : undefined;
 
 export function getCtrlProvider<T extends Chain>(chain: T): CtrlProviderType<T> {
-  if (!window.ctrl) throw new SwapKitError("wallet_ctrl_not_found");
+  if (!window.ctrl) throw new USwapError("wallet_ctrl_not_found");
 
   // @ts-expect-error
   return match(chain as Chain)
@@ -89,13 +95,13 @@ export async function getCtrlAddress(chain: Chain) {
   try {
     const eipProvider = (await getCtrlProvider(chain)) as Eip1193Provider;
     if (!eipProvider) {
-      throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
+      throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
     }
 
     if ([Chain.Cosmos, Chain.Kujira, Chain.Noble].includes(chain as Exclude<CosmosChain, TCLikeChain>)) {
       const provider = await getCtrlProvider(Chain.Cosmos);
       if (!provider || "request" in provider) {
-        throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
+        throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
       }
 
       // Enabling before using the Keplr is recommended.
@@ -131,7 +137,7 @@ export async function getCtrlAddress(chain: Chain) {
 
     if (chain === Chain.Near) {
       if (!window.ctrl?.near) {
-        throw new SwapKitError("wallet_ctrl_not_found", { chain: Chain.Near });
+        throw new USwapError("wallet_ctrl_not_found", { chain: Chain.Near });
       }
 
       if (!window.ctrl.near.isSignedIn?.()) {
@@ -145,7 +151,7 @@ export async function getCtrlAddress(chain: Chain) {
     const accounts = await eipProvider.request({ method: "request_accounts", params: [] });
     return accounts[0];
   } catch {
-    throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
+    throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.CTRL } });
   }
 }
 
@@ -154,7 +160,7 @@ export async function walletTransfer(
   method: TransactionMethod = "transfer",
 ) {
   if (!assetValue) {
-    throw new SwapKitError("wallet_ctrl_asset_not_defined");
+    throw new USwapError("wallet_ctrl_asset_not_defined");
   }
 
   /**

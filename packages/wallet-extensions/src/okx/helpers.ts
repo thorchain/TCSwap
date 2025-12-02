@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   Chain,
   type EVMChain,
@@ -5,8 +11,8 @@ import {
   getChainConfig,
   getRPCUrl,
   prepareNetworkSwitch,
-  SwapKitError,
   switchEVMWalletNetwork,
+  USwapError,
 } from "@uswap/helpers";
 import type { TronSigner, TronTransaction } from "@uswap/toolboxes/tron";
 import { Psbt } from "bitcoinjs-lib";
@@ -16,7 +22,7 @@ const cosmosTransfer =
   (sender: string) =>
   async ({ recipient, assetValue, memo }: GenericTransferParams) => {
     if (!(window.okxwallet && "keplr" in window.okxwallet)) {
-      throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Cosmos });
+      throw new USwapError("wallet_okx_not_found", { chain: Chain.Cosmos });
     }
     const { createSigningStargateClient } = await import("@uswap/toolboxes/cosmos");
 
@@ -42,7 +48,7 @@ async function getWeb3WalletMethods({
 }) {
   const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
   const { BrowserProvider } = await import("ethers");
-  if (!walletProvider) throw new SwapKitError("wallet_okx_not_found");
+  if (!walletProvider) throw new USwapError("wallet_okx_not_found");
 
   const provider = new BrowserProvider(walletProvider, "any");
   const signer = await provider.getSigner();
@@ -53,7 +59,7 @@ async function getWeb3WalletMethods({
       await switchEVMWalletNetwork(provider, chain, toolbox.getNetworkParams());
     }
   } catch {
-    throw new SwapKitError("wallet_okx_failed_to_switch_network", { chain });
+    throw new USwapError("wallet_okx_failed_to_switch_network", { chain });
   }
 
   return prepareNetworkSwitch({ chain, provider, toolbox });
@@ -80,7 +86,7 @@ export async function getWalletMethods(chain: Chain) {
         ),
         async () => {
           if (!(window.okxwallet && "send" in window.okxwallet)) {
-            throw new SwapKitError("wallet_okx_not_found", { chain });
+            throw new USwapError("wallet_okx_not_found", { chain });
           }
 
           const evmWallet = await getWeb3WalletMethods({ chain: chain as EVMChain, walletProvider: window.okxwallet });
@@ -91,7 +97,7 @@ export async function getWalletMethods(chain: Chain) {
       )
       .with(Chain.Bitcoin, async () => {
         if (!(window.okxwallet && "bitcoin" in window.okxwallet)) {
-          throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Bitcoin });
+          throw new USwapError("wallet_okx_not_found", { chain: Chain.Bitcoin });
         }
 
         const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
@@ -114,7 +120,7 @@ export async function getWalletMethods(chain: Chain) {
       })
       .with(Chain.Cosmos, async () => {
         if (!(window.okxwallet && "keplr" in window.okxwallet)) {
-          throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Cosmos });
+          throw new USwapError("wallet_okx_not_found", { chain: Chain.Cosmos });
         }
         const { keplr: wallet } = window.okxwallet;
 
@@ -124,7 +130,7 @@ export async function getWalletMethods(chain: Chain) {
 
         // Add defensive check for accounts array
         if (!(accounts && Array.isArray(accounts)) || accounts.length === 0) {
-          throw new SwapKitError("wallet_okx_no_accounts", {
+          throw new USwapError("wallet_okx_no_accounts", {
             chain: Chain.Cosmos,
             message: "No Cosmos accounts returned from OKX Wallet",
           });
@@ -139,7 +145,7 @@ export async function getWalletMethods(chain: Chain) {
       // INFO: OK wallet near is broken
       // .with(Chain.Near, async () => {
       //   if (!(window.okxwallet && "near" in window.okxwallet)) {
-      //     throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Near });
+      //     throw new USwapError("wallet_okx_not_found", { chain: Chain.Near });
       //   }
 
       //   const { createNearSignerFromProvider } = await import("../helpers/near");
@@ -154,7 +160,7 @@ export async function getWalletMethods(chain: Chain) {
       // })
       .with(Chain.Tron, async () => {
         if (!(window.okxwallet && "tronLink" in window.okxwallet)) {
-          throw new SwapKitError("wallet_okx_not_found", { chain: Chain.Tron });
+          throw new USwapError("wallet_okx_not_found", { chain: Chain.Tron });
         }
 
         const { createTronToolbox } = await import("@uswap/toolboxes/tron");
@@ -164,7 +170,7 @@ export async function getWalletMethods(chain: Chain) {
         // Request account access
         const accounts = await tronLink.request({ method: "tron_requestAccounts" });
         if (!accounts || accounts.length === 0) {
-          throw new SwapKitError("wallet_okx_no_accounts", { chain: Chain.Tron });
+          throw new USwapError("wallet_okx_no_accounts", { chain: Chain.Tron });
         }
 
         const address = tronLink.tronWeb.defaultAddress.base58;
@@ -181,7 +187,7 @@ export async function getWalletMethods(chain: Chain) {
         return { ...toolbox, address };
       })
       .otherwise(() => {
-        throw new SwapKitError("wallet_okx_chain_not_supported", { chain });
+        throw new USwapError("wallet_okx_chain_not_supported", { chain });
       })
   );
 }

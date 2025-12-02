@@ -176,18 +176,18 @@ Chain.Ripple;
 
 SwapKit uses a typed error system for better debugging:
 
-### SwapKitError
+### USwapError
 
 The base error class with additional context:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/sdk";
+import { USwapError } from "@uswap/sdk";
 
 try {
   await swapKit.swap({ route });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     console.error("Error:", error.message);
     console.error("Code:", error.code);
     console.error("Details:", error.details);
@@ -226,7 +226,7 @@ Errors include helpful context:
 ```typescript
 // @noErrorValidation
 catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
 
 
 

@@ -153,7 +153,7 @@ Hardware wallets provide the highest security for transaction signing:
 // @noErrorValidation
 import { SwapKit } from "@uswap/core";
 import { ledgerWallet, trezorWallet } from "@uswap/wallets";
-import { Chain, AssetValue, SwapKitError } from "@uswap/helpers";
+import { Chain, AssetValue, USwapError } from "@uswap/helpers";
 
 const swapKit = SwapKit({
   wallets: {
@@ -192,14 +192,14 @@ class HardwareWalletManager {
       );
 
       if (!isValidRecipient) {
-        throw new SwapKitError("core_transaction_invalid_recipient_address");
+        throw new USwapError("core_transaction_invalid_recipient_address");
       }
 
       const txHash = await swapKit.transfer(params);
 
       return { success: true, txHash };
     } catch (error) {
-      if (error instanceof SwapKitError) {
+      if (error instanceof USwapError) {
         const errorKey = error.message.split(":")[0];
 
         switch (errorKey) {
@@ -231,7 +231,7 @@ class HardwareWalletManager {
   }
 
   private handleHardwareWalletError(error: any) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       const errorKey = error.message.split(":")[0];
 
       switch (errorKey) {
@@ -273,7 +273,7 @@ Always validate transactions before signing:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, SwapKitError } from "@uswap/helpers";
+import { AssetValue, USwapError } from "@uswap/helpers";
 
 interface TransactionValidation {
   isValid: boolean;
@@ -354,7 +354,7 @@ async function secureTransaction(params: TransactionParams) {
   });
 
   if (!validation.isValid) {
-    throw new SwapKitError("core_transaction_invalid_params", {
+    throw new USwapError("core_transaction_invalid_params", {
       errors: validation.errors,
     });
   }
@@ -413,7 +413,7 @@ class MultiSigManager {
     const multiSigTx = this.pendingTransactions.get(transactionId);
 
     if (!multiSigTx) {
-      throw new SwapKitError("core_transaction_not_found");
+      throw new USwapError("core_transaction_not_found");
     }
 
     const alreadySigned = multiSigTx.signatures.some(
@@ -421,7 +421,7 @@ class MultiSigManager {
     );
 
     if (alreadySigned) {
-      throw new SwapKitError("core_transaction_already_signed");
+      throw new USwapError("core_transaction_already_signed");
     }
 
     const signature = await this.getSignatureFromWallet(
@@ -450,11 +450,11 @@ class MultiSigManager {
     const multiSigTx = this.pendingTransactions.get(transactionId);
 
     if (!multiSigTx) {
-      throw new SwapKitError("core_transaction_not_found");
+      throw new USwapError("core_transaction_not_found");
     }
 
     if (multiSigTx.signatures.length < multiSigTx.requiredSignatures) {
-      throw new SwapKitError("core_transaction_insufficient_signatures");
+      throw new USwapError("core_transaction_insufficient_signatures");
     }
 
     const txHash = await this.broadcastTransaction(multiSigTx);
@@ -532,7 +532,7 @@ export async function secureApiCall(
 ) {
 
   if (!endpoint || typeof endpoint !== 'string') {
-    throw new SwapKitError('api_invalid_endpoint');
+    throw new USwapError('api_invalid_endpoint');
   }
 
 
@@ -542,7 +542,7 @@ export async function secureApiCall(
   const apiKey = process.env.SWAPKIT_API_KEY;
 
   if (!apiKey) {
-    throw new SwapKitError('api_key_not_configured');
+    throw new USwapError('api_key_not_configured');
   }
 
   try {
@@ -557,7 +557,7 @@ export async function secureApiCall(
     });
 
     if (!response.ok) {
-      throw new SwapKitError('api_request_failed', {
+      throw new USwapError('api_request_failed', {
         status: response.status,
         statusText: response.statusText
       });
@@ -700,7 +700,7 @@ export function validateSwapParams(params: unknown) {
     return SwapParamsSchema.parse(params);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new SwapKitError("core_swap_invalid_params", {
+      throw new USwapError("core_swap_invalid_params", {
         validationErrors: error.errors,
       });
     }

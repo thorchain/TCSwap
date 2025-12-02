@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { base64, bech32 } from "@scure/base";
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 import { fromByteArray, toByteArray } from "base64-js";
 
 export function bech32ToBase64(address: string) {
@@ -16,7 +22,7 @@ export function toBase64(data: Uint8Array) {
 
 export function fromBase64(base64String: string) {
   if (!base64String.match(/^[a-zA-Z0-9+/]*={0,2}$/)) {
-    throw new SwapKitError("toolbox_cosmos_invalid_params", { error: "Invalid base64 string format" });
+    throw new USwapError("toolbox_cosmos_invalid_params", { error: "Invalid base64 string format" });
   }
   return toByteArray(base64String);
 }

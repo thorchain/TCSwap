@@ -1,4 +1,10 @@
-import { AssetValue, Chain, ProviderName, SwapKitError, type SwapParams } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { AssetValue, Chain, ProviderName, type SwapParams, USwapError } from "@uswap/helpers";
 import type { QuoteResponseRoute } from "@uswap/helpers/api";
 import { createPlugin } from "../utils";
 
@@ -11,7 +17,7 @@ export const SolanaPlugin = createPlugin({
       const assetValue = await AssetValue.from({ asset: sellAsset });
 
       const chain = assetValue.chain;
-      if (!(chain === Chain.Solana && tx)) throw new SwapKitError("core_swap_invalid_params");
+      if (!(chain === Chain.Solana && tx)) throw new USwapError("core_swap_invalid_params");
 
       const wallet = getWallet(chain);
       const transaction = VersionedTransaction.deserialize(Buffer.from(tx as string, "base64"));

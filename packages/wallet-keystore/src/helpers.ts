@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { createCipheriv, createDecipheriv, pbkdf2Sync, randomBytes } from "node:crypto";
 import { generateMnemonic, validateMnemonic } from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english.js";
@@ -63,7 +69,7 @@ export function validatePhrase(phrase: string) {
 }
 
 export async function decryptFromKeystore(keystore: Keystore, password: string) {
-  const { SwapKitError } = await import("@uswap/helpers");
+  const { USwapError } = await import("@uswap/helpers");
 
   switch (keystore.version) {
     case 1: {
@@ -76,7 +82,7 @@ export async function decryptFromKeystore(keystore: Keystore, password: string) 
       const mac = await blake256(initData);
 
       if (mac !== keystore.crypto.mac) {
-        throw new SwapKitError("wallet_keystore_invalid_password");
+        throw new USwapError("wallet_keystore_invalid_password");
       }
 
       const decipher = createDecipheriv(
@@ -90,6 +96,6 @@ export async function decryptFromKeystore(keystore: Keystore, password: string) 
     }
 
     default:
-      throw new SwapKitError("wallet_keystore_unsupported_version");
+      throw new USwapError("wallet_keystore_unsupported_version");
   }
 }

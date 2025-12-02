@@ -1,4 +1,10 @@
-import { Chain, filterSupportedChains, SKConfig, SwapKitError, WalletOption } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, filterSupportedChains, SKConfig, USwapError, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 import { Xumm } from "xumm";
 import { getWalletForChain } from "./helpers";
@@ -14,7 +20,7 @@ export const xamanWallet = createWallet({
       const apiKey = xamanConfigOverwrite?.apiKey || xamanApiKey;
 
       if (!apiKey) {
-        throw new SwapKitError("wallet_missing_api_key", { wallet: "Xaman" });
+        throw new USwapError("wallet_missing_api_key", { wallet: "Xaman" });
       }
 
       const xumm = new Xumm(apiKey);

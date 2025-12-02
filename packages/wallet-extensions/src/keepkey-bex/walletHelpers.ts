@@ -1,10 +1,16 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   type AssetValue,
   Chain,
   type EVMChain,
   EVMChains,
   type FeeOption,
-  SwapKitError,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import { erc20ABI } from "@uswap/helpers/contracts";
@@ -60,7 +66,7 @@ export const getProviderNameFromChain = (chain: Chain): string => {
     case Chain.Litecoin:
       return "litecoin";
     default:
-      throw new SwapKitError("wallet_keepkey_chain_not_supported", { chain });
+      throw new USwapError("wallet_keepkey_chain_not_supported", { chain });
   }
 };
 
@@ -80,7 +86,7 @@ declare const window: {
 } & Window;
 
 export function getKEEPKEYProvider<T extends Chain>(chain: T) {
-  if (!window.keepkey) throw new SwapKitError("wallet_keepkey_not_found");
+  if (!window.keepkey) throw new USwapError("wallet_keepkey_not_found");
 
   switch (chain) {
     case Chain.Ethereum:
@@ -132,7 +138,7 @@ function transaction({
         err ? reject(err) : resolve(tx);
       });
     } else {
-      reject(new SwapKitError("wallet_provider_not_found"));
+      reject(new USwapError("wallet_provider_not_found"));
     }
   });
 }
@@ -140,7 +146,7 @@ function transaction({
 export async function getKEEPKEYAddress(chain: Chain) {
   const eipProvider = getKEEPKEYProvider(chain) as Eip1193Provider;
   if (!eipProvider) {
-    throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.KEEPKEY } });
+    throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.KEEPKEY } });
   }
 
   let method = "request_accounts";
@@ -157,7 +163,7 @@ export async function walletTransfer(
   method: TransactionMethod = "transfer",
 ) {
   if (!assetValue) {
-    throw new SwapKitError("wallet_keepkey_asset_not_defined");
+    throw new USwapError("wallet_keepkey_asset_not_defined");
   }
 
   const from = await getKEEPKEYAddress(assetValue.chain);
@@ -199,7 +205,7 @@ export function getKEEPKEYMethods(provider: BrowserProvider, chain: EVMChain) {
     },
     call: async <T>({ contractAddress, abi, funcName, funcParams = [], txOverrides }: CallParams): Promise<T> => {
       if (!contractAddress) {
-        throw new SwapKitError("wallet_keepkey_contract_address_not_provided");
+        throw new USwapError("wallet_keepkey_contract_address_not_provided");
       }
       const { createContract, getCreateContractTxObject, isStateChangingCall, toHexString } = await import(
         "@uswap/toolboxes/evm"
@@ -224,7 +230,7 @@ export function getKEEPKEYMethods(provider: BrowserProvider, chain: EVMChain) {
     sendTransaction: async (tx: EVMTxParams) => {
       const { from, to, data, value } = tx;
       if (!to) {
-        throw new SwapKitError("wallet_keepkey_send_transaction_no_address");
+        throw new USwapError("wallet_keepkey_send_transaction_no_address");
       }
 
       const { toHexString } = await import("@uswap/toolboxes/evm");

@@ -21,7 +21,7 @@ Here's a simple example of creating a plugin:
 import {
   AssetValue,
   Chain,
-  SwapKitError,
+  USwapError,
   createPlugin,
   type EVMChain,
 } from "@uswap/sdk";
@@ -50,7 +50,7 @@ export const ExamplePlugin = createPlugin({
       const { sellAsset, buyAsset, sellAmount } = route;
 
       if (!(sellAsset && buyAsset)) {
-        throw new SwapKitError("core_swap_asset_not_recognized");
+        throw new USwapError("core_swap_asset_not_recognized");
       }
 
       const assetValue = await AssetValue.from({
@@ -62,7 +62,7 @@ export const ExamplePlugin = createPlugin({
       const wallet = getWallet(assetValue.chain as EVMChain);
 
       if (!wallet) {
-        throw new SwapKitError("core_wallet_connection_not_found");
+        throw new USwapError("core_wallet_connection_not_found");
       }
 
       if ("transfer" in wallet) {
@@ -100,7 +100,7 @@ import {
   Chain,
   EVMChain,
   ProviderName,
-  SwapKitError,
+  USwapError,
   createPlugin,
   type QuoteResponseRoute
 } from "@uswap/sdk";
@@ -112,7 +112,7 @@ const approve = ({ approveMode, getWallet }) =>
     const wallet = getWallet(evmChain);
 
     if (!wallet) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
 
 
@@ -152,7 +152,7 @@ export const ExchangePlugin = createPlugin({
       const { tx, sellAsset } = route;
 
       if (!tx) {
-        throw new SwapKitError("core_swap_invalid_params");
+        throw new USwapError("core_swap_invalid_params");
       }
 
       const assetValue = await AssetValue.from({
@@ -164,7 +164,7 @@ export const ExchangePlugin = createPlugin({
       const wallet = getWallet(evmChain);
 
       if (!wallet) {
-        throw new SwapKitError("core_wallet_connection_not_found");
+        throw new USwapError("core_wallet_connection_not_found");
       }
 
 
@@ -272,7 +272,7 @@ async function connectAndUsePlugin() {
 
 When creating a SwapKit plugin, follow these best practices:
 
-1. **Error Handling**: Use SwapKitError for consistent error reporting
+1. **Error Handling**: Use USwapError for consistent error reporting
 2. **Type Safety**: Leverage TypeScript to provide proper type definitions
 3. **Documentation**: Document your plugin methods and parameters
 4. **Testing**: Create comprehensive tests for all functionality

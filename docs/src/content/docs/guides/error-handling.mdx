@@ -5,24 +5,24 @@ description: Comprehensive guide to handling errors in SwapKit applications
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-Proper error handling is crucial for building robust SwapKit applications. This guide covers the SwapKitError system, common error scenarios, debugging techniques, and recovery patterns.
+Proper error handling is crucial for building robust SwapKit applications. This guide covers the USwapError system, common error scenarios, debugging techniques, and recovery patterns.
 
-## SwapKitError System
+## USwapError System
 
 SwapKit provides a comprehensive error system with specific error codes for different failure scenarios.
 
-### SwapKitError Class
+### USwapError Class
 
-The `SwapKitError` class extends the native `Error` class with additional context:
+The `USwapError` class extends the native `Error` class with additional context:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 
 try {
   await swapKit.swap({ route });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     console.log("Error code:", error.message.split(":")[0]);
     console.log("Error details:", error.cause);
   }
@@ -91,7 +91,7 @@ Handle wallet connection failures gracefully:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 import { Chain } from "@uswap/types";
 
 async function connectWallet() {
@@ -99,7 +99,7 @@ async function connectWallet() {
     await swapKit.connectEVMWallet([Chain.Ethereum]);
     return { success: true };
   } catch (error) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       switch (error.message.split(":")[0]) {
         case "wallet_evm_extensions_not_found":
           return {
@@ -146,7 +146,7 @@ Handle transaction-related failures:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError, AssetValue } from "@uswap/helpers";
+import { USwapError, AssetValue } from "@uswap/helpers";
 
 async function executeTransaction(params: TransactionParams) {
   try {
@@ -157,7 +157,7 @@ async function executeTransaction(params: TransactionParams) {
 
     return { success: true, txHash };
   } catch (error) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       const errorKey = error.message.split(":")[0];
 
       switch (errorKey) {
@@ -220,14 +220,14 @@ Handle swap-specific errors with context:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 
 async function performSwap(route: SwapRoute) {
   try {
     const txHash = await swapKit.swap({ route });
     return { success: true, txHash };
   } catch (error) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       const errorKey = error.message.split(":")[0];
 
       switch (errorKey) {
@@ -317,7 +317,7 @@ async function withRetry<T>(
     } catch (error) {
       lastError = error as Error;
 
-      if (error instanceof SwapKitError) {
+      if (error instanceof USwapError) {
         const errorKey = error.message.split(":")[0];
 
         if (!options.retryableErrors.includes(errorKey)) {
@@ -359,7 +359,7 @@ class CircuitBreaker {
   async execute<T>(operation: () => Promise<T>): Promise<T> {
     if (this.state === "OPEN") {
       if (Date.now() - this.lastFailTime < this.timeout) {
-        throw new SwapKitError("core_chain_halted", {
+        throw new USwapError("core_chain_halted", {
           message: "Service temporarily unavailable",
         });
       } else {
@@ -689,7 +689,7 @@ class ErrorMonitor {
     chain?: string;
   }> = [];
 
-  logError(error: SwapKitError, chain?: string) {
+  logError(error: USwapError, chain?: string) {
     const errorCode = error.message.split(":")[0];
 
     this.errors.push({
@@ -762,7 +762,7 @@ const errorMonitor = new ErrorMonitor();
 try {
   await swapKit.swap({ route });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     errorMonitor.logError(error, route.sellAsset.split(".")[0]);
   }
   throw error;
@@ -773,7 +773,7 @@ try {
 
 ### Error Handling Checklist
 
-- **Always check for SwapKitError**: Use `instanceof SwapKitError` checks
+- **Always check for USwapError**: Use `instanceof USwapError` checks
 - **Provide user-friendly messages**: Transform technical errors into readable messages
 - **Implement retry logic**: For transient network and API errors
 - **Log errors appropriately**: Include context but never log sensitive data
@@ -811,7 +811,7 @@ const errorMessages = {
   },
 };
 
-function getUserFriendlyError(error: SwapKitError) {
+function getUserFriendlyError(error: USwapError) {
   const errorKey = error.message.split(":")[0];
   return (
     errorMessages[errorKey] || {

@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { ApiPromise } from "@polkadot/api";
 import type { SubmittableExtrinsic } from "@polkadot/api/types";
 import type { KeyringPair } from "@polkadot/keyring/types";
@@ -11,8 +17,8 @@ import {
   type GenericCreateTransactionParams,
   getRPCUrl,
   type SubstrateChain,
-  SwapKitError,
   SwapKitNumber,
+  USwapError,
 } from "@uswap/helpers";
 
 import { match, P } from "ts-pattern";
@@ -43,7 +49,7 @@ export function getSubstrateToolbox<T extends SubstrateChain>(chain: T, params?:
       return PolkadotToolbox(params);
     }
     default:
-      throw new SwapKitError("toolbox_substrate_not_supported", { chain });
+      throw new USwapError("toolbox_substrate_not_supported", { chain });
   }
 }
 
@@ -82,12 +88,12 @@ const transfer = async (
   { recipient, assetValue, sender }: SubstrateTransferParams,
 ) => {
   const transfer = createTransaction(api, { assetValue, recipient });
-  if (!transfer) throw new SwapKitError("toolbox_substrate_transfer_error");
+  if (!transfer) throw new USwapError("toolbox_substrate_transfer_error");
 
   const isKeyring = isKeyringPair(signer);
 
   const address = isKeyring ? (signer as IKeyringPair).address : sender;
-  if (!address) throw new SwapKitError("core_transaction_invalid_sender_address");
+  if (!address) throw new USwapError("core_transaction_invalid_sender_address");
 
   const nonce = await getNonce(api, address);
 
@@ -199,23 +205,23 @@ export const BaseSubstrateToolbox = ({
   decodeAddress,
   encodeAddress,
   estimateTransactionFee: (params: SubstrateTransferParams) => {
-    if (!signer) throw new SwapKitError("core_wallet_not_keypair_wallet");
+    if (!signer) throw new USwapError("core_wallet_not_keypair_wallet");
     return estimateTransactionFee(api, signer, gasAsset, params);
   },
   gasAsset,
   getAddress: (keyring?: IKeyringPair | Signer) => {
     const keyringPair = keyring || signer;
-    if (!keyringPair) throw new SwapKitError("core_wallet_not_keypair_wallet");
+    if (!keyringPair) throw new USwapError("core_wallet_not_keypair_wallet");
 
     return isKeyringPair(keyringPair) ? keyringPair.address : undefined;
   },
   getBalance: createBalanceGetter(chain || Chain.Polkadot, api),
   network,
   sign: (tx: SubmittableExtrinsic<"promise">) => {
-    if (!signer) throw new SwapKitError("core_wallet_not_keypair_wallet");
+    if (!signer) throw new USwapError("core_wallet_not_keypair_wallet");
     if (isKeyringPair(signer)) return sign(signer, tx);
 
-    throw new SwapKitError(
+    throw new USwapError(
       "core_wallet_not_keypair_wallet",
       "Signer does not have keyring pair capabilities required for signing.",
     );
@@ -229,20 +235,20 @@ export const BaseSubstrateToolbox = ({
     callback?: Callback<ISubmittableResult>;
     address?: string;
   }) => {
-    if (!signer) throw new SwapKitError("core_wallet_not_keypair_wallet");
+    if (!signer) throw new USwapError("core_wallet_not_keypair_wallet");
     if (isKeyringPair(signer)) return signAndBroadcastKeyring(signer, tx, callback);
 
     if (address) {
       return signAndBroadcast({ address, api, callback, signer, tx });
     }
 
-    throw new SwapKitError(
+    throw new USwapError(
       "core_wallet_not_keypair_wallet",
       "Signer does not have keyring pair capabilities required for signing.",
     );
   },
   transfer: (params: SubstrateTransferParams) => {
-    if (!signer) throw new SwapKitError("core_wallet_not_keypair_wallet");
+    if (!signer) throw new USwapError("core_wallet_not_keypair_wallet");
     return transfer(api, signer, params);
   },
   validateAddress: (address: string) => validateAddress(address, network.prefix),

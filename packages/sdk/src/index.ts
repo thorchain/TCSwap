@@ -1,8 +1,14 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 // This should be cleared from unnecessary imports and migrate to:
 // - `sdk/toolboxes`
 // - `sdk/plugins`
 // - `sdk/wallets`
-import { type SKConfigState, SwapKit } from "@uswap/core";
+import { type SKConfigState, USwap } from "@uswap/core";
 import type { createPlugin } from "@uswap/plugins";
 import { ChainflipPlugin } from "@uswap/plugins/chainflip";
 import { EVMPlugin } from "@uswap/plugins/evm";
@@ -127,5 +133,5 @@ export function createSwapKit<
   const mergedPlugins = { ...defaultPlugins, ...plugins };
   const mergedWallets = { ...defaultWallets, ...wallets };
 
-  return SwapKit({ config: config, plugins: mergedPlugins, wallets: mergedWallets });
+  return USwap({ config: config, plugins: mergedPlugins, wallets: mergedWallets });
 }

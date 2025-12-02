@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { KeepKeySdk } from "@keepkey/keepkey-sdk";
 import {
   type AssetValue,
@@ -8,7 +14,7 @@ import {
   type GenericTransferParams,
   getRPCUrl,
   MAYAConfig,
-  SwapKitError,
+  USwapError,
 } from "@uswap/helpers";
 import type { ThorchainDepositParams } from "@uswap/toolboxes/cosmos";
 
@@ -38,7 +44,7 @@ export async function mayachainWalletMethods({
     const { getDenomWithChain } = await import("@uswap/toolboxes/cosmos");
 
     const account = await toolbox.getAccount(sender);
-    if (!account) throw new SwapKitError("wallet_keepkey_account_not_found");
+    if (!account) throw new USwapError("wallet_keepkey_account_not_found");
     const { accountNumber, sequence = 0 } = account;
     const amount = assetValue.getBaseValue("string");
 

@@ -19,8 +19,8 @@ import {
   ProviderName as PluginNameEnum,
   SKConfig,
   type SKConfigState,
-  SwapKitError,
   type SwapParams,
+  USwapError,
   UTXOChains,
   type WalletOption,
 } from "@uswap/helpers";
@@ -30,9 +30,9 @@ import type { FullWallet } from "@uswap/toolboxes";
 import type { EVMCreateTransactionParams, EVMTransferParams } from "@uswap/toolboxes/evm";
 import type { createWallet } from "@uswap/wallets";
 
-export type SwapKitParams<P, W> = { config?: SKConfigState; plugins?: P; wallets?: W };
+export type USwapParams<P, W> = { config?: SKConfigState; plugins?: P; wallets?: W };
 
-export function SwapKit<
+export function USwap<
   Plugins extends ReturnType<typeof createPlugin>,
   Wallets extends ReturnType<typeof createWallet>,
 >({
@@ -92,7 +92,7 @@ export function SwapKit<
     const plugin = pluginByName || pluginByProvider;
 
     if (!plugin) {
-      throw new SwapKitError("core_plugin_not_found");
+      throw new USwapError("core_plugin_not_found");
     }
 
     return plugin as ReturnType<Plugins[T]>;
@@ -140,7 +140,7 @@ export function SwapKit<
         return plugin.approveAssetValue({ assetValue }) as ApproveReturnType<T>;
       }
 
-      throw new SwapKitError({
+      throw new USwapError({
         errorKey: "core_approve_asset_target_invalid",
         info: { message: `Target ${String(spenderAddress)} cannot be used for approve operation` },
       });
@@ -156,10 +156,10 @@ export function SwapKit<
 
     const wallet = getWalletByChain(chain);
     const walletAction = type === "checkOnly" ? wallet.isApproved : wallet.approve;
-    if (!walletAction) throw new SwapKitError("core_wallet_connection_not_found");
+    if (!walletAction) throw new USwapError("core_wallet_connection_not_found");
 
     if (!(assetValue.address && wallet.address && typeof spenderAddress === "string")) {
-      throw new SwapKitError("core_approve_asset_address_or_from_not_found");
+      throw new USwapError("core_approve_asset_address_or_from_not_found");
     }
 
     return walletAction({
@@ -237,7 +237,7 @@ export function SwapKit<
   async function getWalletWithBalance<T extends Chain>(chain: T, scamFilter = true) {
     const wallet = getWalletByChain(chain);
     if (!wallet) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
     const defaultBalance = [AssetValue.from({ chain })];
     wallet.balance = defaultBalance;
@@ -258,13 +258,13 @@ export function SwapKit<
       return plugin.swap({ ...rest, route });
     }
 
-    throw new SwapKitError("core_plugin_swap_not_found");
+    throw new USwapError("core_plugin_swap_not_found");
   }
 
   function transfer({ assetValue, ...params }: GenericTransferParams | EVMTransferParams) {
     const chain = assetValue.chain;
     if ([Chain.Radix].includes(chain) || !getWalletByChain(chain)) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
     const wallet = getWalletByChain(chain as Exclude<Chain, typeof Chain.Radix | typeof Chain.Near>);
 
@@ -274,13 +274,13 @@ export function SwapKit<
 
   function signMessage({ chain, message }: { chain: Chain; message: string }) {
     const wallet = getWalletByChain(chain);
-    if (!wallet) throw new SwapKitError("core_wallet_connection_not_found");
+    if (!wallet) throw new USwapError("core_wallet_connection_not_found");
 
     if ("signMessage" in wallet) {
       return wallet.signMessage?.(message);
     }
 
-    throw new SwapKitError({
+    throw new USwapError({
       errorKey: "core_wallet_sign_message_not_supported",
       info: { chain, wallet: wallet.walletType },
     });
@@ -298,7 +298,7 @@ export function SwapKit<
     address: string;
   }) {
     if (chain !== Chain.THORChain) {
-      throw new SwapKitError({ errorKey: "core_verify_message_not_supported", info: { chain } });
+      throw new USwapError({ errorKey: "core_verify_message_not_supported", info: { chain } });
     }
 
     const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
@@ -319,7 +319,7 @@ export function SwapKit<
     const { assetValue } = params;
     const { chain } = assetValue;
 
-    if (!getWalletByChain(chain as Chain)) throw new SwapKitError("core_wallet_connection_not_found");
+    if (!getWalletByChain(chain as Chain)) throw new USwapError("core_wallet_connection_not_found");
 
     const baseValue = AssetValue.from({ chain });
     const { match } = await import("ts-pattern");

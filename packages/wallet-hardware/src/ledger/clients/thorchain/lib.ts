@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type Transport from "@ledgerhq/hw-transport";
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 /** ******************************************************************************
  *  (c) 2019 ZondaX GmbH
  *  (c) 2016-2017 Ledger
@@ -43,7 +49,7 @@ export class THORChainApp {
 
   constructor(transport: any) {
     if (!transport) {
-      throw new SwapKitError("wallet_ledger_transport_not_defined");
+      throw new USwapError("wallet_ledger_transport_not_defined");
     }
 
     this.transport = transport;
@@ -51,7 +57,7 @@ export class THORChainApp {
 
   static serializeHRP(hrp: string) {
     if (hrp == null || hrp.length < 3 || hrp.length > 83) {
-      throw new SwapKitError("wallet_ledger_invalid_params", { reason: "Invalid HRP" });
+      throw new USwapError("wallet_ledger_invalid_params", { reason: "Invalid HRP" });
     }
     const buf = Buffer.alloc(1 + hrp.length);
     buf.writeUInt8(hrp.length, 0);

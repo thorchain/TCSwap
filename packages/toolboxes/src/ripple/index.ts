@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   AssetValue,
   Chain,
@@ -5,8 +11,8 @@ import {
   type GenericTransferParams,
   getChainConfig,
   getRPCUrl,
-  SwapKitError,
   SwapKitNumber,
+  USwapError,
 } from "@uswap/helpers";
 import type { Transaction } from "xrpl";
 import { Client, isValidAddress, type Payment, Wallet, xrpToDrops } from "xrpl";
@@ -47,7 +53,7 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
 
   const rpcUrl = await getRPCUrl(Chain.Ripple);
   if (!rpcUrl) {
-    throw new SwapKitError({ errorKey: "toolbox_ripple_rpc_not_configured", info: { chain: Chain.Ripple } });
+    throw new USwapError({ errorKey: "toolbox_ripple_rpc_not_configured", info: { chain: Chain.Ripple } });
   }
 
   const client = new Client(rpcUrl);
@@ -55,7 +61,7 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
 
   const getAddress = () => {
     if (!signer) {
-      throw new SwapKitError({ errorKey: "toolbox_ripple_signer_not_found" });
+      throw new USwapError({ errorKey: "toolbox_ripple_signer_not_found" });
     }
     return signer.getAddress();
   };
@@ -75,7 +81,7 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
       if ((error as any).data.error_code === RIPPLE_ERROR_CODES.ACCOUNT_NOT_FOUND) {
         return [AssetValue.from({ chain: Chain.Ripple, value: 0 })];
       }
-      throw new SwapKitError("toolbox_ripple_get_balance_error", { info: { address: addr, error } });
+      throw new USwapError("toolbox_ripple_get_balance_error", { info: { address: addr, error } });
     }
   };
 
@@ -104,16 +110,13 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
     memo?: string;
   }) => {
     if (!rippleValidateAddress(recipient)) {
-      throw new SwapKitError({ errorKey: "core_transaction_invalid_recipient_address" });
+      throw new USwapError({ errorKey: "core_transaction_invalid_recipient_address" });
     }
 
     const senderAddress = sender || (await getAddress());
 
     if (!assetValue.isGasAsset || assetValue.chain !== Chain.Ripple) {
-      throw new SwapKitError({
-        errorKey: "toolbox_ripple_asset_not_supported",
-        info: { asset: assetValue.toString() },
-      });
+      throw new USwapError({ errorKey: "toolbox_ripple_asset_not_supported", info: { asset: assetValue.toString() } });
     }
 
     const transaction: Payment = {
@@ -133,7 +136,7 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
 
   const signTransaction = (tx: Transaction) => {
     if (!signer) {
-      throw new SwapKitError({ errorKey: "toolbox_ripple_signer_not_found" });
+      throw new USwapError({ errorKey: "toolbox_ripple_signer_not_found" });
     }
     return signer.signTransaction(tx);
   };
@@ -146,12 +149,12 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
       return result.hash;
     }
 
-    throw new SwapKitError({ errorKey: "toolbox_ripple_broadcast_error", info: { chain: Chain.Ripple } });
+    throw new USwapError({ errorKey: "toolbox_ripple_broadcast_error", info: { chain: Chain.Ripple } });
   };
 
   const transfer = async (params: GenericTransferParams) => {
     if (!signer) {
-      throw new SwapKitError({ errorKey: "toolbox_ripple_signer_not_found" });
+      throw new USwapError({ errorKey: "toolbox_ripple_signer_not_found" });
     }
     const sender = await signer.getAddress();
     const tx = await createTransaction({ ...params, sender });

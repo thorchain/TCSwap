@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Chain, DerivationPathArray } from "@uswap/helpers";
-import { SwapKitError, WalletOption } from "@uswap/helpers";
+import { USwapError, WalletOption } from "@uswap/helpers";
 import type { JsonRpcProvider, Provider, Signer, TypedDataDomain, TypedDataField } from "ethers";
 
 type OneKeyEVMSignerParams = {
@@ -28,7 +34,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
 
     connect(provider: null | Provider): Signer {
       if (!provider) {
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_provider_not_found",
           info: { chain: this.chain, wallet: WalletOption.ONEKEY },
         });
@@ -43,7 +49,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
       value: Record<string, any>,
     ): Promise<string> {
       if (!window.$onekey?.ethereum) {
-        throw new SwapKitError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
+        throw new USwapError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
       }
 
       return this.getAddress().then(async (_address) => {
@@ -51,7 +57,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
           const signer = await new BrowserProvider(window.$onekey.ethereum).getSigner();
           return signer.signTypedData(domain, types, value);
         } catch (error) {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "core_wallet_sign_message_not_supported",
             info: { error, wallet: WalletOption.ONEKEY },
           });
@@ -63,7 +69,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
       if (this.address) return this.address;
 
       if (!window.$onekey?.ethereum) {
-        throw new SwapKitError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
+        throw new USwapError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
       }
 
       const signer = await new BrowserProvider(window.$onekey.ethereum).getSigner();
@@ -73,7 +79,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
 
     signMessage = async (message: string) => {
       if (!window.$onekey?.ethereum) {
-        throw new SwapKitError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
+        throw new USwapError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
       }
 
       const signer = await new BrowserProvider(window.$onekey.ethereum).getSigner();
@@ -82,14 +88,14 @@ export async function getEVMSigner({ chain, derivationPath, provider }: OneKeyEV
 
     signTransaction = async (transaction: any) => {
       if (!window.$onekey?.ethereum) {
-        throw new SwapKitError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
+        throw new USwapError({ errorKey: "wallet_onekey_not_found", info: { chain: this.chain } });
       }
 
       const signer = await new BrowserProvider(window.$onekey.ethereum).getSigner();
       const { to, value, gasLimit, gasPrice, data, maxFeePerGas, maxPriorityFeePerGas } = transaction;
 
-      if (!to) throw new SwapKitError("toolbox_evm_no_to_address");
-      if (!gasLimit) throw new SwapKitError("toolbox_evm_no_gas_price");
+      if (!to) throw new USwapError("toolbox_evm_no_to_address");
+      if (!gasLimit) throw new USwapError("toolbox_evm_no_gas_price");
 
       const tx: any = { data, gasLimit, to };
 

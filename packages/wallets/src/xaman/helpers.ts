@@ -1,4 +1,10 @@
-import { type AssetValue, Chain, SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { type AssetValue, Chain, USwapError } from "@uswap/helpers";
 import type { Xumm } from "xumm";
 import { sendXamanTransaction } from "./walletMethods";
 
@@ -30,7 +36,7 @@ export async function getWalletForChain({ xumm, chain, address }: GetWalletForCh
 
         // If not successful or no transaction ID, throw error
         if (!(paymentResult.result.success && paymentResult.result.transactionId)) {
-          throw new SwapKitError("wallet_xaman_transaction_failed");
+          throw new USwapError("wallet_xaman_transaction_failed");
         }
 
         // Return the transaction ID string
@@ -49,6 +55,6 @@ export async function getWalletForChain({ xumm, chain, address }: GetWalletForCh
     }
 
     default:
-      throw new SwapKitError("wallet_chain_not_supported", { chain, wallet: "Xaman" });
+      throw new USwapError("wallet_chain_not_supported", { chain, wallet: "Xaman" });
   }
 }

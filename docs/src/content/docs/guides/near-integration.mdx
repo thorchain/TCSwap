@@ -316,14 +316,14 @@ NEAR operations can throw specific errors that should be handled:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from "@uswap/sdk";
+import { USwapError } from "@uswap/sdk";
 
 try {
   await toolbox.transfer({
     /* ... */
   });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     switch (error.code) {
       case "toolbox_near_no_signer":
         console.error("No signer available");

@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Wallet } from "@passkeys/core";
 import {
   Chain,
@@ -5,8 +11,8 @@ import {
   filterSupportedChains,
   prepareNetworkSwitch,
   SKConfig,
-  SwapKitError,
   switchEVMWalletNetwork,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import type { SolanaProvider } from "@uswap/toolboxes/solana";
@@ -40,7 +46,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
       const provider = await wallet.getProvider("bitcoin");
 
       if (!provider) {
-        throw new SwapKitError("wallet_passkeys_not_found");
+        throw new USwapError("wallet_passkeys_not_found");
       }
 
       let address = "";
@@ -50,10 +56,10 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
       const getAddressOptions: GetAddressOptions = {
         getProvider,
         onCancel: () => {
-          throw new SwapKitError("wallet_passkeys_request_canceled");
+          throw new USwapError("wallet_passkeys_request_canceled");
         },
         onFinish: (response: GetAddressResponse) => {
-          if (!response.addresses[0]) throw new SwapKitError("wallet_passkeys_no_address");
+          if (!response.addresses[0]) throw new USwapError("wallet_passkeys_no_address");
           address = response.addresses[0].address;
         },
         payload: {
@@ -71,7 +77,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
         const signPsbtOptions: SignTransactionOptions = {
           getProvider,
           onCancel: () => {
-            throw new SwapKitError("wallet_passkeys_signature_canceled");
+            throw new USwapError("wallet_passkeys_signature_canceled");
           },
           onFinish: (response) => {
             signedPsbt = Psbt.fromBase64(response.psbtBase64);
@@ -86,7 +92,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
         };
 
         await satsSignTransaction(signPsbtOptions);
-        if (!signedPsbt) throw new SwapKitError("wallet_passkeys_sign_transaction_error");
+        if (!signedPsbt) throw new USwapError("wallet_passkeys_sign_transaction_error");
         return signedPsbt;
       }
 
@@ -101,7 +107,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
 
       const walletProvider = await wallet.getProvider("ethereum");
       if (!walletProvider) {
-        throw new SwapKitError("wallet_passkeys_not_found");
+        throw new USwapError("wallet_passkeys_not_found");
       }
 
       const jsonRpcProvider = await getProvider(chain);
@@ -119,7 +125,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
           await switchEVMWalletNetwork(browserProvider, chain, networkParams);
         }
       } catch {
-        throw new SwapKitError("wallet_passkeys_failed_to_switch_network", { chain });
+        throw new USwapError("wallet_passkeys_failed_to_switch_network", { chain });
       }
 
       return { ...prepareNetworkSwitch({ chain, provider: browserProvider, toolbox }), address };
@@ -138,7 +144,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
       return { ...toolbox, address, disconnect };
     })
     .otherwise((chain) => {
-      throw new SwapKitError("wallet_passkeys_chain_not_supported", { chain });
+      throw new USwapError("wallet_passkeys_chain_not_supported", { chain });
     });
 }
 
@@ -147,7 +153,7 @@ export const passkeysWallet = createWallet({
     async function connectPasskeys(chains: Chain[], paramWallet?: Wallet) {
       const wallet = paramWallet || (await getPasskeyWallet());
 
-      if (!wallet) throw new SwapKitError("wallet_passkeys_instance_missing");
+      if (!wallet) throw new USwapError("wallet_passkeys_instance_missing");
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
 
       await Promise.all(

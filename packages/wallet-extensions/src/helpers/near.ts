@@ -1,8 +1,14 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 //TBD @towan to be moved somewhere else
 
 import type { Account } from "@near-js/accounts";
 import { type Action, SignedTransaction, type Transaction } from "@near-js/transactions";
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 import type { NearSigner } from "@uswap/toolboxes/near";
 
 /**
@@ -54,10 +60,10 @@ export async function createNearSignerFromProvider(provider: NearBrowserWalletPr
         if (Array.isArray(result) && result.length > 0 && result[0]) {
           return typeof result[0] === "string" ? result[0] : result[0].accountId;
         }
-        throw new SwapKitError("wallet_connection_rejected_by_user", { wallet: walletName });
+        throw new USwapError("wallet_connection_rejected_by_user", { wallet: walletName });
       }
 
-      throw new SwapKitError("wallet_connection_rejected_by_user", { wallet: walletName });
+      throw new USwapError("wallet_connection_rejected_by_user", { wallet: walletName });
     },
     async getPublicKey() {
       const { PublicKey } = await import("@near-js/crypto");
@@ -67,13 +73,13 @@ export async function createNearSignerFromProvider(provider: NearBrowserWalletPr
         return PublicKey.from(pubKey);
       }
 
-      throw new SwapKitError("wallet_ledger_method_not_supported", { method: "getPublicKey", wallet: walletName });
+      throw new USwapError("wallet_ledger_method_not_supported", { method: "getPublicKey", wallet: walletName });
     },
 
     signDelegateAction(_delegateAction: any) {
       // Most browser wallets don't support delegate actions yet
       return Promise.reject(
-        new SwapKitError("wallet_ledger_method_not_supported", { method: "signDelegateAction", wallet: walletName }),
+        new USwapError("wallet_ledger_method_not_supported", { method: "signDelegateAction", wallet: walletName }),
       );
     },
 
@@ -85,10 +91,7 @@ export async function createNearSignerFromProvider(provider: NearBrowserWalletPr
       callbackUrl?: string,
     ) {
       if (!provider.signMessage) {
-        throw new SwapKitError("wallet_ledger_method_not_supported", {
-          method: "signNep413Message",
-          wallet: walletName,
-        });
+        throw new USwapError("wallet_ledger_method_not_supported", { method: "signNep413Message", wallet: walletName });
       }
 
       const result = await (provider as Required<Pick<NearBrowserWalletProvider, "signMessage">>).signMessage({
@@ -103,7 +106,7 @@ export async function createNearSignerFromProvider(provider: NearBrowserWalletPr
 
     async signTransaction(transaction: Transaction) {
       if (!provider.request) {
-        throw new SwapKitError("wallet_near_method_not_supported", { method: "request", wallet: walletName });
+        throw new USwapError("wallet_near_method_not_supported", { method: "request", wallet: walletName });
       }
 
       const mappedTransaction = {

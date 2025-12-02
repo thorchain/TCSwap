@@ -1,4 +1,10 @@
-import { SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { USwapError } from "@uswap/helpers";
 import { opcodes, script } from "bitcoinjs-lib";
 import type { TargetOutput, UTXOCalculateTxSizeParams, UTXOInputWithScriptType, UTXOType } from "../types";
 
@@ -99,7 +105,7 @@ export const getScriptTypeForAddress = (address: string) => {
     return UTXOScriptType.P2PKH;
   }
 
-  throw new SwapKitError("toolbox_utxo_invalid_address", { address });
+  throw new USwapError("toolbox_utxo_invalid_address", { address });
 };
 
 export const calculateTxSize = ({ inputs, outputs, feeRate }: UTXOCalculateTxSizeParams) => {

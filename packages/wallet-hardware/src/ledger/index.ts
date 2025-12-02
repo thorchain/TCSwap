@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   Chain,
   type DerivationPathArray,
@@ -5,8 +11,8 @@ import {
   filterSupportedChains,
   type GenericTransferParams,
   getRPCUrl,
-  SwapKitError,
   THORConfig,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import type { ThorchainDepositParams } from "@uswap/toolboxes/cosmos";
@@ -155,7 +161,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
       const address = await getLedgerAddress({ chain, ledgerClient: signer });
 
       const transfer = async ({ assetValue, recipient, memo }: GenericTransferParams) => {
-        if (!assetValue) throw new SwapKitError("wallet_ledger_invalid_asset");
+        if (!assetValue) throw new USwapError("wallet_ledger_invalid_asset");
 
         const sendCoinsMessage = {
           amount: [
@@ -213,9 +219,9 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
         ...rest
       }: GenericTransferParams | ThorchainDepositParams) => {
         const account = await toolbox.getAccount(address);
-        if (!account) throw new SwapKitError("wallet_ledger_invalid_account");
-        if (!assetValue) throw new SwapKitError("wallet_ledger_invalid_asset");
-        if (!value) throw new SwapKitError("wallet_ledger_pubkey_not_found");
+        if (!account) throw new USwapError("wallet_ledger_invalid_account");
+        if (!assetValue) throw new USwapError("wallet_ledger_invalid_asset");
+        if (!value) throw new USwapError("wallet_ledger_pubkey_not_found");
 
         const { accountNumber, sequence: sequenceNumber } = account;
         const sequence = (sequenceNumber || 0).toString();
@@ -233,7 +239,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
         });
 
         const signatures = await signTransaction(rawSendTx, sequence);
-        if (!signatures) throw new SwapKitError("wallet_ledger_signing_error");
+        if (!signatures) throw new USwapError("wallet_ledger_signing_error");
 
         const pubkey = encodePubkey({ type: "tendermint/PubKeySecp256k1", value });
         const msgs = orderedMessages.map(parseAminoMessageForDirectSigning);
@@ -294,6 +300,6 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     }
 
     default:
-      throw new SwapKitError("wallet_ledger_chain_not_supported", { chain });
+      throw new USwapError("wallet_ledger_chain_not_supported", { chain });
   }
 }

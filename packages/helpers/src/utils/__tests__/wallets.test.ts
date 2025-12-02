@@ -1,8 +1,14 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 // @ts-nocheck - Test file with intentional mocking of browser globals and ethers types
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { Chain } from "@uswap/types";
 
-import { SwapKitError } from "../../modules/swapKitError";
+import { USwapError } from "../../modules/uSwapError";
 import { WalletOption } from "../../types";
 import {
   addAccountsChangedCallback,
@@ -266,11 +272,11 @@ describe("wallets", () => {
 
   describe("providerRequest", () => {
     test("throws error when provider is undefined", () => {
-      expect(() => providerRequest({ method: "eth_requestAccounts" })).toThrow(SwapKitError);
+      expect(() => providerRequest({ method: "eth_requestAccounts" })).toThrow(USwapError);
     });
 
     test("throws error when provider.send is undefined", () => {
-      expect(() => providerRequest({ method: "eth_requestAccounts", provider: {} })).toThrow(SwapKitError);
+      expect(() => providerRequest({ method: "eth_requestAccounts", provider: {} })).toThrow(USwapError);
     });
 
     test("calls provider.send with method and empty params when no params provided", () => {
@@ -351,7 +357,7 @@ describe("wallets", () => {
       const mockSend = mock(() => Promise.reject(new Error("Chain not found")));
       const provider = createMockBrowserProvider({ send: mockSend });
 
-      await expect(switchEVMWalletNetwork(provider, Chain.Ethereum)).rejects.toThrow(SwapKitError);
+      await expect(switchEVMWalletNetwork(provider, Chain.Ethereum)).rejects.toThrow(USwapError);
     });
   });
 
@@ -372,11 +378,11 @@ describe("wallets", () => {
           supportedChains: [Chain.Ethereum],
           walletType: WalletOption.METAMASK,
         }),
-      ).toThrow(SwapKitError);
+      ).toThrow(USwapError);
     });
 
     test("handles empty chains array", () => {
-      expect(() => filterSupportedChains({ chains: [], supportedChains: [Chain.Ethereum] })).toThrow(SwapKitError);
+      expect(() => filterSupportedChains({ chains: [], supportedChains: [Chain.Ethereum] })).toThrow(USwapError);
     });
 
     test("warns about unsupported chains but returns supported ones", () => {
@@ -427,7 +433,7 @@ describe("wallets", () => {
       expect(originalFunc).toHaveBeenCalled();
     });
 
-    test("throws SwapKitError when network switch fails", async () => {
+    test("throws USwapError when network switch fails", async () => {
       const originalFunc = mock(() => Promise.resolve("result"));
       const mockChainId = { toString: () => "0x89" }; // Different from Ethereum
       const provider = createMockBrowserProvider({
@@ -437,7 +443,7 @@ describe("wallets", () => {
 
       const wrapped = wrapMethodWithNetworkSwitch(originalFunc, provider, Chain.Ethereum);
 
-      await expect(wrapped()).rejects.toThrow(SwapKitError);
+      await expect(wrapped()).rejects.toThrow(USwapError);
     });
 
     test("preserves function return value after network switch", async () => {

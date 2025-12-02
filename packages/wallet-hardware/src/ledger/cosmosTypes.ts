@@ -1,4 +1,10 @@
-import { SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { USwapError } from "@uswap/helpers";
 
 export interface Coin {
   readonly denom: string;
@@ -59,12 +65,12 @@ export class AminoTypes {
   toAmino({ typeUrl, value }: EncodeObject): AminoMsg {
     const converter = this.register[typeUrl];
     if (converter === "not_supported_by_chain") {
-      throw new SwapKitError("wallet_ledger_chain_not_supported", {
+      throw new USwapError("wallet_ledger_chain_not_supported", {
         reason: `The message type '${typeUrl}' cannot be signed using the Amino JSON sign mode because this is not supported by chain.`,
       });
     }
     if (!converter) {
-      throw new SwapKitError("wallet_ledger_invalid_params", {
+      throw new USwapError("wallet_ledger_invalid_params", {
         reason: `Type URL '${typeUrl}' does not exist in the Amino message type register.`,
       });
     }
@@ -77,13 +83,13 @@ export class AminoTypes {
       .filter(([_typeUrl, { aminoType }]) => aminoType === type);
 
     if (matches.length === 0) {
-      throw new SwapKitError("wallet_ledger_invalid_params", {
+      throw new USwapError("wallet_ledger_invalid_params", {
         reason: `Amino type identifier '${type}' does not exist in the Amino message type register.`,
       });
     }
 
     if (matches.length > 1) {
-      throw new SwapKitError("wallet_ledger_invalid_params", {
+      throw new USwapError("wallet_ledger_invalid_params", {
         reason: `Multiple types are registered with Amino type identifier '${type}': '${matches
           .map(([key, _value]) => key)
           .sort()

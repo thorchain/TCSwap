@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { ZcashPsbt } from "@bitgo/utxo-lib/dist/src/bitgo";
 import {
   Chain,
@@ -7,7 +13,7 @@ import {
   filterSupportedChains,
   type GenericTransferParams,
   SKConfig,
-  SwapKitError,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import type { UTXOToolboxes, UTXOType } from "@uswap/toolboxes/utxo";
@@ -67,7 +73,7 @@ async function getTrezorWallet<T extends Chain>({
         const { success, payload } = await TrezorConnect.getAddress({ coin: "zcash", path: derivationPathStr });
 
         if (!success) {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_trezor_failed_to_get_address",
             info: { chain, error: (payload as { error: string; code?: string }).error || "Unknown error" },
           });
@@ -138,7 +144,7 @@ async function getTrezorWallet<T extends Chain>({
             return result.payload.serializedTx;
           }
 
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_trezor_failed_to_sign_transaction",
             info: { chain, error: (result.payload as { error: string; code?: string }).error },
           });
@@ -149,7 +155,7 @@ async function getTrezorWallet<T extends Chain>({
 
       const transfer = async (params: GenericTransferParams) => {
         if (!(address && params.recipient)) {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_missing_params",
             info: { address, recipient: params.recipient, wallet: WalletOption.TREZOR },
           });
@@ -177,7 +183,7 @@ async function getTrezorWallet<T extends Chain>({
       const scriptType = getScriptType(derivationPath);
 
       if (!scriptType) {
-        throw new SwapKitError({ errorKey: "wallet_trezor_derivation_path_not_supported", info: { derivationPath } });
+        throw new USwapError({ errorKey: "wallet_trezor_derivation_path_not_supported", info: { derivationPath } });
       }
 
       const coin = chain.toLowerCase();
@@ -187,7 +193,7 @@ async function getTrezorWallet<T extends Chain>({
         const { success, payload } = await TrezorConnect.getAddress({ coin, path: derivationPathToString(path) });
 
         if (!success) {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_trezor_failed_to_get_address",
             info: { chain, error: (payload as { error: string; code?: string }).error || "Unknown error" },
           });
@@ -241,7 +247,7 @@ async function getTrezorWallet<T extends Chain>({
           return result.payload.serializedTx;
         }
 
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_trezor_failed_to_sign_transaction",
           info: { chain, error: (result.payload as { error: string; code?: string }).error },
         });
@@ -255,7 +261,7 @@ async function getTrezorWallet<T extends Chain>({
         ...rest
       }: GenericTransferParams) => {
         if (!(address && recipient)) {
-          throw new SwapKitError({
+          throw new USwapError({
             errorKey: "wallet_missing_params",
             info: { address, memo, recipient, wallet: WalletOption.TREZOR },
           });
@@ -291,7 +297,7 @@ async function getTrezorWallet<T extends Chain>({
     }
 
     default:
-      throw new SwapKitError({ errorKey: "wallet_chain_not_supported", info: { chain, wallet: WalletOption.TREZOR } });
+      throw new USwapError({ errorKey: "wallet_chain_not_supported", info: { chain, wallet: WalletOption.TREZOR } });
   }
 }
 
@@ -300,10 +306,7 @@ export const trezorWallet = createWallet({
     async function connectTrezor(chains: Chain[], derivationPath: DerivationPathArray) {
       const [chain] = filterSupportedChains({ chains, supportedChains, walletType });
       if (!chain) {
-        throw new SwapKitError({
-          errorKey: "wallet_chain_not_supported",
-          info: { chain, wallet: WalletOption.TREZOR },
-        });
+        throw new USwapError({ errorKey: "wallet_chain_not_supported", info: { chain, wallet: WalletOption.TREZOR } });
       }
 
       const TrezorConnect = (await import("@trezor/connect-web")).default;

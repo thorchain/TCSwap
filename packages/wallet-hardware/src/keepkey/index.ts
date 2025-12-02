@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { KeepKeySdk } from "@keepkey/keepkey-sdk";
 import {
   Chain,
@@ -5,7 +11,7 @@ import {
   filterSupportedChains,
   NetworkDerivationPath,
   SKConfig,
-  SwapKitError,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 
@@ -126,7 +132,7 @@ async function getWalletMethods({
       return rippleWalletMethods({ derivationPath, sdk });
     }
     default:
-      throw new SwapKitError("wallet_keepkey_chain_not_supported", { chain });
+      throw new USwapError("wallet_keepkey_chain_not_supported", { chain });
   }
 }
 

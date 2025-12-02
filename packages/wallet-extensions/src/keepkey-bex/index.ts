@@ -1,4 +1,10 @@
-import { AssetValue, Chain, ChainId, filterSupportedChains, SwapKitError, WalletOption } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { AssetValue, Chain, ChainId, filterSupportedChains, USwapError, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 import type { Eip1193Provider } from "ethers";
 import {
@@ -75,11 +81,11 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
 
       // @ts-expect-error assumed available connection
       const signer = window.keepkey?.cosmos?.getOfflineSignerOnlyAmino(ChainId[chain]);
-      if (!signer) throw new SwapKitError("wallet_keepkey_signer_not_found");
+      if (!signer) throw new USwapError("wallet_keepkey_signer_not_found");
       const toolbox = await getCosmosToolbox(chain, { signer });
 
       const accounts = await signer.getAccounts();
-      if (!accounts?.[0]?.address) throw new SwapKitError("wallet_keepkey_no_accounts");
+      if (!accounts?.[0]?.address) throw new USwapError("wallet_keepkey_no_accounts");
 
       const [{ address }] = accounts;
 
@@ -118,7 +124,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
       const ethereumWindowProvider = getKEEPKEYProvider(chain) as Eip1193Provider;
 
       if (!ethereumWindowProvider) {
-        throw new SwapKitError("wallet_keepkey_not_found");
+        throw new USwapError("wallet_keepkey_not_found");
       }
 
       const provider = new BrowserProvider(ethereumWindowProvider, "any");
@@ -132,7 +138,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
           await switchEVMWalletNetwork(provider, chain, networkParams);
         }
       } catch {
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_failed_to_add_or_switch_network",
           info: { chain, wallet: WalletOption.KEEPKEY },
         });

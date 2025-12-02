@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { TokenListName, TokenNames, TokenTax } from "@uswap/tokens";
 import { AllChains, Chain, type ChainId, type EVMChain, EVMChains, getChainConfig } from "@uswap/types";
 import { getAddress } from "ethers";
@@ -15,8 +21,8 @@ import { validateIdentifier } from "../utils/validators";
 
 import type { NumberPrimitives } from "./bigIntArithmetics";
 import { BigIntArithmetics, formatBigIntToSafeValue } from "./bigIntArithmetics";
-import { SwapKitError } from "./swapKitError";
 import type { SwapKitValueType } from "./swapKitNumber";
+import { USwapError } from "./uSwapError";
 
 const CASE_SENSITIVE_CHAINS: Chain[] = [Chain.Solana, Chain.Tron, Chain.Near, Chain.Sui];
 const TC_CHAINS: Chain[] = [Chain.THORChain, Chain.Maya];
@@ -141,7 +147,7 @@ export class AssetValue extends BigIntArithmetics {
     const firstDotIndex = urlAsset.indexOf(".");
 
     if (firstDotIndex === -1) {
-      throw new SwapKitError({ errorKey: "helpers_invalid_asset_url", info: { urlAsset } });
+      throw new USwapError({ errorKey: "helpers_invalid_asset_url", info: { urlAsset } });
     }
 
     const chain = urlAsset.slice(0, firstDotIndex);
@@ -375,7 +381,7 @@ function createSyntheticAssetValue(identifier: string, value: NumberPrimitives =
     : identifier.split(assetSeparator);
 
   if (!(synthChain && symbol)) {
-    throw new SwapKitError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
+    throw new USwapError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
   }
 
   return new AssetValue({
@@ -418,7 +424,7 @@ function validateAssetChain(assetOrChain: AssetIdentifier) {
 
   // TODO: move to SKConfig chains once we support it throughout sdk
   if (!AllChains.includes(chain.toUpperCase() as Chain)) {
-    throw new SwapKitError({
+    throw new USwapError({
       errorKey: "helpers_invalid_asset_identifier",
       info: { message: "Please use the AssetValue constructor for unsupported chains" },
     });
@@ -461,7 +467,7 @@ function getSyntheticOrTradeAssetInfo(identifier: string, isSynthetic: boolean, 
     : identifier.split(assetSeparator);
 
   if (!(synthChain && synthSymbol)) {
-    throw new SwapKitError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
+    throw new USwapError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
   }
 
   // Get the ticker from the base symbol (e.g., "AVAX" from "AVAX/AVAX")

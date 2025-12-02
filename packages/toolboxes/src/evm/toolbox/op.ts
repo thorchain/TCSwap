@@ -1,4 +1,10 @@
-import { applyFeeMultiplierToBigInt, Chain, FeeOption, getRPCUrl, SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { applyFeeMultiplierToBigInt, Chain, FeeOption, getRPCUrl, USwapError } from "@uswap/helpers";
 import type { Authorization, BrowserProvider, JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 import { Contract, HDNodeWallet } from "ethers";
 import { match, P } from "ts-pattern";
@@ -30,7 +36,7 @@ function serializeTx<P extends JsonRpcProvider | BrowserProvider>(provider: P) {
   return async function serializeTx({ from, to, nonce, ...tx }: TransactionRequest) {
     const { Transaction } = await import("ethers");
 
-    if (!to) throw new SwapKitError("toolbox_evm_invalid_transaction", { error: "Missing to address" });
+    if (!to) throw new USwapError("toolbox_evm_invalid_transaction", { error: "Missing to address" });
 
     return Transaction.from({
       ...tx,
@@ -86,7 +92,7 @@ async function estimateGasPrices(provider: Provider) {
     const price = gasPrice as bigint;
 
     if (!(maxFeePerGas && maxPriorityFeePerGas)) {
-      throw new SwapKitError("toolbox_evm_no_fee_data");
+      throw new USwapError("toolbox_evm_no_fee_data");
     }
 
     return {
@@ -112,7 +118,7 @@ async function estimateGasPrices(provider: Provider) {
       };
     };
   } catch (error) {
-    throw new SwapKitError("toolbox_evm_gas_estimation_error", {
+    throw new USwapError("toolbox_evm_gas_estimation_error", {
       error: (error as any).msg ?? (error as any).toString(),
     });
   }

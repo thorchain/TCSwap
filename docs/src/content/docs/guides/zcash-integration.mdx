@@ -380,7 +380,7 @@ console.log("Testnet address:", testnetAddress);
 ### Common Error Patterns
 
 ```ts twoslash
-import { AssetValue, Chain, SwapKitError, getUtxoToolbox } from "@uswap/sdk";
+import { AssetValue, Chain, USwapError, getUtxoToolbox } from "@uswap/sdk";
 
 async function handleZcashErrors() {
   const zcashToolbox = await getUtxoToolbox(Chain.Zcash, {
@@ -395,7 +395,7 @@ async function handleZcashErrors() {
 
     return txHash;
   } catch (error) {
-    if (error instanceof SwapKitError) {
+    if (error instanceof USwapError) {
       switch (error.errorKey) {
         case "toolbox_utxo_insufficient_balance":
           console.error("Insufficient balance for transaction");

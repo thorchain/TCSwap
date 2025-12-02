@@ -731,12 +731,12 @@ All API methods can throw errors that should be handled:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitError } from '@uswap/sdk';
+import { USwapError } from '@uswap/sdk';
 
 try {
   const quote = await SwapKitApi.getSwapQuote({...});
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
 
     console.error('API Error:', error.message);
 

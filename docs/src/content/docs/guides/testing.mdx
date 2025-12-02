@@ -187,20 +187,20 @@ Test error creation and handling:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitError } from "@uswap/helpers";
+import { USwapError } from "@uswap/helpers";
 
-describe("SwapKitError", () => {
+describe("USwapError", () => {
   test("should create error with string key", () => {
-    const error = new SwapKitError("core_wallet_connection_not_found");
+    const error = new USwapError("core_wallet_connection_not_found");
 
-    expect(error).toBeInstanceOf(SwapKitError);
-    expect(error.name).toBe("SwapKitError");
+    expect(error).toBeInstanceOf(USwapError);
+    expect(error.name).toBe("USwapError");
     expect(error.message).toBe("core_wallet_connection_not_found");
   });
 
   test("should create error with additional info", () => {
     const errorInfo = { chainId: 1, address: "0x123..." };
-    const error = new SwapKitError({
+    const error = new USwapError({
       errorKey: "wallet_evm_extensions_failed_to_switch_network",
       info: errorInfo,
     });
@@ -213,15 +213,15 @@ describe("SwapKitError", () => {
 
   test("should preserve cause", () => {
     const originalError = new Error("Network timeout");
-    const swapKitError = new SwapKitError("api_v2_server_error", originalError);
+    const uSwapError = new USwapError("api_v2_server_error", originalError);
 
-    expect(swapKitError.cause).toBe(originalError);
+    expect(uSwapError.cause).toBe(originalError);
   });
 
   test("should have correct error codes", () => {
-    expect(SwapKitError.ErrorCode.core_wallet_connection_not_found).toBe(10101);
-    expect(SwapKitError.ErrorCode.wallet_ledger_device_not_found).toBe(20104);
-    expect(SwapKitError.ErrorCode.api_v2_server_error).toBe(60002);
+    expect(USwapError.ErrorCode.core_wallet_connection_not_found).toBe(10101);
+    expect(USwapError.ErrorCode.wallet_ledger_device_not_found).toBe(20104);
+    expect(USwapError.ErrorCode.api_v2_server_error).toBe(60002);
   });
 });
 ```
@@ -834,7 +834,7 @@ Create reusable test utilities:
 ```typescript
 // @noErrorValidation
 
-import { AssetValue, SwapKitError } from "@uswap/helpers";
+import { AssetValue, USwapError } from "@uswap/helpers";
 import { Chain } from "@uswap/types";
 
 export const testAssets = {
@@ -853,7 +853,7 @@ export const testAddresses = {
 };
 
 export function expectSwapKitError(error: any, expectedKey: string) {
-  expect(error).toBeInstanceOf(SwapKitError);
+  expect(error).toBeInstanceOf(USwapError);
   expect(error.message).toContain(expectedKey);
 }
 

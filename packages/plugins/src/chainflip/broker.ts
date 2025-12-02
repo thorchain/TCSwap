@@ -1,6 +1,12 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { decodeAddress } from "@polkadot/keyring";
 import { isHex, u8aToHex } from "@polkadot/util";
-import { AssetValue, Chain, SwapKitError, wrapWithThrow } from "@uswap/helpers";
+import { AssetValue, Chain, USwapError, wrapWithThrow } from "@uswap/helpers";
 import type { getEvmToolbox } from "@uswap/toolboxes/evm";
 import type { getSubstrateToolbox } from "@uswap/toolboxes/substrate";
 
@@ -25,7 +31,7 @@ const registerAsBroker = (toolbox: ChainflipToolbox) => () => {
   const extrinsic = toolbox.api.tx.swapping?.registerAsBroker?.();
 
   if (!extrinsic) {
-    throw new SwapKitError("chainflip_broker_register");
+    throw new USwapError("chainflip_broker_register");
   }
 
   return toolbox.signAndBroadcast({ address: toolbox.getAddress(), tx: extrinsic });
@@ -46,7 +52,7 @@ const withdrawFee =
       });
 
       if (!extrinsic) {
-        throw new SwapKitError("chainflip_broker_withdraw");
+        throw new USwapError("chainflip_broker_withdraw");
       }
 
       toolbox.signAndBroadcast({
@@ -58,7 +64,7 @@ const withdrawFee =
           const withdrawEvent = result.events.find((event) => event.event.method === "WithdrawalRequested");
 
           if (!withdrawEvent) {
-            throw new SwapKitError("chainflip_channel_error", "Could not find 'WithdrawalRequested' event");
+            throw new USwapError("chainflip_channel_error", "Could not find 'WithdrawalRequested' event");
           }
           const {
             event: {
@@ -88,11 +94,11 @@ const fundStateChainAccount =
     const flipAssetValue = AssetValue.from({ asset: "ETH.FLIP" });
 
     if (!assetValue.eqAsset(flipAssetValue)) {
-      throw new SwapKitError("chainflip_broker_fund_only_flip_supported");
+      throw new USwapError("chainflip_broker_fund_only_flip_supported");
     }
 
     if (!chainflipToolbox.validateAddress(stateChainAccount)) {
-      throw new SwapKitError("chainflip_broker_fund_invalid_address");
+      throw new USwapError("chainflip_broker_fund_invalid_address");
     }
 
     const hexAddress = isHex(stateChainAccount) ? stateChainAccount : u8aToHex(decodeAddress(stateChainAccount));

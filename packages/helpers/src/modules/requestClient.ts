@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { SKConfig } from "./swapKitConfig";
-import { SwapKitError } from "./swapKitError";
+import { USwapError } from "./uSwapError";
 
 type RetryConfig = { maxRetries?: number; baseDelay?: number; maxDelay?: number; backoffMultiplier?: number };
 
@@ -27,7 +33,7 @@ const makeRequest = async (url: string, config: RequestInit) => {
 
   if (!response.ok) {
     const errorData = { status: response.status, statusText: response.statusText };
-    throw new SwapKitError({ errorKey: "helpers_invalid_response", info: errorData }, errorData);
+    throw new USwapError({ errorKey: "helpers_invalid_response", info: errorData }, errorData);
   }
   return response.json();
 };

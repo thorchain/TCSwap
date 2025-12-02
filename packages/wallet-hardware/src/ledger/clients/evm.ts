@@ -1,10 +1,16 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type EthereumApp from "@ledgerhq/hw-app-eth";
 import {
   ChainId,
   type DerivationPathArray,
   derivationPathToString,
   NetworkDerivationPath,
-  SwapKitError,
+  USwapError,
 } from "@uswap/helpers";
 import { AbstractSigner, type Provider, type TransactionRequest } from "ethers";
 
@@ -46,7 +52,7 @@ class EVMLedgerInterface extends AbstractSigner {
 
   getAddress = async () => {
     const response = await this.getAddressAndPubKey();
-    if (!response) throw new SwapKitError("wallet_ledger_failed_to_get_address");
+    if (!response) throw new USwapError("wallet_ledger_failed_to_get_address");
     return response.address;
   };
 
@@ -66,7 +72,7 @@ class EVMLedgerInterface extends AbstractSigner {
 
     const sig = await this.ledgerApp?.signPersonalMessage(this.derivationPath, messageHex);
 
-    if (!sig) throw new SwapKitError("wallet_ledger_signing_error");
+    if (!sig) throw new USwapError("wallet_ledger_signing_error");
 
     sig.r = `0x${sig.r}`;
     sig.s = `0x${sig.s}`;
@@ -74,7 +80,7 @@ class EVMLedgerInterface extends AbstractSigner {
   };
 
   sendTransaction = async (tx: TransactionRequest): Promise<any> => {
-    if (!this.provider) throw new SwapKitError("wallet_ledger_no_provider");
+    if (!this.provider) throw new USwapError("wallet_ledger_no_provider");
 
     const signedTxHex = await this.signTransaction(tx);
 
@@ -82,7 +88,7 @@ class EVMLedgerInterface extends AbstractSigner {
   };
 
   signTypedData(): Promise<string> {
-    throw new SwapKitError("wallet_ledger_method_not_supported", { method: "signTypedData" });
+    throw new USwapError("wallet_ledger_method_not_supported", { method: "signTypedData" });
   }
 
   signTransaction = async (tx: TransactionRequest) => {
@@ -113,7 +119,7 @@ class EVMLedgerInterface extends AbstractSigner {
 
     const signature = await this.ledgerApp?.signTransaction(this.derivationPath, unsignedTx, resolution);
 
-    if (!signature) throw new SwapKitError("wallet_ledger_signing_error");
+    if (!signature) throw new USwapError("wallet_ledger_signing_error");
 
     const { r, s, v } = signature;
 

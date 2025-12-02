@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   type Chain,
   type EVMChain,
@@ -6,7 +12,7 @@ import {
   type ProviderName,
   RequestClient,
   SKConfig,
-  SwapKitError,
+  USwapError,
 } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 import {
@@ -48,12 +54,12 @@ export async function getTrackerDetails(json: TrackingRequest) {
     const parsedResponse = TrackerResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch (_error) {
-    // throw new SwapKitError("api_v2_invalid_response", error);
+    // throw new USwapError("api_v2_invalid_response", error);
     return response;
   }
 }
@@ -66,19 +72,19 @@ export async function getSwapQuote(json: QuoteRequest) {
   const response = await SKRequestClient.post<QuoteResponse>(getApiUrl("/quote"), { json });
 
   if (response.error) {
-    throw new SwapKitError("api_v2_server_error", { message: response.error });
+    throw new USwapError("api_v2_server_error", { message: response.error });
   }
 
   try {
     const parsedResponse = QuoteResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch {
-    // throw new SwapKitError("api_v2_invalid_response", error);
+    // throw new USwapError("api_v2_invalid_response", error);
     return response;
   }
 }
@@ -94,12 +100,12 @@ export async function getRouteWithTx(json: { routeId: string; sourceAddress: str
     const parsedResponse = QuoteResponseRouteItem.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch (error) {
-    console.error(new SwapKitError("api_v2_invalid_response", error));
+    console.error(new USwapError("api_v2_invalid_response", error));
     return response;
   }
 }
@@ -140,12 +146,12 @@ export async function getPrice(body: PriceRequest) {
     const parsedResponse = PriceResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch (error) {
-    throw new SwapKitError("api_v2_invalid_response", error);
+    throw new USwapError("api_v2_invalid_response", error);
   }
 }
 
@@ -157,13 +163,13 @@ export async function getGasRate() {
     const parsedResponse = GasResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     const gasRates = Array.isArray(parsedResponse) ? parsedResponse : [parsedResponse];
     return gasRates;
   } catch (error) {
-    throw new SwapKitError("api_v2_invalid_response", error);
+    throw new USwapError("api_v2_invalid_response", error);
   }
 }
 
@@ -171,7 +177,7 @@ export async function getChainflipDepositChannel(body: BrokerDepositChannelParam
   const { destinationAddress } = body;
 
   if (!destinationAddress) {
-    throw new SwapKitError("chainflip_broker_invalid_params");
+    throw new USwapError("chainflip_broker_invalid_params");
   }
   const url = SKConfig.get("integrations").chainflip?.brokerUrl || getApiUrl("/chainflip/broker/channel");
 
@@ -181,12 +187,12 @@ export async function getChainflipDepositChannel(body: BrokerDepositChannelParam
     const parsedResponse = DepositChannelResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch (error) {
-    throw new SwapKitError("api_v2_invalid_response", error);
+    throw new USwapError("api_v2_invalid_response", error);
   }
 }
 
@@ -194,7 +200,7 @@ export async function getNearDepositChannel(body: NearDepositChannelParams) {
   const { destinationAddress } = body;
 
   if (!destinationAddress) {
-    throw new SwapKitError("chainflip_broker_invalid_params");
+    throw new USwapError("chainflip_broker_invalid_params");
   }
   const url = getApiUrl("/near/channel");
 
@@ -204,12 +210,12 @@ export async function getNearDepositChannel(body: NearDepositChannelParams) {
     const parsedResponse = NearSwapResponseSchema.safeParse(response);
 
     if (!parsedResponse.success) {
-      throw new SwapKitError("api_v2_invalid_response", parsedResponse.error);
+      throw new USwapError("api_v2_invalid_response", parsedResponse.error);
     }
 
     return parsedResponse.data;
   } catch (error) {
-    throw new SwapKitError("api_v2_invalid_response", error);
+    throw new USwapError("api_v2_invalid_response", error);
   }
 }
 

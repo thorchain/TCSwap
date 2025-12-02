@@ -1,11 +1,17 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   loadPlugin,
   loadWallet,
   type PluginName,
   type SKConfigState,
   type SKPlugins,
-  SwapKit,
-  SwapKitError,
+  USwap,
+  USwapError,
   type WalletOption,
 } from "@uswap/sdk";
 
@@ -15,16 +21,16 @@ export async function getSkClient<W extends WalletOption, P extends PluginName[]
 }: {
   walletOption: W;
   pluginNames: P;
-}): Promise<{ client: ReturnType<typeof SwapKit>; connectMethod: string }> {
+}): Promise<{ client: ReturnType<typeof USwap>; connectMethod: string }> {
   const connectedPlugins = await loadPlugins(pluginNames);
   const walletPkg = await loadWallet(walletOption);
   const connectMethod = Object.keys(walletPkg).find((key) => key.startsWith("connect"));
   if (!connectMethod) {
-    throw new SwapKitError("core_wallet_connection_not_found", { walletOption });
+    throw new USwapError("core_wallet_connection_not_found", { walletOption });
   }
 
   return {
-    client: SwapKit({ plugins: connectedPlugins, wallets: { ...walletPkg } }) as ReturnType<typeof SwapKit>,
+    client: USwap({ plugins: connectedPlugins, wallets: { ...walletPkg } }) as ReturnType<typeof USwap>,
     connectMethod,
   };
 }

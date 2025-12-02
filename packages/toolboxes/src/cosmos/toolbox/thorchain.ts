@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Pubkey, Secp256k1HdWallet } from "@cosmjs/amino";
 import { base64 } from "@scure/base";
 import {
@@ -11,9 +17,9 @@ import {
   NetworkDerivationPath,
   RequestClient,
   SKConfig,
-  SwapKitError,
   SwapKitNumber,
   type TCLikeChain,
+  USwapError,
   updateDerivationPath,
 } from "@uswap/helpers";
 
@@ -166,7 +172,7 @@ export async function createThorchainToolbox({ chain, ...toolboxParams }: Cosmos
       } = await RequestClient.get<ThorchainConstantsResponse>(constantsUrl);
 
       if (!nativeFee || Number.isNaN(nativeFee) || nativeFee < 0) {
-        throw new SwapKitError("toolbox_cosmos_invalid_fee", { nativeFee: nativeFee.toString() });
+        throw new USwapError("toolbox_cosmos_invalid_fee", { nativeFee: nativeFee.toString() });
       }
 
       fee = new SwapKitNumber(nativeFee);
@@ -184,7 +190,7 @@ export async function createThorchainToolbox({ chain, ...toolboxParams }: Cosmos
   }: Omit<GenericTransferParams, "recipient"> & { recipient?: string }) {
     const { TxRaw } = await import("cosmjs-types/cosmos/tx/v1beta1/tx");
     const sender = (await signer?.getAccounts())?.[0]?.address;
-    if (!(sender && signer)) throw new SwapKitError("toolbox_cosmos_no_signer");
+    if (!(sender && signer)) throw new USwapError("toolbox_cosmos_no_signer");
 
     const isAminoSigner = "signAmino" in signer;
     const registry = await createDefaultRegistry();

@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { bitgo, crypto, ECPair, networks, address as zcashAddress } from "@bitgo/utxo-lib";
 import { type ZcashPsbt, ZcashTransaction } from "@bitgo/utxo-lib/dist/src/bitgo";
 import { HDKey } from "@scure/bip32";
@@ -10,7 +16,7 @@ import {
   FeeOption,
   NetworkDerivationPath,
   SKConfig,
-  SwapKitError,
+  USwapError,
   updateDerivationPath,
 } from "@uswap/helpers";
 import bs58check from "bs58check";
@@ -49,7 +55,7 @@ function createZcashSignerFromPhrase({
   const node = root.derive(derivationPath);
 
   if (!node.privateKey) {
-    throw new SwapKitError("toolbox_utxo_invalid_params");
+    throw new USwapError("toolbox_utxo_invalid_params");
   }
 
   // Create key pair using BitGo's ECPair with ECPair-compatible network
@@ -140,7 +146,7 @@ async function createTransaction(buildTxParams: UTXOBuildTxParams) {
   });
 
   if (!(inputs && outputs)) {
-    throw new SwapKitError("toolbox_utxo_insufficient_balance", { assetValue, sender });
+    throw new USwapError("toolbox_utxo_insufficient_balance", { assetValue, sender });
   }
 
   const psbt = bitgo.createPsbtForNetwork(
@@ -180,7 +186,7 @@ export async function createZcashToolbox(
   async function transfer({ recipient, assetValue, feeOptionKey = FeeOption.Fast, ...rest }: UTXOTransferParams) {
     const from = await signer?.getAddress();
     if (!(signer && from)) {
-      throw new SwapKitError("toolbox_utxo_no_signer");
+      throw new USwapError("toolbox_utxo_no_signer");
     }
 
     const feeRate = rest.feeRate || (await baseToolbox.getFeeRates())[feeOptionKey];
@@ -211,7 +217,7 @@ export async function createZcashToolbox(
     const node = root.derive(derivationPath);
 
     if (!node.privateKey) {
-      throw new SwapKitError("toolbox_utxo_invalid_params");
+      throw new USwapError("toolbox_utxo_invalid_params");
     }
 
     const ecpairNetwork = getECPairNetwork();

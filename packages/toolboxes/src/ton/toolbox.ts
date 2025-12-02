@@ -1,5 +1,11 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Cell, OpenedContract, TonClient, WalletContractV4 } from "@ton/ton";
-import { AssetValue, Chain, getChainConfig, SwapKitError, SwapKitNumber } from "@uswap/helpers";
+import { AssetValue, Chain, getChainConfig, SwapKitNumber, USwapError } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 
 import type { TONSigner, TONToolboxParams, TONTransferParams } from "./types";
@@ -33,7 +39,7 @@ export async function getTONToolbox(toolboxParams: TONToolboxParams = {}) {
       const walletSigner = paramSigner || signer;
 
       if (!walletSigner) {
-        throw new SwapKitError("core_wallet_connection_not_found");
+        throw new USwapError("core_wallet_connection_not_found");
       }
 
       const walletContract = WalletContractV4.create({ publicKey: walletSigner.publicKey, workchain: 0 });
@@ -60,7 +66,7 @@ export async function getTONToolbox(toolboxParams: TONToolboxParams = {}) {
   async function createTransaction({ assetValue, recipient, memo }: TONTransferParams) {
     const wallet = getWallet();
     if (!wallet || !signer) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
 
     const { toNano, comment, internal } = await import("@ton/ton");
@@ -80,7 +86,7 @@ export async function getTONToolbox(toolboxParams: TONToolboxParams = {}) {
   async function transfer({ assetValue, recipient, memo }: TONTransferParams) {
     const wallet = getWallet();
     if (!wallet || !signer) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
 
     const transfer = await createTransaction({ assetValue, memo, recipient });
@@ -92,14 +98,14 @@ export async function getTONToolbox(toolboxParams: TONToolboxParams = {}) {
   async function sendTransaction(transferCell: Cell) {
     const wallet = getWallet();
     if (!wallet) {
-      throw new SwapKitError("core_wallet_connection_not_found");
+      throw new USwapError("core_wallet_connection_not_found");
     }
 
     try {
       await wallet.send(transferCell);
       return transferCell.hash().toString("hex");
     } catch (error) {
-      throw new SwapKitError("core_wallet_connection_not_found", { error });
+      throw new USwapError("core_wallet_connection_not_found", { error });
     }
   }
 

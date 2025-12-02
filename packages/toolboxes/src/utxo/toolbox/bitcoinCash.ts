@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   address as bchAddress,
   Transaction,
@@ -11,7 +17,7 @@ import {
   derivationPathToString,
   FeeOption,
   NetworkDerivationPath,
-  SwapKitError,
+  USwapError,
   updateDerivationPath,
 } from "@uswap/helpers";
 import { Psbt } from "bitcoinjs-lib";
@@ -96,7 +102,7 @@ export async function createBCHToolbox<T extends typeof Chain.BitcoinCash>(
 }
 
 async function createTransaction({ assetValue, recipient, memo, feeRate, sender }: UTXOBuildTxParams) {
-  if (!bchValidateAddress(recipient)) throw new SwapKitError("toolbox_utxo_invalid_address", { address: recipient });
+  if (!bchValidateAddress(recipient)) throw new USwapError("toolbox_utxo_invalid_address", { address: recipient });
 
   // Overestimate by 7500 byte * feeRate to ensure we have enough UTXOs for fees and change
   const targetValue = Math.ceil(assetValue.getBaseValue("number") + feeRate * 7500);
@@ -115,7 +121,7 @@ async function createTransaction({ assetValue, recipient, memo, feeRate, sender 
   const { inputs, outputs } = accumulative({ chain, feeRate, inputs: utxos, outputs: targetOutputs });
 
   // .inputs and .outputs will be undefined if no solution was found
-  if (!(inputs && outputs)) throw new SwapKitError("toolbox_utxo_insufficient_balance", { assetValue, sender });
+  if (!(inputs && outputs)) throw new USwapError("toolbox_utxo_insufficient_balance", { assetValue, sender });
   const getNetwork = await getUtxoNetwork();
   const builder = new TransactionBuilder(getNetwork(chain)) as TransactionBuilderType;
 
@@ -159,9 +165,9 @@ function transfer({
     ...rest
   }: UTXOTransferParams) {
     const from = await signer?.getAddress();
-    if (!(signer && from)) throw new SwapKitError("toolbox_utxo_no_signer");
+    if (!(signer && from)) throw new USwapError("toolbox_utxo_no_signer");
     if (!recipient)
-      throw new SwapKitError("toolbox_utxo_invalid_params", { error: "Recipient address must be provided" });
+      throw new USwapError("toolbox_utxo_invalid_params", { error: "Recipient address must be provided" });
 
     const feeRate = rest.feeRate || (await getFeeRates())[feeOptionKey];
 
@@ -185,7 +191,7 @@ async function buildTx({
 }: UTXOBuildTxParams & { setSigHashType?: boolean }) {
   const recipientCashAddress = toCashAddress(recipient);
   if (!bchValidateAddress(recipientCashAddress))
-    throw new SwapKitError("toolbox_utxo_invalid_address", { address: recipientCashAddress });
+    throw new USwapError("toolbox_utxo_invalid_address", { address: recipientCashAddress });
 
   // Overestimate by 7500 byte * feeRate to ensure we have enough UTXOs for fees and change
   const targetValue = Math.ceil(assetValue.getBaseValue("number") + feeRate * 7500);
@@ -212,7 +218,7 @@ async function buildTx({
   const { inputs, outputs } = accumulative({ chain, feeRate: feeRateWhole, inputs: utxos, outputs: targetOutputs });
 
   // .inputs and .outputs will be undefined if no solution was found
-  if (!(inputs && outputs)) throw new SwapKitError("toolbox_utxo_insufficient_balance", { assetValue, sender });
+  if (!(inputs && outputs)) throw new USwapError("toolbox_utxo_insufficient_balance", { assetValue, sender });
   const getNetwork = await getUtxoNetwork();
   const psbt = new Psbt({ network: getNetwork(chain) }); // Network-specific
 

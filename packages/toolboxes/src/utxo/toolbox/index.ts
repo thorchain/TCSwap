@@ -1,4 +1,10 @@
-import { Chain, type DerivationPathArray, SwapKitError, type UTXOChain } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, type DerivationPathArray, USwapError, type UTXOChain } from "@uswap/helpers";
 import { createBCHToolbox } from "./bitcoinCash";
 import type { UtxoToolboxParams } from "./params";
 import { createUTXOToolbox } from "./utxo";
@@ -50,7 +56,7 @@ export async function getUtxoToolbox<T extends keyof UTXOToolboxes>(
     }
 
     default:
-      throw new SwapKitError("toolbox_utxo_not_supported", { chain });
+      throw new USwapError("toolbox_utxo_not_supported", { chain });
   }
 }
 

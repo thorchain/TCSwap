@@ -1,12 +1,18 @@
-import { SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { USwapError } from "@uswap/helpers";
 import { CLA, ERROR_CODE, errorCodeToString, INS, P2_VALUES, PAYLOAD_TYPE, processErrorResponse } from "./common";
 
 export function serializePathv1(path: number[]) {
   if (path == null || path.length < 3) {
-    throw new SwapKitError("wallet_ledger_invalid_params", { reason: "Path too short" });
+    throw new USwapError("wallet_ledger_invalid_params", { reason: "Path too short" });
   }
   if (path.length > 10) {
-    throw new SwapKitError("wallet_ledger_invalid_params", { reason: "Path too long" });
+    throw new USwapError("wallet_ledger_invalid_params", { reason: "Path too long" });
   }
   const buf = Buffer.alloc(1 + 4 * path.length);
   buf.writeUInt8(path.length, 0);
@@ -44,7 +50,7 @@ export function signSendChunkv1(app: any, chunkIdx: number, _chunkNum: number, c
 
 function compressPublicKey(publicKey: Buffer) {
   if (publicKey.length !== 65) {
-    throw new SwapKitError("wallet_ledger_invalid_params", {
+    throw new USwapError("wallet_ledger_invalid_params", {
       reason: "decompressed public key length should be 65 bytes",
     });
   }
@@ -74,7 +80,7 @@ export function publicKeyv1(app: any, data: Buffer) {
 
 export function serializePathv2(path: number[]) {
   if (!path || path.length !== 5) {
-    throw new SwapKitError("wallet_ledger_invalid_params", { reason: "Path must be exactly 5 elements" });
+    throw new USwapError("wallet_ledger_invalid_params", { reason: "Path must be exactly 5 elements" });
   }
 
   const buf = Buffer.alloc(20);

@@ -1,6 +1,12 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Account, Contract } from "@near-js/accounts";
 import type { SignedTransaction, Transaction } from "@near-js/transactions";
-import { AssetValue, Chain, getChainConfig, getRPCUrl, SwapKitError } from "@uswap/helpers";
+import { AssetValue, Chain, getChainConfig, getRPCUrl, USwapError } from "@uswap/helpers";
 import { getBalance } from "../utils";
 import {
   getFullAccessPublicKey,
@@ -62,7 +68,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function getAddress() {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
     const address = await signer.getAddress();
     return address;
@@ -110,7 +116,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function transfer(params: NearTransferParams) {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
 
     const { assetValue, recipient, memo } = params;
@@ -135,11 +141,11 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
     const validateNearAddress = await getValidateNearAddress();
 
     if (!validateNearAddress(recipient)) {
-      throw new SwapKitError("toolbox_near_invalid_address", { recipient: recipient });
+      throw new USwapError("toolbox_near_invalid_address", { recipient: recipient });
     }
 
     if (!validateNearAddress(signerId)) {
-      throw new SwapKitError("toolbox_near_invalid_address", { signerId: signerId });
+      throw new USwapError("toolbox_near_invalid_address", { signerId: signerId });
     }
 
     if (functionCall) {
@@ -149,7 +155,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
     if (!assetValue.isGasAsset) {
       const contractId = assetValue.address;
       if (!contractId) {
-        throw new SwapKitError("toolbox_near_missing_contract_address");
+        throw new USwapError("toolbox_near_missing_contract_address");
       }
 
       return createContractFunctionCall({
@@ -224,7 +230,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function signTransaction(transaction: Transaction): Promise<SignedTransaction> {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
 
     const [_hash, signedTx] = await signer.signTransaction(transaction);
@@ -238,7 +244,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function signAndSendTransaction(transaction: Transaction) {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
 
     try {
@@ -287,7 +293,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function createSubAccount(subAccountId: string, publicKey: string, initialBalance: string): Promise<string> {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
 
     const account = await getAccount();
@@ -304,7 +310,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
   async function callFunction(params: NearFunctionCallParams): Promise<string> {
     try {
       if (!signer) {
-        throw new SwapKitError("toolbox_near_no_signer");
+        throw new USwapError("toolbox_near_no_signer");
       }
 
       const { actionCreators } = await import("@near-js/transactions");
@@ -325,7 +331,7 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
       return result.transaction_outcome.id;
     } catch (error) {
-      throw new SwapKitError("toolbox_near_transfer_failed", { error });
+      throw new USwapError("toolbox_near_transfer_failed", { error });
     }
   }
 
@@ -343,11 +349,11 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
 
   async function executeBatchTransaction(batch: BatchTransaction): Promise<string> {
     if (!signer) {
-      throw new SwapKitError("toolbox_near_no_signer");
+      throw new USwapError("toolbox_near_no_signer");
     }
 
     if (batch.actions.length === 0) {
-      throw new SwapKitError("toolbox_near_empty_batch");
+      throw new USwapError("toolbox_near_empty_batch");
     }
 
     const account = await getAccount();
@@ -369,12 +375,12 @@ export async function getNearToolbox(toolboxParams?: NearToolboxParams) {
       .when(isContractDeployment, () => GAS_COSTS.CONTRACT_DEPLOYMENT)
       .when(isCustomEstimator, (p) => {
         if (!account) {
-          throw new SwapKitError("toolbox_near_no_account");
+          throw new USwapError("toolbox_near_no_account");
         }
         return p.customEstimator(account);
       })
       .otherwise(() => {
-        throw new SwapKitError("toolbox_near_invalid_gas_params");
+        throw new USwapError("toolbox_near_invalid_gas_params");
       });
 
     const gasInUnits = BigInt(gasInTGas) * BigInt(10 ** 12);

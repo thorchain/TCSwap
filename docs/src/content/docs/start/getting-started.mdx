@@ -435,7 +435,7 @@ SwapKit uses typed errors for better debugging:
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, SwapKitError, FeeOption } from "@uswap/sdk";
+import { createSwapKit, USwapError, FeeOption } from "@uswap/sdk";
 
 const swapKit = createSwapKit();
 
@@ -450,7 +450,7 @@ try {
     feeOptionKey: FeeOption.Fast,
   });
 } catch (error) {
-  if (error instanceof SwapKitError) {
+  if (error instanceof USwapError) {
     console.error("SwapKit Error:", error.message);
 
     console.error("Full error:", error);

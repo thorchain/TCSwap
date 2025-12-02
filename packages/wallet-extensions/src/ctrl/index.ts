@@ -1,9 +1,15 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   Chain,
   ChainToChainId,
   filterSupportedChains,
   type GenericTransferParams,
-  SwapKitError,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
@@ -64,7 +70,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
       const provider = getCtrlProvider(chain);
 
       if (!provider) {
-        throw new SwapKitError("wallet_ctrl_not_found");
+        throw new USwapError("wallet_ctrl_not_found");
       }
       const toolbox = await getSolanaToolbox({ signer: provider });
 
@@ -96,7 +102,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
       const signer = provider?.getOfflineSignerOnlyAmino(chainId, { preferNoSetFee: true });
 
       if (!signer) {
-        throw new SwapKitError("wallet_ctrl_not_found");
+        throw new USwapError("wallet_ctrl_not_found");
       }
 
       const toolbox = await getCosmosToolbox(chain, { signer });
@@ -132,7 +138,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
       const ethereumWindowProvider = getCtrlProvider(chain);
 
       if (!ethereumWindowProvider) {
-        throw new SwapKitError("wallet_ctrl_not_found");
+        throw new USwapError("wallet_ctrl_not_found");
       }
 
       const provider = new BrowserProvider(ethereumWindowProvider, "any");
@@ -145,7 +151,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
           await switchEVMWalletNetwork(provider, chain, networkParams);
         }
       } catch {
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_failed_to_add_or_switch_network",
           info: { chain, wallet: WalletOption.CTRL },
         });
@@ -158,7 +164,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
       const provider = getCtrlProvider(chain);
 
       if (!provider) {
-        throw new SwapKitError("wallet_ctrl_not_found", { chain: Chain.Near });
+        throw new USwapError("wallet_ctrl_not_found", { chain: Chain.Near });
       }
 
       const { createNearSignerFromProvider } = await import("../helpers/near");

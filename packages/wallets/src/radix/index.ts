@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type {
   FungibleResourcesCollectionItem,
   GatewayApiClient,
@@ -5,7 +11,7 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, filterSupportedChains, SKConfig, SwapKitError, WalletOption } from "@uswap/helpers";
+import { AssetValue, Chain, filterSupportedChains, SKConfig, USwapError, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 export const radixWallet = createWallet({
@@ -15,7 +21,7 @@ export const radixWallet = createWallet({
       const radixConfig = SKConfig.get("integrations").radix;
 
       if (!radixConfig) {
-        throw new SwapKitError("wallet_radix_not_found");
+        throw new USwapError("wallet_radix_not_found");
       }
 
       await Promise.all(
@@ -157,13 +163,13 @@ async function getWalletMethods() {
     const res = await rdt.walletApi.sendRequest();
 
     if (!res) {
-      throw new SwapKitError("wallet_radix_no_account");
+      throw new USwapError("wallet_radix_no_account");
     }
 
     const newAddress = res.unwrapOr(null)?.accounts[0]?.address;
 
     if (!newAddress) {
-      throw new SwapKitError("wallet_radix_no_account");
+      throw new USwapError("wallet_radix_no_account");
     }
 
     return newAddress;
@@ -182,13 +188,13 @@ async function getWalletMethods() {
       const txResult = tx.unwrapOr(null)?.transactionIntentHash;
 
       if (!txResult) {
-        throw new SwapKitError("wallet_radix_transaction_failed");
+        throw new USwapError("wallet_radix_transaction_failed");
       }
 
       return txResult;
     },
     transfer: (_params: { assetValue: AssetValue; recipient: string; from: string }) => {
-      throw new SwapKitError("wallet_radix_method_not_supported", { method: "transfer" });
+      throw new USwapError("wallet_radix_method_not_supported", { method: "transfer" });
     },
   };
 }

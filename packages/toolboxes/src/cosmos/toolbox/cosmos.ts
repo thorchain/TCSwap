@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { StdFee } from "@cosmjs/amino";
 import type { Account } from "@cosmjs/stargate";
 import { base64, bech32 } from "@scure/base";
@@ -16,9 +22,9 @@ import {
   getChainConfig,
   getRPCUrl,
   NetworkDerivationPath,
-  SwapKitError,
   SwapKitNumber,
   type TCLikeChain,
+  USwapError,
   updateDerivationPath,
 } from "@uswap/helpers";
 import { SwapKitApi } from "@uswap/helpers/api";
@@ -91,7 +97,7 @@ export function verifySignature(getAccount: (address: string) => Promise<Account
     address: string;
   }) {
     const account = await getAccount(address);
-    if (!account?.pubkey) throw new SwapKitError("toolbox_cosmos_verify_signature_no_pubkey");
+    if (!account?.pubkey) throw new USwapError("toolbox_cosmos_verify_signature_no_pubkey");
 
     const importedCrypto = await import("@cosmjs/crypto");
     const Secp256k1Signature = importedCrypto.Secp256k1Signature ?? importedCrypto.default?.Secp256k1Signature;
@@ -131,7 +137,7 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
   async function getPubKey() {
     const [account] = (await signer?.getAccounts()) || [];
     if (!account?.pubkey) {
-      throw new SwapKitError("toolbox_cosmos_signer_not_defined");
+      throw new USwapError("toolbox_cosmos_signer_not_defined");
     }
     return base64.encode(account?.pubkey);
   }
@@ -146,7 +152,7 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
     const from = await getAddress();
 
     if (!(signer && from)) {
-      throw new SwapKitError("toolbox_cosmos_signer_not_defined");
+      throw new USwapError("toolbox_cosmos_signer_not_defined");
     }
 
     const feeAssetValue = AssetValue.from({ chain });
@@ -187,7 +193,7 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
     const from = await getAddress();
 
     if (!(signer && from)) {
-      throw new SwapKitError("toolbox_cosmos_signer_not_defined");
+      throw new USwapError("toolbox_cosmos_signer_not_defined");
     }
 
     const feeAssetValue = AssetValue.from({ chain });

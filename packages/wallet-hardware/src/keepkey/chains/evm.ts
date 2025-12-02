@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { KeepKeySdk } from "@keepkey/keepkey-sdk";
 import {
   type Chain,
@@ -5,7 +11,7 @@ import {
   type DerivationPathArray,
   derivationPathToString,
   NetworkDerivationPath,
-  SwapKitError,
+  USwapError,
 } from "@uswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 import { AbstractSigner } from "ethers";
@@ -36,7 +42,7 @@ export class KeepKeySigner extends AbstractSigner {
   }
 
   signTypedData(): Promise<string> {
-    throw new SwapKitError("wallet_keepkey_method_not_supported", { method: "signTypedData" });
+    throw new USwapError("wallet_keepkey_method_not_supported", { method: "signTypedData" });
   }
 
   getAddress = async () => {
@@ -61,17 +67,16 @@ export class KeepKeySigner extends AbstractSigner {
     maxPriorityFeePerGas,
     gasPrice,
   }: TransactionRequest) => {
-    if (!to) throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing to address" });
-    if (!gasLimit) throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing gasLimit" });
-    if (!data) throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing data" });
+    if (!to) throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing to address" });
+    if (!gasLimit) throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing gasLimit" });
+    if (!data) throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing data" });
 
     const isEIP1559 = !!((maxFeePerGas || maxPriorityFeePerGas) && !gasPrice);
     if (isEIP1559 && !maxFeePerGas)
-      throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing maxFeePerGas" });
+      throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing maxFeePerGas" });
     if (isEIP1559 && !maxPriorityFeePerGas)
-      throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing maxPriorityFeePerGas" });
-    if (!(isEIP1559 || gasPrice))
-      throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Missing gasPrice" });
+      throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing maxPriorityFeePerGas" });
+    if (!(isEIP1559 || gasPrice)) throw new USwapError("wallet_keepkey_invalid_params", { reason: "Missing gasPrice" });
 
     const { toHexString } = await import("@uswap/toolboxes/evm");
 
@@ -102,7 +107,7 @@ export class KeepKeySigner extends AbstractSigner {
   };
 
   sendTransaction = async (tx: TransactionRequest): Promise<any> => {
-    if (!this.provider) throw new SwapKitError("wallet_keepkey_no_provider");
+    if (!this.provider) throw new USwapError("wallet_keepkey_no_provider");
 
     const signedTxHex = await this.signTransaction(tx);
 

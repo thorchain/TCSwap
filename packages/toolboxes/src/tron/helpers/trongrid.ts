@@ -1,4 +1,10 @@
-import { SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { USwapError } from "@uswap/helpers";
 import type { TronGridAccountResponse } from "../types";
 
 const TRONGRID_API_BASE = "https://api.trongrid.io";
@@ -45,7 +51,7 @@ export async function fetchAccountFromTronGrid(address: string) {
     // Return simplified object with balance and trc20 array
     return { balance: account.balance, trc20: account.trc20 || [] };
   } catch (error) {
-    throw new SwapKitError("toolbox_tron_trongrid_api_error", {
+    throw new USwapError("toolbox_tron_trongrid_api_error", {
       address,
       message: error instanceof Error ? error.message : "Unknown error",
     });

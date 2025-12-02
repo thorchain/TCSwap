@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   type AssetValue,
   Chain,
@@ -9,7 +15,7 @@ import {
   getChainConfig,
   type NetworkParams,
   providerRequest,
-  SwapKitError,
+  USwapError,
   type UTXOChain,
   WalletOption,
 } from "@uswap/helpers";
@@ -51,7 +57,7 @@ type VultisigProviderType<T> = T extends typeof Chain.Solana
         : undefined;
 
 export async function getVultisigProvider<T extends Chain>(chain: T): Promise<VultisigProviderType<T>> {
-  if (!window.vultisig) throw new SwapKitError("wallet_vultisig_not_found");
+  if (!window.vultisig) throw new USwapError("wallet_vultisig_not_found");
   const { match } = await import("ts-pattern");
 
   return match(chain as Chain)
@@ -106,7 +112,7 @@ export async function getVultisigAddress(chain: Chain) {
   try {
     const windowProvider = (await getVultisigProvider(chain)) as Eip1193Provider;
     if (!windowProvider) {
-      throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.VULTISIG } });
+      throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.VULTISIG } });
     }
 
     if ([Chain.Cosmos, Chain.Kujira].includes(chain as typeof Chain.Cosmos)) {
@@ -139,7 +145,7 @@ export async function getVultisigAddress(chain: Chain) {
     const accounts = await windowProvider.request({ method: "request_accounts", params: [] });
     return accounts[0];
   } catch {
-    throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.VULTISIG } });
+    throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.VULTISIG } });
   }
 }
 
@@ -148,7 +154,7 @@ export async function walletTransfer(
   method: TransactionMethod = "send_transaction",
 ) {
   if (!assetValue) {
-    throw new SwapKitError("wallet_vultisig_asset_not_defined");
+    throw new USwapError("wallet_vultisig_asset_not_defined");
   }
 
   /**
@@ -199,7 +205,7 @@ export function getVultisigMethods(provider: BrowserProvider, chain: EVMChain) {
     },
     call: async <T>({ contractAddress, abi, funcName, funcParams = [], txOverrides }: CallParams): Promise<T> => {
       if (!contractAddress) {
-        throw new SwapKitError("wallet_vultisig_contract_address_not_provided");
+        throw new USwapError("wallet_vultisig_contract_address_not_provided");
       }
       const { createContract, getCreateContractTxObject, isStateChangingCall } = await import("@uswap/toolboxes/evm");
 
@@ -222,7 +228,7 @@ export function getVultisigMethods(provider: BrowserProvider, chain: EVMChain) {
     sendTransaction: async (txParams: EVMTxParams) => {
       const { from, to, data, value } = txParams;
       if (!to) {
-        throw new SwapKitError("wallet_vultisig_send_transaction_no_address");
+        throw new USwapError("wallet_vultisig_send_transaction_no_address");
       }
 
       const signer = await provider.getSigner();
@@ -241,10 +247,7 @@ export async function switchCosmosWalletNetwork(
     await provider.request({ method: "wallet_switch_chain", params: [{ chainId: getChainConfig(chain).chainId }] });
   } catch (error) {
     if (!networkParams) {
-      throw new SwapKitError("helpers_failed_to_switch_network", {
-        error: error,
-        reason: "networkParams not provided",
-      });
+      throw new USwapError("helpers_failed_to_switch_network", { error: error, reason: "networkParams not provided" });
     }
   }
 }
@@ -258,7 +261,7 @@ export function wrapMethodWithNetworkSwitch<T extends (...args: any[]) => any>(
     try {
       await switchCosmosWalletNetwork(provider, chain);
     } catch (error) {
-      throw new SwapKitError({ errorKey: "helpers_failed_to_switch_network", info: { error } });
+      throw new USwapError({ errorKey: "helpers_failed_to_switch_network", info: { error } });
     }
     return func(...args);
   }) as unknown as T;

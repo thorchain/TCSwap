@@ -1,11 +1,17 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   ApproveMode,
   AssetValue,
   type EVMChain,
   EVMChains,
   ProviderName,
-  SwapKitError,
   type SwapParams,
+  USwapError,
 } from "@uswap/helpers";
 import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
 import { approve, createPlugin } from "../utils";
@@ -20,7 +26,7 @@ export const EVMPlugin = createPlugin({
       const wallet = getWallet(evmChain);
 
       if (!(EVMChains.includes(evmChain) && tx)) {
-        throw new SwapKitError("core_swap_invalid_params");
+        throw new USwapError("core_swap_invalid_params");
       }
 
       const { from, to, data, value } = tx as EVMTransaction;

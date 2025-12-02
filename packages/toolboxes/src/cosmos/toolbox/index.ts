@@ -1,4 +1,10 @@
-import { Chain, type CosmosChain, SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, type CosmosChain, USwapError } from "@uswap/helpers";
 
 import type { CosmosToolboxParams } from "../types";
 import { createCosmosToolbox } from "./cosmos";
@@ -27,7 +33,7 @@ export const getCosmosToolbox = <T extends Exclude<CosmosChain, Chain.Harbor>>(
       return createThorchainToolbox({ chain, ...params }) as CosmosToolboxes[T];
 
     default:
-      throw new SwapKitError("toolbox_cosmos_not_supported", { chain });
+      throw new USwapError("toolbox_cosmos_not_supported", { chain });
   }
 };
 

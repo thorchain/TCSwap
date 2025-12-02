@@ -1,7 +1,13 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@uswap/types";
 import { match } from "ts-pattern";
 import { SKConfig } from "../modules/swapKitConfig";
-import { SwapKitError } from "../modules/swapKitError";
+import { USwapError } from "../modules/uSwapError";
 import { warnOnce } from "./others";
 
 function getRpcBody(chain: Chain | StagenetChain) {
@@ -17,7 +23,7 @@ function getRpcBody(chain: Chain | StagenetChain) {
     .with(Chain.Near, () => ({ id: "dontcare", jsonrpc: "2.0", method: "status", params: [] }))
     .with(Chain.Ripple, () => ({ id: 1, jsonrpc: "2.0", method: "ping", params: [{}] }))
     .otherwise(() => {
-      throw new SwapKitError("helpers_chain_not_supported", { chain });
+      throw new USwapError("helpers_chain_not_supported", { chain });
     });
 }
 
@@ -57,7 +63,7 @@ export async function getRPCUrl(chain: Chain | StagenetChain) {
       id: "helpers_chain_no_public_or_set_rpc_url",
       warning: `No public or set RPC URL found for chain. Please ensure you configured rpcUrls for ${chain}.`,
     });
-    throw new SwapKitError("helpers_chain_no_public_or_set_rpc_url", { chain });
+    throw new USwapError("helpers_chain_no_public_or_set_rpc_url", { chain });
   }
 
   if (isStagenet) return rpcUrl;

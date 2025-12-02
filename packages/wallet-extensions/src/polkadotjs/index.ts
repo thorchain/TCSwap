@@ -1,4 +1,10 @@
-import { Chain, filterSupportedChains, SwapKitError, WalletOption } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, filterSupportedChains, USwapError, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 export const polkadotWallet = createWallet({
@@ -31,14 +37,14 @@ async function getWalletMethods(chain: Chain) {
 
       const rawExtension = await injectedExtension?.enable?.("polkadot-js");
       if (!rawExtension) {
-        throw new SwapKitError({ errorKey: "wallet_polkadot_not_found", info: { chain } });
+        throw new USwapError({ errorKey: "wallet_polkadot_not_found", info: { chain } });
       }
 
       const toolbox = await getSubstrateToolbox(chain, { signer: rawExtension.signer });
       const [account] = await rawExtension.accounts.get();
 
       if (!account?.address) {
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_missing_params",
           info: { address: account?.address, wallet: WalletOption.POLKADOT_JS },
         });
@@ -49,7 +55,7 @@ async function getWalletMethods(chain: Chain) {
     }
 
     default:
-      throw new SwapKitError({
+      throw new USwapError({
         errorKey: "wallet_chain_not_supported",
         info: { chain, wallet: WalletOption.POLKADOT_JS },
       });

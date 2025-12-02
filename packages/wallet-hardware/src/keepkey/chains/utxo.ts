@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { KeepKeySdk } from "@keepkey/keepkey-sdk";
 import {
   Chain,
@@ -6,7 +12,7 @@ import {
   derivationPathToString,
   FeeOption,
   type GenericTransferParams,
-  SwapKitError,
+  USwapError,
   type UTXOChain,
 } from "@uswap/helpers";
 import type { UTXOToolboxes } from "@uswap/toolboxes/utxo";
@@ -101,9 +107,9 @@ export async function utxoWalletMethods({
 
   const transfer = async ({ recipient, feeOptionKey, feeRate, memo, ...rest }: GenericTransferParams) => {
     if (!walletAddress)
-      throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "From address must be provided" });
+      throw new USwapError("wallet_keepkey_invalid_params", { reason: "From address must be provided" });
     if (!recipient)
-      throw new SwapKitError("wallet_keepkey_invalid_params", { reason: "Recipient address must be provided" });
+      throw new USwapError("wallet_keepkey_invalid_params", { reason: "Recipient address must be provided" });
 
     const createTxMethod =
       chain === Chain.BitcoinCash

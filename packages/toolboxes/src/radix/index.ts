@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type {
   FungibleResourcesCollectionItem,
   GatewayApiClient,
@@ -5,7 +11,7 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, SKConfig, type SKConfigIntegrations, SwapKitError } from "@uswap/helpers";
+import { AssetValue, Chain, SKConfig, type SKConfigIntegrations, USwapError } from "@uswap/helpers";
 
 export type RadixWallet = Awaited<ReturnType<typeof RadixToolbox>>;
 
@@ -131,7 +137,7 @@ export const RadixToolbox = async ({ dappConfig }: { dappConfig?: SKConfigIntegr
     getBalance: getBalance({ networkApi }),
     networkApi,
     signAndBroadcast: (() => {
-      throw new SwapKitError("toolbox_radix_method_not_supported", { method: "signAndBroadcast" });
+      throw new USwapError("toolbox_radix_method_not_supported", { method: "signAndBroadcast" });
     }) as (params: any) => Promise<string>,
     validateAddress: radixValidateAddress,
   };

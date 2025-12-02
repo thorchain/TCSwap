@@ -1,4 +1,10 @@
-import { type EVMChain, SwapKitError, WalletOption } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { type EVMChain, USwapError, WalletOption } from "@uswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest, TransactionResponse } from "ethers";
 import { AbstractSigner } from "ethers";
 
@@ -30,7 +36,7 @@ class WalletconnectSigner extends AbstractSigner {
   // biome-ignore lint/suspicious/useAwait: fulfil implementation type
   getAddress = async () => {
     if (!this.walletconnect) {
-      throw new SwapKitError("wallet_walletconnect_connection_not_established");
+      throw new USwapError("wallet_walletconnect_connection_not_established");
     }
     if (!this.address) {
       this.address = getAddressByChain(this.chain, this.walletconnect.accounts || []);
@@ -51,7 +57,7 @@ class WalletconnectSigner extends AbstractSigner {
   };
 
   signTransaction = () => {
-    throw new SwapKitError("wallet_walletconnect_method_not_supported", { method: "signTransaction" });
+    throw new USwapError("wallet_walletconnect_method_not_supported", { method: "signTransaction" });
 
     // const baseTx = {
     //   from,
@@ -74,7 +80,7 @@ class WalletconnectSigner extends AbstractSigner {
 
   // ANCHOR (@Towan) - Implement in future
   signTypedData = () => {
-    throw new SwapKitError("wallet_walletconnect_method_not_supported", { method: "signTypedData" });
+    throw new USwapError("wallet_walletconnect_method_not_supported", { method: "signTypedData" });
 
     // const { toHexString } = await import('@uswap/toolboxes/evm');
 
@@ -112,7 +118,7 @@ class WalletconnectSigner extends AbstractSigner {
 
   connect = (provider: Provider | null) => {
     if (!provider) {
-      throw new SwapKitError({
+      throw new USwapError({
         errorKey: "wallet_provider_not_found",
         info: { chain: this.chain, wallet: WalletOption.WALLETCONNECT },
       });

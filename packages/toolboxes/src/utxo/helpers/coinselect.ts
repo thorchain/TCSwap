@@ -1,4 +1,10 @@
-import { Chain, SwapKitError, type UTXOChain } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, USwapError, type UTXOChain } from "@uswap/helpers";
 
 import {
   calculateTxSize,
@@ -23,7 +29,7 @@ export function getDustThreshold(chain: UTXOChain) {
     case Chain.Zcash:
       return 546;
     default:
-      throw new SwapKitError("toolbox_utxo_not_supported", { chain });
+      throw new USwapError("toolbox_utxo_not_supported", { chain });
   }
 }
 

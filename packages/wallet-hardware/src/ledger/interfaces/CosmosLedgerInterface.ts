@@ -1,4 +1,10 @@
-import { type DerivationPathArray, LedgerErrorCode, NetworkDerivationPath, SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { type DerivationPathArray, LedgerErrorCode, NetworkDerivationPath, USwapError } from "@uswap/helpers";
 
 import { THORChainApp } from "../clients/thorchain/lib";
 import { getLedgerTransport } from "../helpers/getLedgerTransport";
@@ -31,7 +37,7 @@ export abstract class CosmosLedgerInterface {
 
       return this.ledgerApp;
     } catch (error: unknown) {
-      throw new SwapKitError("wallet_ledger_connection_error", error);
+      throw new USwapError("wallet_ledger_connection_error", error);
     }
   };
 
@@ -41,10 +47,10 @@ export abstract class CosmosLedgerInterface {
         return;
 
       case LedgerErrorCode.LockedDevice:
-        throw new SwapKitError("wallet_ledger_device_locked", { message: `Ledger is locked: ${message}` });
+        throw new USwapError("wallet_ledger_device_locked", { message: `Ledger is locked: ${message}` });
 
       case LedgerErrorCode.TC_NotFound:
-        throw new SwapKitError("wallet_ledger_device_not_found");
+        throw new USwapError("wallet_ledger_device_not_found");
 
       default: {
         break;

@@ -1,3 +1,9 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   AssetValue,
   Chain,
@@ -9,7 +15,7 @@ import {
   type GenericCreateTransactionParams,
   type SubstrateChain,
   SubstrateChains,
-  SwapKitError,
+  USwapError,
   type UTXOChain,
   UTXOChains,
 } from "@uswap/helpers";
@@ -255,6 +261,6 @@ export async function getToolbox<T extends keyof Toolboxes>(
       return tonToolbox as Toolboxes[T];
     })
     .otherwise(() => {
-      throw new SwapKitError("toolbox_not_supported", { chain });
+      throw new USwapError("toolbox_not_supported", { chain });
     });
 }

@@ -1,6 +1,12 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { type Chain, getChainConfig } from "@uswap/types";
 import type { BrowserProvider, JsonRpcProvider } from "ethers";
-import { SwapKitError } from "../modules/swapKitError";
+import { USwapError } from "../modules/uSwapError";
 import {
   type EIP6963AnnounceProviderEvent,
   type EIP6963Provider,
@@ -66,10 +72,7 @@ export async function switchEVMWalletNetwork(provider: BrowserProvider, chain: C
     });
   } catch (error) {
     if (!networkParams) {
-      throw new SwapKitError("helpers_failed_to_switch_network", {
-        error: error,
-        reason: "networkParams not provided",
-      });
+      throw new USwapError("helpers_failed_to_switch_network", { error: error, reason: "networkParams not provided" });
     }
     await addEVMWalletNetwork(provider, networkParams);
   }
@@ -87,7 +90,7 @@ export function filterSupportedChains<T extends string[]>({
   const supported = chains.filter((chain) => !chain || supportedChains.includes(chain));
 
   if (supported.length === 0) {
-    throw new SwapKitError("wallet_chain_not_supported", { chain: chains.join(", "), wallet: walletType });
+    throw new USwapError("wallet_chain_not_supported", { chain: chains.join(", "), wallet: walletType });
   }
 
   const unsupported = chains.filter((chain) => !supportedChains.includes(chain));
@@ -116,7 +119,7 @@ export function wrapMethodWithNetworkSwitch<T extends (...args: any[]) => any>(
     try {
       await switchEVMWalletNetwork(provider, chain);
     } catch (error) {
-      throw new SwapKitError({ errorKey: "helpers_failed_to_switch_network", info: { error } });
+      throw new USwapError({ errorKey: "helpers_failed_to_switch_network", info: { error } });
     }
     return func(...args);
   }) as unknown as T;
@@ -229,7 +232,7 @@ export function providerRequest({
     | "eth_signTransaction";
 }) {
   if (!provider?.send) {
-    throw new SwapKitError("helpers_not_found_provider");
+    throw new USwapError("helpers_not_found_provider");
   }
 
   const providerParams = params ? (Array.isArray(params) ? params : [params]) : [];

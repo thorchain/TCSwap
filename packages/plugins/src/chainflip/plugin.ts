@@ -1,4 +1,10 @@
-import { AssetValue, type Chain, ProviderName, SwapKitError } from "@uswap/helpers";
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { AssetValue, type Chain, ProviderName, USwapError } from "@uswap/helpers";
 import { SwapKitApi } from "@uswap/helpers/api";
 import { createPlugin } from "../utils";
 import type { RequestSwapDepositAddressParams } from "./types";
@@ -7,7 +13,7 @@ export const ChainflipPlugin = createPlugin({
   methods: ({ getWallet }) => ({
     swap: async function chainflipSwap(swapParams: RequestSwapDepositAddressParams) {
       if (!(swapParams?.route?.buyAsset && swapParams.route.meta.chainflip)) {
-        throw new SwapKitError("core_swap_invalid_params", { ...swapParams });
+        throw new USwapError("core_swap_invalid_params", { ...swapParams });
       }
 
       const {
@@ -21,7 +27,7 @@ export const ChainflipPlugin = createPlugin({
       } = swapParams;
 
       if (!(sellAssetString && buyAssetString)) {
-        throw new SwapKitError("core_swap_asset_not_recognized");
+        throw new USwapError("core_swap_asset_not_recognized");
       }
 
       const sellAsset = await AssetValue.from({ asset: sellAssetString, asyncTokenLookup: true, value: sellAmount });
@@ -29,7 +35,7 @@ export const ChainflipPlugin = createPlugin({
       const wallet = getWallet(sellAsset.chain as Exclude<Chain, Chain.Radix>);
 
       if (!wallet || !("transfer" in wallet)) {
-        throw new SwapKitError("core_wallet_connection_not_found");
+        throw new USwapError("core_wallet_connection_not_found");
       }
 
       const { depositAddress } = await SwapKitApi.getChainflipDepositChannel({

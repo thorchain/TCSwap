@@ -1,10 +1,16 @@
+/**
+ * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
+ * licensed under the Apache License 2.0.
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   Chain,
   type EVMChain,
   filterSupportedChains,
   prepareNetworkSwitch,
-  SwapKitError,
   switchEVMWalletNetwork,
+  USwapError,
   WalletOption,
 } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
@@ -55,7 +61,7 @@ async function getWeb3WalletMethods({
   const { BrowserProvider } = await import("ethers");
 
   if (!walletProvider) {
-    throw new SwapKitError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.TALISMAN } });
+    throw new USwapError({ errorKey: "wallet_provider_not_found", info: { chain, wallet: WalletOption.TALISMAN } });
   }
 
   const provider = new BrowserProvider(walletProvider, "any");
@@ -67,7 +73,7 @@ async function getWeb3WalletMethods({
       await switchEVMWalletNetwork(provider, chain, toolbox.getNetworkParams());
     }
   } catch {
-    throw new SwapKitError({
+    throw new USwapError({
       errorKey: "wallet_failed_to_add_or_switch_network",
       info: { chain, wallet: WalletOption.TALISMAN },
     });
@@ -88,7 +94,7 @@ async function getWalletMethods(chain: Chain) {
     case Chain.Monad:
     case Chain.XLayer: {
       if (!(window.talismanEth && "send" in window.talismanEth)) {
-        throw new SwapKitError({ errorKey: "wallet_talisman_not_found", info: { chain } });
+        throw new USwapError({ errorKey: "wallet_talisman_not_found", info: { chain } });
       }
 
       const evmWallet = await getWeb3WalletMethods({ chain, walletProvider: window.talismanEth });
@@ -105,14 +111,14 @@ async function getWalletMethods(chain: Chain) {
       const rawExtension = await injectedExtension?.enable?.("talisman");
 
       if (!rawExtension) {
-        throw new SwapKitError({ errorKey: "wallet_talisman_not_enabled", info: { chain } });
+        throw new USwapError({ errorKey: "wallet_talisman_not_enabled", info: { chain } });
       }
 
       const toolbox = await getSubstrateToolbox(chain, { signer: rawExtension.signer });
       const accounts = await rawExtension.accounts.get();
 
       if (!accounts[0]?.address) {
-        throw new SwapKitError({
+        throw new USwapError({
           errorKey: "wallet_missing_params",
           info: { accounts, address: accounts[0]?.address, wallet: WalletOption.TALISMAN },
         });
@@ -123,9 +129,6 @@ async function getWalletMethods(chain: Chain) {
     }
 
     default:
-      throw new SwapKitError({
-        errorKey: "wallet_chain_not_supported",
-        info: { chain, wallet: WalletOption.TALISMAN },
-      });
+      throw new USwapError({ errorKey: "wallet_chain_not_supported", info: { chain, wallet: WalletOption.TALISMAN } });
   }
 }
