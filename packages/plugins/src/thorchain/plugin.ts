@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -30,7 +28,7 @@ import {
   USwapError,
   wrapWithThrow,
 } from "@uswap/helpers";
-import { type InboundAddressesItem, type QuoteResponseRoute, SwapKitApi, type THORNodeType } from "@uswap/helpers/api";
+import { type InboundAddressesItem, type QuoteResponseRoute, type THORNodeType, USwapApi } from "@uswap/helpers/api";
 import {
   MayaArbitrumVaultAbi,
   MayaEthereumVaultAbi,
@@ -70,13 +68,13 @@ const MayaSpecificAbi = { [Chain.Arbitrum]: MayaArbitrumVaultAbi, [Chain.Ethereu
 export const ThorchainPlugin = createPlugin({
   methods: createTCBasedPlugin(Chain.THORChain),
   name: "thorchain",
-  properties: { supportedSwapkitProviders: [ProviderName.THORCHAIN, ProviderName.THORCHAIN_STREAMING] as const },
+  properties: { supportedUSwapProviders: [ProviderName.THORCHAIN, ProviderName.THORCHAIN_STREAMING] as const },
 });
 
 export const MayachainPlugin = createPlugin({
   methods: createTCBasedPlugin(Chain.Maya),
   name: "mayachain",
-  properties: { supportedSwapkitProviders: [ProviderName.MAYACHAIN, ProviderName.MAYACHAIN_STREAMING] as const },
+  properties: { supportedUSwapProviders: [ProviderName.MAYACHAIN, ProviderName.MAYACHAIN_STREAMING] as const },
 });
 
 function getInboundDataFunction(type?: THORNodeType) {
@@ -92,7 +90,7 @@ function getInboundDataFunction(type?: THORNodeType) {
       } as InboundAddressesItem;
     }
 
-    const inboundData = await SwapKitApi.thornode.getInboundAddresses(type);
+    const inboundData = await USwapApi.thornode.getInboundAddresses(type);
     const chainAddressData = inboundData.find((item) => item.chain === chain);
 
     if (!chainAddressData) throw new USwapError("core_inbound_data_not_found");
@@ -214,7 +212,7 @@ function createTCBasedPlugin<T extends TCLikeChain>(pluginChain: T) {
     }
 
     async function depositToProtocol({ memo, assetValue }: { assetValue: AssetValue; memo: string }) {
-      const mimir = await SwapKitApi.thornode.getMimirInfo(pluginType);
+      const mimir = await USwapApi.thornode.getMimirInfo(pluginType);
 
       // check if trading is halted or not
       if (mimir.HALTCHAINGLOBAL >= 1 || mimir.HALTTHORCHAIN >= 1) {

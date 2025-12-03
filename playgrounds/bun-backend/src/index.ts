@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { Chain } from "@uswap/helpers";
 import { keystoreWallet, SwapKit } from "@uswap/sdk";
 import { KEYSTORE_SUPPORTED_CHAINS } from "@uswap/wallets/keystore";
@@ -11,16 +15,16 @@ if (!phrase) {
 }
 
 console.info("Connecting to keystore...");
-await swapKit.connectKeystore(KEYSTORE_SUPPORTED_CHAINS, phrase);
+await uSwap.connectKeystore(KEYSTORE_SUPPORTED_CHAINS, phrase);
 console.info("Connected to keystore");
 
 console.info("Getting balance...");
-const balance = await swapKit.getBalance(Chain.Bitcoin);
+const balance = await uSwap.getBalance(Chain.Bitcoin);
 console.info("Balance:", balance);
 
 console.info("Addresses: ");
 
 for (const chain of KEYSTORE_SUPPORTED_CHAINS) {
-  const address = swapKit.getAddress(chain);
+  const address = uSwap.getAddress(chain);
   console.info(`${chain}: ${address}`);
 }

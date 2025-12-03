@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -10,7 +8,7 @@ import {
   type DerivationPathArray,
   filterSupportedChains,
   NetworkDerivationPath,
-  SKConfig,
+  USwapConfig,
   USwapError,
   WalletOption,
 } from "@uswap/helpers";
@@ -28,10 +26,10 @@ export const keepkeyWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>
     async function connectKeepkey(chains: Chain[], derivationPathMap?: Record<Chain, DerivationPathArray>) {
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
-      const pairingInfo = SKConfig.get("integrations").keepKey;
+      const pairingInfo = USwapConfig.get("integrations").keepKey;
       if (!pairingInfo) throw new Error("KeepKey config not found");
 
-      const initialApiKey = SKConfig.get("apiKeys").keepKey || "1234";
+      const initialApiKey = USwapConfig.get("apiKeys").keepKey || "1234";
 
       await checkAndLaunch();
 
@@ -39,9 +37,9 @@ export const keepkeyWallet = createWallet({
       const keepkeyConfig = { apiKey: initialApiKey, pairingInfo };
       const keepKeySdk = await KeepKeySdk.create(keepkeyConfig);
 
-      // Persist the new API key via SKConfig after pairing
+      // Persist the new API key via USwapConfig after pairing
       if (keepkeyConfig.apiKey && keepkeyConfig.apiKey !== initialApiKey) {
-        SKConfig.setApiKey("keepKey", keepkeyConfig.apiKey);
+        USwapConfig.setApiKey("keepKey", keepkeyConfig.apiKey);
       }
 
       await Promise.all(

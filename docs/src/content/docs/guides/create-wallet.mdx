@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Creating a Custom Wallet
 description: A guide to create a custom wallet adapter
 ---
 
-This guide explains how to create a custom wallet adapter for SwapKit using the `createWallet` function.
+This guide explains how to create a custom wallet adapter for USwap using the `createWallet` function.
 
 ## Wallet Adapter Structure
 
-A SwapKit wallet adapter consists of:
+A USwap wallet adapter consists of:
 
 1. A wallet factory created with `createWallet`
 2. Configuration for supported chains and derivation paths
@@ -197,22 +198,22 @@ export const customHardwareWallet = createWallet({
 });
 ```
 
-## Using Your Custom Wallet with SwapKit
+## Using Your Custom Wallet with USwap
 
-To use your custom wallet adapter with SwapKit:
+To use your custom wallet adapter with USwap:
 
 ```ts twoslash
-import { SwapKit, Chain } from "@uswap/sdk";
+import { USwap, Chain } from "@uswap/sdk";
 import { myCustomWallet } from "./my-custom-wallet";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...myCustomWallet },
 });
 
 async function connectWithCustomWallet() {
-  await swapKit.connectMyCustomWallet(["ETH", "BSC"]);
+  await uSwap.connectMyCustomWallet(["ETH", "BSC"]);
 
-  const ethWallet = await swapKit.getWallet("ETH");
+  const ethWallet = await uSwap.getWallet("ETH");
 }
 ```
 
@@ -222,11 +223,11 @@ Test your wallet adapter thoroughly before using it in production:
 
 ```ts twoslash
 import { describe, jest, it, expect, beforeEach } from "bun:test";
-import { Chain, AssetValue, SwapKit } from "@uswap/sdk";
+import { Chain, AssetValue, USwap } from "@uswap/sdk";
 import { myCustomWallet } from "./my-custom-wallet";
 
 describe("MyCustomWallet", () => {
-  let swapKit: ReturnType<typeof SwapKit>;
+  let uSwap: ReturnType<typeof USwap>;
 
   beforeEach(() => {
     global.window = {
@@ -237,7 +238,7 @@ describe("MyCustomWallet", () => {
       },
     };
 
-    swapKit = SwapKit({
+    uSwap = USwap({
       wallets: {
         myWallet: myCustomWallet,
       },
@@ -245,9 +246,9 @@ describe("MyCustomWallet", () => {
   });
 
   it("should connect to Ethereum", async () => {
-    await swapKit.connectMyCustomWallet([Chain.Ethereum]);
+    await uSwap.connectMyCustomWallet([Chain.Ethereum]);
 
-    const wallets = swapKit.getAllWallets();
+    const wallets = uSwap.getAllWallets();
     expect(wallets[Chain.Ethereum]).toBeDefined();
     expect(wallets[Chain.Ethereum].address).toBe(
       "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
@@ -255,12 +256,12 @@ describe("MyCustomWallet", () => {
   });
 
   it("should transfer ETH", async () => {
-    await swapKit.connectMyCustomWallet([Chain.Ethereum]);
+    await uSwap.connectMyCustomWallet([Chain.Ethereum]);
 
     const mockTransfer = jest.fn().mockResolvedValue("0xtxhash");
-    swapKit.getWallet(Chain.Ethereum).transfer = mockTransfer;
+    uSwap.getWallet(Chain.Ethereum).transfer = mockTransfer;
 
-    const result = await swapKit.transfer({
+    const result = await uSwap.transfer({
       assetValue: AssetValue.from({ chain: Chain.Ethereum, value: "0.1" }),
       recipient: "0xabc123...",
     });
@@ -282,4 +283,4 @@ When creating a custom wallet adapter, follow these best practices:
 5. **Testing**: Test thoroughly with both happy and error paths
 6. **Documentation**: Document any special requirements or features of your wallet
 
-By following this guide, you can create a custom wallet adapter that integrates seamlessly with the SwapKit ecosystem.
+By following this guide, you can create a custom wallet adapter that integrates seamlessly with the USwap ecosystem.

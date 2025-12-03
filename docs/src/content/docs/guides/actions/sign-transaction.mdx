@@ -1,23 +1,24 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Signing Transactions
-description: How to sign transactions and messages with SwapKit
+description: How to sign transactions and messages with USwap
 ---
 
-SwapKit provides ways to sign transactions and messages across different blockchains. This guide shows how to use these signing capabilities with both granular and all-in-one package approaches.
+USwap provides ways to sign transactions and messages across different blockchains. This guide shows how to use these signing capabilities with both granular and all-in-one package approaches.
 
-## Two Approaches for Using SwapKit
+## Two Approaches for Using USwap
 
-You can use SwapKit in two ways:
+You can use USwap in two ways:
 
 1. **Granular approach** - Import only what you need from individual packages (recommended for frontend):
 
    ```ts
-   import { SwapKit, evmWallet } from "@uswap/sdk";
+   import { USwap, evmWallet } from "@uswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createSwapKit } from "@uswap/sdk";
+   import { createUSwap } from "@uswap/sdk";
    ```
 
 ## Signing Messages
@@ -27,19 +28,19 @@ Signing messages is useful for authentication, proving ownership of an address, 
 ### Granular Approach
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function signMessageExample() {
-  await swapKit.connectEVMWallet([Chain.Ethereum]);
+  await uSwap.connectEVMWallet([Chain.Ethereum]);
 
   const message = "I am proving ownership of this wallet address";
 
   try {
-    const signature = await swapKit.signMessage({
+    const signature = await uSwap.signMessage({
       chain: Chain.Ethereum,
       message,
     });
@@ -54,17 +55,17 @@ async function signMessageExample() {
 ### All-in-one Approach
 
 ```ts twoslash
-import { Chain, createSwapKit } from "@uswap/sdk";
+import { Chain, createUSwap } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
 async function signMessageExample() {
-  await swapKit.connectKeystore([Chain.Ethereum], "your secret phrase here");
+  await uSwap.connectKeystore([Chain.Ethereum], "your secret phrase here");
 
   const message = "I am proving ownership of this wallet address";
 
   try {
-    const signature = await swapKit.signMessage({
+    const signature = await uSwap.signMessage({
       chain: Chain.Ethereum,
       message,
     });
@@ -81,26 +82,26 @@ async function signMessageExample() {
 Different blockchains have different message signing formats:
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet, keystoreWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet, keystoreWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet, ...keystoreWallet },
 });
 
 async function setupWallets() {
-  await swapKit.connectKeystore(
+  await uSwap.connectKeystore(
     [Chain.Bitcoin, Chain.Cosmos, Chain.THORChain],
     "your secret phrase here"
   );
 
-  await swapKit.connectEVMWallet([Chain.Ethereum]);
+  await uSwap.connectEVMWallet([Chain.Ethereum]);
 }
 
 async function signCosmosMessage() {
   const message = "Sign this message to verify your THORChain address";
 
   try {
-    const signature = await swapKit.signMessage({
+    const signature = await uSwap.signMessage({
       chain: Chain.THORChain,
       message,
     });
@@ -117,9 +118,9 @@ async function signCosmosMessage() {
 After signing a message, you or others may want to verify the signature:
 
 ```ts twoslash
-import { Chain, SwapKit, keystoreWallet } from "@uswap/sdk";
+import { Chain, USwap, keystoreWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keystoreWallet },
 });
 
@@ -132,7 +133,7 @@ async function verifySignature() {
     "ac7bfd5b5c9f44788fb533b7f08b213a3e3856e75ecdb19c5e9138ba29c4c1681e82b7de139e0b92cd9442297ec7fdd2c14e7034a3aa417ff9756e9b591d93201";
 
   try {
-    const isValid = await swapKit.verifyMessage({
+    const isValid = await uSwap.verifyMessage({
       chain: Chain.THORChain,
       message,
       address,
@@ -148,7 +149,7 @@ async function verifySignature() {
 
 ## Signing Transactions
 
-In most cases, SwapKit handles transaction signing internally when using methods like `transfer` or `swap`. However, there are cases where you might want to create and sign a transaction separately.
+In most cases, USwap handles transaction signing internally when using methods like `transfer` or `swap`. However, there are cases where you might want to create and sign a transaction separately.
 
 ### Using Toolboxes for Transaction Signing
 
@@ -244,19 +245,19 @@ import {
   AssetValue,
   Chain,
   FeeOption,
-  SwapKit,
+  USwap,
   ledgerWallet,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...ledgerWallet },
 });
 
 async function signWithLedger() {
   try {
-    await swapKit.connectLedger([Chain.Ethereum]);
+    await uSwap.connectLedger([Chain.Ethereum]);
 
-    const ledgerWallet = swapKit.getWallet(Chain.Ethereum);
+    const ledgerWallet = uSwap.getWallet(Chain.Ethereum);
 
     const txHash = await ledgerWallet.transfer({
       assetValue: AssetValue.from({ chain: Chain.Ethereum, value: "0.01" }),

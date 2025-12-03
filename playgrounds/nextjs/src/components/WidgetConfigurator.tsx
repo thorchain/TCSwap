@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -38,7 +42,7 @@ export function WidgetConfigurator({ control }: { control: Control<WidgetConfigu
               </div>
             }
             name="apiUrl"
-            placeholder="https://api.swapkit.dev"
+            placeholder="https://api.uswap.dev"
           />
 
           {isAdvancedVisible && (
@@ -68,7 +72,7 @@ export function WidgetConfigurator({ control }: { control: Control<WidgetConfigu
                 Don't have an API key yet?{" "}
                 <a
                   className="font-medium text-primary-foreground hover:underline"
-                  href="https://swapkit.dev/contact/"
+                  href="https://uswap.dev/contact/"
                   rel="noopener noreferrer"
                   target="_blank">
                   Get your API key

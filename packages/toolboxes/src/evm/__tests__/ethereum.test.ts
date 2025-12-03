@@ -1,8 +1,12 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { beforeEach, describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { AssetValue, Chain, SKConfig } from "@uswap/helpers";
+import { AssetValue, Chain, USwapConfig } from "@uswap/helpers";
 import { erc20ABI } from "@uswap/helpers/contracts";
 import type { JsonRpcProvider, Signer } from "ethers";
 import { getEvmToolbox } from "../toolbox";
@@ -39,7 +43,7 @@ beforeEach(async () => {
   const provider = (connection as any).ethers.provider as JsonRpcProvider;
   const signer = await (connection as any).ethers.getImpersonatedSigner(testAddress);
 
-  SKConfig.set({ apiKeys: { swapKit: process.env.TEST_API_KEY || Bun.env.TEST_API_KEY } });
+  USwapConfig.set({ apiKeys: { uSwap: process.env.TEST_API_KEY || Bun.env.TEST_API_KEY } });
 
   context.provider = provider;
   context.signer = signer as any;

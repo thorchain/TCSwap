@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import {
   AllChains,
   type Chain,
@@ -12,7 +16,7 @@ import type { BalanceResponse, QuoteRequest, QuoteResponse, QuoteResponseRoute }
 import { WalletOption } from "../types";
 import type { FeeMultiplierConfig } from "./feeMultiplier";
 
-export type SKConfigIntegrations = {
+export type USwapConfigIntegrations = {
   chainflip?: { useSDKBroker?: boolean; brokerUrl: string };
   coinbase?: {
     appName: string;
@@ -56,12 +60,12 @@ const rpcUrls = AllChains.reduce(
 );
 
 const initialState = {
-  apiKeys: { blockchair: "", keepKey: "", passkeys: "", swapKit: "", walletConnectProjectId: "", xaman: "" },
+  apiKeys: { blockchair: "", keepKey: "", passkeys: "", uSwap: "", walletConnectProjectId: "", xaman: "" },
   chains: AllChains,
   endpoints: {} as CustomApiEndpoints,
   envs: {
-    apiUrl: "https://api.swapkit.dev",
-    devApiUrl: "https://dev-api.swapkit.dev",
+    apiUrl: "http://swap-api.unstoppable.money",
+    devApiUrl: "http://swap-api-dev.unstoppable.money",
     experimental_apiKey: null as string | null,
     experimental_apiUrlQuote: null as string | null,
     experimental_apiUrlSwap: null as string | null,
@@ -71,45 +75,45 @@ const initialState = {
   feeMultipliers: undefined as FeeMultiplierConfig | undefined,
   integrations: {
     radix: {
-      applicationName: "Swapkit Playground",
+      applicationName: "USwap Playground",
       applicationVersion: "0.0.1",
       dAppDefinitionAddress: "account_rdx128r289p58222hcvev7frs6kue76pl7pdcnw8725aw658v0zggkh9ws",
       network: { dashboardBase: "https://dashboard.radixdlt.com", networkId: 1, networkName: "mainnet" },
     },
-  } as SKConfigIntegrations,
+  } as USwapConfigIntegrations,
 
   requestOptions: { retry: { backoffMultiplier: 2, baseDelay: 300, maxDelay: 5000, maxRetries: 3 }, timeoutMs: 30000 },
   rpcUrls,
   wallets: Object.values(WalletOption),
 };
-type SKState = typeof initialState;
+type USwapState = typeof initialState;
 
-export type SKConfigState = {
-  apiKeys?: Partial<SKState["apiKeys"]>;
-  chains?: SKState["chains"];
+export type USwapConfigState = {
+  apiKeys?: Partial<USwapState["apiKeys"]>;
+  chains?: USwapState["chains"];
   endpoints?: Partial<CustomApiEndpoints>;
-  envs?: Partial<SKState["envs"]>;
-  integrations?: Partial<SKConfigIntegrations>;
-  rpcUrls?: Partial<SKState["rpcUrls"]>;
-  wallets?: SKState["wallets"];
+  envs?: Partial<USwapState["envs"]>;
+  integrations?: Partial<USwapConfigIntegrations>;
+  rpcUrls?: Partial<USwapState["rpcUrls"]>;
+  wallets?: USwapState["wallets"];
   feeMultipliers?: FeeMultiplierConfig;
 };
 
-type SwapKitConfigStore = SKState & {
-  setApiKey: (key: keyof SKState["apiKeys"], apiKey: string) => void;
-  setConfig: (config: SKConfigState) => void;
-  setEnv: <T extends keyof SKState["envs"]>(key: T, value: SKState["envs"][T]) => void;
+type USwapConfigStore = USwapState & {
+  setApiKey: (key: keyof USwapState["apiKeys"], apiKey: string) => void;
+  setConfig: (config: USwapConfigState) => void;
+  setEnv: <T extends keyof USwapState["envs"]>(key: T, value: USwapState["envs"][T]) => void;
   setEndpoint: <T extends keyof CustomApiEndpoints>(key: T, endpoint: CustomApiEndpoints[T]) => void;
-  setRpcUrl: (chain: keyof SKState["rpcUrls"], url: string[]) => void;
-  setRequestOptions: (options: Partial<SKState["requestOptions"]>) => void;
+  setRpcUrl: (chain: keyof USwapState["rpcUrls"], url: string[]) => void;
+  setRequestOptions: (options: Partial<USwapState["requestOptions"]>) => void;
   setIntegrationConfig: (
-    integration: keyof SKState["integrations"],
-    config: SKConfigIntegrations[keyof SKConfigIntegrations],
+    integration: keyof USwapState["integrations"],
+    config: USwapConfigIntegrations[keyof USwapConfigIntegrations],
   ) => void;
   setFeeMultipliers: (multipliers: FeeMultiplierConfig) => void;
 };
 
-export const useSwapKitStore = create<SwapKitConfigStore>((set) => ({
+export const useUSwapStore = create<USwapConfigStore>((set) => ({
   ...initialState,
 
   setApiKey: (key, apiKey) => set((s) => ({ apiKeys: { ...s.apiKeys, [key]: apiKey } })),
@@ -139,8 +143,8 @@ export const useSwapKitStore = create<SwapKitConfigStore>((set) => ({
   setRpcUrl: (chain, url) => set((s) => ({ rpcUrls: { ...s.rpcUrls, [chain]: url } })),
 }));
 
-export const useSwapKitConfig = () =>
-  useSwapKitStore(
+export const useUSwapConfig = () =>
+  useUSwapStore(
     useShallow((state) => ({
       apiKeys: state?.apiKeys,
       chains: state?.chains,
@@ -153,22 +157,24 @@ export const useSwapKitConfig = () =>
     })),
   );
 
-export const SKConfig = {
-  get: <T extends keyof SKState>(key: T) => useSwapKitStore.getState()[key],
-  getState: useSwapKitStore.getState,
-  reinitialize: () => useSwapKitStore.setState(initialState),
-  set: <T extends SKConfigState>(config: T) => useSwapKitStore.getState().setConfig(config),
+export const USwapConfig = {
+  get: <T extends keyof USwapState>(key: T) => useUSwapStore.getState()[key],
+  getState: useUSwapStore.getState,
+  reinitialize: () => useUSwapStore.setState(initialState),
+  set: <T extends USwapConfigState>(config: T) => useUSwapStore.getState().setConfig(config),
 
-  setApiKey: <T extends keyof SKState["apiKeys"]>(key: T, apiKey: string) =>
-    useSwapKitStore.getState().setApiKey(key, apiKey),
+  setApiKey: <T extends keyof USwapState["apiKeys"]>(key: T, apiKey: string) =>
+    useUSwapStore.getState().setApiKey(key, apiKey),
   setEndpoint: <T extends keyof CustomApiEndpoints>(key: T, endpoint: CustomApiEndpoints[T]) =>
-    useSwapKitStore.getState().setEndpoint(key, endpoint),
-  setEnv: <T extends keyof SKState["envs"]>(key: T, value: SKState["envs"][T]) =>
-    useSwapKitStore.getState().setEnv(key, value),
-  setFeeMultipliers: (multipliers: FeeMultiplierConfig) => useSwapKitStore.getState().setFeeMultipliers(multipliers),
-  setIntegrationConfig: <T extends keyof SKState["integrations"]>(integration: T, config: SKConfigIntegrations[T]) =>
-    useSwapKitStore.getState().setIntegrationConfig(integration, config),
-  setRequestOptions: (options: SKState["requestOptions"]) => useSwapKitStore.getState().setRequestOptions(options),
-  setRpcUrl: <T extends keyof SKState["rpcUrls"]>(chain: T, urls: string[]) =>
-    useSwapKitStore.getState().setRpcUrl(chain, urls),
+    useUSwapStore.getState().setEndpoint(key, endpoint),
+  setEnv: <T extends keyof USwapState["envs"]>(key: T, value: USwapState["envs"][T]) =>
+    useUSwapStore.getState().setEnv(key, value),
+  setFeeMultipliers: (multipliers: FeeMultiplierConfig) => useUSwapStore.getState().setFeeMultipliers(multipliers),
+  setIntegrationConfig: <T extends keyof USwapState["integrations"]>(
+    integration: T,
+    config: USwapConfigIntegrations[T],
+  ) => useUSwapStore.getState().setIntegrationConfig(integration, config),
+  setRequestOptions: (options: USwapState["requestOptions"]) => useUSwapStore.getState().setRequestOptions(options),
+  setRpcUrl: <T extends keyof USwapState["rpcUrls"]>(chain: T, urls: string[]) =>
+    useUSwapStore.getState().setRpcUrl(chain, urls),
 };

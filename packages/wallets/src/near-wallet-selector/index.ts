@@ -1,13 +1,11 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import type { Wallet, WalletModuleFactory } from "@near-wallet-selector/core";
 import "@near-wallet-selector/modal-ui-js/styles.css";
 import type { Transaction } from "@near-js/transactions";
-import { Chain, filterSupportedChains, SKConfig, USwapError, WalletOption } from "@uswap/helpers";
+import { Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@uswap/helpers";
 import { getNearToolbox } from "@uswap/toolboxes/near";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
@@ -67,7 +65,7 @@ async function getWalletMethods(walletFactories?: WalletModuleFactory[]) {
   const { setupWalletSelector } = await import("@near-wallet-selector/core");
   const { setupModal } = await import("@near-wallet-selector/modal-ui-js");
 
-  const contractId = SKConfig.get("integrations")?.nearWalletSelector?.contractId || "";
+  const contractId = USwapConfig.get("integrations")?.nearWalletSelector?.contractId || "";
   const selector = await setupWalletSelector({ modules: [...(walletFactories || [])], network: "mainnet" });
 
   const isSignedIn = selector.isSignedIn();

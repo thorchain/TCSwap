@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -8,7 +6,7 @@
 // - `sdk/toolboxes`
 // - `sdk/plugins`
 // - `sdk/wallets`
-import { type SKConfigState, USwap } from "@uswap/core";
+import { USwap, type USwapConfigState } from "@uswap/core";
 import type { createPlugin } from "@uswap/plugins";
 import { ChainflipPlugin } from "@uswap/plugins/chainflip";
 import { EVMPlugin } from "@uswap/plugins/evm";
@@ -126,10 +124,10 @@ export const defaultWallets = {
   ...xamanWallet,
 } as ReturnType<typeof createWallet>;
 
-export function createSwapKit<
+export function createUSwap<
   Plugins extends ReturnType<typeof createPlugin>,
   Wallets extends ReturnType<typeof createWallet>,
->({ config, plugins, wallets }: { config?: SKConfigState; plugins?: Plugins; wallets?: Wallets } = {}) {
+>({ config, plugins, wallets }: { config?: USwapConfigState; plugins?: Plugins; wallets?: Wallets } = {}) {
   const mergedPlugins = { ...defaultPlugins, ...plugins };
   const mergedWallets = { ...defaultWallets, ...wallets };
 

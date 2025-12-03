@@ -1,27 +1,28 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Security
-description: Comprehensive security guide for SwapKit applications including private key management, secure transaction signing, and production best practices
+description: Comprehensive security guide for USwap applications including private key management, secure transaction signing, and production best practices
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-Security is paramount when building blockchain applications with SwapKit. This guide covers private key management, secure transaction signing, production best practices, and common security pitfalls to avoid.
+Security is paramount when building blockchain applications with USwap. This guide covers private key management, secure transaction signing, production best practices, and common security pitfalls to avoid.
 
 ## Private Key Management
 
 ### Never Handle Raw Private Keys
 
-SwapKit is designed to work with secure wallet providers that manage private keys internally:
+USwap is designed to work with secure wallet providers that manage private keys internally:
 
 <Tabs>
   <TabItem label="✅ Secure Approach">
     ```typescript
-    import { SwapKit } from '@uswap/core';
+    import { USwap } from '@uswap/core';
     import { evmWallet } from '@uswap/wallets/evm-extensions';
     import { ledgerWallet } from '@uswap/wallets/ledger';
     import { Chain } from '@uswap/types';
 
-    const swapKit = SwapKit({
+    const uSwap = USwap({
       wallets: {
         evm: evmWallet,
         ledger: ledgerWallet
@@ -29,8 +30,8 @@ SwapKit is designed to work with secure wallet providers that manage private key
     });
 
 
-    await swapKit.connectEVMWallet([Chain.Ethereum]);
-    await swapKit.connectLedger([Chain.Bitcoin]);
+    await uSwap.connectEVMWallet([Chain.Ethereum]);
+    await uSwap.connectLedger([Chain.Bitcoin]);
     ```
 
   </TabItem>
@@ -58,10 +59,10 @@ When using keystore wallets, follow security best practices:
 
 ```typescript
 // @noErrorValidation
-import { SwapKit } from "@uswap/core";
+import { USwap } from "@uswap/core";
 import { keystoreWallet } from "@uswap/wallets/keystore";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { keystore: keystoreWallet },
 });
 
@@ -76,7 +77,7 @@ class SecureKeystoreManager {
     }
 
     try {
-      await swapKit.connectKeystore([Chain.Ethereum], this.phrase);
+      await uSwap.connectKeystore([Chain.Ethereum], this.phrase);
     } finally {
       this.clearPhrase();
     }
@@ -103,7 +104,7 @@ For server-side applications, use environment variables securely:
   <TabItem label=".env.example">
     ```bash
     # API Keys (never commit actual values)
-    SWAPKIT_API_KEY=your_api_key_here
+    USWAP_API_KEY=your_api_key_here
     THORNODE_API_KEY=your_thornode_key_here
 
     # Wallet Connect (for dApp integration)
@@ -116,11 +117,11 @@ For server-side applications, use environment variables securely:
   <TabItem label="Environment Setup">
     ```typescript
 
-    import { SKConfig } from '@uswap/helpers';
+    import { USwapConfig } from '@uswap/helpers';
 
     export function configureSecurely() {
 
-      const requiredEnvVars = ['SWAPKIT_API_KEY'];
+      const requiredEnvVars = ['USWAP_API_KEY'];
       const missing = requiredEnvVars.filter(key => !process.env[key]);
 
       if (missing.length > 0) {
@@ -128,9 +129,9 @@ For server-side applications, use environment variables securely:
       }
 
 
-      SKConfig.set({
+      USwapConfig.set({
         apiKeys: {
-          swapKit: process.env.SWAPKIT_API_KEY!,
+          uSwap: process.env.USWAP_API_KEY!,
           walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID
         },
         envs: {
@@ -151,11 +152,11 @@ Hardware wallets provide the highest security for transaction signing:
 
 ```typescript
 // @noErrorValidation
-import { SwapKit } from "@uswap/core";
+import { USwap } from "@uswap/core";
 import { ledgerWallet, trezorWallet } from "@uswap/wallets";
 import { Chain, AssetValue, USwapError } from "@uswap/helpers";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: {
     ledger: ledgerWallet,
     trezor: trezorWallet,
@@ -167,10 +168,10 @@ class HardwareWalletManager {
     try {
       switch (walletType) {
         case "ledger":
-          await swapKit.connectLedger(chains);
+          await uSwap.connectLedger(chains);
           break;
         case "trezor":
-          await swapKit.connectTrezor(chains);
+          await uSwap.connectTrezor(chains);
           break;
       }
 
@@ -186,7 +187,7 @@ class HardwareWalletManager {
     memo?: string;
   }) {
     try {
-      const isValidRecipient = swapKit.validateAddress(
+      const isValidRecipient = uSwap.validateAddress(
         params.recipient,
         params.assetValue.asset.chain
       );
@@ -195,7 +196,7 @@ class HardwareWalletManager {
         throw new USwapError("core_transaction_invalid_recipient_address");
       }
 
-      const txHash = await swapKit.transfer(params);
+      const txHash = await uSwap.transfer(params);
 
       return { success: true, txHash };
     } catch (error) {
@@ -292,7 +293,7 @@ class TransactionValidator {
     const warnings: string[] = [];
 
     if (
-      !swapKit.validateAddress(params.recipient, params.assetValue.asset.chain)
+      !uSwap.validateAddress(params.recipient, params.assetValue.asset.chain)
     ) {
       errors.push("Invalid recipient address");
     }
@@ -341,7 +342,7 @@ class TransactionValidator {
 }
 
 async function secureTransaction(params: TransactionParams) {
-  const wallet = await swapKit.getWalletWithBalance(
+  const wallet = await uSwap.getWalletWithBalance(
     params.assetValue.asset.chain
   );
   const balance = wallet.balance.find(
@@ -363,7 +364,7 @@ async function secureTransaction(params: TransactionParams) {
     console.warn("Transaction warnings:", validation.warnings);
   }
 
-  return swapKit.transfer(params);
+  return uSwap.transfer(params);
 }
 ```
 
@@ -472,14 +473,14 @@ class MultiSigManager {
     transaction: any,
     signerAddress: string
   ): Promise<string> {
-    const wallet = swapKit.getWallet(signerAddress);
+    const wallet = uSwap.getWallet(signerAddress);
     return wallet.signMessage(JSON.stringify(transaction));
   }
 
   private async broadcastTransaction(
     multiSigTx: MultiSigTransaction
   ): Promise<string> {
-    return swapKit.broadcastTransaction(multiSigTx.transaction);
+    return uSwap.broadcastTransaction(multiSigTx.transaction);
   }
 }
 ```
@@ -539,7 +540,7 @@ export async function secureApiCall(
   const sanitizedParams = sanitizeApiParams(params);
 
 
-  const apiKey = process.env.SWAPKIT_API_KEY;
+  const apiKey = process.env.USWAP_API_KEY;
 
   if (!apiKey) {
     throw new USwapError('api_key_not_configured');
@@ -551,7 +552,7 @@ export async function secureApiCall(
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'User-Agent': 'SwapKit-Secure-Client/1.0'
+        'User-Agent': 'USwap-Secure-Client/1.0'
       },
       body: JSON.stringify(sanitizedParams)
     });
@@ -800,7 +801,7 @@ class SecurityValidator {
     const apiUrl = 'https:
 
 
-    const apiKey = process.env.SWAPKIT_API_KEY;
+    const apiKey = process.env.USWAP_API_KEY;
     if (!apiKey) throw new Error('API key not configured');
     ```
 

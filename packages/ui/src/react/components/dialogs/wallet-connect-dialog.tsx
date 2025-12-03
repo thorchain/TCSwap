@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import { Chain, EVMChains, WalletOption } from "@uswap/helpers";
@@ -8,11 +12,11 @@ import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { match, P } from "ts-pattern";
 import { showModal, useModal } from "../../hooks/use-modal";
-import { useSwapKit } from "../../swapkit-context";
+import { useUSwap } from "../../uswap-context";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { SWAPKIT_WIDGET_TOASTER_ID } from "../ui/sonner";
+import { USWAP_WIDGET_TOASTER_ID } from "../ui/sonner";
 import { WalletIcon } from "../wallet-icon";
 import { WalletKeystoreConnectDialog } from "./wallet-keystore-connect-dialog";
 
@@ -290,7 +294,7 @@ export function WalletConnectDialog() {
 }
 
 function WalletConnectButton({ wallet }: { wallet: WalletOption }) {
-  const { connectWallet, isConnectingWallet, walletType } = useSwapKit();
+  const { connectWallet, isConnectingWallet, walletType } = useUSwap();
   const modal = useModal();
 
   const handleWalletClick = useCallback(async () => {
@@ -300,7 +304,7 @@ function WalletConnectButton({ wallet }: { wallet: WalletOption }) {
       if (!chainsForWallet || chainsForWallet?.length === 0) {
         toast.error("This wallet does not support any chains", {
           description: "Please try a different wallet.",
-          toasterId: SWAPKIT_WIDGET_TOASTER_ID,
+          toasterId: USWAP_WIDGET_TOASTER_ID,
         });
         return;
       }
@@ -321,7 +325,7 @@ function WalletConnectButton({ wallet }: { wallet: WalletOption }) {
     } catch {
       toast.error("Failed to connect your wallet", {
         description: "Make sure your wallet is connected and accessible by the browser.",
-        toasterId: SWAPKIT_WIDGET_TOASTER_ID,
+        toasterId: USWAP_WIDGET_TOASTER_ID,
       });
     }
   }, [connectWallet, modal, wallet]);

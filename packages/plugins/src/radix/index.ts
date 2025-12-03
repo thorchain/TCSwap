@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -26,5 +24,5 @@ export const RadixPlugin = createPlugin({
     },
   }),
   name: "radix",
-  properties: { supportedSwapkitProviders: [ProviderName.CAVIAR_V1] as const },
+  properties: { supportedUSwapProviders: [ProviderName.CAVIAR_V1] as const },
 });

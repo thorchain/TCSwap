@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -11,7 +9,7 @@ import {
   filterSupportedChains,
   type GenericTransferParams,
   getRPCUrl,
-  SKConfig,
+  USwapConfig,
   USwapError,
   WalletOption,
 } from "@uswap/helpers";
@@ -40,7 +38,7 @@ export const walletconnectWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>
     async function connectWalletconnect(chains: Chain[], walletconnectOptions?: SignClientTypes.Options) {
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
-      const { walletConnectProjectId } = SKConfig.get("apiKeys");
+      const { walletConnectProjectId } = USwapConfig.get("apiKeys");
 
       if (!walletConnectProjectId) {
         throw new USwapError("wallet_walletconnect_project_id_not_specified");

@@ -1,11 +1,9 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import type { Cell, OpenedContract, TonClient, WalletContractV4 } from "@ton/ton";
-import { AssetValue, Chain, getChainConfig, SwapKitNumber, USwapError } from "@uswap/helpers";
+import { AssetValue, Chain, getChainConfig, USwapError, USwapNumber } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
 
 import type { TONSigner, TONToolboxParams, TONTransferParams } from "./types";
@@ -57,7 +55,7 @@ export async function getTONToolbox(toolboxParams: TONToolboxParams = {}) {
 
     try {
       const balance = await client.getBalance(Address.parse(address));
-      return [AssetValue.from({ chain: Chain.Ton, value: SwapKitNumber.fromBigInt(balance, baseDecimal) })];
+      return [AssetValue.from({ chain: Chain.Ton, value: USwapNumber.fromBigInt(balance, baseDecimal) })];
     } catch {
       return [AssetValue.from({ chain: Chain.Ton })];
     }

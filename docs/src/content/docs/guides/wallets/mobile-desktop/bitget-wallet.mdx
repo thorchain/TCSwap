@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Bitget Wallet Integration
-description: Complete guide to integrating Bitget Wallet with SwapKit SDK v4 for multi-chain support
+description: Complete guide to integrating Bitget Wallet with USwap SDK v4 for multi-chain support
 ---
 
-Bitget Wallet is a comprehensive multi-chain wallet that supports a wide range of blockchain networks. SwapKit SDK v4 provides extensive support for Bitget Wallet across all its supported chains, making it an excellent choice for multi-chain applications.
+Bitget Wallet is a comprehensive multi-chain wallet that supports a wide range of blockchain networks. USwap SDK v4 provides extensive support for Bitget Wallet across all its supported chains, making it an excellent choice for multi-chain applications.
 
 ## Supported Chains
 
-SwapKit supports Bitget Wallet for these chains:
+USwap supports Bitget Wallet for these chains:
 
 - **EVM Compatible**: All EVM chains (Ethereum, Arbitrum, Aurora, Avalanche, Base, BinanceSmartChain, Gnosis, Optimism, Polygon)
 - **Bitcoin**: Native Bitcoin support
@@ -45,19 +46,19 @@ Bitget Wallet works in:
 - **Edge**: Full support
 - **Mobile browsers**: Full support in app
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
   wallets: { ...bitgetWallet },
@@ -67,12 +68,12 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
 });
@@ -83,18 +84,18 @@ const swapKit = createSwapKit({
 #### Single Chain Connection
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 async function connectBitgetEthereum() {
   try {
-    await swapKit.connectBitget([Chain.Ethereum]);
+    await uSwap.connectBitget([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
-    const balance = await swapKit.getBalance(Chain.Ethereum, true);
+    const address = uSwap.getAddress(Chain.Ethereum);
+    const balance = await uSwap.getBalance(Chain.Ethereum, true);
 
     console.log("Ethereum address:", address);
     console.log("ETH balance:", balance);
@@ -110,9 +111,9 @@ async function connectBitgetEthereum() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
@@ -129,18 +130,18 @@ async function connectMultipleChains() {
   ];
 
   try {
-    await swapKit.connectBitget(supportedChains);
+    await uSwap.connectBitget(supportedChains);
 
     const addresses = {};
     for (const chain of supportedChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
     const balances = await Promise.all(
       supportedChains.map(async (chain) => {
         try {
-          const balance = await swapKit.getBalance(chain, true);
+          const balance = await uSwap.getBalance(chain, true);
           return { chain, balance };
         } catch (error) {
           return { chain, balance: [], error: error.message };
@@ -159,17 +160,17 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 async function connectBitgetBitcoin() {
   try {
-    await swapKit.connectBitget([Chain.Bitcoin]);
+    await uSwap.connectBitget([Chain.Bitcoin]);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
+    const address = uSwap.getAddress(Chain.Bitcoin);
     console.log("Bitget Bitcoin address:", address);
 
     return { success: true, address };
@@ -181,9 +182,9 @@ async function connectBitgetBitcoin() {
 
 async function connectBitgetSolana() {
   try {
-    await swapKit.connectBitget([Chain.Solana]);
+    await uSwap.connectBitget([Chain.Solana]);
 
-    const address = swapKit.getAddress(Chain.Solana);
+    const address = uSwap.getAddress(Chain.Solana);
     console.log("Bitget Solana address:", address);
 
     return { success: true, address };
@@ -202,14 +203,14 @@ async function connectBitgetSolana() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Ethereum]);
+await uSwap.connectBitget([Chain.Ethereum]);
 
 async function sendEthereum() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -221,7 +222,7 @@ async function sendEthereum() {
     console.log("To:", recipient);
     console.log("📱 Approve the transaction in Bitget Wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -240,13 +241,13 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
-await swapKit.connectBitget([Chain.Ethereum]);
+await uSwap.connectBitget([Chain.Ethereum]);
 
 async function sendERC20Token() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -259,7 +260,7 @@ async function sendERC20Token() {
   try {
     console.log("📱 Approve USDC transfer in Bitget Wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -277,14 +278,14 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Bitcoin]);
+await uSwap.connectBitget([Chain.Bitcoin]);
 
 async function sendBitcoin() {
   const recipient = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -296,7 +297,7 @@ async function sendBitcoin() {
     console.log("To:", recipient);
     console.log("📱 Approve the Bitcoin transaction in Bitget Wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -318,14 +319,14 @@ async function sendBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Solana]);
+await uSwap.connectBitget([Chain.Solana]);
 
 async function sendSolana() {
   const recipient = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
@@ -336,7 +337,7 @@ async function sendSolana() {
     console.log("Amount:", amount.toSignificant(6), "SOL");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -355,13 +356,13 @@ async function sendSolana() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
-await swapKit.connectBitget([Chain.Solana]);
+await uSwap.connectBitget([Chain.Solana]);
 
 async function sendSPLToken() {
   const recipient = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
@@ -372,7 +373,7 @@ async function sendSPLToken() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -390,14 +391,14 @@ async function sendSPLToken() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
+await uSwap.connectBitget([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
 
 async function sendOnPolygon() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -406,7 +407,7 @@ async function sendOnPolygon() {
   try {
     console.log("📱 Approve MATIC transfer in Bitget Wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -426,21 +427,21 @@ async function sendOnPolygon() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Cosmos]);
+await uSwap.connectBitget([Chain.Cosmos]);
 
 async function sendCosmos() {
   const recipient = "cosmos1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const amount = AssetValue.fromChainOrSignature("GAIA.ATOM", 1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "Bitget Cosmos transaction",
@@ -461,21 +462,21 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
 
-await swapKit.connectBitget([Chain.Tron]);
+await uSwap.connectBitget([Chain.Tron]);
 
 async function sendTron() {
   const recipient = "TLPwm9iGkMiTUERrQ8KXWCFzPn5Q3wz5jc";
   const amount = AssetValue.fromChainOrSignature("TRON.TRX", 10);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -496,9 +497,9 @@ async function sendTron() {
 ### EVM Chain Management
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
@@ -514,15 +515,15 @@ async function manageEVMChains() {
   ];
 
   try {
-    await swapKit.connectBitget(evmChains);
+    await uSwap.connectBitget(evmChains);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("EVM address (same on all chains):", address);
 
     const balances = {};
     for (const chain of evmChains) {
       try {
-        const balance = await swapKit.getBalance(chain, true);
+        const balance = await uSwap.getBalance(chain, true);
         balances[chain] = balance;
       } catch (error) {
         console.log(`Could not fetch balance for ${chain}:`, error.message);
@@ -539,9 +540,9 @@ async function manageEVMChains() {
 ### Multi-Chain Portfolio View
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
@@ -557,13 +558,13 @@ async function getPortfolioOverview() {
   ];
 
   try {
-    await swapKit.connectBitget(allChains);
+    await uSwap.connectBitget(allChains);
 
     const portfolio = {};
     for (const chain of allChains) {
       try {
-        const address = swapKit.getAddress(chain);
-        const balance = await swapKit.getBalance(chain, true);
+        const address = uSwap.getAddress(chain);
+        const balance = await uSwap.getBalance(chain, true);
 
         portfolio[chain] = {
           address,
@@ -591,9 +592,9 @@ async function getPortfolioOverview() {
 
 ```ts twoslash
 
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...bitgetWallet },
 });
 
@@ -608,9 +609,9 @@ async function diagnosticConnection() {
 
     console.log("🔍 Bitget Wallet detected, attempting connection...");
 
-    await swapKit.connectBitget([Chain.Ethereum]);
+    await uSwap.connectBitget([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("✅ Successfully connected:", address);
 
     return { success: true, address };
@@ -658,7 +659,7 @@ async function checkBitgetProviders() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC",
     });
@@ -667,7 +668,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient balance for transaction + gas fees");
 
-      const balance = await swapKit.getBalance(Chain.Ethereum, true);
+      const balance = await uSwap.getBalance(Chain.Ethereum, true);
       console.log("Current balance:", balance);
       console.log("🔧 Add more funds to your Bitget Wallet");
     }
@@ -702,7 +703,7 @@ async function handleTransactionErrors() {
 ```ts twoslash
 async function handleChainSpecificIssues(chain: Chain) {
   try {
-    await swapKit.connectBitget([chain]);
+    await uSwap.connectBitget([chain]);
   } catch (error) {
     switch (chain) {
       case Chain.Bitcoin:
@@ -752,7 +753,7 @@ async function handleChainSpecificIssues(chain: Chain) {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -791,8 +792,8 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
     throw new Error("Amount must be positive");
   }
 
-  const swapKit = SwapKit({ wallets: { ...bitgetWallet } });
-  await swapKit.connectBitget([chain]);
+  const uSwap = USwap({ wallets: { ...bitgetWallet } });
+  await uSwap.connectBitget([chain]);
 
   let assetValue: AssetValue;
   switch (chain) {
@@ -819,7 +820,7 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue,
       recipient,
     });
@@ -837,7 +838,7 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
 ```ts twoslash
 
 
-const secureSwapKit = SwapKit({
+const secureUSwap = USwap({
   config: {
 
     rpcUrls: {
@@ -848,7 +849,7 @@ const secureSwapKit = SwapKit({
       [Chain.Tron]: "https:
     },
     apiKeys: {
-      swapKit: process.env.SWAPKIT_API_KEY,
+      uSwap: process.env.USWAP_API_KEY,
     },
   },
   wallets: { ...bitgetWallet },
@@ -860,7 +861,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface BitgetWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;
@@ -873,7 +874,7 @@ export function BitgetWallet({ onConnect, onError }: BitgetWalletProps) {
   const [addresses, setAddresses] = useState<Partial<Record<Chain, string>>>({});
   const [selectedChains, setSelectedChains] = useState<Chain[]>([Chain.Ethereum]);
 
-  const swapKit = SwapKit({ wallets: { ...bitgetWallet } });
+  const uSwap = USwap({ wallets: { ...bitgetWallet } });
 
 
   const isBitgetInstalled = typeof window !== 'undefined' &&
@@ -888,11 +889,11 @@ export function BitgetWallet({ onConnect, onError }: BitgetWalletProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectBitget(selectedChains);
+      await uSwap.connectBitget(selectedChains);
 
       const connectedAddresses: Partial<Record<Chain, string>> = {};
       for (const chain of selectedChains) {
-        connectedAddresses[chain] = swapKit.getAddress(chain);
+        connectedAddresses[chain] = uSwap.getAddress(chain);
       }
 
       setAddresses(connectedAddresses);
@@ -906,7 +907,7 @@ export function BitgetWallet({ onConnect, onError }: BitgetWalletProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddresses({});
   };
@@ -991,4 +992,4 @@ export function BitgetWallet({ onConnect, onError }: BitgetWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of Bitget Wallet integration with SwapKit SDK v4, including multi-chain support, security best practices, and troubleshooting for the most common issues across different blockchain networks.
+This comprehensive guide covers all aspects of Bitget Wallet integration with USwap SDK v4, including multi-chain support, security best practices, and troubleshooting for the most common issues across different blockchain networks.

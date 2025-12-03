@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Radix Integration
-description: Complete guide to integrating Radix DLT with SwapKit SDK for XRD operations and DeFi applications
+description: Complete guide to integrating Radix DLT with USwap SDK for XRD operations and DeFi applications
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Radix DLT integration with SwapKit, including wallet connections, XRD transfers, and native DeFi operations.
+This guide covers Radix DLT integration with USwap, including wallet connections, XRD transfers, and native DeFi operations.
 
 ## Overview
 
-Radix DLT is a layer-1 protocol designed specifically for DeFi with atomic composability and linear scalability. SwapKit provides comprehensive Radix support through:
+Radix DLT is a layer-1 protocol designed specifically for DeFi with atomic composability and linear scalability. USwap provides comprehensive Radix support through:
 
 - **Radix Toolbox**: Native Radix operations with XRD token
 - **Resource-Oriented Architecture**: Work with Radix's unique resource model
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const radixWallet = await swapKit.getWallet(Chain.Radix);
+const radixWallet = await uSwap.getWallet(Chain.Radix);
 
 ````
 </TabItem>
@@ -75,11 +76,11 @@ Connect to Radix using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Radix], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Radix], "your mnemonic phrase");
 
-await swapKit.connectRadix([Chain.Radix]);
+await uSwap.connectRadix([Chain.Radix]);
 
-await swapKit.connectLedger([Chain.Radix]);
+await uSwap.connectLedger([Chain.Radix]);
 ```
 
 ### Address Generation
@@ -89,7 +90,7 @@ Radix uses bech32 addresses with different prefixes:
 ```typescript
 // @noErrorValidation
 
-const radixAddress = swapKit.getAddress(Chain.Radix);
+const radixAddress = uSwap.getAddress(Chain.Radix);
 
 console.log("Radix address:", radixAddress);
 
@@ -108,7 +109,7 @@ console.log("Radix public key:", publicKey);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient:
     "account_rdx12yy34s8nfpdtjgzcmnqkjlcl5h5lh7x5hljgykgs5p9w4hxm0h6fkr",
   assetValue: AssetValue.from({
@@ -168,7 +169,7 @@ Radix uses a resource-oriented model where everything is a resource:
 // @noErrorValidation
 
 const accountResources = await radixToolbox.getAccountResources(
-  swapKit.getAddress(Chain.Radix)
+  uSwap.getAddress(Chain.Radix)
 );
 
 console.log("Account resources:");
@@ -308,7 +309,7 @@ const claimRewards = async () => {
   const claimTx = await radixToolbox.claimFarmingRewards({
     farmAddress:
       "component_rdx1cpxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    stakingAddress: swapKit.getAddress(Chain.Radix),
+    stakingAddress: uSwap.getAddress(Chain.Radix),
   });
 
   console.log("Rewards claimed:", claimTx);
@@ -358,7 +359,7 @@ const transferNFT = async () => {
 
 
 const getOwnedNFTs = async () => {
-  const nfts = await radixToolbox.getNFTs(swapKit.getAddress(Chain.Radix));
+  const nfts = await radixToolbox.getNFTs(uSwap.getAddress(Chain.Radix));
 
   console.log("Owned NFTs:");
   nfts.forEach((nft) => {
@@ -375,16 +376,16 @@ const getOwnedNFTs = async () => {
 // @noErrorValidation
 
 const bridgeToEthereum = async () => {
-  const bridgeQuote = await swapKit.getQuote({
+  const bridgeQuote = await uSwap.getQuote({
     sellAsset: "XRD.XRD",
     sellAmount: "1000",
     buyAsset: "ETH.XRD",
-    senderAddress: swapKit.getAddress(Chain.Radix),
-    recipientAddress: swapKit.getAddress(Chain.Ethereum),
+    senderAddress: uSwap.getAddress(Chain.Radix),
+    recipientAddress: uSwap.getAddress(Chain.Ethereum),
   });
 
   if (bridgeQuote.routes.length > 0) {
-    const bridgeTx = await swapKit.swap({
+    const bridgeTx = await uSwap.swap({
       route: bridgeQuote.routes[0],
       feeOptionKey: FeeOption.Fast,
     });
@@ -422,10 +423,10 @@ const arbitrageOpportunity = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Radix, [
+USwapConfig.setRpcUrl(Chain.Radix, [
   "https:
   "https:
   "https:
@@ -433,7 +434,7 @@ SKConfig.setRpcUrl(Chain.Radix, [
 
 
 const customRadixGateway = "https:
-SKConfig.setRpcUrl(Chain.Radix, customRadixGateway);
+USwapConfig.setRpcUrl(Chain.Radix, customRadixGateway);
 
 
 const radixToolbox = await getRadixToolbox({
@@ -448,8 +449,8 @@ const radixToolbox = await getRadixToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Radix, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Radix, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 const testnetToolbox = await getRadixToolbox({
   phrase: "your mnemonic",
@@ -459,7 +460,7 @@ const testnetToolbox = await getRadixToolbox({
 
 
 const faucetRequest = await testnetToolbox.requestFaucetTokens(
-  swapKit.getAddress(Chain.Radix)
+  uSwap.getAddress(Chain.Radix)
 );
 
 console.log("Faucet tokens requested:", faucetRequest);
@@ -477,7 +478,7 @@ const batchOperations = async () => {
     .createTransactionManifest()
 
     .withdrawFromAccount(
-      swapKit.getAddress(Chain.Radix),
+      uSwap.getAddress(Chain.Radix),
       "resource_rdx1tknxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       "100"
     )
@@ -492,7 +493,7 @@ const batchOperations = async () => {
     )
 
     .callMethodWithAllResources(
-      swapKit.getAddress(Chain.Radix),
+      uSwap.getAddress(Chain.Radix),
       "deposit_batch"
     )
     .build();
@@ -507,7 +508,7 @@ const batchOperations = async () => {
 
 const optimizeResources = async () => {
   const resources = await radixToolbox.getAccountResources(
-    swapKit.getAddress(Chain.Radix)
+    uSwap.getAddress(Chain.Radix)
   );
 
   const consolidationTxs = [];
@@ -515,7 +516,7 @@ const optimizeResources = async () => {
   for (const resource of resources) {
     if (resource.amount < 1 && resource.amount > 0) {
       const consolidateTx = await radixToolbox.transferResource({
-        recipient: swapKit.getAddress(Chain.Radix),
+        recipient: uSwap.getAddress(Chain.Radix),
         resourceAddress: resource.resourceAddress,
         amount: resource.amount.toString(),
         message: "Consolidation",
@@ -541,7 +542,7 @@ const optimizeResources = async () => {
 
      handleDeposits: async (resourceAddress: string, amount: string) => {
        const balance = await radixToolbox.getResourceBalance(
-         swapKit.getAddress(Chain.Radix),
+         uSwap.getAddress(Chain.Radix),
          resourceAddress
        );
 
@@ -561,7 +562,7 @@ const optimizeResources = async () => {
      const manifest = radixToolbox
        .createTransactionManifest()
        .withdrawFromAccount(
-         swapKit.getAddress(Chain.Radix),
+         uSwap.getAddress(Chain.Radix),
          "resource_rdx1tknxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
          "100"
        )
@@ -578,7 +579,7 @@ const optimizeResources = async () => {
          "95"
        )
        .callMethodWithAllResources(
-         swapKit.getAddress(Chain.Radix),
+         uSwap.getAddress(Chain.Radix),
          "deposit_batch"
        )
        .build();

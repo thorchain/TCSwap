@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Maya Protocol Integration
-description: Complete guide to integrating Maya Protocol with SwapKit SDK for CACAO operations and cross-chain swaps
+description: Complete guide to integrating Maya Protocol with USwap SDK for CACAO operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Maya Protocol integration with SwapKit, including wallet connections, CACAO operations, liquidity provision, and cross-chain swaps.
+This guide covers Maya Protocol integration with USwap, including wallet connections, CACAO operations, liquidity provision, and cross-chain swaps.
 
 ## Overview
 
-Maya Protocol is a fork of THORChain focused on privacy-preserving cross-chain liquidity. SwapKit provides comprehensive Maya Protocol support through:
+Maya Protocol is a fork of THORChain focused on privacy-preserving cross-chain liquidity. USwap provides comprehensive Maya Protocol support through:
 
 - **Maya Toolbox**: Native Maya operations with CACAO token
 - **Privacy Features**: Enhanced privacy for cross-chain swaps
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const mayaWallet = await swapKit.getWallet(Chain.Maya);
+const mayaWallet = await uSwap.getWallet(Chain.Maya);
 
 ````
 </TabItem>
@@ -75,11 +76,11 @@ Connect to Maya Protocol using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Maya], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Maya], "your mnemonic phrase");
 
-await swapKit.connectKeplr([Chain.Maya]);
+await uSwap.connectKeplr([Chain.Maya]);
 
-await swapKit.connectLedger([Chain.Maya]);
+await uSwap.connectLedger([Chain.Maya]);
 ```
 
 ### Address Generation
@@ -89,7 +90,7 @@ Maya addresses use bech32 format with "maya" prefix:
 ```typescript
 // @noErrorValidation
 
-const mayaAddress = swapKit.getAddress(Chain.Maya);
+const mayaAddress = uSwap.getAddress(Chain.Maya);
 
 console.log("Maya address:", mayaAddress);
 
@@ -108,7 +109,7 @@ console.log("Maya public key:", publicKey);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "maya1xv9tklw7d82sezh9haa573wufgy59vmwe6xxe5",
   assetValue: AssetValue.from({
     chain: Chain.Maya,
@@ -169,7 +170,7 @@ validators.forEach((validator, index) => {
 const bondTx = await mayaToolbox.bondNode({
   assetValue: AssetValue.from({ chain: Chain.Maya, value: "1000000" }),
   nodeAddress: "maya1nodeaddress...",
-  bondAddress: swapKit.getAddress(Chain.Maya),
+  bondAddress: uSwap.getAddress(Chain.Maya),
   gasLimit: 200000,
   gasPrice: "0.025cacao",
 });
@@ -200,20 +201,20 @@ Maya Protocol supports liquidity provision similar to THORChain:
 // @noErrorValidation
 
 const addLiquidity = async () => {
-  const cacaoLiquidity = await swapKit.maya.addLiquidity({
+  const cacaoLiquidity = await uSwap.maya.addLiquidity({
     baseAssetValue: AssetValue.from({ chain: Chain.Maya, value: "100" }),
     assetValue: AssetValue.from({ asset: "BTC.BTC", value: "0" }),
-    baseAssetAddr: swapKit.getAddress(Chain.Maya),
+    baseAssetAddr: uSwap.getAddress(Chain.Maya),
     mode: "baseAsset",
   });
 
   console.log("CACAO liquidity added:", cacaoLiquidity);
 
-  const symmetricLiquidity = await swapKit.maya.addLiquidity({
+  const symmetricLiquidity = await uSwap.maya.addLiquidity({
     baseAssetValue: AssetValue.from({ chain: Chain.Maya, value: "50" }),
     assetValue: AssetValue.from({ asset: "BTC.BTC", value: "0.001" }),
-    baseAssetAddr: swapKit.getAddress(Chain.Maya),
-    assetAddr: swapKit.getAddress(Chain.Bitcoin),
+    baseAssetAddr: uSwap.getAddress(Chain.Maya),
+    assetAddr: uSwap.getAddress(Chain.Bitcoin),
     mode: "sym",
   });
 
@@ -224,7 +225,7 @@ const addLiquidity = async () => {
 };
 
 const withdrawLiquidity = async () => {
-  const withdrawal = await swapKit.maya.withdraw({
+  const withdrawal = await uSwap.maya.withdraw({
     assetValue: AssetValue.from({ asset: "BTC.BTC", value: "0" }),
     percent: 50,
     from: "sym",
@@ -235,10 +236,10 @@ const withdrawLiquidity = async () => {
 };
 
 const getLiquidityPosition = async () => {
-  import { SwapKitApi } from "@uswap/helpers/api";
+  import { USwapApi } from "@uswap/helpers/api";
 
-  const position = await SwapKitApi.mayachainMidgard.getLiquidityPosition(
-    swapKit.getAddress(Chain.Maya)
+  const position = await USwapApi.mayachainMidgard.getLiquidityPosition(
+    uSwap.getAddress(Chain.Maya)
   );
 
   console.log("Maya liquidity position:", {
@@ -257,12 +258,12 @@ Maya Protocol's key feature is privacy-preserving cross-chain swaps:
 // @noErrorValidation
 
 const privateSwap = async () => {
-  const swapQuote = await swapKit.getQuote({
+  const swapQuote = await uSwap.getQuote({
     sellAsset: "MAYA.CACAO",
     sellAmount: "100",
     buyAsset: "BTC.BTC",
-    senderAddress: swapKit.getAddress(Chain.Maya),
-    recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+    senderAddress: uSwap.getAddress(Chain.Maya),
+    recipientAddress: uSwap.getAddress(Chain.Bitcoin),
     providers: ["MAYA"],
     privacy: true,
   });
@@ -273,7 +274,7 @@ const privateSwap = async () => {
     privacyLevel: swapQuote.privacyLevel,
   });
 
-  const privateSwapTx = await swapKit.swap({
+  const privateSwapTx = await uSwap.swap({
     route: swapQuote.routes[0],
     feeOptionKey: FeeOption.Fast,
     privacy: {
@@ -287,17 +288,17 @@ const privateSwap = async () => {
 };
 
 const multiHopPrivateSwap = async () => {
-  const multiHopQuote = await swapKit.getQuote({
+  const multiHopQuote = await uSwap.getQuote({
     sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     sellAmount: "1000",
     buyAsset: "MAYA.CACAO",
-    senderAddress: swapKit.getAddress(Chain.Ethereum),
-    recipientAddress: swapKit.getAddress(Chain.Maya),
+    senderAddress: uSwap.getAddress(Chain.Ethereum),
+    recipientAddress: uSwap.getAddress(Chain.Maya),
     providers: ["MAYA"],
     privacy: true,
   });
 
-  const multiHopTx = await swapKit.swap({
+  const multiHopTx = await uSwap.swap({
     route: multiHopQuote.routes[0],
     feeOptionKey: FeeOption.Average,
     privacy: { enabled: true, mixingRounds: 3 },
@@ -315,7 +316,7 @@ Similar to THORNames, Maya has its own naming service:
 const registerMayaName = async () => {
   const mayaName = "myprivacyname";
 
-  const isAvailable = await swapKit.mayaNames.isAvailable(mayaName);
+  const isAvailable = await uSwap.mayaNames.isAvailable(mayaName);
 
   if (!isAvailable) {
     console.log("Maya name already taken");
@@ -327,12 +328,12 @@ const registerMayaName = async () => {
     value: "10.02",
   });
 
-  const registerTx = await swapKit.maya.registerName({
+  const registerTx = await uSwap.maya.registerName({
     assetValue: registrationFee,
     name: mayaName,
     chain: "MAYA",
-    address: swapKit.getAddress(Chain.Maya),
-    owner: swapKit.getAddress(Chain.Maya),
+    address: uSwap.getAddress(Chain.Maya),
+    owner: uSwap.getAddress(Chain.Maya),
     preferredAsset: "BTC.BTC",
   });
 
@@ -340,21 +341,21 @@ const registerMayaName = async () => {
 };
 
 const updateMayaName = async () => {
-  const updateTx = await swapKit.maya.registerName({
+  const updateTx = await uSwap.maya.registerName({
     assetValue: AssetValue.from({ chain: Chain.Maya, value: "0.02" }),
     name: "myprivacyname",
     chain: "BTC",
-    address: swapKit.getAddress(Chain.Bitcoin),
-    owner: swapKit.getAddress(Chain.Maya),
+    address: uSwap.getAddress(Chain.Bitcoin),
+    owner: uSwap.getAddress(Chain.Maya),
   });
 
   console.log("Maya name updated:", updateTx);
 };
 
 const lookupMayaName = async () => {
-  import { SwapKitApi } from "@uswap/helpers/api";
+  import { USwapApi } from "@uswap/helpers/api";
 
-  const nameDetails = await SwapKitApi.mayachainMidgard.getMayaNameDetails(
+  const nameDetails = await USwapApi.mayachainMidgard.getMayaNameDetails(
     "privacy"
   );
 
@@ -374,18 +375,18 @@ const lookupMayaName = async () => {
 // @noErrorValidation
 
 const anonymousSwap = async () => {
-  const anonymousQuote = await swapKit.getQuote({
+  const anonymousQuote = await uSwap.getQuote({
     sellAsset: "BTC.BTC",
     sellAmount: "0.01",
     buyAsset: "MAYA.CACAO",
-    senderAddress: swapKit.getAddress(Chain.Bitcoin),
-    recipientAddress: swapKit.getAddress(Chain.Maya),
+    senderAddress: uSwap.getAddress(Chain.Bitcoin),
+    recipientAddress: uSwap.getAddress(Chain.Maya),
     providers: ["MAYA"],
     privacy: true,
     anonymous: true,
   });
 
-  const anonymousTx = await swapKit.swap({
+  const anonymousTx = await uSwap.swap({
     route: anonymousQuote.routes[0],
     feeOptionKey: FeeOption.Average,
     privacy: {
@@ -409,17 +410,17 @@ const privateMultiAssetSwap = async () => {
 
   for (const { asset, amount } of assets) {
     const [chain] = asset.split(".");
-    const quote = await swapKit.getQuote({
+    const quote = await uSwap.getQuote({
       sellAsset: asset,
       sellAmount: amount,
       buyAsset: "MAYA.CACAO",
-      senderAddress: swapKit.getAddress(chain as Chain),
-      recipientAddress: swapKit.getAddress(Chain.Maya),
+      senderAddress: uSwap.getAddress(chain as Chain),
+      recipientAddress: uSwap.getAddress(Chain.Maya),
       providers: ["MAYA"],
       privacy: true,
     });
 
-    await swapKit.swap({
+    await uSwap.swap({
       route: quote.routes[0],
       privacy: { enabled: true, mixingRounds: 7 },
     });
@@ -437,7 +438,7 @@ const privateMultiAssetSwap = async () => {
 // @noErrorValidation
 
 const analyzePrivacyMetrics = async () => {
-  const metrics = await swapKit.maya.getPrivacyMetrics();
+  const metrics = await uSwap.maya.getPrivacyMetrics();
 
   console.log("Maya Privacy Metrics:", {
     totalMixingVolume: metrics.totalMixingVolume,
@@ -446,8 +447,8 @@ const analyzePrivacyMetrics = async () => {
     anonymitySet: metrics.anonymitySet,
   });
 
-  const personalScore = await swapKit.maya.getPersonalPrivacyScore(
-    swapKit.getAddress(Chain.Maya)
+  const personalScore = await uSwap.maya.getPersonalPrivacyScore(
+    uSwap.getAddress(Chain.Maya)
   );
 
   console.log("Personal privacy score:", personalScore);
@@ -460,10 +461,10 @@ const analyzePrivacyMetrics = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Maya, [
+USwapConfig.setRpcUrl(Chain.Maya, [
   "https:
   "https:
   "https:
@@ -471,7 +472,7 @@ SKConfig.setRpcUrl(Chain.Maya, [
 
 
 const customMayaRpc = "https:
-SKConfig.setRpcUrl(Chain.Maya, customMayaRpc);
+USwapConfig.setRpcUrl(Chain.Maya, customMayaRpc);
 
 
 const mayaToolbox = await getMayaToolbox({
@@ -486,8 +487,8 @@ const mayaToolbox = await getMayaToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Maya, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Maya, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 const stagenetToolbox = await getMayaToolbox({
   phrase: "your mnemonic",
@@ -509,7 +510,7 @@ Handle Maya-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -575,17 +576,17 @@ const optimizedPrivateSwap = async (
 ) => {
   const settings = privacyLevels[privacyLevel];
 
-  const quote = await swapKit.getQuote({
+  const quote = await uSwap.getQuote({
     sellAsset: "BTC.BTC",
     sellAmount: "0.01",
     buyAsset: "MAYA.CACAO",
-    senderAddress: swapKit.getAddress(Chain.Bitcoin),
-    recipientAddress: swapKit.getAddress(Chain.Maya),
+    senderAddress: uSwap.getAddress(Chain.Bitcoin),
+    recipientAddress: uSwap.getAddress(Chain.Maya),
     providers: ["MAYA"],
     privacy: true,
   });
 
-  return await swapKit.swap({
+  return await uSwap.swap({
     route: quote.routes[0],
     privacy: { enabled: true, ...settings },
   });
@@ -646,7 +647,7 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
 
    ```typescript
    const monitorPrivacy = async () => {
-     const metrics = await swapKit.maya.getPrivacyMetrics();
+     const metrics = await uSwap.maya.getPrivacyMetrics();
 
      if (metrics.anonymitySet < 100) {
        console.warn(
@@ -667,7 +668,7 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
      sellAsset: string,
      buyAsset: string
    ) => {
-     const privacySupported = await swapKit.maya.checkPrivacySupport(
+     const privacySupported = await uSwap.maya.checkPrivacySupport(
        sellAsset,
        buyAsset
      );
@@ -690,7 +691,7 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
      console.log("Privacy transaction submitted - delays expected");
 
      const checkInterval = setInterval(async () => {
-       const status = await swapKit.maya.getPrivacyTransactionStatus(txHash);
+       const status = await uSwap.maya.getPrivacyTransactionStatus(txHash);
 
        console.log(`Privacy status: ${status.phase} (${status.progress}%)`);
 
@@ -713,7 +714,7 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
      if (error.code === "toolbox_maya_mixing_failed") {
        console.log("Mixing failed - retrying with fewer rounds");
 
-       return await swapKit.swap({
+       return await uSwap.swap({
          route: error.originalRoute,
          privacy: {
            enabled: true,
@@ -732,7 +733,7 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
      const targetSize = 50;
 
      while (true) {
-       const metrics = await swapKit.maya.getPrivacyMetrics();
+       const metrics = await uSwap.maya.getPrivacyMetrics();
 
        if (metrics.anonymitySet >= targetSize) {
          console.log(`Anonymity set reached: ${metrics.anonymitySet}`);
@@ -752,13 +753,13 @@ const efficientPrivateTransfer = await mayaToolbox.transfer({
    const fallbackToRegularSwap = async (originalQuote: any) => {
      console.log("Privacy unavailable - falling back to regular swap");
 
-     const regularQuote = await swapKit.getQuote({
+     const regularQuote = await uSwap.getQuote({
        ...originalQuote,
        privacy: false,
        providers: ["THORCHAIN"],
      });
 
-     return await swapKit.swap({
+     return await uSwap.swap({
        route: regularQuote.routes[0],
        feeOptionKey: FeeOption.Fast,
      });

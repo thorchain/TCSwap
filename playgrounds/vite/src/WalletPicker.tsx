@@ -1,5 +1,9 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
-import { Chain, EVMChains, getDerivationPathFor, getEIP6963Wallets, SKConfig, WalletOption } from "@uswap/core";
+import { Chain, EVMChains, getDerivationPathFor, getEIP6963Wallets, USwapConfig, WalletOption } from "@uswap/core";
 import type { DerivationPathArray, FullWallet } from "@uswap/sdk";
 import { LEDGER_SUPPORTED_CHAINS } from "@uswap/wallets/ledger";
 import { BITGET_SUPPORTED_CHAINS } from "@uswap/wallets/bitget";
@@ -25,12 +29,12 @@ import { useCallback, useState } from "react";
 import { ChainSelector } from "./components/ChainSelector";
 import { KeystoreUpload } from "./components/KeystoreUpload";
 import { WalletButton } from "./components/WalletButton";
-import type { SwapKitClient } from "./swapKitClient";
+import type { USwapClient } from "./uSwapClient";
 
 type Props = {
   setPhrase: (phrase: string) => void;
   setWallet: (wallet: FullWallet[Chain] | FullWallet[Chain][]) => void;
-  skClient?: SwapKitClient;
+  skClient?: USwapClient;
 };
 
 const walletOptions = Object.values(WalletOption).filter((o) => ![WalletOption.EXODUS].includes(o));
@@ -102,7 +106,7 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
           );
 
           await skClient.connectKeepkey?.(chainsToConnect, derivationPaths);
-          const { keepKey } = SKConfig.get("apiKeys");
+          const { keepKey } = USwapConfig.get("apiKeys");
           if (keepKey) {
             localStorage.setItem("keepkeyApiKey", keepKey);
           }

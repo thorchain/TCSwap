@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Phantom Browser Extension Integration
-description: Complete guide to integrating Phantom wallet with SwapKit SDK v4 for multi-chain support
+description: Complete guide to integrating Phantom wallet with USwap SDK v4 for multi-chain support
 ---
 
-Phantom is a popular multi-chain browser extension wallet that originally focused on Solana but now supports Ethereum and Bitcoin as well. SwapKit SDK v4 provides comprehensive support for Phantom across all its supported chains.
+Phantom is a popular multi-chain browser extension wallet that originally focused on Solana but now supports Ethereum and Bitcoin as well. USwap SDK v4 provides comprehensive support for Phantom across all its supported chains.
 
 ## Supported Chains
 
-SwapKit supports Phantom wallet for:
+USwap supports Phantom wallet for:
 
 - **Solana**: Native Solana support with SPL tokens
 - **Ethereum**: EVM functionality with ERC-20 tokens
@@ -41,19 +42,19 @@ Phantom works in:
 - **Brave**: Full support
 - **Edge**: Full support
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
   wallets: { ...phantomWallet },
@@ -63,12 +64,12 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
 });
@@ -79,18 +80,18 @@ const swapKit = createSwapKit({
 #### Single Chain Connection
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 async function connectPhantomSolana() {
   try {
-    await swapKit.connectPhantom([Chain.Solana]);
+    await uSwap.connectPhantom([Chain.Solana]);
 
-    const address = swapKit.getAddress(Chain.Solana);
-    const balance = await swapKit.getBalance(Chain.Solana, true);
+    const address = uSwap.getAddress(Chain.Solana);
+    const balance = await uSwap.getBalance(Chain.Solana, true);
 
     console.log("Solana address:", address);
     console.log("SOL balance:", balance);
@@ -106,9 +107,9 @@ async function connectPhantomSolana() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
@@ -116,17 +117,17 @@ async function connectMultipleChains() {
   const supportedChains = [Chain.Solana, Chain.Ethereum, Chain.Bitcoin];
 
   try {
-    await swapKit.connectPhantom(supportedChains);
+    await uSwap.connectPhantom(supportedChains);
 
     const addresses = {};
     for (const chain of supportedChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
     const balances = await Promise.all(
       supportedChains.map(async (chain) => {
-        const balance = await swapKit.getBalance(chain, true);
+        const balance = await uSwap.getBalance(chain, true);
         return { chain, balance };
       })
     );
@@ -142,17 +143,17 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 async function connectPhantomEthereum() {
   try {
-    await swapKit.connectPhantom([Chain.Ethereum]);
+    await uSwap.connectPhantom([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Phantom Ethereum address:", address);
 
     return { success: true, address };
@@ -164,9 +165,9 @@ async function connectPhantomEthereum() {
 
 async function connectPhantomBitcoin() {
   try {
-    await swapKit.connectPhantom([Chain.Bitcoin]);
+    await uSwap.connectPhantom([Chain.Bitcoin]);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
+    const address = uSwap.getAddress(Chain.Bitcoin);
     console.log("Phantom Bitcoin address:", address);
 
     return { success: true, address };
@@ -185,14 +186,14 @@ async function connectPhantomBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 
-await swapKit.connectPhantom([Chain.Solana]);
+await uSwap.connectPhantom([Chain.Solana]);
 
 async function sendSol() {
   const recipient = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
@@ -203,7 +204,7 @@ async function sendSol() {
     console.log("Amount:", amount.toSignificant(6), "SOL");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -222,13 +223,13 @@ async function sendSol() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
-await swapKit.connectPhantom([Chain.Solana]);
+await uSwap.connectPhantom([Chain.Solana]);
 
 async function sendSPLToken() {
   const recipient = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
@@ -239,7 +240,7 @@ async function sendSPLToken() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -257,7 +258,7 @@ async function sendToPDA() {
   const amount = AssetValue.fromChainOrSignature("SOL.SOL", 0.1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       isProgramDerivedAddress: true,
@@ -276,21 +277,21 @@ async function sendToPDA() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 
-await swapKit.connectPhantom([Chain.Ethereum]);
+await uSwap.connectPhantom([Chain.Ethereum]);
 
 async function sendEthereumFromPhantom() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
   const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -311,7 +312,7 @@ async function sendERC20FromPhantom() {
   const amount = AssetValue.fromChainOrSignature("ETH.USDC-0xA0B86A33E6441E89D5E4C4EDF4C8DF4C0E6C62F6", 100);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -329,14 +330,14 @@ async function sendERC20FromPhantom() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 
-await swapKit.connectPhantom([Chain.Bitcoin]);
+await uSwap.connectPhantom([Chain.Bitcoin]);
 
 async function sendBitcoinFromPhantom() {
   const recipient = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -347,7 +348,7 @@ async function sendBitcoinFromPhantom() {
     console.log("Amount:", amount.toSignificant(8), "BTC");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -368,16 +369,16 @@ async function sendBitcoinFromPhantom() {
 ### Solana-Specific Operations
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
-await swapKit.connectPhantom([Chain.Solana]);
+await uSwap.connectPhantom([Chain.Solana]);
 
 async function advancedSolanaOperations() {
-  const wallet = await swapKit.getWalletWithBalance(Chain.Solana);
+  const wallet = await uSwap.getWalletWithBalance(Chain.Solana);
 
   function isPDA(address: string): boolean {
     return address.length === 44 && !address.includes("1" || "2" || "3" || "4");
@@ -389,7 +390,7 @@ async function advancedSolanaOperations() {
   const isProgramDerivedAddress = isPDA(recipient);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       isProgramDerivedAddress,
@@ -411,7 +412,7 @@ async function handleSPLTokenAccount() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -432,20 +433,20 @@ async function handleSPLTokenAccount() {
 ### Network Switching
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 async function switchBetweenChains() {
   try {
-    await swapKit.connectPhantom([Chain.Solana]);
-    const solanaAddress = swapKit.getAddress(Chain.Solana);
+    await uSwap.connectPhantom([Chain.Solana]);
+    const solanaAddress = uSwap.getAddress(Chain.Solana);
     console.log("Connected to Solana:", solanaAddress);
 
-    await swapKit.connectPhantom([Chain.Ethereum]);
-    const ethereumAddress = swapKit.getAddress(Chain.Ethereum);
+    await uSwap.connectPhantom([Chain.Ethereum]);
+    const ethereumAddress = uSwap.getAddress(Chain.Ethereum);
     console.log("Connected to Ethereum:", ethereumAddress);
 
     console.log("📱 Please switch to the desired network in Phantom wallet");
@@ -467,9 +468,9 @@ async function switchBetweenChains() {
 
 ```ts twoslash
 
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
@@ -491,9 +492,9 @@ async function diagnosticConnection() {
 
     console.log("🔍 Phantom detected, attempting connection...");
 
-    await swapKit.connectPhantom([Chain.Solana]);
+    await uSwap.connectPhantom([Chain.Solana]);
 
-    const address = swapKit.getAddress(Chain.Solana);
+    const address = uSwap.getAddress(Chain.Solana);
     console.log("✅ Successfully connected:", address);
 
     return { success: true, address };
@@ -533,7 +534,7 @@ async function checkPhantomChainSupport() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("SOL.SOL", 0.1);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
     });
@@ -542,7 +543,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient SOL balance");
 
-      const balance = await swapKit.getBalance(Chain.Solana, true);
+      const balance = await uSwap.getBalance(Chain.Solana, true);
       console.log("Current balance:", balance);
       console.log("🔧 Add more SOL to your Phantom wallet");
     }
@@ -579,7 +580,7 @@ async function handleTransactionErrors() {
 ```ts twoslash
 async function handleNetworkSpecificIssues() {
   try {
-    await swapKit.connectPhantom([Chain.Ethereum]);
+    await uSwap.connectPhantom([Chain.Ethereum]);
   } catch (error) {
     if (error.message.includes("Ethereum")) {
       console.error("❌ Phantom Ethereum connection failed");
@@ -607,7 +608,7 @@ async function handleNetworkSpecificIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@uswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -635,8 +636,8 @@ async function secureTransaction(
     throw new Error("Amount must be positive");
   }
 
-  const swapKit = SwapKit({ wallets: { ...phantomWallet } });
-  await swapKit.connectPhantom([chain]);
+  const uSwap = USwap({ wallets: { ...phantomWallet } });
+  await uSwap.connectPhantom([chain]);
 
   let assetValue: AssetValue;
   switch (chain) {
@@ -660,7 +661,7 @@ async function secureTransaction(
   console.log("⚠️ Please verify these details in Phantom before confirming");
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue,
       recipient,
     });
@@ -694,7 +695,7 @@ async function checkPhantomPermissions() {
 ```ts twoslash
 
 
-const secureSwapKit = SwapKit({
+const secureUSwap = USwap({
   config: {
 
     rpcUrls: {
@@ -703,7 +704,7 @@ const secureSwapKit = SwapKit({
       [Chain.Bitcoin]: "https:
     },
     apiKeys: {
-      swapKit: process.env.SWAPKIT_API_KEY,
+      uSwap: process.env.USWAP_API_KEY,
     },
   },
   wallets: { ...phantomWallet },
@@ -715,7 +716,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface PhantomWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;
@@ -728,7 +729,7 @@ export function PhantomWallet({ onConnect, onError }: PhantomWalletProps) {
   const [addresses, setAddresses] = useState<Partial<Record<Chain, string>>>({});
   const [selectedChain, setSelectedChain] = useState<Chain>(Chain.Solana);
 
-  const swapKit = SwapKit({ wallets: { ...phantomWallet } });
+  const uSwap = USwap({ wallets: { ...phantomWallet } });
 
 
   const isPhantomInstalled = typeof window !== 'undefined' &&
@@ -766,8 +767,8 @@ export function PhantomWallet({ onConnect, onError }: PhantomWalletProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectPhantom([selectedChain]);
-      const address = swapKit.getAddress(selectedChain);
+      await uSwap.connectPhantom([selectedChain]);
+      const address = uSwap.getAddress(selectedChain);
 
       const newAddresses = { ...addresses, [selectedChain]: address };
       setAddresses(newAddresses);
@@ -781,7 +782,7 @@ export function PhantomWallet({ onConnect, onError }: PhantomWalletProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddresses({});
   };
@@ -795,8 +796,8 @@ export function PhantomWallet({ onConnect, onError }: PhantomWalletProps) {
 
       try {
         setIsConnecting(true);
-        await swapKit.connectPhantom([newChain]);
-        const address = swapKit.getAddress(newChain);
+        await uSwap.connectPhantom([newChain]);
+        const address = uSwap.getAddress(newChain);
         const newAddresses = { ...addresses, [newChain]: address };
         setAddresses(newAddresses);
         onConnect(newAddresses);
@@ -864,4 +865,4 @@ export function PhantomWallet({ onConnect, onError }: PhantomWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of Phantom wallet integration with SwapKit SDK v4, including multi-chain support for Solana, Ethereum, and Bitcoin, along with chain-specific features and security best practices.
+This comprehensive guide covers all aspects of Phantom wallet integration with USwap SDK v4, including multi-chain support for Solana, Ethereum, and Bitcoin, along with chain-specific features and security best practices.

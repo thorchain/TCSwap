@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -16,10 +14,10 @@ import {
   getRPCUrl,
   NetworkDerivationPath,
   RequestClient,
-  SKConfig,
-  SwapKitNumber,
   type TCLikeChain,
+  USwapConfig,
   USwapError,
+  USwapNumber,
   updateDerivationPath,
 } from "@uswap/helpers";
 
@@ -141,7 +139,7 @@ async function signWithPrivateKey({ privateKey, message }: { privateKey: Uint8Ar
 export async function createThorchainToolbox({ chain, ...toolboxParams }: CosmosToolboxParams<TCLikeChain>) {
   const rpcUrl = await getRPCUrl(chain);
   const { nodeUrl } = getChainConfig(chain);
-  const { isStagenet } = SKConfig.get("envs");
+  const { isStagenet } = USwapConfig.get("envs");
   const isThorchain = chain === Chain.THORChain;
   const chainPrefix = `${isStagenet ? "s" : ""}${CosmosChainPrefixes[chain]}`;
 
@@ -162,7 +160,7 @@ export async function createThorchainToolbox({ chain, ...toolboxParams }: Cosmos
   const defaultFee = getDefaultChainFee(chain);
 
   async function getFees() {
-    let fee: SwapKitNumber;
+    let fee: USwapNumber;
 
     const constantsUrl = `${nodeUrl}/${isThorchain ? "thorchain" : "mayachain"}/constants`;
 
@@ -175,9 +173,9 @@ export async function createThorchainToolbox({ chain, ...toolboxParams }: Cosmos
         throw new USwapError("toolbox_cosmos_invalid_fee", { nativeFee: nativeFee.toString() });
       }
 
-      fee = new SwapKitNumber(nativeFee);
+      fee = new USwapNumber(nativeFee);
     } catch {
-      fee = new SwapKitNumber({ decimal: getChainConfig(chain).baseDecimal, value: isThorchain ? 0.02 : 1 });
+      fee = new USwapNumber({ decimal: getChainConfig(chain).baseDecimal, value: isThorchain ? 0.02 : 1 });
     }
 
     return { [FeeOption.Average]: fee, [FeeOption.Fast]: fee, [FeeOption.Fastest]: fee };

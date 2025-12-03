@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -17,8 +15,8 @@ import {
   type GenericCreateTransactionParams,
   getRPCUrl,
   type SubstrateChain,
-  SwapKitNumber,
   USwapError,
+  USwapNumber,
 } from "@uswap/helpers";
 
 import { match, P } from "ts-pattern";
@@ -120,7 +118,7 @@ const estimateTransactionFee = async (
     partialFee: 0,
   };
   return gasAsset.set(
-    SwapKitNumber.fromBigInt(BigInt(paymentInfo.partialFee.toString()), gasAsset.decimal).getValue("string"),
+    USwapNumber.fromBigInt(BigInt(paymentInfo.partialFee.toString()), gasAsset.decimal).getValue("string"),
   );
 };
 

@@ -47,7 +47,7 @@
       "require": "./dist/react/index.cjs",
       "types": "./dist/types/react/index.d.ts"
     },
-    "./swapkit.css": { "bun": "./src/swapkit.css", "default": "./dist/swapkit.css" }
+    "./uswap.css": { "bun": "./src/uswap.css", "default": "./dist/uswap.css" }
   },
   "files": ["dist/", "src/"],
   "homepage": "https://github.com/horizontalsystems/USwap",

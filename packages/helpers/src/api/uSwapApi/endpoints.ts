@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -11,7 +9,7 @@ import {
   isGasAsset,
   type ProviderName,
   RequestClient,
-  SKConfig,
+  USwapConfig,
   USwapError,
 } from "@uswap/helpers";
 import { match, P } from "ts-pattern";
@@ -42,8 +40,8 @@ import {
 
 const SKRequestClient = RequestClient.extend({
   dynamicHeader: () => {
-    const { swapKit } = SKConfig.get("apiKeys");
-    return swapKit ? { "x-api-key": swapKit } : {};
+    const { uSwap } = USwapConfig.get("apiKeys");
+    return uSwap ? { "x-api-key": uSwap } : {};
   },
 });
 
@@ -65,7 +63,7 @@ export async function getTrackerDetails(json: TrackingRequest) {
 }
 
 export async function getSwapQuote(json: QuoteRequest) {
-  const { getQuote } = SKConfig.get("endpoints");
+  const { getQuote } = USwapConfig.get("endpoints");
 
   if (getQuote) return getQuote(json);
 
@@ -90,7 +88,7 @@ export async function getSwapQuote(json: QuoteRequest) {
 }
 
 export async function getRouteWithTx(json: { routeId: string; sourceAddress: string; destinationAddress: string }) {
-  const { getRouteWithTx } = SKConfig.get("endpoints");
+  const { getRouteWithTx } = USwapConfig.get("endpoints");
 
   if (getRouteWithTx) return getRouteWithTx(json);
 
@@ -119,7 +117,7 @@ export async function getChainBalance<T extends Chain>({
   address: string;
   scamFilter?: boolean;
 }) {
-  const { getBalance } = SKConfig.get("endpoints");
+  const { getBalance } = USwapConfig.get("endpoints");
   if (getBalance) return getBalance({ address, chain });
 
   const url = getApiUrl(`/balance?chain=${chain}&address=${address}`);
@@ -179,7 +177,7 @@ export async function getChainflipDepositChannel(body: BrokerDepositChannelParam
   if (!destinationAddress) {
     throw new USwapError("chainflip_broker_invalid_params");
   }
-  const url = SKConfig.get("integrations").chainflip?.brokerUrl || getApiUrl("/chainflip/broker/channel");
+  const url = USwapConfig.get("integrations").chainflip?.brokerUrl || getApiUrl("/chainflip/broker/channel");
 
   const response = await SKRequestClient.post<DepositChannelResponse>(url, { json: body });
 
@@ -220,7 +218,7 @@ export async function getNearDepositChannel(body: NearDepositChannelParams) {
 }
 
 function getApiUrl(path?: `/${string}`) {
-  const { isDev, apiUrl, devApiUrl, experimental_apiUrlQuote, experimental_apiUrlSwap } = SKConfig.get("envs");
+  const { isDev, apiUrl, devApiUrl, experimental_apiUrlQuote, experimental_apiUrlSwap } = USwapConfig.get("envs");
 
   const defaultUrl = `${isDev ? devApiUrl : apiUrl}${path}`;
 

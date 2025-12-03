@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Bitcoin Integration
-description: Complete guide to integrating Bitcoin with SwapKit SDK for UTXO operations and cross-chain swaps
+description: Complete guide to integrating Bitcoin with USwap SDK for UTXO operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Bitcoin integration with SwapKit, including wallet connections, UTXO management, cross-chain swaps, and Bitcoin-specific operations.
+This guide covers Bitcoin integration with USwap, including wallet connections, UTXO management, cross-chain swaps, and Bitcoin-specific operations.
 
 ## Overview
 
-Bitcoin is the first and most valuable cryptocurrency, using a UTXO (Unspent Transaction Output) model. SwapKit provides comprehensive Bitcoin support through:
+Bitcoin is the first and most valuable cryptocurrency, using a UTXO (Unspent Transaction Output) model. USwap provides comprehensive Bitcoin support through:
 
 - **Bitcoin Toolbox**: UTXO management and transaction construction
 - **Cross-Chain Swaps**: Seamless swaps with other cryptocurrencies via THORChain
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const btcWallet = await swapKit.getWallet(Chain.Bitcoin);
+const btcWallet = await uSwap.getWallet(Chain.Bitcoin);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Bitcoin using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Bitcoin], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Bitcoin], "your mnemonic phrase");
 
-await swapKit.connectLedger([Chain.Bitcoin]);
+await uSwap.connectLedger([Chain.Bitcoin]);
 
-await swapKit.connectTrezor([Chain.Bitcoin]);
+await uSwap.connectTrezor([Chain.Bitcoin]);
 
-await swapKit.connectKeepKey([Chain.Bitcoin]);
+await uSwap.connectKeepKey([Chain.Bitcoin]);
 ```
 
 ### Address Generation
@@ -92,7 +93,7 @@ Bitcoin supports multiple address formats:
 // @noErrorValidation
 
 const addresses = {
-  nativeSegwit: swapKit.getAddress(Chain.Bitcoin),
+  nativeSegwit: uSwap.getAddress(Chain.Bitcoin),
 
   legacy: await btcToolbox.getAddress(0, false, "legacy"),
 
@@ -108,7 +109,7 @@ console.log("Bitcoin addresses:", addresses);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
   assetValue: AssetValue.from({
     chain: Chain.Bitcoin,
@@ -226,12 +227,12 @@ Bitcoin is fully supported in THORChain cross-chain swaps:
 ```typescript
 // @noErrorValidation
 
-const btcToEthQuote = await swapKit.getQuote({
+const btcToEthQuote = await uSwap.getQuote({
   sellAsset: "BTC.BTC",
   sellAmount: "0.1",
   buyAsset: "ETH.ETH",
-  senderAddress: swapKit.getAddress(Chain.Bitcoin),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Bitcoin),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
 console.log("BTC -> ETH quote:", {
@@ -240,25 +241,25 @@ console.log("BTC -> ETH quote:", {
   timeEstimate: btcToEthQuote.timeEstimate,
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: btcToEthQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const btcToUsdcQuote = await swapKit.getQuote({
+const btcToUsdcQuote = await uSwap.getQuote({
   sellAsset: "BTC.BTC",
   sellAmount: "0.05",
   buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  senderAddress: swapKit.getAddress(Chain.Bitcoin),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Bitcoin),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
-const btcToRuneQuote = await swapKit.getQuote({
+const btcToRuneQuote = await uSwap.getQuote({
   sellAsset: "BTC.BTC",
   sellAmount: "0.01",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Bitcoin),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Bitcoin),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -354,10 +355,10 @@ const timelockTx = await btcToolbox.buildTransaction({
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Bitcoin, [
+USwapConfig.setRpcUrl(Chain.Bitcoin, [
   "https:
   "https:
   "https:
@@ -365,7 +366,7 @@ SKConfig.setRpcUrl(Chain.Bitcoin, [
 
 
 const customBitcoinRpc = "https:
-SKConfig.setRpcUrl(Chain.Bitcoin, customBitcoinRpc);
+USwapConfig.setRpcUrl(Chain.Bitcoin, customBitcoinRpc);
 
 
 const btcToolbox = await getBitcoinToolbox({
@@ -380,8 +381,8 @@ const btcToolbox = await getBitcoinToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Bitcoin, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Bitcoin, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetToolbox = await getBitcoinToolbox({
@@ -404,7 +405,7 @@ Handle Bitcoin-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -443,7 +444,7 @@ try {
 // @noErrorValidation
 
 const consolidateUTXOs = async () => {
-  const address = swapKit.getAddress(Chain.Bitcoin);
+  const address = uSwap.getAddress(Chain.Bitcoin);
   const utxos = await btcToolbox.getUTXOs(address);
 
   const smallUTXOs = utxos.filter((utxo) => utxo.value < 100000);

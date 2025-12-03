@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -19,8 +17,8 @@ import {
   derivationPathToString,
   FeeOption,
   NetworkDerivationPath,
-  SwapKitNumber,
   USwapError,
+  USwapNumber,
   type UTXOChain,
   updateDerivationPath,
 } from "@uswap/helpers";
@@ -296,7 +294,7 @@ function estimateTransactionFee(chain: UTXOChain) {
   }) => {
     const inputFees = await getInputsOutputsFee(params);
 
-    return AssetValue.from({ chain, value: SwapKitNumber.fromBigInt(BigInt(inputFees.fee), 8).getValue("string") });
+    return AssetValue.from({ chain, value: USwapNumber.fromBigInt(BigInt(inputFees.fee), 8).getValue("string") });
   };
 }
 

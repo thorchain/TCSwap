@@ -1,51 +1,55 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { Chain } from "@uswap/types";
 import { FeeOption } from "../../types";
-import { SKConfig } from "../swapKitConfig";
+import { USwapConfig } from "../uSwapConfig";
 
 beforeAll(() => {
-  SKConfig.reinitialize();
+  USwapConfig.reinitialize();
 });
 
 afterAll(() => {
-  SKConfig.reinitialize();
+  USwapConfig.reinitialize();
 });
 
-describe("swapKitConfig", () => {
+describe("uSwapConfig", () => {
   test("properly sets api keys", () => {
-    const initialState = SKConfig.get("apiKeys").swapKit;
+    const initialState = USwapConfig.get("apiKeys").uSwap;
     expect(initialState).toBe("");
 
-    SKConfig.setApiKey("swapKit", "123");
+    USwapConfig.setApiKey("uSwap", "123");
 
-    const changedState = SKConfig.get("apiKeys").swapKit;
+    const changedState = USwapConfig.get("apiKeys").uSwap;
     expect(changedState).toBe("123");
   });
 
   test("do not drop if other keys are changed", () => {
-    SKConfig.setApiKey("swapKit", "123");
-    expect(SKConfig.get("apiKeys").swapKit).toBe("123");
+    USwapConfig.setApiKey("uSwap", "123");
+    expect(USwapConfig.get("apiKeys").uSwap).toBe("123");
 
-    SKConfig.setApiKey("walletConnectProjectId", "123");
-    expect(SKConfig.get("apiKeys")).toMatchObject({ swapKit: "123", walletConnectProjectId: "123" });
+    USwapConfig.setApiKey("walletConnectProjectId", "123");
+    expect(USwapConfig.get("apiKeys")).toMatchObject({ uSwap: "123", walletConnectProjectId: "123" });
 
-    SKConfig.setRpcUrl(Chain.Ethereum, ["https://lul.xyz"]);
-    expect(SKConfig.getState()).toMatchObject({
-      apiKeys: { swapKit: "123", walletConnectProjectId: "123" },
+    USwapConfig.setRpcUrl(Chain.Ethereum, ["https://lul.xyz"]);
+    expect(USwapConfig.getState()).toMatchObject({
+      apiKeys: { uSwap: "123", walletConnectProjectId: "123" },
       rpcUrls: { [Chain.Ethereum]: ["https://lul.xyz"] },
     });
   });
 
   describe("setConfig", () => {
     test("merges chains without duplicates", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const initialChains = SKConfig.get("chains");
+      const initialChains = USwapConfig.get("chains");
       const initialLength = initialChains.length;
 
-      SKConfig.set({ chains: [Chain.Ethereum, Chain.Bitcoin] });
+      USwapConfig.set({ chains: [Chain.Ethereum, Chain.Bitcoin] });
 
-      const newChains = SKConfig.get("chains");
+      const newChains = USwapConfig.get("chains");
       // Should add new chains (if not already present)
       expect(newChains.length).toBeGreaterThanOrEqual(initialLength);
       expect(newChains).toContain(Chain.Ethereum);
@@ -53,142 +57,142 @@ describe("swapKitConfig", () => {
     });
 
     test("merges wallets array", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const initialWallets = SKConfig.get("wallets");
-      SKConfig.set({ wallets: initialWallets });
+      const initialWallets = USwapConfig.get("wallets");
+      USwapConfig.set({ wallets: initialWallets });
 
-      const newWallets = SKConfig.get("wallets");
+      const newWallets = USwapConfig.get("wallets");
       expect(newWallets.length).toBeGreaterThanOrEqual(initialWallets.length);
     });
 
     test("merges apiKeys without overwriting", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("swapKit", "test-key-1");
-      SKConfig.set({ apiKeys: { blockchair: "blockchair-key" } });
+      USwapConfig.setApiKey("uSwap", "test-key-1");
+      USwapConfig.set({ apiKeys: { blockchair: "blockchair-key" } });
 
-      const apiKeys = SKConfig.get("apiKeys");
-      expect(apiKeys.swapKit).toBe("test-key-1");
+      const apiKeys = USwapConfig.get("apiKeys");
+      expect(apiKeys.uSwap).toBe("test-key-1");
       expect(apiKeys.blockchair).toBe("blockchair-key");
     });
 
     test("merges envs object", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.set({ envs: { isDev: true } });
+      USwapConfig.set({ envs: { isDev: true } });
 
-      const envs = SKConfig.get("envs");
+      const envs = USwapConfig.get("envs");
       expect(envs.isDev).toBe(true);
       expect(envs.apiUrl).toBeDefined(); // Should preserve other env values
     });
 
     test("merges rpcUrls", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.set({
+      USwapConfig.set({
         rpcUrls: { [Chain.Ethereum]: ["https://custom-eth-rpc.com"], [Chain.Bitcoin]: ["https://custom-btc-rpc.com"] },
       });
 
-      const rpcUrls = SKConfig.get("rpcUrls");
+      const rpcUrls = USwapConfig.get("rpcUrls");
       expect(rpcUrls[Chain.Ethereum]).toEqual(["https://custom-eth-rpc.com"]);
       expect(rpcUrls[Chain.Bitcoin]).toEqual(["https://custom-btc-rpc.com"]);
     });
 
     test("merges integrations config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.set({ integrations: { coinbase: { appName: "Test App", darkMode: true } } });
+      USwapConfig.set({ integrations: { coinbase: { appName: "Test App", darkMode: true } } });
 
-      const integrations = SKConfig.get("integrations");
+      const integrations = USwapConfig.get("integrations");
       expect(integrations.coinbase?.appName).toBe("Test App");
       expect(integrations.radix).toBeDefined(); // Should preserve default radix config
     });
 
     test("sets feeMultipliers", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const feeMultipliers = { [FeeOption.Average]: 1.0, [FeeOption.Fast]: 1.5, [FeeOption.Fastest]: 2.0 };
 
-      SKConfig.set({ feeMultipliers });
+      USwapConfig.set({ feeMultipliers });
 
-      const result = SKConfig.get("feeMultipliers");
+      const result = USwapConfig.get("feeMultipliers");
       expect(result).toEqual(feeMultipliers);
     });
   });
 
   describe("setEnv", () => {
     test("sets isDev flag", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setEnv("isDev", true);
-      expect(SKConfig.get("envs").isDev).toBe(true);
+      USwapConfig.setEnv("isDev", true);
+      expect(USwapConfig.get("envs").isDev).toBe(true);
 
-      SKConfig.setEnv("isDev", false);
-      expect(SKConfig.get("envs").isDev).toBe(false);
+      USwapConfig.setEnv("isDev", false);
+      expect(USwapConfig.get("envs").isDev).toBe(false);
     });
 
     test("sets isStagenet flag", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setEnv("isStagenet", true);
-      expect(SKConfig.get("envs").isStagenet).toBe(true);
+      USwapConfig.setEnv("isStagenet", true);
+      expect(USwapConfig.get("envs").isStagenet).toBe(true);
 
-      SKConfig.setEnv("isStagenet", false);
-      expect(SKConfig.get("envs").isStagenet).toBe(false);
+      USwapConfig.setEnv("isStagenet", false);
+      expect(USwapConfig.get("envs").isStagenet).toBe(false);
     });
 
     test("sets apiUrl", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const customUrl = "https://custom-api.example.com";
-      SKConfig.setEnv("apiUrl", customUrl);
-      expect(SKConfig.get("envs").apiUrl).toBe(customUrl);
+      USwapConfig.setEnv("apiUrl", customUrl);
+      expect(USwapConfig.get("envs").apiUrl).toBe(customUrl);
     });
 
     test("sets devApiUrl", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const customDevUrl = "https://custom-dev-api.example.com";
-      SKConfig.setEnv("devApiUrl", customDevUrl);
-      expect(SKConfig.get("envs").devApiUrl).toBe(customDevUrl);
+      USwapConfig.setEnv("devApiUrl", customDevUrl);
+      expect(USwapConfig.get("envs").devApiUrl).toBe(customDevUrl);
     });
   });
 
   describe("setRpcUrl", () => {
     test("sets RPC URL for single chain", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const customRpcUrls = ["https://custom-eth.rpc.com", "https://backup-eth.rpc.com"];
-      SKConfig.setRpcUrl(Chain.Ethereum, customRpcUrls);
+      USwapConfig.setRpcUrl(Chain.Ethereum, customRpcUrls);
 
-      expect(SKConfig.get("rpcUrls")[Chain.Ethereum]).toEqual(customRpcUrls);
+      expect(USwapConfig.get("rpcUrls")[Chain.Ethereum]).toEqual(customRpcUrls);
     });
 
     test("sets RPC URL for multiple chains", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setRpcUrl(Chain.Ethereum, ["https://eth.rpc.com"]);
-      SKConfig.setRpcUrl(Chain.Avalanche, ["https://avax.rpc.com"]);
+      USwapConfig.setRpcUrl(Chain.Ethereum, ["https://eth.rpc.com"]);
+      USwapConfig.setRpcUrl(Chain.Avalanche, ["https://avax.rpc.com"]);
 
-      const rpcUrls = SKConfig.get("rpcUrls");
+      const rpcUrls = USwapConfig.get("rpcUrls");
       expect(rpcUrls[Chain.Ethereum]).toEqual(["https://eth.rpc.com"]);
       expect(rpcUrls[Chain.Avalanche]).toEqual(["https://avax.rpc.com"]);
     });
 
     test("overwrites existing RPC URLs", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setRpcUrl(Chain.Bitcoin, ["https://btc-old.rpc.com"]);
-      SKConfig.setRpcUrl(Chain.Bitcoin, ["https://btc-new.rpc.com"]);
+      USwapConfig.setRpcUrl(Chain.Bitcoin, ["https://btc-old.rpc.com"]);
+      USwapConfig.setRpcUrl(Chain.Bitcoin, ["https://btc-new.rpc.com"]);
 
-      expect(SKConfig.get("rpcUrls")[Chain.Bitcoin]).toEqual(["https://btc-new.rpc.com"]);
+      expect(USwapConfig.get("rpcUrls")[Chain.Bitcoin]).toEqual(["https://btc-new.rpc.com"]);
     });
   });
 
   describe("setIntegrationConfig", () => {
     test("sets Radix integration config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const radixConfig = {
         applicationName: "Test DApp",
@@ -197,37 +201,37 @@ describe("swapKitConfig", () => {
         network: { dashboardBase: "https://stokenet-dashboard.radixdlt.com", networkId: 2, networkName: "stokenet" },
       };
 
-      SKConfig.setIntegrationConfig("radix", radixConfig);
+      USwapConfig.setIntegrationConfig("radix", radixConfig);
 
-      const result = SKConfig.get("integrations").radix;
+      const result = USwapConfig.get("integrations").radix;
       expect(result).toEqual(radixConfig);
     });
 
     test("sets Coinbase integration config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const coinbaseConfig = { appLogoUrl: "https://example.com/logo.png", appName: "My Coinbase App", darkMode: true };
 
-      SKConfig.setIntegrationConfig("coinbase", coinbaseConfig);
+      USwapConfig.setIntegrationConfig("coinbase", coinbaseConfig);
 
-      const result = SKConfig.get("integrations").coinbase;
+      const result = USwapConfig.get("integrations").coinbase;
       expect(result?.appName).toBe("My Coinbase App");
       expect(result?.darkMode).toBe(true);
     });
 
     test("sets Trezor integration config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const trezorConfig = { appUrl: "https://example.com", email: "test@example.com" };
 
-      SKConfig.setIntegrationConfig("trezor", trezorConfig);
+      USwapConfig.setIntegrationConfig("trezor", trezorConfig);
 
-      const result = SKConfig.get("integrations").trezor;
+      const result = USwapConfig.get("integrations").trezor;
       expect(result).toEqual(trezorConfig);
     });
 
     test("sets KeepKey integration config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const keepKeyConfig = {
         basePath: "/keepkey",
@@ -236,45 +240,45 @@ describe("swapKitConfig", () => {
         url: "https://example.com",
       };
 
-      SKConfig.setIntegrationConfig("keepKey", keepKeyConfig);
+      USwapConfig.setIntegrationConfig("keepKey", keepKeyConfig);
 
-      const result = SKConfig.get("integrations").keepKey;
+      const result = USwapConfig.get("integrations").keepKey;
       expect(result).toEqual(keepKeyConfig);
     });
 
     test("sets Chainflip integration config", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const chainflipConfig = { brokerUrl: "https://broker.chainflip.io", useSDKBroker: true };
 
-      SKConfig.setIntegrationConfig("chainflip", chainflipConfig);
+      USwapConfig.setIntegrationConfig("chainflip", chainflipConfig);
 
-      const result = SKConfig.get("integrations").chainflip;
+      const result = USwapConfig.get("integrations").chainflip;
       expect(result).toEqual(chainflipConfig);
     });
   });
 
   describe("setRequestOptions", () => {
     test("sets timeout option and preserves retry", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const initialRetry = SKConfig.get("requestOptions").retry;
+      const initialRetry = USwapConfig.get("requestOptions").retry;
 
-      SKConfig.setRequestOptions({ retry: initialRetry, timeoutMs: 60000 });
+      USwapConfig.setRequestOptions({ retry: initialRetry, timeoutMs: 60000 });
 
-      const result = SKConfig.get("requestOptions");
+      const result = USwapConfig.get("requestOptions");
       expect(result.timeoutMs).toBe(60000);
     });
 
     test("sets retry options with timeoutMs", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setRequestOptions({
+      USwapConfig.setRequestOptions({
         retry: { backoffMultiplier: 3, baseDelay: 500, maxDelay: 10000, maxRetries: 5 },
         timeoutMs: 30000,
       });
 
-      const result = SKConfig.get("requestOptions");
+      const result = USwapConfig.get("requestOptions");
       expect(result.retry.maxRetries).toBe(5);
       expect(result.retry.baseDelay).toBe(500);
       expect(result.retry.maxDelay).toBe(10000);
@@ -282,14 +286,14 @@ describe("swapKitConfig", () => {
     });
 
     test("merges partial retry options", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const initialRetry = SKConfig.get("requestOptions").retry;
-      const initialTimeout = SKConfig.get("requestOptions").timeoutMs;
+      const initialRetry = USwapConfig.get("requestOptions").retry;
+      const initialTimeout = USwapConfig.get("requestOptions").timeoutMs;
 
-      SKConfig.setRequestOptions({ retry: { ...initialRetry, maxRetries: 10 }, timeoutMs: initialTimeout });
+      USwapConfig.setRequestOptions({ retry: { ...initialRetry, maxRetries: 10 }, timeoutMs: initialTimeout });
 
-      const result = SKConfig.get("requestOptions").retry;
+      const result = USwapConfig.get("requestOptions").retry;
       expect(result.maxRetries).toBe(10);
       // Should preserve other retry settings
       expect(result.baseDelay).toBe(initialRetry.baseDelay);
@@ -299,27 +303,27 @@ describe("swapKitConfig", () => {
 
   describe("setFeeMultipliers", () => {
     test("sets fee multipliers for options", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const multipliers = { [FeeOption.Average]: 1.0, [FeeOption.Fast]: 1.5, [FeeOption.Fastest]: 2.0 };
 
-      SKConfig.setFeeMultipliers(multipliers);
+      USwapConfig.setFeeMultipliers(multipliers);
 
-      const result = SKConfig.get("feeMultipliers");
+      const result = USwapConfig.get("feeMultipliers");
       expect(result).toEqual(multipliers);
     });
 
     test("overwrites existing fee multipliers", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       const multipliers1 = { [FeeOption.Average]: 1.0, [FeeOption.Fast]: 1.5, [FeeOption.Fastest]: 2.0 };
 
       const multipliers2 = { [FeeOption.Average]: 1.2, [FeeOption.Fast]: 1.8, [FeeOption.Fastest]: 2.5 };
 
-      SKConfig.setFeeMultipliers(multipliers1);
-      SKConfig.setFeeMultipliers(multipliers2);
+      USwapConfig.setFeeMultipliers(multipliers1);
+      USwapConfig.setFeeMultipliers(multipliers2);
 
-      const result = SKConfig.get("feeMultipliers");
+      const result = USwapConfig.get("feeMultipliers");
       expect(result).toEqual(multipliers2);
     });
   });
@@ -327,33 +331,33 @@ describe("swapKitConfig", () => {
   describe("reinitialize", () => {
     test("resets all state to initial values", () => {
       // Modify some state
-      SKConfig.setApiKey("swapKit", "test-key");
-      SKConfig.setEnv("isDev", true);
-      SKConfig.setRpcUrl(Chain.Ethereum, ["https://custom.rpc.com"]);
+      USwapConfig.setApiKey("uSwap", "test-key");
+      USwapConfig.setEnv("isDev", true);
+      USwapConfig.setRpcUrl(Chain.Ethereum, ["https://custom.rpc.com"]);
 
       // Reinitialize
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
       // Verify reset
-      expect(SKConfig.get("apiKeys").swapKit).toBe("");
-      expect(SKConfig.get("envs").isDev).toBe(false);
+      expect(USwapConfig.get("apiKeys").uSwap).toBe("");
+      expect(USwapConfig.get("envs").isDev).toBe(false);
       // RPC URLs should be reset to defaults
-      expect(SKConfig.get("rpcUrls")[Chain.Ethereum]).toBeDefined();
+      expect(USwapConfig.get("rpcUrls")[Chain.Ethereum]).toBeDefined();
     });
 
     test("can set values after reinitialize", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("swapKit", "new-key");
-      expect(SKConfig.get("apiKeys").swapKit).toBe("new-key");
+      USwapConfig.setApiKey("uSwap", "new-key");
+      expect(USwapConfig.get("apiKeys").uSwap).toBe("new-key");
     });
   });
 
   describe("getState", () => {
     test("returns complete state object", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const state = SKConfig.getState();
+      const state = USwapConfig.getState();
 
       expect(state).toHaveProperty("apiKeys");
       expect(state).toHaveProperty("chains");
@@ -365,9 +369,9 @@ describe("swapKitConfig", () => {
     });
 
     test("state contains expected structure", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      const state = SKConfig.getState();
+      const state = USwapConfig.getState();
 
       expect(Array.isArray(state.chains)).toBe(true);
       expect(typeof state.apiKeys).toBe("object");
@@ -379,43 +383,43 @@ describe("swapKitConfig", () => {
 
   describe("multiple API keys", () => {
     test("sets and gets blockchair API key", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("blockchair", "blockchair-key");
-      expect(SKConfig.get("apiKeys").blockchair).toBe("blockchair-key");
+      USwapConfig.setApiKey("blockchair", "blockchair-key");
+      expect(USwapConfig.get("apiKeys").blockchair).toBe("blockchair-key");
     });
 
     test("sets and gets keepKey API key", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("keepKey", "keepkey-key");
-      expect(SKConfig.get("apiKeys").keepKey).toBe("keepkey-key");
+      USwapConfig.setApiKey("keepKey", "keepkey-key");
+      expect(USwapConfig.get("apiKeys").keepKey).toBe("keepkey-key");
     });
 
     test("sets and gets walletConnectProjectId", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("walletConnectProjectId", "wc-project-id");
-      expect(SKConfig.get("apiKeys").walletConnectProjectId).toBe("wc-project-id");
+      USwapConfig.setApiKey("walletConnectProjectId", "wc-project-id");
+      expect(USwapConfig.get("apiKeys").walletConnectProjectId).toBe("wc-project-id");
     });
 
     test("sets and gets xaman API key", () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setApiKey("xaman", "xaman-key");
-      expect(SKConfig.get("apiKeys").xaman).toBe("xaman-key");
+      USwapConfig.setApiKey("xaman", "xaman-key");
+      expect(USwapConfig.get("apiKeys").xaman).toBe("xaman-key");
     });
   });
 
   describe("setEndpoint", () => {
     test("sets endpoint", async () => {
-      SKConfig.reinitialize();
+      USwapConfig.reinitialize();
 
-      SKConfig.setEndpoint("getBalance", ({ chain }) =>
+      USwapConfig.setEndpoint("getBalance", ({ chain }) =>
         Promise.resolve([{ chain, decimal: 18, identifier: "ETH", symbol: "ETH", ticker: "ETH", value: "100" }]),
       );
 
-      const result = await SKConfig.get("endpoints").getBalance({ address: "0x123", chain: Chain.Ethereum });
+      const result = await USwapConfig.get("endpoints").getBalance({ address: "0x123", chain: Chain.Ethereum });
 
       expect(result).toEqual([
         { chain: Chain.Ethereum, decimal: 18, identifier: "ETH", symbol: "ETH", ticker: "ETH", value: "100" },

@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
@@ -9,7 +13,7 @@ export const collections = {
       extend: z.object({
         banner: z
           .object({ content: z.string() })
-          .default({ content: "SwapKit is a powerful suite of tools for building blockchain applications." }),
+          .default({ content: "USwap is a powerful suite of tools for building blockchain applications." }),
       }),
     }),
   }),

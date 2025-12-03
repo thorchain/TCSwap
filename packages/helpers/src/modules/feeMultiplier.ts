@@ -1,5 +1,9 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { FeeOption } from "../types";
-import { SKConfig } from "./swapKitConfig";
+import { USwapConfig } from "./uSwapConfig";
 
 export interface FeeMultiplierConfig {
   [FeeOption.Average]: number;
@@ -15,13 +19,13 @@ const DEFAULT_FEE_MULTIPLIERS: FeeMultiplierConfig = {
 
 /**
  * Get fee multiplier for the given fee option.
- * Checks SKConfig for custom multipliers first, then falls back to defaults.
+ * Checks USwapConfig for custom multipliers first, then falls back to defaults.
  *
  * @param feeOption - The fee option (Average, Fast, Fastest)
  * @returns The fee multiplier as a number
  */
 export function getFeeMultiplier(feeOption: FeeOption = FeeOption.Average): number {
-  const customMultipliers = SKConfig.get("feeMultipliers");
+  const customMultipliers = USwapConfig.get("feeMultipliers");
 
   if (customMultipliers && customMultipliers[feeOption] !== undefined) {
     return customMultipliers[feeOption];

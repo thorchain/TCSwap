@@ -1,8 +1,9 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
 ---
 const props = {
   bunUrl: "https://github.com/horizontalsystems/USwap/tree/develop/playgrounds/bun",
   compact: false,
-  description: "Explore SwapKit in a live development environment",
+  description: "Explore USwap in a live development environment",
   nextjsUrl: "https://github.com/horizontalsystems/USwap/tree/develop/playgrounds/nextjs",
   title: "Try it in a Playground",
   viteUrl: "https://github.com/horizontalsystems/USwap/tree/develop/playgrounds/vite",
@@ -17,14 +18,14 @@ const props = {
       <p class="playground-description">{props.description}</p>
     </div>
   )}
-  
+
   <div class="playground-grid">
     <div class="playground-category">
       <h4 class="category-title">Official Playgrounds</h4>
       <div class="link-grid">
-        <a 
-          href={props.nextjsUrl} 
-          target="_blank" 
+        <a
+          href={props.nextjsUrl}
+          target="_blank"
           rel="noopener noreferrer"
           class="playground-link"
         >
@@ -36,10 +37,10 @@ const props = {
           </div>
           <span class="link-text">React + TypeScript</span>
         </a>
-        
-        <a 
-          href={props.viteUrl} 
-          target="_blank" 
+
+        <a
+          href={props.viteUrl}
+          target="_blank"
           rel="noopener noreferrer"
           class="playground-link"
         >
@@ -51,10 +52,10 @@ const props = {
           </div>
           <span class="link-text">Fast dev server</span>
         </a>
-        
-        <a 
-          href={props.bunUrl} 
-          target="_blank" 
+
+        <a
+          href={props.bunUrl}
+          target="_blank"
           rel="noopener noreferrer"
           class="playground-link"
         >
@@ -68,15 +69,15 @@ const props = {
         </a>
       </div>
     </div>
-    
+
     {(props.stackblitzUrl || props.codesandboxUrl) && (
       <div class="playground-category">
         <h4 class="category-title">Online IDEs</h4>
         <div class="link-grid">
           {props.stackblitzUrl && (
-            <a 
-              href={props.stackblitzUrl} 
-              target="_blank" 
+            <a
+              href={props.stackblitzUrl}
+              target="_blank"
               rel="noopener noreferrer"
               class="playground-link"
             >
@@ -89,11 +90,11 @@ const props = {
               <span class="link-text">Instant dev environment</span>
             </a>
           )}
-          
+
           {props.codesandboxUrl && (
-            <a 
-              href={props.codesandboxUrl} 
-              target="_blank" 
+            <a
+              href={props.codesandboxUrl}
+              target="_blank"
               rel="noopener noreferrer"
               class="playground-link"
             >
@@ -114,14 +115,14 @@ const props = {
         </div>
       </div>
     )}
-    
+
     {props.githubUrl && (
       <div class="playground-category">
         <h4 class="category-title">Source Code</h4>
         <div class="link-grid">
-          <a 
-            href={props.githubUrl} 
-            target="_blank" 
+          <a
+            href={props.githubUrl}
+            target="_blank"
             rel="noopener noreferrer"
             class="playground-link"
           >
@@ -279,11 +280,11 @@ const props = {
     grid-template-columns: 1fr;
     max-width: 300px;
   }
-  
+
   .playground-links {
     padding: 1.5rem;
   }
-  
+
   .playground-grid {
     gap: 1.5rem;
   }

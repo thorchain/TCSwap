@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -11,14 +9,14 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, filterSupportedChains, SKConfig, USwapError, WalletOption } from "@uswap/helpers";
+import { AssetValue, Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 export const radixWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>
     async function connectRadixWallet(chains: Chain[]) {
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
-      const radixConfig = SKConfig.get("integrations").radix;
+      const radixConfig = USwapConfig.get("integrations").radix;
 
       if (!radixConfig) {
         throw new USwapError("wallet_radix_not_found");
@@ -43,7 +41,7 @@ export const RADIX_SUPPORTED_CHAINS = getWalletSupportedChains(radixWallet);
 
 async function fetchFungibleResources(address: string): Promise<FungibleResourcesCollectionItem[]> {
   const { GatewayApiClient } = await import("@radixdlt/babylon-gateway-api-sdk");
-  const { applicationName } = SKConfig.get("integrations").radix;
+  const { applicationName } = USwapConfig.get("integrations").radix;
   const networkApi = GatewayApiClient.initialize({ applicationName, networkId: 1 });
 
   let hasNextPage = true;
@@ -80,11 +78,11 @@ function currentStateVersion(networkApi: GatewayApiClient) {
   return networkApi.status.getCurrent().then((status) => status.ledger_state.state_version);
 }
 
-// TODO - @Towan: is that still needed with SwapKitApi.getChainBalance()?
+// TODO - @Towan: is that still needed with USwapApi.getChainBalance()?
 async function getBalance(address: string): Promise<AssetValue[]> {
   const { GatewayApiClient } = await import("@radixdlt/babylon-gateway-api-sdk");
   const resources = await fetchFungibleResources(address);
-  const { applicationName } = SKConfig.get("integrations").radix;
+  const { applicationName } = USwapConfig.get("integrations").radix;
   const networkApi = GatewayApiClient.initialize({ applicationName, networkId: 1 });
 
   const balances: AssetValue[] = [];
@@ -140,7 +138,7 @@ async function getBalance(address: string): Promise<AssetValue[]> {
 
 async function getWalletMethods() {
   const { RadixDappToolkit } = await import("@radixdlt/radix-dapp-toolkit");
-  const dappConfig = SKConfig.get("integrations").radix;
+  const dappConfig = USwapConfig.get("integrations").radix;
   const rdt = RadixDappToolkit({ ...dappConfig, networkId: dappConfig.network.networkId });
 
   function delay(ms: number) {

@@ -1,4 +1,8 @@
-import { Chain, ChainToChainId, filterSupportedChains, SKConfig, WalletOption } from "@uswap/helpers";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, ChainToChainId, filterSupportedChains, USwapConfig, WalletOption } from "@uswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
 
 import { getWalletMethods } from "./signer";
@@ -10,7 +14,7 @@ export const coinbaseWallet = createWallet({
 
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
 
-      const coinbaseConfig = SKConfig.get("integrations").coinbase || { appName: "Swapkit Playground" };
+      const coinbaseConfig = USwapConfig.get("integrations").coinbase || { appName: "Swapkit Playground" };
 
       const coinbaseSdk = createCoinbaseWalletSDK({
         ...coinbaseConfig,

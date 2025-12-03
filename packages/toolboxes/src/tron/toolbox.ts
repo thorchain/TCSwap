@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -133,7 +131,7 @@ export const createTronToolbox = async (
   const TronWeb = TW.TronWeb ?? TW.default?.TronWeb;
 
   const rpcUrl = await getRPCUrl(Chain.Tron);
-  // Note: TRON API key support can be added to SKConfig apiKeys when needed
+  // Note: TRON API key support can be added to USwapConfig apiKeys when needed
   const headers = undefined; // No API key needed for basic TronGrid access
 
   const tronWeb = new TronWeb({ fullHost: rpcUrl, headers });

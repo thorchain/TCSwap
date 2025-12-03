@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import {
@@ -6,16 +10,16 @@ import {
   PriorityLabel,
   type QuoteResponse,
   type QuoteResponseRoute,
-  SwapKitApi,
-  useSwapKitConfig,
+  USwapApi,
+  useUSwapConfig,
 } from "@uswap/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatCurrency } from "../../lib/utils";
 import { temp_host } from "../components/asset-icon";
-import { SWAPKIT_WIDGET_TOASTER_ID } from "../components/ui/sonner";
-import { useSwapKit } from "../swapkit-context";
+import { USWAP_WIDGET_TOASTER_ID } from "../components/ui/sonner";
 import type { UseSwapQuoteParams } from "../types";
+import { useUSwap } from "../uswap-context";
 import { useDebouncedEffect } from "./use-debounced-effect";
 
 export type UseSwapQuoteReturn = ReturnType<typeof useSwapQuote>;
@@ -27,8 +31,8 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
   const [expectedBuyAmountFor1Input, setExpectedBuyAmountFor1Input] = useState(0);
 
-  const { swapKit, isWalletConnected } = useSwapKit();
-  const swapKitConfig = useSwapKitConfig();
+  const { uSwap, isWalletConnected } = useUSwap();
+  const uSwapConfig = useUSwapConfig();
 
   const inputAssetValue = useMemo(() => {
     if (!inputAsset) return null;
@@ -43,13 +47,12 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
   }, [outputAsset]);
 
   useEffect(() => {
-    if (!inputAsset || !outputAsset || !swapKitConfig?.apiKeys?.swapKit) return;
+    if (!inputAsset || !outputAsset || !uSwapConfig?.apiKeys?.uSwap) return;
 
-    void SwapKitApi.getPrice({
-      metadata: false,
-      tokens: [{ identifier: inputAsset }, { identifier: outputAsset }],
-    }).then((price) => setPriceResponse(price));
-  }, [inputAsset, outputAsset, swapKitConfig?.apiKeys?.swapKit]);
+    void USwapApi.getPrice({ metadata: false, tokens: [{ identifier: inputAsset }, { identifier: outputAsset }] }).then(
+      (price) => setPriceResponse(price),
+    );
+  }, [inputAsset, outputAsset, uSwapConfig?.apiKeys?.uSwap]);
 
   const outputAssetIdentifier = outputAssetValue?.toString();
   const inputAssetIdentifier = inputAssetValue?.toString();
@@ -57,7 +60,7 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
   const fetchSwapQuote = useCallback(async () => {
     const isValid =
       amount &&
-      swapKit &&
+      uSwap &&
       isWalletConnected &&
       inputAssetValue?.chain &&
       outputAssetValue?.chain &&
@@ -72,14 +75,14 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
     try {
       setIsFetchingQuote(true);
 
-      const destinationAddress = swapKit.getAddress(outputAssetValue?.chain);
-      const sourceAddress = swapKit.getAddress(inputAssetValue?.chain);
+      const destinationAddress = uSwap.getAddress(outputAssetValue?.chain);
+      const sourceAddress = uSwap.getAddress(inputAssetValue?.chain);
 
       if (!destinationAddress || !sourceAddress) {
         throw new Error("Destination or source address not found");
       }
 
-      const quote = await SwapKitApi.getSwapQuote({
+      const quote = await USwapApi.getSwapQuote({
         buyAsset: outputAssetIdentifier,
         destinationAddress,
         includeTx: true,
@@ -100,7 +103,7 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
     } catch (error) {
       console.error("Failed to get quote:", error);
       toast.error(`Failed to get quote: ${error instanceof Error ? error.message : "Unknown error"}`, {
-        toasterId: SWAPKIT_WIDGET_TOASTER_ID,
+        toasterId: USWAP_WIDGET_TOASTER_ID,
       });
       setQuoteResponse(null);
     } finally {
@@ -108,7 +111,7 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
     }
   }, [
     amount,
-    swapKit,
+    uSwap,
     outputAssetValue?.chain,
     inputAssetValue?.chain,
     inputAssetIdentifier,
@@ -116,7 +119,7 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
     isWalletConnected,
   ]);
 
-  useDebouncedEffect(fetchSwapQuote, [amount, swapKit, swapKitConfig, outputAsset, inputAsset], 700);
+  useDebouncedEffect(fetchSwapQuote, [amount, uSwap, uSwapConfig, outputAsset, inputAsset], 700);
 
   useEffect(() => {
     const selectedRoute = quoteResponse?.routes?.[selectedRouteIndex];

@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Polygon Integration
-description: Complete guide to integrating Polygon (POL) with SwapKit SDK for Layer 2 scaling and DeFi operations
+description: Complete guide to integrating Polygon (POL) with USwap SDK for Layer 2 scaling and DeFi operations
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Polygon integration with SwapKit, including wallet connections, token transfers, cross-chain swaps, and Polygon-specific DeFi protocols.
+This guide covers Polygon integration with USwap, including wallet connections, token transfers, cross-chain swaps, and Polygon-specific DeFi protocols.
 
 ## Overview
 
-Polygon is a leading Ethereum Layer 2 scaling solution providing fast, low-cost transactions. SwapKit provides comprehensive Polygon support through:
+Polygon is a leading Ethereum Layer 2 scaling solution providing fast, low-cost transactions. USwap provides comprehensive Polygon support through:
 
 - **Polygon Toolbox**: Fast operations with minimal MATIC gas costs
 - **Cross-Chain Bridging**: Seamless transfers between Ethereum and Polygon
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const polygonWallet = await swapKit.getWallet(Chain.Polygon);
+const polygonWallet = await uSwap.getWallet(Chain.Polygon);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Polygon using Ethereum-compatible wallets:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Polygon], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Polygon], "your mnemonic phrase");
 
-await swapKit.connectBrowserWallet(Chain.Polygon);
+await uSwap.connectBrowserWallet(Chain.Polygon);
 
-await swapKit.connectWalletConnect([Chain.Polygon]);
+await uSwap.connectWalletConnect([Chain.Polygon]);
 
-await swapKit.connectLedger([Chain.Polygon]);
+await uSwap.connectLedger([Chain.Polygon]);
 ```
 
 ### Native MATIC Transfers
@@ -92,7 +93,7 @@ MATIC is the native gas and utility token of Polygon:
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Polygon,
@@ -111,7 +112,7 @@ Polygon supports ERC-20 tokens with much lower costs than Ethereum:
 ```typescript
 // @noErrorValidation
 
-const usdcTransfer = await swapKit.transfer({
+const usdcTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Polygon,
@@ -122,7 +123,7 @@ const usdcTransfer = await swapKit.transfer({
   feeOptionKey: FeeOption.Average,
 });
 
-const wethTransfer = await swapKit.transfer({
+const wethTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Polygon,
@@ -202,7 +203,7 @@ const aaveSupply = await toolbox.call({
   funcParams: [
     "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
     "1000000000",
-    swapKit.getAddress(Chain.Polygon),
+    uSwap.getAddress(Chain.Polygon),
     0,
   ],
 });
@@ -243,25 +244,25 @@ const legacyTx = await toolbox.buildTransaction({
 ```typescript
 // @noErrorValidation
 
-const bridgeQuote = await swapKit.getQuote({
+const bridgeQuote = await uSwap.getQuote({
   sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   sellAmount: "1000",
   buyAsset: "POL.USDC-0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Polygon),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Polygon),
 });
 
-const bridgeTx = await swapKit.swap({
+const bridgeTx = await uSwap.swap({
   route: bridgeQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const ethToMaticBridge = await swapKit.getQuote({
+const ethToMaticBridge = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "0.5",
   buyAsset: "POL.MATIC",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Polygon),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Polygon),
 });
 ```
 
@@ -270,25 +271,25 @@ const ethToMaticBridge = await swapKit.getQuote({
 ```typescript
 // @noErrorValidation
 
-const maticToBtcQuote = await swapKit.getQuote({
+const maticToBtcQuote = await uSwap.getQuote({
   sellAsset: "POL.MATIC",
   sellAmount: "1000",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Polygon),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Polygon),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
-const crossChainSwap = await swapKit.swap({
+const crossChainSwap = await uSwap.swap({
   route: maticToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const usdcToRuneQuote = await swapKit.getQuote({
+const usdcToRuneQuote = await uSwap.getQuote({
   sellAsset: "POL.USDC-0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
   sellAmount: "500",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Polygon),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Polygon),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -299,34 +300,34 @@ Access native Polygon DEXs for optimal liquidity:
 ```typescript
 // @noErrorValidation
 
-const quickswapQuote = await swapKit.getQuote({
+const quickswapQuote = await uSwap.getQuote({
   sellAsset: "POL.MATIC",
   sellAmount: "100",
   buyAsset: "POL.USDC-0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-  senderAddress: swapKit.getAddress(Chain.Polygon),
-  recipientAddress: swapKit.getAddress(Chain.Polygon),
+  senderAddress: uSwap.getAddress(Chain.Polygon),
+  recipientAddress: uSwap.getAddress(Chain.Polygon),
   providers: ["QUICKSWAP"],
 });
 
-const sushiQuote = await swapKit.getQuote({
+const sushiQuote = await uSwap.getQuote({
   sellAsset: "POL.WETH-0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
   sellAmount: "0.5",
   buyAsset: "POL.SUSHI-0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a",
-  senderAddress: swapKit.getAddress(Chain.Polygon),
-  recipientAddress: swapKit.getAddress(Chain.Polygon),
+  senderAddress: uSwap.getAddress(Chain.Polygon),
+  recipientAddress: uSwap.getAddress(Chain.Polygon),
   providers: ["SUSHISWAP"],
 });
 
-const bestRateQuote = await swapKit.getQuote({
+const bestRateQuote = await uSwap.getQuote({
   sellAsset: "POL.DAI-0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
   sellAmount: "1000",
   buyAsset: "POL.AAVE-0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
-  senderAddress: swapKit.getAddress(Chain.Polygon),
-  recipientAddress: swapKit.getAddress(Chain.Polygon),
+  senderAddress: uSwap.getAddress(Chain.Polygon),
+  recipientAddress: uSwap.getAddress(Chain.Polygon),
   providers: ["QUICKSWAP", "SUSHISWAP"],
 });
 
-const dexSwap = await swapKit.swap({
+const dexSwap = await uSwap.swap({
   route: bestRateQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
@@ -352,7 +353,7 @@ const polygonTokens = {
 
 const getPolygonPortfolio = async () => {
   const balances = {};
-  const address = swapKit.getAddress(Chain.Polygon);
+  const address = uSwap.getAddress(Chain.Polygon);
 
   balances.MATIC = await toolbox.getBalance(address);
 
@@ -377,7 +378,7 @@ const aaveSupply = await toolbox.call({
   funcParams: [
     "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
     "1000000000",
-    swapKit.getAddress(Chain.Polygon),
+    uSwap.getAddress(Chain.Polygon),
     0,
   ],
 });
@@ -391,7 +392,7 @@ const aaveBorrow = await toolbox.call({
     "500000000000000000000",
     2,
     0,
-    swapKit.getAddress(Chain.Polygon),
+    uSwap.getAddress(Chain.Polygon),
   ],
 });
 
@@ -403,7 +404,7 @@ const aaveRepay = await toolbox.call({
     "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
     "250000000000000000000",
     2,
-    swapKit.getAddress(Chain.Polygon),
+    uSwap.getAddress(Chain.Polygon),
   ],
 });
 ```
@@ -429,7 +430,7 @@ const addLiquidity = await toolbox.call({
     "1000000000",
     "0",
     "0",
-    swapKit.getAddress(Chain.Polygon),
+    uSwap.getAddress(Chain.Polygon),
     Date.now() + 600000,
   ],
   txOverrides: {
@@ -445,10 +446,10 @@ const addLiquidity = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Polygon, [
+USwapConfig.setRpcUrl(Chain.Polygon, [
   "https:
   "https:
   "https:
@@ -470,8 +471,8 @@ const toolbox = await getPolygonToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Polygon, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Polygon, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetTokens = {
@@ -489,7 +490,7 @@ Handle Polygon-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -581,7 +582,7 @@ const batchOperations = async () => {
 1. **Leverage Fast Finality**:
 
    ```typescript
-   const fastTx = await swapKit.transfer({
+   const fastTx = await uSwap.transfer({
      recipient: "0x...",
      assetValue: AssetValue.from({ chain: Chain.Polygon, value: "10" }),
      feeOptionKey: FeeOption.Fast,
@@ -614,12 +615,12 @@ const batchOperations = async () => {
 4. **Use QuickSwap for Best Liquidity**:
 
    ```typescript
-   const quickQuote = await swapKit.getQuote({
+   const quickQuote = await uSwap.getQuote({
      sellAsset: "POL.MATIC",
      sellAmount: "1000",
      buyAsset: "POL.USDC-0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-     senderAddress: swapKit.getAddress(Chain.Polygon),
-     recipientAddress: swapKit.getAddress(Chain.Polygon),
+     senderAddress: uSwap.getAddress(Chain.Polygon),
+     recipientAddress: uSwap.getAddress(Chain.Polygon),
      providers: ["QUICKSWAP"],
    });
    ```
@@ -659,7 +660,7 @@ const batchOperations = async () => {
      "https:
    ];
 
-   SKConfig.setRpcUrl(Chain.Polygon, rpcProviders);
+   USwapConfig.setRpcUrl(Chain.Polygon, rpcProviders);
    ```
 
 ## API Reference Summary

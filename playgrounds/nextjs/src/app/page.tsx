@@ -1,7 +1,11 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import { type QuoteResponse, type QuoteResponseRoute, RequestClient } from "@uswap/sdk";
-import { SwapKitWidget } from "@uswap/ui/react";
+import { USwapWidget } from "@uswap/ui/react";
 import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
@@ -12,7 +16,7 @@ export default function SwapPage() {
   const defaultValues =
     typeof localStorage !== "undefined" && localStorage.getItem("formValues")
       ? JSON.parse(localStorage.getItem("formValues") || "")
-      : { apiKey: "16621042-80db-41ed-83be-3f0349e0d703", apiUrl: "https://dev-api.swapkit.dev" };
+      : { apiKey: "16621042-80db-41ed-83be-3f0349e0d703", apiUrl: "https://dev-api.uswap.dev" };
 
   const { watch, control } = useForm<WidgetConfiguratorFormValues>({ defaultValues });
   const formValues = watch();
@@ -30,11 +34,11 @@ export default function SwapPage() {
       </AppSidebar>
 
       <div className="col-span-2 flex w-full max-w-xl items-center justify-center">
-        <SwapKitWidget
+        <USwapWidget
           config={{
             apiKeys: {
               keepKey: typeof window !== "undefined" ? localStorage.getItem("keepkeyApiKey") || "1234" : "1234",
-              swapKit: apiKey,
+              uSwap: apiKey,
               walletConnectProjectId: "",
             },
             endpoints: {
@@ -56,8 +60,8 @@ export default function SwapPage() {
               keepKey: {
                 basePath: "http://localhost:1646/spec/swagger.json",
                 imageUrl:
-                  "https://raw.githubusercontent.com/swapkit/SwapKit/refs/heads/develop/docs/src/assets/logo-black.png",
-                name: "SwapKit",
+                  "https://raw.githubusercontent.com/horizontalsystems/USwap/refs/heads/develop/docs/src/assets/logo-black.png",
+                name: "USwap",
                 url: "http://localhost:1646",
               },
             },

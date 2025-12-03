@@ -1,4 +1,8 @@
-import { Chain, type CosmosChain, type EVMChain, SKConfig } from "@uswap/helpers";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { Chain, type CosmosChain, type EVMChain, USwapConfig } from "@uswap/helpers";
 
 import {
   ARBITRUM_ONE_MAINNET_ID,
@@ -62,7 +66,7 @@ export const chainToChainId = (chain: Chain) => {
       return KUJIRA_MAINNET_ID;
     case Chain.Near: {
       // Use testnet if stagenet is enabled
-      const { isStagenet } = SKConfig.get("envs");
+      const { isStagenet } = USwapConfig.get("envs");
       return isStagenet ? NEAR_TESTNET_ID : NEAR_MAINNET_ID;
     }
     case Chain.Tron:

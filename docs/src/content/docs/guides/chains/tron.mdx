@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Tron Integration
-description: Complete guide to integrating Tron with SwapKit SDK for TRX operations and TRC-20 tokens
+description: Complete guide to integrating Tron with USwap SDK for TRX operations and TRC-20 tokens
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Tron integration with SwapKit, including wallet connections, TRX transfers, TRC-20 token operations, and cross-chain swaps.
+This guide covers Tron integration with USwap, including wallet connections, TRX transfers, TRC-20 token operations, and cross-chain swaps.
 
 ## Overview
 
-Tron is a blockchain platform designed for high throughput and smart contract support. SwapKit provides comprehensive Tron support through:
+Tron is a blockchain platform designed for high throughput and smart contract support. USwap provides comprehensive Tron support through:
 
 - **Tron Toolbox**: Native Tron operations with TRX token
 - **TRC-20 Support**: Full support for Tron's token standard
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const tronWallet = await swapKit.getWallet(Chain.Tron);
+const tronWallet = await uSwap.getWallet(Chain.Tron);
 
 ````
 </TabItem>
@@ -76,11 +77,11 @@ Connect to Tron using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Tron], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Tron], "your mnemonic phrase");
 
-await swapKit.connectTronLink([Chain.Tron]);
+await uSwap.connectTronLink([Chain.Tron]);
 
-await swapKit.connectLedger([Chain.Tron]);
+await uSwap.connectLedger([Chain.Tron]);
 ```
 
 ### Address Generation and Validation
@@ -90,7 +91,7 @@ Tron addresses start with 'T' and are base58-encoded:
 ```typescript
 // @noErrorValidation
 
-const tronAddress = swapKit.getAddress(Chain.Tron);
+const tronAddress = uSwap.getAddress(Chain.Tron);
 
 console.log("Tron address:", tronAddress);
 
@@ -114,7 +115,7 @@ console.log("Account info:", {
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "TLyqzVGLV1srkB7dToTAEqgDSfPtXRJZYH",
   assetValue: AssetValue.from({
     chain: Chain.Tron,
@@ -158,7 +159,7 @@ Tron's TRC-20 tokens are similar to ERC-20 but with different resource model:
 ```typescript
 // @noErrorValidation
 
-const usdtTransfer = await swapKit.transfer({
+const usdtTransfer = await uSwap.transfer({
   recipient: "TLyqzVGLV1srkB7dToTAEqgDSfPtXRJZYH",
   assetValue: AssetValue.from({
     chain: Chain.Tron,
@@ -177,7 +178,7 @@ const tokenBalance = await tronToolbox.getTRC20Balance(
 console.log(`USDT balance: ${tokenBalance} USDT`);
 
 const allTokens = await tronToolbox.getAllTRC20Tokens(
-  swapKit.getAddress(Chain.Tron)
+  uSwap.getAddress(Chain.Tron)
 );
 
 console.log("TRC-20 tokens owned:");
@@ -282,7 +283,7 @@ Tron uses bandwidth and energy for transaction costs:
 
 const getResources = async () => {
   const resources = await tronToolbox.getAccountResources(
-    swapKit.getAddress(Chain.Tron)
+    uSwap.getAddress(Chain.Tron)
   );
 
   console.log("Account resources:", {
@@ -304,7 +305,7 @@ const freezeForResources = async () => {
     amount: "1000000000",
     duration: 3,
     resource: "ENERGY",
-    receiverAddress: swapKit.getAddress(Chain.Tron),
+    receiverAddress: uSwap.getAddress(Chain.Tron),
   });
 
   console.log("TRX frozen for energy:", freezeTx);
@@ -314,7 +315,7 @@ const freezeForResources = async () => {
 const unfreezeResources = async () => {
   const unfreezeTx = await tronToolbox.unfreezeBalance({
     resource: "ENERGY",
-    receiverAddress: swapKit.getAddress(Chain.Tron),
+    receiverAddress: uSwap.getAddress(Chain.Tron),
   });
 
   console.log("TRX unfrozen:", unfreezeTx);
@@ -378,12 +379,12 @@ Tron tokens can be bridged to other networks:
 ```typescript
 // @noErrorValidation
 
-const trxToBtcQuote = await swapKit.getQuote({
+const trxToBtcQuote = await uSwap.getQuote({
   sellAsset: "TRON.TRX",
   sellAmount: "10000",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Tron),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Tron),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
 console.log("TRX -> BTC quote:", {
@@ -392,15 +393,15 @@ console.log("TRX -> BTC quote:", {
   timeEstimate: trxToBtcQuote.timeEstimate,
 });
 
-const usdtBridge = await swapKit.getQuote({
+const usdtBridge = await uSwap.getQuote({
   sellAsset: "TRON.USDT-TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
   sellAmount: "1000",
   buyAsset: "ETH.USDT-0xdAC17F958D2ee523a2206206994597C13D831ec7",
-  senderAddress: swapKit.getAddress(Chain.Tron),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Tron),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
-const bridgeTx = await swapKit.swap({
+const bridgeTx = await uSwap.swap({
   route: usdtBridge.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
@@ -414,7 +415,7 @@ const bridgeTx = await swapKit.swap({
 // @noErrorValidation
 
 const optimizeTransaction = async () => {
-  const account = await tronToolbox.getAccount(swapKit.getAddress(Chain.Tron));
+  const account = await tronToolbox.getAccount(uSwap.getAddress(Chain.Tron));
 
   const requiredEnergy = 50000;
   const requiredBandwidth = 265;
@@ -468,7 +469,7 @@ const batchOptimize = async () => {
    const resourceManagement = {
      async checkResources(estimatedEnergy: number = 50000) {
        const account = await tronToolbox.getAccount(
-         swapKit.getAddress(Chain.Tron)
+         uSwap.getAddress(Chain.Tron)
        );
 
        if (account.energy < estimatedEnergy) {

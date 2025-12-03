@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -17,9 +15,9 @@ import {
   type FeeOption,
   type GenericTransferParams,
   ProviderName as PluginNameEnum,
-  SKConfig,
-  type SKConfigState,
   type SwapParams,
+  USwapConfig,
+  type USwapConfigState,
   USwapError,
   UTXOChains,
   type WalletOption,
@@ -30,7 +28,7 @@ import type { FullWallet } from "@uswap/toolboxes";
 import type { EVMCreateTransactionParams, EVMTransferParams } from "@uswap/toolboxes/evm";
 import type { createWallet } from "@uswap/wallets";
 
-export type USwapParams<P, W> = { config?: SKConfigState; plugins?: P; wallets?: W };
+export type USwapParams<P, W> = { config?: USwapConfigState; plugins?: P; wallets?: W };
 
 export function USwap<
   Plugins extends ReturnType<typeof createPlugin>,
@@ -41,13 +39,13 @@ export function USwap<
   wallets,
   getActiveWallet,
 }: {
-  config?: SKConfigState;
+  config?: USwapConfigState;
   plugins?: Plugins;
   wallets?: Wallets;
   getActiveWallet?: () => WalletOption | undefined;
 } = {}) {
   if (config) {
-    SKConfig.set(config);
+    USwapConfig.set(config);
   }
 
   type PluginName = keyof Plugins;
@@ -84,10 +82,10 @@ export function USwap<
     },
   );
 
-  function getSwapKitPlugin<T extends PluginName>(pluginName?: T) {
+  function getUSwapPlugin<T extends PluginName>(pluginName?: T) {
     const pluginByName = pluginName && availablePlugins[pluginName];
     const pluginByProvider = Object.values(availablePlugins).find((plugin) =>
-      plugin.supportedSwapkitProviders?.includes(pluginName),
+      plugin.supportedUSwapProviders?.includes(pluginName),
     );
     const plugin = pluginByName || pluginByProvider;
 
@@ -251,7 +249,7 @@ export function USwap<
   }
 
   function swap<T extends PluginName>({ route, pluginName, ...rest }: SwapParams<T, QuoteResponseRoute>) {
-    const plugin = getSwapKitPlugin(pluginName || route.providers[0]);
+    const plugin = getUSwapPlugin(pluginName || route.providers[0]);
 
     if ("swap" in plugin) {
       // @ts-expect-error TODO: fix this

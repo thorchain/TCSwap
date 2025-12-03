@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -21,8 +19,8 @@ import { validateIdentifier } from "../utils/validators";
 
 import type { NumberPrimitives } from "./bigIntArithmetics";
 import { BigIntArithmetics, formatBigIntToSafeValue } from "./bigIntArithmetics";
-import type { SwapKitValueType } from "./swapKitNumber";
 import { USwapError } from "./uSwapError";
+import type { SwapKitValueType } from "./uSwapNumber";
 
 const CASE_SENSITIVE_CHAINS: Chain[] = [Chain.Solana, Chain.Tron, Chain.Near, Chain.Sui];
 const TC_CHAINS: Chain[] = [Chain.THORChain, Chain.Maya];
@@ -422,7 +420,7 @@ function validateAssetChain(assetOrChain: AssetIdentifier) {
       return assetInfo.synth ? Chain.THORChain : assetInfo.chain;
     });
 
-  // TODO: move to SKConfig chains once we support it throughout sdk
+  // TODO: move to USwapConfig chains once we support it throughout sdk
   if (!AllChains.includes(chain.toUpperCase() as Chain)) {
     throw new USwapError({
       errorKey: "helpers_invalid_asset_identifier",

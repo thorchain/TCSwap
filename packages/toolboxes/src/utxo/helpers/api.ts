@@ -1,11 +1,9 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import { networks as zcashNetworks } from "@bitgo/utxo-lib";
-import { Chain, getRPCUrl, RequestClient, SKConfig, USwapError, type UTXOChain, warnOnce } from "@uswap/helpers";
+import { Chain, getRPCUrl, RequestClient, USwapConfig, USwapError, type UTXOChain, warnOnce } from "@uswap/helpers";
 import { networks } from "bitcoinjs-lib";
 // @ts-expect-error
 import coininfo from "coininfo";
@@ -296,7 +294,7 @@ async function getUtxos({
 }
 
 export function getUtxoApi(chain: UTXOChain) {
-  const apiKey = SKConfig.get("apiKeys").blockchair || "";
+  const apiKey = USwapConfig.get("apiKeys").blockchair || "";
 
   warnOnce({
     condition: !apiKey,

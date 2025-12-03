@@ -1,5 +1,9 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { ApiPromise } from "@polkadot/api";
-import { AssetValue, Chain, SwapKitNumber } from "@uswap/helpers";
+import { AssetValue, Chain, USwapNumber } from "@uswap/helpers";
 
 /**
  * Get balance for standard Substrate chains (Polkadot, etc.)
@@ -22,8 +26,8 @@ export async function getSubstrateBalance(
       data: { free },
     } = account;
 
-    // Convert the free balance to string using SwapKitNumber for proper decimal handling
-    const freeBalance = SwapKitNumber.fromBigInt(BigInt(free.toString()), gasAsset.decimal).getValue("string");
+    // Convert the free balance to string using USwapNumber for proper decimal handling
+    const freeBalance = USwapNumber.fromBigInt(BigInt(free.toString()), gasAsset.decimal).getValue("string");
 
     return [gasAsset.set(freeBalance)];
   } catch (error) {
@@ -59,8 +63,8 @@ export async function getChainflipBalance(
       return [gasAsset.set(0)];
     }
 
-    // Convert balance to string using SwapKitNumber
-    const balanceStr = SwapKitNumber.fromBigInt(BigInt(balance.toString()), gasAsset.decimal).getValue("string");
+    // Convert balance to string using USwapNumber
+    const balanceStr = USwapNumber.fromBigInt(BigInt(balance.toString()), gasAsset.decimal).getValue("string");
 
     return [gasAsset.set(balanceStr)];
   } catch (error) {

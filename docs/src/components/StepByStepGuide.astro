@@ -1,3 +1,4 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
 ---
 interface Step {
   title: string;
@@ -31,7 +32,7 @@ const steps = props.steps as Step[];
       </a>
     )}
   </div>
-  
+
   <div class="guide-progress">
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill" style="width: 0%"></div>
@@ -40,7 +41,7 @@ const steps = props.steps as Step[];
       <span id="progressText">Step 1 of {steps.length}</span>
     </div>
   </div>
-  
+
   <div class="steps-container">
     {steps.map((step, index) => (
       <div class={`step ${index === 0 ? 'active' : ''}`} data-step={index + 1}>
@@ -61,7 +62,7 @@ const steps = props.steps as Step[];
             </svg>
           </div>
         </div>
-        
+
         <div class="step-content">
           {step.code && (
             <div class="step-code">
@@ -78,7 +79,7 @@ const steps = props.steps as Step[];
               <pre class="code-block"><code>{step.code}</code></pre>
             </div>
           )}
-          
+
           {step.action && (
             <div class="step-action">
               <div class="action-header">
@@ -93,7 +94,7 @@ const steps = props.steps as Step[];
               </div>
             </div>
           )}
-          
+
           {step.result && (
             <div class="step-result" id={`result-${index + 1}`} style="display: none;">
               <div class="result-header">
@@ -104,7 +105,7 @@ const steps = props.steps as Step[];
               </div>
             </div>
           )}
-          
+
           {step.tips && step.tips.length > 0 && (
             <div class="step-tips">
               <div class="tips-header">
@@ -120,7 +121,7 @@ const steps = props.steps as Step[];
               </ul>
             </div>
           )}
-          
+
           <div class="step-navigation">
             {index > 0 && (
               <button class="nav-btn prev-btn" data-step={index}>
@@ -130,7 +131,7 @@ const steps = props.steps as Step[];
                 Previous
               </button>
             )}
-            
+
             <button class="nav-btn next-btn" data-step={index + 2} style={index === steps.length - 1 ? "display: none;" : ""}>
               Next
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -142,12 +143,12 @@ const steps = props.steps as Step[];
       </div>
     ))}
   </div>
-  
+
   <div class="guide-completion" id="guideCompletion" style="display: none;">
     <div class="completion-content">
       <div class="completion-icon">🎉</div>
       <h3 class="completion-title">Congratulations!</h3>
-      <p class="completion-message">You've successfully completed the tutorial. Ready to build something amazing with SwapKit?</p>
+      <p class="completion-message">You've successfully completed the tutorial. Ready to build something amazing with USwap?</p>
       {props.playgroundUrl && (
         <a href={props.playgroundUrl} target="_blank" rel="noopener noreferrer" class="completion-btn">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -170,22 +171,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
   const guideCompletion = document.getElementById('guideCompletion');
-  
+
   if (!progressFill || !progressText || !guideCompletion) {
     return;
   }
-  
+
   function updateProgress() {
     const percentage = (currentStep / totalSteps) * 100;
     progressFill.style.width = percentage + '%';
     progressText.textContent = 'Step ' + currentStep + ' of ' + totalSteps;
-    
+
     if (currentStep > totalSteps) {
       progressText.textContent = 'Complete!';
       guideCompletion.style.display = 'block';
     }
   }
-  
+
   function showStep(stepNumber) {
     document.querySelectorAll('.step').forEach(function(step, index) {
       if (index + 1 === stepNumber) {
@@ -194,33 +195,33 @@ document.addEventListener('DOMContentLoaded', function() {
         step.classList.remove('active');
       }
     });
-    
+
     currentStep = stepNumber;
     updateProgress();
-    
+
     const activeStep = document.querySelector('.step.active');
     if (activeStep) {
       activeStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
-  
+
   function completeStep(stepNumber) {
     const status = document.getElementById('status-' + stepNumber);
     const result = document.getElementById('result-' + stepNumber);
-    
+
     if (status) {
       const pendingIcon = status.querySelector('.pending-icon');
       const completeIcon = status.querySelector('.complete-icon');
-      
+
       if (pendingIcon) pendingIcon.style.display = 'none';
       if (completeIcon) completeIcon.style.display = 'inline';
       status.classList.add('completed');
     }
-    
+
     if (result) {
       result.style.display = 'block';
     }
-    
+
     setTimeout(function() {
       if (stepNumber < totalSteps) {
         showStep(stepNumber + 1);
@@ -230,12 +231,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 1500);
   }
-  
+
   document.querySelectorAll('.copy-step-btn').forEach(function(button) {
     button.addEventListener('click', async function() {
       const code = this.getAttribute('data-code');
       if (!code) return;
-      
+
       try {
         await navigator.clipboard.writeText(code);
         const originalText = this.innerHTML;
@@ -248,33 +249,33 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
+
   document.querySelectorAll('.action-btn').forEach(function(button) {
     button.addEventListener('click', function() {
       const stepAttr = this.getAttribute('data-step');
       if (!stepAttr) return;
-      
+
       const stepNumber = parseInt(stepAttr);
       this.disabled = true;
       this.innerHTML = '<span class="btn-icon">⏳</span>Processing...';
-      
+
       setTimeout(function() {
         completeStep(stepNumber);
         button.innerHTML = '<span class="btn-icon">✅</span>Completed';
       }, 1000);
     });
   });
-  
+
   document.querySelectorAll('.nav-btn').forEach(function(button) {
     button.addEventListener('click', function() {
       const stepAttr = this.getAttribute('data-step');
       if (!stepAttr) return;
-      
+
       const targetStep = parseInt(stepAttr);
       showStep(targetStep);
     });
   });
-  
+
   updateProgress();
 });
 </script>
@@ -738,27 +739,27 @@ document.addEventListener('DOMContentLoaded', function() {
   .guide-header {
     padding: 1.5rem;
   }
-  
+
   .guide-progress {
     padding: 1rem 1.5rem;
   }
-  
+
   .step-header {
     padding: 1rem 1.5rem 0.75rem 1.5rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
-  
+
   .step-content {
     padding: 0 1.5rem 1rem 1.5rem;
   }
-  
+
   .step-navigation {
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .nav-btn {
     justify-content: center;
   }

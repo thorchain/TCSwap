@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Dogecoin Integration
-description: Complete guide to integrating Dogecoin with SwapKit SDK for UTXO operations and cross-chain swaps
+description: Complete guide to integrating Dogecoin with USwap SDK for UTXO operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Dogecoin integration with SwapKit, including wallet connections, UTXO management, fast block times, and cross-chain swaps.
+This guide covers Dogecoin integration with USwap, including wallet connections, UTXO management, fast block times, and cross-chain swaps.
 
 ## Overview
 
-Dogecoin is a fun, friendly cryptocurrency originally created as a joke but has become widely adopted for tipping and micropayments. SwapKit provides comprehensive Dogecoin support through:
+Dogecoin is a fun, friendly cryptocurrency originally created as a joke but has become widely adopted for tipping and micropayments. USwap provides comprehensive Dogecoin support through:
 
 - **Dogecoin Toolbox**: UTXO management optimized for DOGE's unique characteristics
 - **Fast Block Times**: ~1 minute block confirmations
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const dogeWallet = await swapKit.getWallet(Chain.Dogecoin);
+const dogeWallet = await uSwap.getWallet(Chain.Dogecoin);
 
 ````
 </TabItem>
@@ -75,11 +76,11 @@ Connect to Dogecoin using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Dogecoin], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Dogecoin], "your mnemonic phrase");
 
-await swapKit.connectLedger([Chain.Dogecoin]);
+await uSwap.connectLedger([Chain.Dogecoin]);
 
-await swapKit.connectTrezor([Chain.Dogecoin]);
+await uSwap.connectTrezor([Chain.Dogecoin]);
 ```
 
 ### Address Generation
@@ -89,7 +90,7 @@ Dogecoin uses a legacy address format:
 ```typescript
 // @noErrorValidation
 
-const dogeAddress = swapKit.getAddress(Chain.Dogecoin);
+const dogeAddress = uSwap.getAddress(Chain.Dogecoin);
 
 console.log("Dogecoin address:", dogeAddress);
 
@@ -106,7 +107,7 @@ console.log("Valid DOGE address:", validateDogeAddress(dogeAddress));
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L",
   assetValue: AssetValue.from({
     chain: Chain.Dogecoin,
@@ -269,12 +270,12 @@ Dogecoin is supported in THORChain cross-chain swaps:
 ```typescript
 // @noErrorValidation
 
-const dogeToBtcQuote = await swapKit.getQuote({
+const dogeToBtcQuote = await uSwap.getQuote({
   sellAsset: "DOGE.DOGE",
   sellAmount: "10000",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Dogecoin),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Dogecoin),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
 console.log("DOGE -> BTC quote:", {
@@ -283,25 +284,25 @@ console.log("DOGE -> BTC quote:", {
   priceImpact: dogeToBtcQuote.priceImpact,
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: dogeToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const dogeToUsdcQuote = await swapKit.getQuote({
+const dogeToUsdcQuote = await uSwap.getQuote({
   sellAsset: "DOGE.DOGE",
   sellAmount: "5000",
   buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  senderAddress: swapKit.getAddress(Chain.Dogecoin),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Dogecoin),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
-const dogeToRuneQuote = await swapKit.getQuote({
+const dogeToRuneQuote = await uSwap.getQuote({
   sellAsset: "DOGE.DOGE",
   sellAmount: "1000",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Dogecoin),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Dogecoin),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 
 console.log("Much swap! Very cross-chain! Wow!");
@@ -523,10 +524,10 @@ const gamingRewards = {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Dogecoin, [
+USwapConfig.setRpcUrl(Chain.Dogecoin, [
   "https:
   "https:
   "https:
@@ -534,7 +535,7 @@ SKConfig.setRpcUrl(Chain.Dogecoin, [
 
 
 const customDogeRpc = "https:
-SKConfig.setRpcUrl(Chain.Dogecoin, customDogeRpc);
+USwapConfig.setRpcUrl(Chain.Dogecoin, customDogeRpc);
 
 
 const dogeToolbox = await getDogecoinToolbox({
@@ -549,8 +550,8 @@ const dogeToolbox = await getDogecoinToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Dogecoin, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Dogecoin, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetToolbox = await getDogecoinToolbox({
@@ -573,7 +574,7 @@ Handle Dogecoin-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {

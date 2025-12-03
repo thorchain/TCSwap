@@ -1,8 +1,12 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { Chain } from "@uswap/helpers";
 import { useCallback, useEffect, useState } from "react";
-import type { SwapKitClient } from "../swapKitClient";
+import type { USwapClient } from "../uSwapClient";
 
-type Props = { skClient: SwapKitClient };
+type Props = { skClient: USwapClient };
 
 export default function NearNames({ skClient }: Props) {
   const [nearAddress, setNearAddress] = useState<string>("");

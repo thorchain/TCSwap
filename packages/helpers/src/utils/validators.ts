@@ -1,15 +1,13 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import type { Chain } from "@uswap/types";
-import { SKConfig } from "../modules/swapKitConfig";
+import { USwapConfig } from "../modules/uSwapConfig";
 import { USwapError } from "../modules/uSwapError";
 
 // Backward compatibility
-const supportedChains = ["TERRA", ...SKConfig.get("chains")];
+const supportedChains = ["TERRA", ...USwapConfig.get("chains")];
 
 export function validateIdentifier(identifier = "") {
   const uppercasedIdentifier = identifier.toUpperCase();

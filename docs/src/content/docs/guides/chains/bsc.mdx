@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: BNB Smart Chain Integration
-description: Complete guide to integrating BNB Smart Chain with SwapKit SDK for DeFi operations and cross-chain swaps
+description: Complete guide to integrating BNB Smart Chain with USwap SDK for DeFi operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers BNB Smart Chain (BSC) integration with SwapKit, including wallet connections, BEP-20 token transfers, cross-chain swaps, and BSC-specific DeFi protocols.
+This guide covers BNB Smart Chain (BSC) integration with USwap, including wallet connections, BEP-20 token transfers, cross-chain swaps, and BSC-specific DeFi protocols.
 
 ## Overview
 
-BNB Smart Chain is a fast, low-cost blockchain compatible with Ethereum Virtual Machine. SwapKit provides comprehensive BSC support through:
+BNB Smart Chain is a fast, low-cost blockchain compatible with Ethereum Virtual Machine. USwap provides comprehensive BSC support through:
 
 - **BSC Toolbox**: Fast operations with low BNB gas costs
 - **Cross-Chain Bridging**: Seamless transfers between BSC and other networks
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const bscWallet = await swapKit.getWallet(Chain.BinanceSmartChain);
+const bscWallet = await uSwap.getWallet(Chain.BinanceSmartChain);
 
 ````
 </TabItem>
@@ -75,16 +76,16 @@ Connect to BSC using Ethereum-compatible wallets:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore(
+await uSwap.connectKeystore(
   [Chain.BinanceSmartChain],
   "your mnemonic phrase"
 );
 
-await swapKit.connectBrowserWallet(Chain.BinanceSmartChain);
+await uSwap.connectBrowserWallet(Chain.BinanceSmartChain);
 
-await swapKit.connectWalletConnect([Chain.BinanceSmartChain]);
+await uSwap.connectWalletConnect([Chain.BinanceSmartChain]);
 
-await swapKit.connectLedger([Chain.BinanceSmartChain]);
+await uSwap.connectLedger([Chain.BinanceSmartChain]);
 ```
 
 ### Native BNB Transfers
@@ -95,7 +96,7 @@ BNB is the native gas and utility token of BSC:
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.BinanceSmartChain,
@@ -114,7 +115,7 @@ BSC supports BEP-20 tokens (compatible with ERC-20):
 ```typescript
 // @noErrorValidation
 
-const usdtTransfer = await swapKit.transfer({
+const usdtTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.BinanceSmartChain,
@@ -125,7 +126,7 @@ const usdtTransfer = await swapKit.transfer({
   feeOptionKey: FeeOption.Average,
 });
 
-const cakeTransfer = await swapKit.transfer({
+const cakeTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.BinanceSmartChain,
@@ -208,7 +209,7 @@ const pancakeswapTrade = await toolbox.call({
       "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
       "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
     ],
-    swapKit.getAddress(Chain.BinanceSmartChain),
+    uSwap.getAddress(Chain.BinanceSmartChain),
     Date.now() + 600000,
   ],
   txOverrides: {
@@ -253,25 +254,25 @@ const legacyTx = await toolbox.buildTransaction({
 ```typescript
 // @noErrorValidation
 
-const bridgeQuote = await swapKit.getQuote({
+const bridgeQuote = await uSwap.getQuote({
   sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   sellAmount: "1000",
   buyAsset: "BSC.USDC-0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.BinanceSmartChain),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.BinanceSmartChain),
 });
 
-const bridgeTx = await swapKit.swap({
+const bridgeTx = await uSwap.swap({
   route: bridgeQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const ethToBnbBridge = await swapKit.getQuote({
+const ethToBnbBridge = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "0.5",
   buyAsset: "BSC.BNB",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.BinanceSmartChain),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.BinanceSmartChain),
 });
 ```
 
@@ -280,25 +281,25 @@ const ethToBnbBridge = await swapKit.getQuote({
 ```typescript
 // @noErrorValidation
 
-const cakeToBtcQuote = await swapKit.getQuote({
+const cakeToBtcQuote = await uSwap.getQuote({
   sellAsset: "BSC.CAKE-0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
   sellAmount: "100",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.BinanceSmartChain),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.BinanceSmartChain),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
-const crossChainSwap = await swapKit.swap({
+const crossChainSwap = await uSwap.swap({
   route: cakeToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const bnbToRuneQuote = await swapKit.getQuote({
+const bnbToRuneQuote = await uSwap.getQuote({
   sellAsset: "BSC.BNB",
   sellAmount: "1",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.BinanceSmartChain),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.BinanceSmartChain),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -309,26 +310,26 @@ Access PancakeSwap and other BSC DEXs:
 ```typescript
 // @noErrorValidation
 
-const pancakeQuote = await swapKit.getQuote({
+const pancakeQuote = await uSwap.getQuote({
   sellAsset: "BSC.BNB",
   sellAmount: "1",
   buyAsset: "BSC.USDT-0x55d398326f99059fF775485246999027B3197955",
-  senderAddress: swapKit.getAddress(Chain.BinanceSmartChain),
-  recipientAddress: swapKit.getAddress(Chain.BinanceSmartChain),
+  senderAddress: uSwap.getAddress(Chain.BinanceSmartChain),
+  recipientAddress: uSwap.getAddress(Chain.BinanceSmartChain),
   providers: ["PANCAKESWAP"],
 });
 
-const pancakeSwap = await swapKit.swap({
+const pancakeSwap = await uSwap.swap({
   route: pancakeQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const complexSwapQuote = await swapKit.getQuote({
+const complexSwapQuote = await uSwap.getQuote({
   sellAsset: "BSC.BUSD-0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
   sellAmount: "500",
   buyAsset: "BSC.CAKE-0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-  senderAddress: swapKit.getAddress(Chain.BinanceSmartChain),
-  recipientAddress: swapKit.getAddress(Chain.BinanceSmartChain),
+  senderAddress: uSwap.getAddress(Chain.BinanceSmartChain),
+  recipientAddress: uSwap.getAddress(Chain.BinanceSmartChain),
   providers: ["PANCAKESWAP"],
 });
 ```
@@ -353,7 +354,7 @@ const bscTokens = {
 
 const getBSCPortfolio = async () => {
   const balances = {};
-  const address = swapKit.getAddress(Chain.BinanceSmartChain);
+  const address = uSwap.getAddress(Chain.BinanceSmartChain);
 
   for (const [symbol, tokenAddress] of Object.entries(bscTokens)) {
     const balance = await toolbox.getBalance(address, tokenAddress);
@@ -416,7 +417,7 @@ const addLiquidity = await toolbox.call({
     "5000000000000000000",
     "0",
     "0",
-    swapKit.getAddress(Chain.BinanceSmartChain),
+    uSwap.getAddress(Chain.BinanceSmartChain),
     Date.now() + 600000,
   ],
   txOverrides: {
@@ -432,10 +433,10 @@ const addLiquidity = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.BinanceSmartChain, [
+USwapConfig.setRpcUrl(Chain.BinanceSmartChain, [
   "https:
   "https:
   "https:
@@ -457,8 +458,8 @@ const toolbox = await getBSCToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.BinanceSmartChain, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.BinanceSmartChain, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetTokens = {
@@ -476,7 +477,7 @@ Handle BSC-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -599,12 +600,12 @@ const results = await toolbox.multicall(multicallData);
 4. **Use PancakeSwap for Best Liquidity**:
 
    ```typescript
-   const pancakeQuote = await swapKit.getQuote({
+   const pancakeQuote = await uSwap.getQuote({
      sellAsset: "BSC.BNB",
      sellAmount: "10",
      buyAsset: "BSC.USDT-0x55d398326f99059fF775485246999027B3197955",
-     senderAddress: swapKit.getAddress(Chain.BinanceSmartChain),
-     recipientAddress: swapKit.getAddress(Chain.BinanceSmartChain),
+     senderAddress: uSwap.getAddress(Chain.BinanceSmartChain),
+     recipientAddress: uSwap.getAddress(Chain.BinanceSmartChain),
      providers: ["PANCAKESWAP"],
    });
    ```
@@ -642,7 +643,7 @@ const results = await toolbox.multicall(multicallData);
      "https:
    ];
 
-   SKConfig.setRpcUrl(Chain.BinanceSmartChain, rpcEndpoints);
+   USwapConfig.setRpcUrl(Chain.BinanceSmartChain, rpcEndpoints);
    ```
 
 ## API Reference Summary

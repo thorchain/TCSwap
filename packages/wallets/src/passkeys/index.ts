@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -10,8 +8,8 @@ import {
   EVMChains,
   filterSupportedChains,
   prepareNetworkSwitch,
-  SKConfig,
   switchEVMWalletNetwork,
+  USwapConfig,
   USwapError,
   WalletOption,
 } from "@uswap/helpers";
@@ -30,7 +28,7 @@ import {
 import { match } from "ts-pattern";
 
 async function getPasskeyWallet() {
-  const appId = SKConfig.get("apiKeys").passkeys;
+  const appId = USwapConfig.get("apiKeys").passkeys;
   const { createWallet } = await import("@passkeys/core");
 
   return createWallet({

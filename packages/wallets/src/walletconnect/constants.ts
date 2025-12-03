@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { ClientMetadata } from "./types";
 
 export const DEFAULT_RELAY_URL = "wss://relay.walletconnect.com";
@@ -23,10 +27,12 @@ export const MONAD_MAINNET_ID = "eip155:143";
 export const DEFAULT_LOGGER = "debug";
 
 export const DEFAULT_APP_METADATA: ClientMetadata = {
-  description: "SwapKit cross-chain SDK",
-  icons: ["https://raw.githubusercontent.com/swapkit/SwapKit/refs/heads/develop/docs/src/assets/logo-black.png"],
-  name: "SwapKit",
-  url: "https://swapkit.dev/",
+  description: "USwap cross-chain SDK",
+  icons: [
+    "https://raw.githubusercontent.com/horizontalsystems/USwap/refs/heads/develop/docs/src/assets/logo-black.png",
+  ],
+  name: "USwap",
+  url: "https://uswap.dev/",
 };
 
 /**

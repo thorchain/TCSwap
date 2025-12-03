@@ -1,11 +1,15 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { AssetValue, TokenNames } from "@uswap/sdk";
 import { useMemo, useState } from "react";
-import { assetsMap, useSwapKit } from "../swapkit-context";
 import type { UseFilteredSortedAssetsFilters } from "../types";
+import { assetsMap, useUSwap } from "../uswap-context";
 import { useDebouncedEffect } from "./use-debounced-effect";
 
 export function useFilteredSortedAssets() {
-  const { balancesByChain } = useSwapKit();
+  const { balancesByChain } = useUSwap();
   const [filters, setFilters] = useState<UseFilteredSortedAssetsFilters>({ searchQuery: "", selectedNetworks: [] });
 
   // internal state for handling debouncing

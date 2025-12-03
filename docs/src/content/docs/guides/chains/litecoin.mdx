@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Litecoin Integration
-description: Complete guide to integrating Litecoin with SwapKit SDK for UTXO operations and cross-chain swaps
+description: Complete guide to integrating Litecoin with USwap SDK for UTXO operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Litecoin integration with SwapKit, including wallet connections, UTXO management, fast confirmations, and cross-chain swaps.
+This guide covers Litecoin integration with USwap, including wallet connections, UTXO management, fast confirmations, and cross-chain swaps.
 
 ## Overview
 
-Litecoin is a peer-to-peer cryptocurrency based on Bitcoin with faster block times and lower fees. SwapKit provides comprehensive Litecoin support through:
+Litecoin is a peer-to-peer cryptocurrency based on Bitcoin with faster block times and lower fees. USwap provides comprehensive Litecoin support through:
 
 - **Litecoin Toolbox**: UTXO management with LTC-specific optimizations
 - **Fast Block Times**: ~2.5 minute block confirmations vs Bitcoin's ~10 minutes
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const ltcWallet = await swapKit.getWallet(Chain.Litecoin);
+const ltcWallet = await uSwap.getWallet(Chain.Litecoin);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Litecoin using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Litecoin], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Litecoin], "your mnemonic phrase");
 
-await swapKit.connectLedger([Chain.Litecoin]);
+await uSwap.connectLedger([Chain.Litecoin]);
 
-await swapKit.connectTrezor([Chain.Litecoin]);
+await uSwap.connectTrezor([Chain.Litecoin]);
 
-await swapKit.connectKeepKey([Chain.Litecoin]);
+await uSwap.connectKeepKey([Chain.Litecoin]);
 ```
 
 ### Address Generation
@@ -92,7 +93,7 @@ Litecoin supports multiple address formats similar to Bitcoin:
 // @noErrorValidation
 
 const addresses = {
-  nativeSegwit: swapKit.getAddress(Chain.Litecoin),
+  nativeSegwit: uSwap.getAddress(Chain.Litecoin),
 
   segwit: await ltcToolbox.getAddress(0, false, "segwit"),
 
@@ -108,7 +109,7 @@ console.log("Litecoin addresses:", addresses);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
   assetValue: AssetValue.from({
     chain: Chain.Litecoin,
@@ -259,12 +260,12 @@ Litecoin is supported in THORChain cross-chain swaps:
 ```typescript
 // @noErrorValidation
 
-const ltcToBtcQuote = await swapKit.getQuote({
+const ltcToBtcQuote = await uSwap.getQuote({
   sellAsset: "LTC.LTC",
   sellAmount: "1",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Litecoin),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Litecoin),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
 console.log("LTC -> BTC quote:", {
@@ -273,34 +274,34 @@ console.log("LTC -> BTC quote:", {
   timeEstimate: ltcToBtcQuote.timeEstimate,
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: ltcToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const ltcToUsdcQuote = await swapKit.getQuote({
+const ltcToUsdcQuote = await uSwap.getQuote({
   sellAsset: "LTC.LTC",
   sellAmount: "2",
   buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  senderAddress: swapKit.getAddress(Chain.Litecoin),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Litecoin),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
-const ltcToRuneQuote = await swapKit.getQuote({
+const ltcToRuneQuote = await uSwap.getQuote({
   sellAsset: "LTC.LTC",
   sellAmount: "0.5",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Litecoin),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Litecoin),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 
 const fastArbitrage = async () => {
-  const ltcToEthQuote = await swapKit.getQuote({
+  const ltcToEthQuote = await uSwap.getQuote({
     sellAsset: "LTC.LTC",
     sellAmount: "5",
     buyAsset: "ETH.ETH",
-    senderAddress: swapKit.getAddress(Chain.Litecoin),
-    recipientAddress: swapKit.getAddress(Chain.Ethereum),
+    senderAddress: uSwap.getAddress(Chain.Litecoin),
+    recipientAddress: uSwap.getAddress(Chain.Ethereum),
   });
 
   console.log(`LTC->ETH rate: 1 LTC = ${ltcToEthQuote.expectedOutput} ETH`);
@@ -337,7 +338,7 @@ const mwebTransfer = async () => {
 
 const atomicSwapExample = async () => {
   const swapContract = {
-    initiator: swapKit.getAddress(Chain.Litecoin),
+    initiator: uSwap.getAddress(Chain.Litecoin),
     participant: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
     amount: "1.0",
     hashlock: "a914b7fcb4e6fb3c3c2dbf55e9e8a28d1e8b5c9a3b2187",
@@ -375,10 +376,10 @@ const lightningExample = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Litecoin, [
+USwapConfig.setRpcUrl(Chain.Litecoin, [
   "https:
   "https:
   "https:
@@ -386,7 +387,7 @@ SKConfig.setRpcUrl(Chain.Litecoin, [
 
 
 const customLtcRpc = "https:
-SKConfig.setRpcUrl(Chain.Litecoin, customLtcRpc);
+USwapConfig.setRpcUrl(Chain.Litecoin, customLtcRpc);
 
 
 const ltcToolbox = await getLitecoinToolbox({
@@ -401,8 +402,8 @@ const ltcToolbox = await getLitecoinToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Litecoin, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Litecoin, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetToolbox = await getLitecoinToolbox({
@@ -425,7 +426,7 @@ Handle Litecoin-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -494,7 +495,7 @@ const urgentTransfer = await ltcToolbox.transfer({
 // @noErrorValidation
 
 const consolidateUTXOs = async () => {
-  const address = swapKit.getAddress(Chain.Litecoin);
+  const address = uSwap.getAddress(Chain.Litecoin);
   const utxos = await ltcToolbox.getUTXOs(address);
 
   const smallUTXOs = utxos.filter((utxo) => utxo.value < 0.01 * 100000000);

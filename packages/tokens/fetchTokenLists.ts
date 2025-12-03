@@ -1,9 +1,13 @@
-import { Chain, ProviderName, SKConfig } from "@uswap/helpers";
-import { SwapKitApi } from "@uswap/helpers/api";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
 
-SKConfig.set({ apiKeys: { swapKit: process.env.TEST_API_KEY || "" }, envs: { isDev: false } });
+import { Chain, ProviderName, USwapConfig } from "@uswap/helpers";
+import { USwapApi } from "@uswap/helpers/api";
 
-const providers = (await SwapKitApi.getTokenListProviders()).filter(
+USwapConfig.set({ apiKeys: { uSwap: process.env.TEST_API_KEY || "" }, envs: { isDev: false } });
+
+const providers = (await USwapApi.getTokenListProviders()).filter(
   (provider) =>
     ![
       ProviderName.CHAINFLIP_STREAMING,
@@ -22,7 +26,7 @@ console.info(
 for (const { provider } of providers) {
   try {
     console.info(`🔄 Fetching token list for ${provider}...`);
-    const tokenList = await SwapKitApi.getTokenList(provider);
+    const tokenList = await USwapApi.getTokenList(provider);
     if (!tokenList) continue;
 
     console.info(`✅ ${provider} token list fetched (${tokenList.tokens.length} tokens)`);

@@ -1,5 +1,9 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { AssetValue, type Chain, getChainConfig } from "@uswap/helpers";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
 const pid = typeof process !== "undefined" && process.pid ? process.pid.toString(36) : "";
 
@@ -18,7 +22,7 @@ export function uniqid() {
 
 export function getBalance<T extends Chain>(chain: T) {
   return async function getBalance(address: string, scamFilter = true) {
-    const balances = await SwapKitApi.getChainBalance({ address, chain, scamFilter });
+    const balances = await USwapApi.getChainBalance({ address, chain, scamFilter });
     const { baseDecimal } = getChainConfig(chain);
     const assetValues = balances.map(({ identifier, value, decimal }) => {
       return new AssetValue({ decimal: decimal || baseDecimal, identifier, value });

@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -8,14 +6,14 @@ import {
   loadPlugin,
   loadWallet,
   type PluginName,
-  type SKConfigState,
-  type SKPlugins,
   USwap,
+  type USwapConfigState,
   USwapError,
+  type USwapPlugins,
   type WalletOption,
 } from "@uswap/sdk";
 
-export async function getSkClient<W extends WalletOption, P extends PluginName[]>({
+export async function getUSClient<W extends WalletOption, P extends PluginName[]>({
   walletOption,
   pluginNames,
 }: {
@@ -35,8 +33,8 @@ export async function getSkClient<W extends WalletOption, P extends PluginName[]
   };
 }
 
-export async function loadPlugins<P extends PluginName[]>(pluginNames: P): Promise<Pick<SKPlugins, P[number]>> {
-  let connectedPlugins = {} as Pick<SKPlugins, P[number]>;
+export async function loadPlugins<P extends PluginName[]>(pluginNames: P): Promise<Pick<USwapPlugins, P[number]>> {
+  let connectedPlugins = {} as Pick<USwapPlugins, P[number]>;
 
   if (pluginNames?.length) {
     for (const pluginName of pluginNames) {
@@ -48,7 +46,7 @@ export async function loadPlugins<P extends PluginName[]>(pluginNames: P): Promi
   return connectedPlugins;
 }
 
-export const getStableConfigMemoKey = (config: SKConfigState | undefined) => {
+export const getStableConfigMemoKey = (config: USwapConfigState | undefined) => {
   if (!config) return null;
 
   try {

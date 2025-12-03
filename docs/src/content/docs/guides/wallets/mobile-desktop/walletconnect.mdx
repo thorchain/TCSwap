@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: WalletConnect Integration
-description: Complete guide to integrating WalletConnect with SwapKit SDK v4 for mobile and desktop wallet support
+description: Complete guide to integrating WalletConnect with USwap SDK v4 for mobile and desktop wallet support
 ---
 
-WalletConnect is a protocol that enables seamless connection between dApps and mobile wallets through QR code scanning or deep linking. SwapKit SDK v4 provides comprehensive WalletConnect v2 support across multiple blockchain networks, enabling users to connect their favorite mobile wallets to your application.
+WalletConnect is a protocol that enables seamless connection between dApps and mobile wallets through QR code scanning or deep linking. USwap SDK v4 provides comprehensive WalletConnect v2 support across multiple blockchain networks, enabling users to connect their favorite mobile wallets to your application.
 
 ## Supported Chains
 
-SwapKit supports WalletConnect for these chains:
+USwap supports WalletConnect for these chains:
 
 - **EVM Compatible**: Ethereum, Arbitrum, Aurora, Avalanche, Base, BinanceSmartChain, Optimism, Polygon
 - **Cosmos Ecosystem**: Cosmos, Kujira, Maya, THORChain
@@ -55,19 +56,19 @@ WalletConnect works in all modern browsers:
 - **Edge**: Full support
 - **Mobile browsers**: Full support
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
       walletConnectProjectId: "your-walletconnect-project-id",
     },
   },
@@ -78,12 +79,12 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
       walletConnectProjectId: "your-walletconnect-project-id",
     },
   },
@@ -95,9 +96,9 @@ const swapKit = createSwapKit({
 #### Basic Connection
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -113,10 +114,10 @@ async function connectWalletConnect() {
       "📱 Scan QR code with your mobile wallet or click a wallet to connect"
     );
 
-    await swapKit.connectWalletconnect([Chain.Ethereum]);
+    await uSwap.connectWalletconnect([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
-    const balance = await swapKit.getBalance(Chain.Ethereum, true);
+    const address = uSwap.getAddress(Chain.Ethereum);
+    const balance = await uSwap.getBalance(Chain.Ethereum, true);
 
     console.log("✅ Connected via WalletConnect:", address);
     console.log("ETH balance:", balance);
@@ -132,9 +133,9 @@ async function connectWalletConnect() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -154,18 +155,18 @@ async function connectMultipleChains() {
   ];
 
   try {
-    await swapKit.connectWalletconnect(supportedChains);
+    await uSwap.connectWalletconnect(supportedChains);
 
     const addresses = {};
     for (const chain of supportedChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
     const balances = await Promise.all(
       supportedChains.map(async (chain) => {
         try {
-          const balance = await swapKit.getBalance(chain, true);
+          const balance = await uSwap.getBalance(chain, true);
           return { chain, balance };
         } catch (error) {
           return { chain, balance: [], error: error.message };
@@ -185,9 +186,9 @@ async function connectMultipleChains() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -209,9 +210,9 @@ async function connectWithAdvancedOptions() {
   };
 
   try {
-    await swapKit.connectWalletconnect([Chain.Ethereum], walletconnectOptions);
+    await uSwap.connectWalletconnect([Chain.Ethereum], walletconnectOptions);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Connected with custom options:", address);
 
     return { success: true, address };
@@ -230,9 +231,9 @@ async function connectWithAdvancedOptions() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -242,7 +243,7 @@ const swapKit = SwapKit({
 });
 
 
-await swapKit.connectWalletconnect([Chain.Ethereum]);
+await uSwap.connectWalletconnect([Chain.Ethereum]);
 
 async function sendEthereum() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -254,7 +255,7 @@ async function sendEthereum() {
     console.log("To:", recipient);
     console.log("📱 Approve the transaction on your mobile wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -273,9 +274,9 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -284,7 +285,7 @@ const swapKit = SwapKit({
   wallets: { ...walletconnectWallet },
 });
 
-await swapKit.connectWalletconnect([Chain.Ethereum]);
+await uSwap.connectWalletconnect([Chain.Ethereum]);
 
 async function sendERC20Token() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -297,7 +298,7 @@ async function sendERC20Token() {
   try {
     console.log("📱 Approve USDC transfer on your mobile wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -315,9 +316,9 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -327,7 +328,7 @@ const swapKit = SwapKit({
 });
 
 
-await swapKit.connectWalletconnect([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
+await uSwap.connectWalletconnect([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
 
 async function sendOnPolygon() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -336,7 +337,7 @@ async function sendOnPolygon() {
   try {
     console.log("📱 Approve MATIC transfer on your mobile wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -358,7 +359,7 @@ async function sendOnArbitrum() {
   try {
     console.log("📱 Approve Arbitrum ETH transfer on your mobile wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -380,9 +381,9 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -392,7 +393,7 @@ const swapKit = SwapKit({
 });
 
 
-await swapKit.connectWalletconnect([Chain.Cosmos]);
+await uSwap.connectWalletconnect([Chain.Cosmos]);
 
 async function sendCosmos() {
   const recipient = "cosmos1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -401,7 +402,7 @@ async function sendCosmos() {
   try {
     console.log("📱 Approve ATOM transfer on your mobile wallet (Keplr, etc.)");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "WalletConnect Cosmos transaction",
@@ -422,9 +423,9 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -434,7 +435,7 @@ const swapKit = SwapKit({
 });
 
 
-await swapKit.connectWalletconnect([Chain.THORChain]);
+await uSwap.connectWalletconnect([Chain.THORChain]);
 
 async function sendTHORChain() {
   const recipient = "thor1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -443,7 +444,7 @@ async function sendTHORChain() {
   try {
     console.log("📱 Approve RUNE transfer on your mobile wallet");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "WalletConnect THORChain transaction",
@@ -466,7 +467,7 @@ async function depositToTHORChain() {
 
   try {
 
-    const wallet = await swapKit.getWalletWithBalance(Chain.THORChain);
+    const wallet = await uSwap.getWalletWithBalance(Chain.THORChain);
     const txHash = await wallet.deposit({
       assetValue: amount,
       memo,
@@ -486,9 +487,9 @@ async function depositToTHORChain() {
 ### EVM Chain Support
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -509,15 +510,15 @@ async function connectEVMChains() {
   ];
 
   try {
-    await swapKit.connectWalletconnect(evmChains);
+    await uSwap.connectWalletconnect(evmChains);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("EVM address (same on all chains):", address);
 
     const chainStatus = {};
     for (const chain of evmChains) {
       try {
-        const balance = await swapKit.getBalance(chain, false);
+        const balance = await uSwap.getBalance(chain, false);
         chainStatus[chain] = { connected: true, balance };
       } catch (error) {
         chainStatus[chain] = { connected: false, error: error.message };
@@ -534,9 +535,9 @@ async function connectEVMChains() {
 ### Cosmos Ecosystem Support
 
 ```ts twoslash
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -554,11 +555,11 @@ async function connectCosmosEcosystem() {
   ];
 
   try {
-    await swapKit.connectWalletconnect(cosmosChains);
+    await uSwap.connectWalletconnect(cosmosChains);
 
     const addresses = {};
     for (const chain of cosmosChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
@@ -575,9 +576,9 @@ async function connectCosmosEcosystem() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -591,9 +592,9 @@ async function diagnosticConnection() {
     console.log("🔍 Attempting WalletConnect connection...");
     console.log("📱 Please scan QR code or select a wallet from the modal");
 
-    await swapKit.connectWalletconnect([Chain.Ethereum]);
+    await uSwap.connectWalletconnect([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("✅ Successfully connected via WalletConnect:", address);
 
     return { success: true, address };
@@ -625,12 +626,12 @@ async function diagnosticConnection() {
 
 
 function checkWalletConnectConfig() {
-  const config = swapKit.getConfig();
+  const config = uSwap.getConfig();
   const projectId = config.apiKeys?.walletConnectProjectId;
 
   if (!projectId) {
     console.error("❌ WalletConnect Project ID not configured");
-    console.log("🔧 Add your project ID to SwapKit config");
+    console.log("🔧 Add your project ID to USwap config");
     return { configured: false };
   }
 
@@ -651,7 +652,7 @@ function checkWalletConnectConfig() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC",
     });
@@ -660,7 +661,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient ETH balance");
 
-      const balance = await swapKit.getBalance(Chain.Ethereum, true);
+      const balance = await uSwap.getBalance(Chain.Ethereum, true);
       console.log("Current balance:", balance);
       console.log("🔧 Add more ETH to your wallet");
     }
@@ -696,7 +697,7 @@ async function handleTransactionErrors() {
 ```ts twoslash
 async function handleSessionIssues() {
   try {
-    await swapKit.connectWalletconnect([Chain.Ethereum]);
+    await uSwap.connectWalletconnect([Chain.Ethereum]);
   } catch (error) {
     if (
       error.message.includes("session") ||
@@ -708,14 +709,14 @@ async function handleSessionIssues() {
       console.log("3. Try connecting again to establish a new session");
 
       try {
-        swapKit.disconnectAll();
+        uSwap.disconnectAll();
         console.log("✅ Old sessions cleared");
       } catch {
         console.error("❌ Failed to clear old sessions");
       }
 
       console.log("🔄 Attempting to reconnect...");
-      await swapKit.connectWalletconnect([Chain.Ethereum]);
+      await uSwap.connectWalletconnect([Chain.Ethereum]);
     }
 
     throw error;
@@ -729,10 +730,10 @@ async function handleSessionIssues() {
 
 ```ts twoslash
 
-import { SwapKit, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
 
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID,
@@ -783,7 +784,7 @@ async function secureWalletConnectTransaction() {
   console.log("⚠️ Please verify these details on your mobile wallet before confirming");
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -799,11 +800,11 @@ async function secureWalletConnectTransaction() {
 
 async function secureSessionManagement() {
   try {
-    await swapKit.connectWalletconnect([Chain.Ethereum]);
+    await uSwap.connectWalletconnect([Chain.Ethereum]);
 
 
     window.addEventListener('beforeunload', () => {
-      swapKit.disconnectAll();
+      uSwap.disconnectAll();
     });
 
   } catch (error) {
@@ -834,7 +835,7 @@ const getWalletConnectConfig = () => {
   };
 };
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: getWalletConnectConfig(),
   },
@@ -847,7 +848,7 @@ const swapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface WalletConnectProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;
@@ -860,7 +861,7 @@ export function WalletConnect({ onConnect, onError }: WalletConnectProps) {
   const [addresses, setAddresses] = useState<Partial<Record<Chain, string>>>({});
   const [selectedChains, setSelectedChains] = useState<Chain[]>([Chain.Ethereum]);
 
-  const swapKit = SwapKit({
+  const uSwap = USwap({
     config: {
       apiKeys: {
         walletConnectProjectId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
@@ -873,11 +874,11 @@ export function WalletConnect({ onConnect, onError }: WalletConnectProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectWalletconnect(selectedChains);
+      await uSwap.connectWalletconnect(selectedChains);
 
       const connectedAddresses: Partial<Record<Chain, string>> = {};
       for (const chain of selectedChains) {
-        connectedAddresses[chain] = swapKit.getAddress(chain);
+        connectedAddresses[chain] = uSwap.getAddress(chain);
       }
 
       setAddresses(connectedAddresses);
@@ -891,7 +892,7 @@ export function WalletConnect({ onConnect, onError }: WalletConnectProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddresses({});
   };
@@ -980,4 +981,4 @@ export function WalletConnect({ onConnect, onError }: WalletConnectProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of WalletConnect integration with SwapKit SDK v4, including multi-chain support, mobile wallet connectivity, and security best practices for production applications.
+This comprehensive guide covers all aspects of WalletConnect integration with USwap SDK v4, including multi-chain support, mobile wallet connectivity, and security best practices for production applications.

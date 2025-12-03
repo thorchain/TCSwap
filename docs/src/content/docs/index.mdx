@@ -1,6 +1,7 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
-title: SwapKit - Build Cross-Chain DeFi in Minutes
-description: SwapKit provides everything you need to integrate blockchain functionality into your application with a single, unified API supporting 20+ blockchains.
+title: USwap - Build Cross-Chain DeFi in Minutes
+description: USwap provides everything you need to integrate blockchain functionality into your application with a single, unified API supporting 20+ blockchains.
 ---
 
 import { Card, CardGrid, Tabs, TabItem } from "@astrojs/starlight/components";
@@ -11,7 +12,7 @@ import TryItYourself from "../../components/TryItYourself.astro";
 
 ## Build Cross-Chain DeFi in Minutes
 
-SwapKit provides everything you need to integrate blockchain functionality into your application with a single, unified API. Now with v4's enhanced architecture and runtime flexibility.
+USwap provides everything you need to integrate blockchain functionality into your application with a single, unified API. Now with v4's enhanced architecture and runtime flexibility.
 
 <CardGrid stagger>
   <Card title="20+ Blockchains" icon="rocket">
@@ -39,34 +40,34 @@ SwapKit provides everything you need to integrate blockchain functionality into 
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, SwapKitApi } from "@uswap/sdk";
+import { createUSwap, Chain, USwapApi } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-await swapKit.connectKeystore(
+await uSwap.connectKeystore(
   [Chain.Ethereum, Chain.Bitcoin, Chain.Ripple],
   "your mnemonic phrase"
 );
 
-const ethBalance = await swapKit.getBalance(Chain.Ethereum);
-const btcBalance = await swapKit.getBalance(Chain.Bitcoin);
-const xrpBalance = await swapKit.getBalance(Chain.Ripple);
+const ethBalance = await uSwap.getBalance(Chain.Ethereum);
+const btcBalance = await uSwap.getBalance(Chain.Bitcoin);
+const xrpBalance = await uSwap.getBalance(Chain.Ripple);
 
-const { routes } = await SwapKitApi.getSwapQuote({
+const { routes } = await USwapApi.getSwapQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "1000000000000000000",
   buyAsset: "BTC.BTC",
-  sourceAddress: swapKit.getAddress(Chain.Ethereum),
-  destinationAddress: swapKit.getAddress(Chain.Bitcoin),
+  sourceAddress: uSwap.getAddress(Chain.Ethereum),
+  destinationAddress: uSwap.getAddress(Chain.Bitcoin),
   slippage: 3,
 });
 
 if (routes.length > 0) {
-  const txHash = await swapKit.swap({ route: routes[0] });
+  const txHash = await uSwap.swap({ route: routes[0] });
 }
 ```
 
-## Why SwapKit?
+## Why USwap?
 
 <CardGrid>
   <Card title="Unified API" icon="setting">
@@ -90,7 +91,7 @@ if (routes.length > 0) {
 
 ## Popular Integration Paths
 
-Whether you're building a simple wallet connector or a complex DeFi protocol, SwapKit has the right approach for your needs:
+Whether you're building a simple wallet connector or a complex DeFi protocol, USwap has the right approach for your needs:
 
 <CardGrid>
   <Card title="🚀 Quick Start" icon="rocket">
@@ -102,7 +103,7 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
 
   <Card title="⚡ Essential Actions" icon="star">
     **Perfect for**: Basic DeFi apps, wallet integrations Learn the core
-    functionality every SwapKit app needs. - Connect wallets across 20+ chains -
+    functionality every USwap app needs. - Connect wallets across 20+ chains -
     Send transactions with proper fee handling - Perform cross-chain swaps
     [Essential Actions →](/guides/actions/connect-wallet)
   </Card>
@@ -115,7 +116,7 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
   </Card>
 
   <Card title="🔧 Advanced Development" icon="setting">
-    **Perfect for**: Custom protocols, enterprise applications Extend SwapKit
+    **Perfect for**: Custom protocols, enterprise applications Extend USwap
     with your own plugins and wallets. - Create custom plugins for new protocols
     - Build wallet adapters for new providers - Optimize for production
     environments [Advanced Features →](/guides/advanced-features)
@@ -135,14 +136,14 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
 
 <PlaygroundLinks
   title="🚀 Jump Right In!"
-  description="Experience SwapKit in action with our interactive playgrounds and examples"
+  description="Experience USwap in action with our interactive playgrounds and examples"
   stackblitzUrl="https://stackblitz.com/github/swapkit/swapkit/tree/develop/playgrounds/nextjs"
   codesandboxUrl="https://codesandbox.io/p/github/swapkit/swapkit/develop/playgrounds/nextjs"
 />
 
 ## Get Started in 3 Steps
 
-### 1. Install SwapKit
+### 1. Install USwap
 
 <Tabs syncKey="package-manager">
   <TabItem label="bun" icon="bun">
@@ -158,12 +159,12 @@ Whether you're building a simple wallet connector or a complex DeFi protocol, Sw
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit } from "@uswap/sdk";
+import { createUSwap } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-swapkit-api-key",
+      uSwap: "your-uswap-api-key",
     },
   },
 });
@@ -174,20 +175,20 @@ const swapKit = createSwapKit({
 ```typescript
 // @noErrorValidation
 
-import { createSwapKit, Chain, AssetValue, FeeOption } from "@uswap/sdk";
+import { createUSwap, Chain, AssetValue, FeeOption } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-await swapKit.connectEVMWallet([Chain.Ethereum]);
+await uSwap.connectEVMWallet([Chain.Ethereum]);
 
-const balance = await swapKit.getBalance(Chain.Ethereum);
+const balance = await uSwap.getBalance(Chain.Ethereum);
 
 const assetValue = AssetValue.from({
   asset: "ETH.ETH",
   value: "0.1",
 });
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   assetValue,
   recipient: "0x742d35Cc6634C0532925a3b844Bc9e7595f6E321",
   feeOptionKey: FeeOption.Fast,
@@ -217,7 +218,7 @@ const txHash = await swapKit.transfer({
 
   </Card>
   <Card title="GitHub" icon="github">
-    Contribute to SwapKit development or report issues on GitHub.
+    Contribute to USwap development or report issues on GitHub.
 
     [View on GitHub →](https:
 

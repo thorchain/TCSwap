@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -22,12 +20,12 @@ import {
   getChainConfig,
   getRPCUrl,
   NetworkDerivationPath,
-  SwapKitNumber,
   type TCLikeChain,
   USwapError,
+  USwapNumber,
   updateDerivationPath,
 } from "@uswap/helpers";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 import { match, P } from "ts-pattern";
 import type { CosmosToolboxParams } from "../types";
 import {
@@ -41,7 +39,7 @@ import {
 
 export async function fetchFeeRateFromSwapKit(chainId: ChainId, safeDefault: number) {
   try {
-    const response = await SwapKitApi.getGasRate();
+    const response = await USwapApi.getGasRate();
     const responseGasRate = response.find((gas) => gas.chainId === chainId)?.value;
 
     return responseGasRate ? Number.parseFloat(responseGasRate) : safeDefault;
@@ -261,7 +259,7 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
 
 export async function getFeeRateFromSwapKit(chainId: ChainId, safeDefault: number) {
   try {
-    const response = await SwapKitApi.getGasRate();
+    const response = await USwapApi.getGasRate();
     const responseGasRate = response.find((gas) => gas.chainId === chainId)?.value;
 
     return responseGasRate ? Number.parseFloat(responseGasRate) : safeDefault;
@@ -279,13 +277,13 @@ async function getFees(chain: Chain, safeDefault: number) {
 
   const baseFee = await fetchFeeRateFromSwapKit(chainId, safeDefault);
   return {
-    average: SwapKitNumber.fromBigInt(BigInt(baseFee), baseDecimal),
-    fast: SwapKitNumber.fromBigInt(BigInt(applyFeeMultiplier(baseFee, FeeOption.Fast, true)), baseDecimal),
-    fastest: SwapKitNumber.fromBigInt(BigInt(applyFeeMultiplier(baseFee, FeeOption.Fastest, true)), baseDecimal),
-  } as { [key in FeeOption]: SwapKitNumber };
+    average: USwapNumber.fromBigInt(BigInt(baseFee), baseDecimal),
+    fast: USwapNumber.fromBigInt(BigInt(applyFeeMultiplier(baseFee, FeeOption.Fast, true)), baseDecimal),
+    fastest: USwapNumber.fromBigInt(BigInt(applyFeeMultiplier(baseFee, FeeOption.Fastest, true)), baseDecimal),
+  } as { [key in FeeOption]: USwapNumber };
 }
 
-function feeToStdFee(fee: SwapKitNumber, denom: string): StdFee {
+function feeToStdFee(fee: USwapNumber, denom: string): StdFee {
   return { amount: [{ amount: fee.getBaseValue("string"), denom }], gas: "200000" };
 }
 

@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Advanced Features
-description: Advanced SwapKit features for building sophisticated DeFi applications including multi-chain operations, custom plugins, and performance optimization.
+description: Advanced USwap features for building sophisticated DeFi applications including multi-chain operations, custom plugins, and performance optimization.
 ---
 
-This guide covers advanced SwapKit features for building sophisticated DeFi applications.
+This guide covers advanced USwap features for building sophisticated DeFi applications.
 
 ## Multi-Chain Operations
 
-SwapKit excels at coordinating operations across multiple blockchains simultaneously.
+USwap excels at coordinating operations across multiple blockchains simultaneously.
 
 ### Batch Balance Fetching
 
@@ -15,12 +16,12 @@ Fetch balances across all connected chains efficiently:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from "@uswap/sdk";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { createUSwap, Chain } from "@uswap/sdk";
+import { USwapApi } from "@uswap/helpers/api";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-await swapKit.connectKeystore(
+await uSwap.connectKeystore(
   [Chain.Ethereum, Chain.Bitcoin, Chain.Avalanche, Chain.THORChain],
   "your mnemonic phrase"
 );
@@ -32,14 +33,14 @@ const chains = [
   Chain.THORChain,
 ];
 const balances = await Promise.all(
-  chains.map((chain) => swapKit.getBalance(chain, true))
+  chains.map((chain) => uSwap.getBalance(chain, true))
 );
 
 const allAssets = balances
   .flat()
   .filter((asset) => asset.getValue("number") > 0.01);
 
-const priceData = await SwapKitApi.getPrice({
+const priceData = await USwapApi.getPrice({
   tokens: allAssets.map((a) => ({ identifier: a.toString() })),
   metadata: false,
 });
@@ -85,7 +86,7 @@ const transactions = [
 
 const results = await Promise.allSettled(
   transactions.map((tx) =>
-    swapKit.transfer({
+    uSwap.transfer({
       ...tx,
       feeOptionKey: FeeOption.Fast,
     })
@@ -119,18 +120,18 @@ Convert L1 assets to synthetics for faster swaps:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
-const mintQuote = await SwapKitApi.getSwapQuote({
+const mintQuote = await USwapApi.getSwapQuote({
   sellAsset: "BTC.BTC",
   sellAmount: "10000000",
   buyAsset: "BTC/BTC",
-  sourceAddress: swapKit.getAddress(Chain.Bitcoin),
-  destinationAddress: swapKit.getAddress(Chain.THORChain),
+  sourceAddress: uSwap.getAddress(Chain.Bitcoin),
+  destinationAddress: uSwap.getAddress(Chain.THORChain),
   slippage: 3,
 });
 
-const mintTx = await swapKit.swap({
+const mintTx = await uSwap.swap({
   route: mintQuote.routes[0],
 });
 ```
@@ -142,16 +143,16 @@ Swap between synthetics instantly:
 ```typescript
 // @noErrorValidation
 
-const synthSwapQuote = await SwapKitApi.getSwapQuote({
+const synthSwapQuote = await USwapApi.getSwapQuote({
   sellAsset: "BTC/BTC",
   sellAmount: "10000000",
   buyAsset: "ETH/ETH",
-  sourceAddress: swapKit.getAddress(Chain.THORChain),
-  destinationAddress: swapKit.getAddress(Chain.THORChain),
+  sourceAddress: uSwap.getAddress(Chain.THORChain),
+  destinationAddress: uSwap.getAddress(Chain.THORChain),
   slippage: 1,
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: synthSwapQuote.routes[0],
 });
 ```
@@ -163,16 +164,16 @@ Convert synthetics back to L1 assets:
 ```typescript
 // @noErrorValidation
 
-const redeemQuote = await SwapKitApi.getSwapQuote({
+const redeemQuote = await USwapApi.getSwapQuote({
   sellAsset: "ETH/ETH",
   sellAmount: "1000000000000000000",
   buyAsset: "ETH.ETH",
-  sourceAddress: swapKit.getAddress(Chain.THORChain),
-  destinationAddress: swapKit.getAddress(Chain.Ethereum),
+  sourceAddress: uSwap.getAddress(Chain.THORChain),
+  destinationAddress: uSwap.getAddress(Chain.Ethereum),
   slippage: 3,
 });
 
-const redeemTx = await swapKit.swap({
+const redeemTx = await uSwap.swap({
   route: redeemQuote.routes[0],
 });
 ```
@@ -225,12 +226,12 @@ Build custom swap routes for specific requirements:
 ```typescript
 // @noErrorValidation
 
-const { routes } = await SwapKitApi.getSwapQuote({
+const { routes } = await USwapApi.getSwapQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "1000000000000000000",
   buyAsset: "BTC.BTC",
-  sourceAddress: swapKit.getAddress(Chain.Ethereum),
-  destinationAddress: swapKit.getAddress(Chain.Bitcoin),
+  sourceAddress: uSwap.getAddress(Chain.Ethereum),
+  destinationAddress: uSwap.getAddress(Chain.Bitcoin),
   slippage: 3,
   providers: ["thorchain", "chainflip", "1inch"],
 });
@@ -254,7 +255,7 @@ const modifiedRoute = {
   expiration: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
 };
 
-await swapKit.swap({ route: modifiedRoute });
+await uSwap.swap({ route: modifiedRoute });
 ```
 
 ## Gas Optimization
@@ -263,9 +264,9 @@ Optimize gas usage across different chains:
 
 ```typescript
 import { Chain, ChainId } from '@uswap/sdk';
-import { SwapKitApi } from '@uswap/helpers/api';
+import { USwapApi } from '@uswap/helpers/api';
 
-const gasRatesArray = await SwapKitApi.getGasRate();
+const gasRatesArray = await USwapApi.getGasRate();
 
 const gasRates = gasRatesArray.reduce((acc, rate) => {
   acc[rate.chainId] = rate;
@@ -303,7 +304,7 @@ async function getOptimalFeeOption(
 }
 
 const customFees = await getOptimalFeeOption(Chain.Ethereum, "low");
-const tx = await swapKit.transfer({
+const tx = await uSwap.transfer({
   assetValue,
   recipient,
   customTxFee: customFees,
@@ -317,11 +318,11 @@ Manage custom token lists and metadata:
 ```typescript
 // @noErrorValidation
 import { AssetValue, ProviderName } from '@uswap/sdk';
-import { SwapKitApi } from '@uswap/helpers/api';
+import { USwapApi } from '@uswap/helpers/api';
 
 
 async function loadTokenList(provider: ProviderName) {
-  const tokenList = await SwapKitApi.getTokenList(provider);
+  const tokenList = await USwapApi.getTokenList(provider);
   return tokenList.tokens;
 }
 
@@ -339,7 +340,7 @@ class TokenRegistry {
       return cached.data;
     }
 
-    const tokenList = await SwapKitApi.getTokenList(provider);
+    const tokenList = await USwapApi.getTokenList(provider);
     this.cache.set(cacheKey, { data: tokenList, timestamp: Date.now() });
 
 
@@ -397,7 +398,7 @@ Implement advanced transaction tracking:
 
 ```typescript
 import { ChainId } from '@uswap/types';
-import { SwapKitApi } from '@uswap/helpers/api';
+import { USwapApi } from '@uswap/helpers/api';
 
 class TransactionTracker {
   private pendingTxs: Map<string, any> = new Map();
@@ -407,7 +408,7 @@ class TransactionTracker {
 
     const interval = setInterval(async () => {
       try {
-        const status = await SwapKitApi.getTrackerDetails({ hash: txHash, chainId: ChainId[chain] });
+        const status = await USwapApi.getTrackerDetails({ hash: txHash, chainId: ChainId[chain] });
 
         if (status.status === "completed") {
           this.pendingTxs.set(txHash, { ...status, chain });
@@ -433,7 +434,7 @@ class TransactionTracker {
 
 const tracker = new TransactionTracker();
 
-const txHash = await swapKit.swap({ route });
+const txHash = await uSwap.swap({ route });
 await tracker.trackTransaction(txHash, Chain.Ethereum);
 ```
 
@@ -445,7 +446,7 @@ Implement robust error handling and recovery:
 // @noErrorValidation
 import { USwapError } from "@uswap/sdk";
 
-class SwapKitRetry {
+class USwapRetry {
   async executeWithRetry<T>(
     operation: () => Promise<T>,
     maxRetries = 3,
@@ -478,10 +479,10 @@ class SwapKitRetry {
   }
 }
 
-const retry = new SwapKitRetry();
+const retry = new USwapRetry();
 
 const result = await retry.executeWithRetry(async () => {
-  return await swapKit.swap({ route });
+  return await uSwap.swap({ route });
 });
 ```
 
@@ -491,7 +492,7 @@ const result = await retry.executeWithRetry(async () => {
 
 ```typescript
 // @noErrorValidation
-class SwapKitCache {
+class USwapCache {
   private cache = new Map<string, { data: any; timestamp: number }>();
   private ttl = 60000;
 
@@ -512,14 +513,14 @@ class SwapKitCache {
   }
 }
 
-const cache = new SwapKitCache();
+const cache = new USwapCache();
 
 async function getCachedQuote(params: any) {
   const key = JSON.stringify(params);
   const cached = cache.get(key);
   if (cached) return cached;
 
-  const quote = await SwapKitApi.getSwapQuote(params);
+  const quote = await USwapApi.getSwapQuote(params);
   cache.set(key, quote);
   return quote;
 }

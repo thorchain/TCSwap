@@ -1,3 +1,4 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
 # @uswap/helpers
 
 ## 4.5.9
@@ -184,7 +185,7 @@
 - [#1538](https://github.com/horizontalsystems/USwap/pull/1538) [`0d56165`](https://github.com/horizontalsystems/USwap/commit/0d56165668372c41711bb3fbea21436cb1c7bbec) Thanks [@towanTG](https://github.com/towanTG)! - Add NEAR Wallet Selector integration
 
   - Added `walletSelector` wallet adapter supporting 5 NEAR wallet modules (MyNearWallet, Meteor, Sender, HERE Wallet, Nightly)
-  - Added `nearWalletSelector` configuration to SKConfig integrations for optional contractId
+  - Added `nearWalletSelector` configuration to USwapConfig integrations for optional contractId
   - Integrated wallet selector into SDK's default wallets
   - Modal auto-shows on connection for wallet selection
   - Supports mainnet only (hardcoded)
@@ -209,7 +210,7 @@
 
 ### Patch Changes
 
-- [#1526](https://github.com/horizontalsystems/USwap/pull/1526) [`41ea03c`](https://github.com/horizontalsystems/USwap/commit/41ea03cc82888137680b97f1fba986f5750692c2) Thanks [@Drakeoon](https://github.com/Drakeoon)! - Adds sidebar allowing to configure SwapKitWidget in Nextjs playground
+- [#1526](https://github.com/horizontalsystems/USwap/pull/1526) [`41ea03c`](https://github.com/horizontalsystems/USwap/commit/41ea03cc82888137680b97f1fba986f5750692c2) Thanks [@Drakeoon](https://github.com/Drakeoon)! - Adds sidebar allowing to configure USwapWidget in Nextjs playground
 
 - Updated dependencies []:
   - @uswap/tokens@4.0.31
@@ -728,7 +729,7 @@
 
   - Added support for Xaman (formerly XUMM) mobile wallet for Ripple/XRP transactions
   - Added XAMAN to WalletOption enum in @uswap/helpers
-  - Added `xaman` to SKConfig apiKeys for centralized API key management
+  - Added `xaman` to USwapConfig apiKeys for centralized API key management
   - Added wallet-specific error codes for better error handling
   - Supports QR code and deep linking for mobile transaction signing
   - Includes destination tag support for exchange addresses

@@ -1,14 +1,18 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
-import { SKConfig } from "@uswap/helpers";
+import { USwapConfig } from "@uswap/helpers";
 import { createKeystoreWallet, KEYSTORE_SUPPORTED_CHAINS } from "../src";
 import { testKeystoreWalletData } from "./fixtures";
 
 beforeAll(() => {
-  SKConfig.set({ apiKeys: { swapKit: process.env.TEST_API_KEY }, envs: { isDev: true } });
+  USwapConfig.set({ apiKeys: { uSwap: process.env.TEST_API_KEY }, envs: { isDev: true } });
 });
 
 afterAll(() => {
-  SKConfig.reinitialize();
+  USwapConfig.reinitialize();
 });
 
 describe("keystore - Reading address", () => {

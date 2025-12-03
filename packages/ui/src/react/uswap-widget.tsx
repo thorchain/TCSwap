@@ -1,8 +1,12 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
-import "@uswap/ui/swapkit.css";
+import "@uswap/ui/uswap.css";
 
-import { AssetValue, type QuoteResponseRoute, SwapKitApi, useSwapKitStore } from "@uswap/sdk";
+import { AssetValue, type QuoteResponseRoute, USwapApi, useUSwapStore } from "@uswap/sdk";
 import { ArrowDownUpIcon, Loader2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { match, P } from "ts-pattern";
@@ -13,21 +17,21 @@ import { SwapConfirmDialog } from "./components/dialogs/swap-confirm-dialog";
 import { WalletConnectDialog } from "./components/dialogs/wallet-connect-dialog";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
-import { SWAPKIT_WIDGET_TOASTER_ID, Toaster, toast } from "./components/ui/sonner";
+import { Toaster, toast, USWAP_WIDGET_TOASTER_ID } from "./components/ui/sonner";
 import { ModalSpawner, showModal } from "./hooks/use-modal";
 import { useSwapQuote } from "./hooks/use-swap-quote";
-import { useSwapKit } from "./swapkit-context";
-import type { SwapKitWidgetProps } from "./types";
+import type { USwapWidgetProps } from "./types";
+import { useUSwap } from "./uswap-context";
 
-export function SwapKitWidget({ config }: SwapKitWidgetProps) {
+export function USwapWidget({ config }: USwapWidgetProps) {
   const [amount, setAmount] = useState("");
   const [isSwapping, setIsSwapping] = useState(false);
   const [inputAsset, setInputAsset] = useState<string | null>("THOR.RUNE");
   const [outputAsset, setOutputAsset] = useState<string | null>("MAYA.MAYA");
   const cachedStableConfigMemoKey = useRef<string | null>(null);
 
-  const { setConfig } = useSwapKitStore();
-  const { swapKit, isWalletConnected } = useSwapKit();
+  const { setConfig } = useUSwapStore();
+  const { uSwap, isWalletConnected } = useUSwap();
   const { isFetchingQuote, selectedRoute, setSelectedRouteIndex, routes, reset } = useSwapQuote({
     amount,
     inputAsset,
@@ -40,12 +44,12 @@ export function SwapKitWidget({ config }: SwapKitWidgetProps) {
   useEffect(() => {
     const isConfigSame = cachedStableConfigMemoKey?.current === stableConfigMemoKey;
 
-    if ((swapKit && isConfigSame) || !config) return;
+    if ((uSwap && isConfigSame) || !config) return;
 
     setConfig(config);
 
     cachedStableConfigMemoKey.current = stableConfigMemoKey;
-  }, [swapKit, stableConfigMemoKey]);
+  }, [uSwap, stableConfigMemoKey]);
 
   const performSwap = async (route: QuoteResponseRoute) => {
     try {
@@ -53,23 +57,23 @@ export function SwapKitWidget({ config }: SwapKitWidgetProps) {
 
       const inputAssetValue = AssetValue.from({ asset: route?.sellAsset, value: route?.sellAmount });
 
-      if (!inputAssetValue || !swapKit) {
+      if (!inputAssetValue || !uSwap) {
         throw new Error("Invalid route parameters. Please check the route details and try again.");
       }
 
-      const isApproved = await swapKit.isAssetValueApproved(inputAssetValue, route?.sourceAddress);
+      const isApproved = await uSwap.isAssetValueApproved(inputAssetValue, route?.sourceAddress);
 
       if (!isApproved) {
-        await swapKit.approveAssetValue(inputAssetValue, route?.sourceAddress);
+        await uSwap.approveAssetValue(inputAssetValue, route?.sourceAddress);
       }
 
       const destinationAsset = AssetValue.from({ asset: route?.buyAsset });
       const sourceAsset = AssetValue.from({ asset: route?.sellAsset });
 
-      const routeWithTx = await SwapKitApi.getRouteWithTx({
-        destinationAddress: swapKit.getAddress(destinationAsset.chain),
+      const routeWithTx = await USwapApi.getRouteWithTx({
+        destinationAddress: uSwap.getAddress(destinationAsset.chain),
         routeId: route.routeId,
-        sourceAddress: swapKit.getAddress(sourceAsset.chain),
+        sourceAddress: uSwap.getAddress(sourceAsset.chain),
       });
 
       if (!routeWithTx) throw new Error("No route with TX found");
@@ -82,15 +86,15 @@ export function SwapKitWidget({ config }: SwapKitWidgetProps) {
         throw new Error("Invalid route parameters. Please check the route details and try again.");
       }
 
-      const swap = await swapKit.swap({ route: routeWithTx });
+      const swap = await uSwap.swap({ route: routeWithTx });
 
       await swap?.wait?.();
 
-      toast.success("Swap transaction has been successfully submitted!", { toasterId: SWAPKIT_WIDGET_TOASTER_ID });
+      toast.success("Swap transaction has been successfully submitted!", { toasterId: USWAP_WIDGET_TOASTER_ID });
     } catch (error) {
       console.error("Swap process failed:", error);
       toast.error(`Swap process failed: ${error instanceof Error ? error.message : "Unknown error"}`, {
-        toasterId: SWAPKIT_WIDGET_TOASTER_ID,
+        toasterId: USWAP_WIDGET_TOASTER_ID,
       });
     } finally {
       setIsSwapping(false);
@@ -114,7 +118,7 @@ export function SwapKitWidget({ config }: SwapKitWidgetProps) {
     } catch (error) {
       console.error("Failed to prepare swap:", error);
       toast.error(`Failed to prepare swap: ${error instanceof Error ? error.message : "Unknown error"}`, {
-        toasterId: SWAPKIT_WIDGET_TOASTER_ID,
+        toasterId: USWAP_WIDGET_TOASTER_ID,
       });
     }
   };

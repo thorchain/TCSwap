@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Error Handling
-description: Comprehensive guide to handling errors in SwapKit applications
+description: Comprehensive guide to handling errors in USwap applications
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-Proper error handling is crucial for building robust SwapKit applications. This guide covers the USwapError system, common error scenarios, debugging techniques, and recovery patterns.
+Proper error handling is crucial for building robust USwap applications. This guide covers the USwapError system, common error scenarios, debugging techniques, and recovery patterns.
 
 ## USwapError System
 
-SwapKit provides a comprehensive error system with specific error codes for different failure scenarios.
+USwap provides a comprehensive error system with specific error codes for different failure scenarios.
 
 ### USwapError Class
 
@@ -20,7 +21,7 @@ The `USwapError` class extends the native `Error` class with additional context:
 import { USwapError } from "@uswap/helpers";
 
 try {
-  await swapKit.swap({ route });
+  await uSwap.swap({ route });
 } catch (error) {
   if (error instanceof USwapError) {
     console.log("Error code:", error.message.split(":")[0]);
@@ -31,7 +32,7 @@ try {
 
 ### Error Categories
 
-SwapKit errors are organized by category with specific numeric codes:
+USwap errors are organized by category with specific numeric codes:
 
 <Tabs>
   <TabItem label="Core Errors (10xxx)">
@@ -96,7 +97,7 @@ import { Chain } from "@uswap/types";
 
 async function connectWallet() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum]);
+    await uSwap.connectEVMWallet([Chain.Ethereum]);
     return { success: true };
   } catch (error) {
     if (error instanceof USwapError) {
@@ -150,7 +151,7 @@ import { USwapError, AssetValue } from "@uswap/helpers";
 
 async function executeTransaction(params: TransactionParams) {
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: AssetValue.fromString("ETH.ETH", "0.1"),
       recipient: params.recipient,
     });
@@ -224,7 +225,7 @@ import { USwapError } from "@uswap/helpers";
 
 async function performSwap(route: SwapRoute) {
   try {
-    const txHash = await swapKit.swap({ route });
+    const txHash = await uSwap.swap({ route });
     return { success: true, txHash };
   } catch (error) {
     if (error instanceof USwapError) {
@@ -340,7 +341,7 @@ async function withRetry<T>(
   throw lastError!;
 }
 
-const quote = await withRetry(() => swapKitApi.getSwapQuote(params));
+const quote = await withRetry(() => uSwapApi.getSwapQuote(params));
 ```
 
 ### Circuit Breaker Pattern
@@ -395,7 +396,7 @@ class CircuitBreaker {
 const circuitBreaker = new CircuitBreaker(3, 30000);
 
 const performSwapWithCircuitBreaker = async (route: SwapRoute) => {
-  return circuitBreaker.execute(() => swapKit.swap({ route }));
+  return circuitBreaker.execute(() => uSwap.swap({ route }));
 };
 ```
 
@@ -439,7 +440,7 @@ async function withFallback<T>(config: FallbackConfig): Promise<T> {
 
 const getQuoteWithFallback = async (params: QuoteParams) => {
   return withFallback({
-    primary: () => swapKitApi.getSwapQuote(params),
+    primary: () => uSwapApi.getSwapQuote(params),
     fallbacks: [
       () => thorchainApi.getSwapQuote(params),
       () => localQuoteCalculation(params),
@@ -489,7 +490,7 @@ class ErrorTracker {
     }
 
     if (process.env.NODE_ENV === "development") {
-      console.error("SwapKit Error:", error);
+      console.error("USwap Error:", error);
       console.error("Context:", errorData);
     }
 
@@ -513,7 +514,7 @@ class ErrorTracker {
 
 async function trackedSwap(route: SwapRoute) {
   try {
-    return await swapKit.swap({ route });
+    return await uSwap.swap({ route });
   } catch (error) {
     ErrorTracker.captureError(error as Error, {
       operation: "swap",
@@ -583,7 +584,7 @@ async function diagnoseNetwork(): Promise<NetworkDiagnostics> {
 
 
   const apiTests = [
-    { name: 'swapkit', url: 'https:
+    { name: 'uswap', url: 'https:
     { name: 'thorchain', url: 'https:
   ];
 
@@ -623,7 +624,7 @@ async function debugTransaction(
   chain: Chain
 ): Promise<TransactionDebugInfo> {
   try {
-    const toolbox = await swapKit.getToolbox(chain);
+    const toolbox = await uSwap.getToolbox(chain);
 
     if ("provider" in toolbox && toolbox.provider) {
       const receipt = await toolbox.provider.getTransactionReceipt(txHash);
@@ -760,7 +761,7 @@ class ErrorMonitor {
 const errorMonitor = new ErrorMonitor();
 
 try {
-  await swapKit.swap({ route });
+  await uSwap.swap({ route });
 } catch (error) {
   if (error instanceof USwapError) {
     errorMonitor.logError(error, route.sellAsset.split(".")[0]);

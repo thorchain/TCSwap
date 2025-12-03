@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: MetaMask Browser Extension Integration
-description: Complete guide to integrating MetaMask and EVM browser extensions with SwapKit SDK v4
+description: Complete guide to integrating MetaMask and EVM browser extensions with USwap SDK v4
 ---
 
-MetaMask is the most popular Ethereum browser extension wallet, providing secure access to Ethereum and EVM-compatible networks. SwapKit SDK v4 offers comprehensive support for MetaMask and other EVM browser extensions through a unified interface.
+MetaMask is the most popular Ethereum browser extension wallet, providing secure access to Ethereum and EVM-compatible networks. USwap SDK v4 offers comprehensive support for MetaMask and other EVM browser extensions through a unified interface.
 
 ## Supported Extensions
 
-SwapKit's EVM extension integration supports:
+USwap's EVM extension integration supports:
 
 - **MetaMask**: The most popular Ethereum wallet extension
 - **Brave Wallet**: Built into Brave browser
@@ -52,19 +53,19 @@ EVM extensions work in:
 - **Edge**: Full support
 - **Brave**: Built-in wallet support
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
   wallets: { ...evmWallet },
@@ -74,12 +75,12 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
 });
@@ -90,18 +91,18 @@ const swapKit = createSwapKit({
 #### Basic Connection
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function connectMetaMask() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+    await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
-    const balance = await swapKit.getBalance(Chain.Ethereum, true);
+    const address = uSwap.getAddress(Chain.Ethereum);
+    const balance = await uSwap.getBalance(Chain.Ethereum, true);
 
     console.log("Connected address:", address);
     console.log("ETH balance:", balance);
@@ -117,9 +118,9 @@ async function connectMetaMask() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
@@ -133,14 +134,14 @@ async function connectMultipleEVMChains() {
   ];
 
   try {
-    await swapKit.connectEVMWallet(evmChains, WalletOption.METAMASK);
+    await uSwap.connectEVMWallet(evmChains, WalletOption.METAMASK);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("EVM address (same on all chains):", address);
 
     const balances = await Promise.all(
       evmChains.map(async (chain) => {
-        const balance = await swapKit.getBalance(chain, true);
+        const balance = await uSwap.getBalance(chain, true);
         return { chain, balance };
       })
     );
@@ -158,17 +159,17 @@ async function connectMultipleEVMChains() {
 #### Brave Wallet
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function connectBraveWallet() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.BRAVE);
+    await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.BRAVE);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Brave Wallet address:", address);
 
     return { success: true, address };
@@ -182,17 +183,17 @@ async function connectBraveWallet() {
 #### Coinbase Wallet Extension
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function connectCoinbaseWallet() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.COINBASE_WEB);
+    await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.COINBASE_WEB);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Coinbase Wallet address:", address);
 
     return { success: true, address };
@@ -206,20 +207,20 @@ async function connectCoinbaseWallet() {
 #### Trust Wallet Extension
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function connectTrustWallet() {
   try {
-    await swapKit.connectEVMWallet(
+    await uSwap.connectEVMWallet(
       [Chain.Ethereum],
       WalletOption.TRUSTWALLET_WEB
     );
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Trust Wallet address:", address);
 
     return { success: true, address };
@@ -233,9 +234,9 @@ async function connectTrustWallet() {
 #### EIP-6963 Compatible Wallets
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
@@ -257,13 +258,13 @@ async function connectEIP6963Wallet(providerDetail) {
   try {
     const { provider } = providerDetail;
 
-    await swapKit.connectEVMWallet(
+    await uSwap.connectEVMWallet(
       [Chain.Ethereum],
       WalletOption.EIP6963,
       provider
     );
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log(`${providerDetail.info.name} address:`, address);
 
     return { success: true, address };
@@ -293,14 +294,14 @@ async function showAvailableWallets() {
 
 ```ts twoslash
 
-import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 
-await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
 async function sendEther() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -311,7 +312,7 @@ async function sendEther() {
     console.log("Amount:", amount.toSignificant(6), "ETH");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -331,18 +332,18 @@ async function sendEther() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   evmWallet,
   Chain,
   AssetValue,
   WalletOption,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
-await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
 async function sendERC20Token() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -353,7 +354,7 @@ async function sendERC20Token() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -378,7 +379,7 @@ async function sendAnyERC20Token(
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: tokenAsset,
       recipient,
     });
@@ -396,21 +397,21 @@ async function sendAnyERC20Token(
 
 ```ts twoslash
 
-import { SwapKit, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 
-await swapKit.connectEVMWallet([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum], WalletOption.METAMASK);
+await uSwap.connectEVMWallet([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum], WalletOption.METAMASK);
 
 async function sendOnPolygon() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
   const amount = AssetValue.fromChainOrSignature("MATIC.MATIC", 1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -430,7 +431,7 @@ async function sendOnArbitrum() {
   const amount = AssetValue.fromChainOrSignature("ARB.ETH", 0.001);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -451,22 +452,22 @@ async function sendOnArbitrum() {
 ### Automatic Network Switching
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function switchAndTransact() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+    await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
-    await swapKit.connectEVMWallet([Chain.Polygon], WalletOption.METAMASK);
+    await uSwap.connectEVMWallet([Chain.Polygon], WalletOption.METAMASK);
 
     const amount = AssetValue.fromChainOrSignature("MATIC.MATIC", 1);
     const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -523,9 +524,9 @@ async function addCustomNetwork() {
 ### Connection Issues
 
 ```ts twoslash
-import { SwapKit, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
@@ -544,9 +545,9 @@ async function diagnosticConnection() {
 
     console.log("🔍 Attempting to connect...");
 
-    await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+    await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("✅ Successfully connected:", address);
 
     return { success: true, address };
@@ -604,7 +605,7 @@ async function checkWalletStatus() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC",
     });
@@ -613,7 +614,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient ETH for transaction + gas fees");
 
-      const balance = await swapKit.getBalance(Chain.Ethereum, true);
+      const balance = await uSwap.getBalance(Chain.Ethereum, true);
       console.log("Current balance:", balance);
       console.log(
         "🔧 Add more ETH to your wallet or reduce transaction amount"
@@ -653,7 +654,7 @@ async function handleTransactionErrors() {
 
 async function handleNetworkIssues() {
   try {
-    await swapKit.connectEVMWallet([Chain.Polygon], WalletOption.METAMASK);
+    await uSwap.connectEVMWallet([Chain.Polygon], WalletOption.METAMASK);
   } catch (error) {
     if (error.message.includes("failed_to_switch_network")) {
       console.error("❌ Failed to switch to Polygon network");
@@ -694,10 +695,10 @@ async function handleNetworkIssues() {
 
 ```ts twoslash
 async function verifyConnection() {
-  const swapKit = SwapKit({ wallets: { ...evmWallet } });
-  await swapKit.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
+  const uSwap = USwap({ wallets: { ...evmWallet } });
+  await uSwap.connectEVMWallet([Chain.Ethereum], WalletOption.METAMASK);
 
-  const address = swapKit.getAddress(Chain.Ethereum);
+  const address = uSwap.getAddress(Chain.Ethereum);
 
   console.log("Connected address:", address);
   console.log("⚠️ Please verify this is your intended address");
@@ -715,7 +716,7 @@ async function secureTransaction() {
     console.log("Recipient:", recipient);
     console.log("⚠️ Please verify these details in MetaMask before confirming");
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -742,7 +743,7 @@ async function safeTransfer(recipient: string, amount: number) {
     throw new Error("Amount must be positive");
   }
 
-  return await swapKit.transfer({
+  return await uSwap.transfer({
     assetValue,
     recipient,
   });
@@ -754,7 +755,7 @@ async function safeTransfer(recipient: string, amount: number) {
 ```ts twoslash
 
 
-const secureSwapKit = SwapKit({
+const secureUSwap = USwap({
   config: {
 
     rpcUrls: {
@@ -764,7 +765,7 @@ const secureSwapKit = SwapKit({
     },
 
     apiKeys: {
-      swapKit: process.env.SWAPKIT_API_KEY,
+      uSwap: process.env.USWAP_API_KEY,
     },
   },
   wallets: { ...evmWallet },
@@ -776,7 +777,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, evmWallet, Chain, WalletOption, AssetValue } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption, AssetValue } from "@uswap/sdk";
 
 interface MetaMaskWalletProps {
   onConnect: (address: string) => void;
@@ -789,7 +790,7 @@ export function MetaMaskWallet({ onConnect, onError }: MetaMaskWalletProps) {
   const [address, setAddress] = useState<string>("");
   const [selectedChain, setSelectedChain] = useState<Chain>(Chain.Ethereum);
 
-  const swapKit = SwapKit({ wallets: { ...evmWallet } });
+  const uSwap = USwap({ wallets: { ...evmWallet } });
 
 
   const isMetaMaskInstalled = typeof window !== 'undefined' &&
@@ -837,8 +838,8 @@ export function MetaMaskWallet({ onConnect, onError }: MetaMaskWalletProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectEVMWallet([selectedChain], WalletOption.METAMASK);
-      const walletAddress = swapKit.getAddress(selectedChain);
+      await uSwap.connectEVMWallet([selectedChain], WalletOption.METAMASK);
+      const walletAddress = uSwap.getAddress(selectedChain);
 
       setAddress(walletAddress);
       setIsConnected(true);
@@ -852,7 +853,7 @@ export function MetaMaskWallet({ onConnect, onError }: MetaMaskWalletProps) {
 
   const disconnect = async () => {
     try {
-      swapKit.disconnectAll();
+      uSwap.disconnectAll();
       setIsConnected(false);
       setAddress("");
     } catch (error) {
@@ -911,4 +912,4 @@ export function MetaMaskWallet({ onConnect, onError }: MetaMaskWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of MetaMask and EVM browser extension integration with SwapKit SDK v4, including setup, usage, troubleshooting, and security best practices.
+This comprehensive guide covers all aspects of MetaMask and EVM browser extension integration with USwap SDK v4, including setup, usage, troubleshooting, and security best practices.

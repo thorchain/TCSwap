@@ -1,15 +1,19 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { type AssetValue, Chain } from "@uswap/helpers";
 import { buildAminoMsg, getCosmosToolbox } from "@uswap/toolboxes/cosmos";
 import { fromByteArray } from "base64-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { SwapKitClient } from "../swapKitClient";
+import type { USwapClient } from "../uSwapClient";
 
 export default function Multisig({
   inputAsset,
   skClient,
   phrase,
 }: {
-  skClient?: SwapKitClient;
+  skClient?: USwapClient;
   inputAsset?: AssetValue;
   phrase: string;
 }) {

@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
@@ -8,10 +12,10 @@ import { remarkRewriteLinks } from "./remark-rewrite-links.mjs";
 
 const { plugins: docsPlugins, sidebarItems: docsSidebarItems } = createDocs();
 
-const openApiPlugin = starlightOpenAPI([{ base: "api", schema: "https://api.swapkit.dev/docs/json" }]);
+const openApiPlugin = starlightOpenAPI([{ base: "api", schema: "https://api.uSwap.dev/docs/json" }]);
 
 export default defineConfig({
-  base: process.env.REFERENCES ? "/SwapKit" : undefined,
+  base: process.env.REFERENCES ? "/USwap" : undefined,
   integrations: [
     react(),
     starlight({
@@ -56,8 +60,7 @@ export default defineConfig({
       ],
       social: [
         { href: "https://github.com/horizontalsystems/USwap", icon: "github", label: "GitHub" },
-        { href: "https://x.com/SwapKitPowered", icon: "x.com", label: "X" },
-        { href: "https://discord.gg/swapkit", icon: "discord", label: "Discord" },
+        { href: "https://x.com/unstoppablebyhs", icon: "x.com", label: "X" },
       ],
       title: "",
     }),
@@ -88,7 +91,7 @@ export default defineConfig({
     },
     syntaxHighlight: "shiki",
   },
-  site: process.env.REFERENCES ? "https://swapkit.github.io" : undefined,
+  site: process.env.REFERENCES ? "https://uswap.github.io" : undefined,
 });
 
 function createDocs() {

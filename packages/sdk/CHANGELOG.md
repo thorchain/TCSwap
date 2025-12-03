@@ -1,10 +1,11 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
 # @uswap/sdk
 
 ## 4.2.10
 
 ### Patch Changes
 
-- Updated dependencies [[`4bf4ca6`](https://github.com/swapkit/SwapKit/commit/4bf4ca65b55ea81c00aafa555aef6f50009e7a20)]:
+- Updated dependencies [[`4bf4ca6`](https://github.com/horizontalsystems/USwap/commit/4bf4ca65b55ea81c00aafa555aef6f50009e7a20)]:
   - @uswap/helpers@4.5.9
   - @uswap/core@4.1.10
   - @uswap/plugins@4.2.9
@@ -16,7 +17,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`e792600`](https://github.com/swapkit/SwapKit/commit/e792600199e2e488bd1817f405839f649d9debde)]:
+- Updated dependencies [[`e792600`](https://github.com/horizontalsystems/USwap/commit/e792600199e2e488bd1817f405839f649d9debde)]:
   - @uswap/wallets@4.3.9
   - @uswap/core@4.1.9
 
@@ -24,7 +25,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`eb73020`](https://github.com/swapkit/SwapKit/commit/eb73020fc9703e778c23ee4a17954b00730d1461), [`3f02210`](https://github.com/swapkit/SwapKit/commit/3f02210940cb5861ceb8319d7ba1fdd8ea8fb0a0)]:
+- Updated dependencies [[`eb73020`](https://github.com/horizontalsystems/USwap/commit/eb73020fc9703e778c23ee4a17954b00730d1461), [`3f02210`](https://github.com/horizontalsystems/USwap/commit/3f02210940cb5861ceb8319d7ba1fdd8ea8fb0a0)]:
   - @uswap/toolboxes@4.3.8
   - @uswap/helpers@4.5.8
   - @uswap/wallets@4.3.8
@@ -36,7 +37,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`3ef370f`](https://github.com/swapkit/SwapKit/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c), [`b4ad8d4`](https://github.com/swapkit/SwapKit/commit/b4ad8d4a06eb8a12250e80c82eb2a5998badb2d1)]:
+- Updated dependencies [[`3ef370f`](https://github.com/horizontalsystems/USwap/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c), [`b4ad8d4`](https://github.com/horizontalsystems/USwap/commit/b4ad8d4a06eb8a12250e80c82eb2a5998badb2d1)]:
   - @uswap/toolboxes@4.3.7
   - @uswap/helpers@4.5.7
   - @uswap/server@4.0.51
@@ -178,7 +179,7 @@
 
 ### Patch Changes
 
-- [#1567](https://github.com/horizontalsystems/USwap/pull/1567) [`4ff0c31`](https://github.com/horizontalsystems/USwap/commit/4ff0c316f50a7616725ec6f29e54b7e2038997d7) Thanks [@towanTG](https://github.com/towanTG)! - Fixes createSwapKit default typing
+- [#1567](https://github.com/horizontalsystems/USwap/pull/1567) [`4ff0c31`](https://github.com/horizontalsystems/USwap/commit/4ff0c316f50a7616725ec6f29e54b7e2038997d7) Thanks [@towanTG](https://github.com/towanTG)! - Fixes createUSwap default typing
 
 ## 4.1.8
 
@@ -265,7 +266,7 @@
 - [#1538](https://github.com/horizontalsystems/USwap/pull/1538) [`0d56165`](https://github.com/horizontalsystems/USwap/commit/0d56165668372c41711bb3fbea21436cb1c7bbec) Thanks [@towanTG](https://github.com/towanTG)! - Add NEAR Wallet Selector integration
 
   - Added `walletSelector` wallet adapter supporting 5 NEAR wallet modules (MyNearWallet, Meteor, Sender, HERE Wallet, Nightly)
-  - Added `nearWalletSelector` configuration to SKConfig integrations for optional contractId
+  - Added `nearWalletSelector` configuration to USwapConfig integrations for optional contractId
   - Integrated wallet selector into SDK's default wallets
   - Modal auto-shows on connection for wallet selection
   - Supports mainnet only (hardcoded)
