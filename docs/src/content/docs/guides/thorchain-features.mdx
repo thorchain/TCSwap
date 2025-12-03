@@ -1,24 +1,25 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: THORChain Features
-description: Learn how to use advanced THORChain DeFi features including liquidity provision, savings, and lending through SwapKit.
+description: Learn how to use advanced THORChain DeFi features including liquidity provision, savings, and lending through USwap.
 ---
 
-THORChain provides advanced DeFi features beyond simple swaps. SwapKit includes full support for these features through the THORChain [plugin](/guides/create-plugin).
+THORChain provides advanced DeFi features beyond simple swaps. USwap includes full support for these features through the THORChain [plugin](/guides/create-plugin).
 
 ## Prerequisites
 
 To use THORChain features, you need:
 
 1. A connected wallet with RUNE
-2. SwapKit initialized with the THORChain plugin (included by default)
+2. USwap initialized with the THORChain plugin (included by default)
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain, FeeOption } from "@uswap/sdk";
+import { createUSwap, Chain, FeeOption } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-await swapKit.connectKeystore([Chain.THORChain], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.THORChain], "your mnemonic phrase");
 ```
 
 ## Liquidity Operations
@@ -36,11 +37,11 @@ import { AssetValue } from "@uswap/sdk";
 const runeAmount = AssetValue.from({ asset: "THOR.RUNE", value: 100 });
 const ethAmount = AssetValue.from({ asset: "ETH.ETH", value: 0.5 });
 
-const result = await swapKit.thorchain.addLiquidity({
+const result = await uSwap.thorchain.addLiquidity({
   baseAssetValue: runeAmount,
   assetValue: ethAmount,
-  baseAssetAddr: swapKit.getAddress(Chain.THORChain),
-  assetAddr: swapKit.getAddress(Chain.Ethereum),
+  baseAssetAddr: uSwap.getAddress(Chain.THORChain),
+  assetAddr: uSwap.getAddress(Chain.Ethereum),
   mode: "sym",
 });
 
@@ -53,19 +54,19 @@ console.log("ETH tx:", result.assetTx);
 ```typescript
 // @noErrorValidation
 
-const runeOnly = await swapKit.thorchain.addLiquidity({
+const runeOnly = await uSwap.thorchain.addLiquidity({
   baseAssetValue: runeAmount,
   assetValue: AssetValue.from({ asset: "BTC.BTC", value: 0 }),
-  baseAssetAddr: swapKit.getAddress(Chain.THORChain),
+  baseAssetAddr: uSwap.getAddress(Chain.THORChain),
   mode: "baseAsset",
 });
 
 const btcAmount = AssetValue.from({ asset: "BTC.BTC", value: 0.1 });
 
-const btcOnly = await swapKit.thorchain.addLiquidity({
+const btcOnly = await uSwap.thorchain.addLiquidity({
   baseAssetValue: AssetValue.from({ asset: "THOR.RUNE", value: 0 }),
   assetValue: btcAmount,
-  assetAddr: swapKit.getAddress(Chain.Bitcoin),
+  assetAddr: uSwap.getAddress(Chain.Bitcoin),
   mode: "asset",
 });
 ```
@@ -76,7 +77,7 @@ For creating a new liquidity position (bootstrapping a pool):
 
 ```typescript
 // @noErrorValidation
-const result = await swapKit.thorchain.createLiquidity({
+const result = await uSwap.thorchain.createLiquidity({
   baseAssetValue: runeAmount,
   assetValue: ethAmount,
 });
@@ -93,10 +94,10 @@ For more granular control, you can add liquidity parts separately:
 // @noErrorValidation
 const poolAddress = "BTC.BTC";
 
-await swapKit.thorchain.addLiquidityPart({
+await uSwap.thorchain.addLiquidityPart({
   assetValue: btcAmount,
   poolAddress,
-  address: swapKit.getAddress(Chain.Bitcoin),
+  address: uSwap.getAddress(Chain.Bitcoin),
   symmetric: true,
 });
 ```
@@ -106,21 +107,21 @@ await swapKit.thorchain.addLiquidityPart({
 ```typescript
 // @noErrorValidation
 
-const withdrawTx = await swapKit.thorchain.withdraw({
+const withdrawTx = await uSwap.thorchain.withdraw({
   assetValue: AssetValue.from({ asset: "BTC.BTC", value: 0 }),
   percent: 50,
   from: "sym",
   to: "sym",
 });
 
-const runeToSym = await swapKit.thorchain.withdraw({
+const runeToSym = await uSwap.thorchain.withdraw({
   assetValue: AssetValue.from({ asset: "ETH.ETH", value: 0 }),
   percent: 100,
   from: "baseAsset",
   to: "sym",
 });
 
-const toAssetOnly = await swapKit.thorchain.withdraw({
+const toAssetOnly = await uSwap.thorchain.withdraw({
   assetValue: AssetValue.from({ asset: "BTC.BTC", value: 0 }),
   percent: 25,
   from: "sym",
@@ -132,10 +133,10 @@ const toAssetOnly = await swapKit.thorchain.withdraw({
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
-const thorAddress = swapKit.getAddress(Chain.THORChain);
-const position = await SwapKitApi.thorchainMidgard.getLiquidityPosition(
+const thorAddress = uSwap.getAddress(Chain.THORChain);
+const position = await USwapApi.thorchainMidgard.getLiquidityPosition(
   thorAddress
 );
 
@@ -155,7 +156,7 @@ THORNames are human-readable aliases for wallet addresses across all supported c
 const thorname = "myname";
 const years = 1;
 
-const details = await SwapKitApi.thorchainMidgard.getTHORNameDetails(thorname);
+const details = await USwapApi.thorchainMidgard.getTHORNameDetails(thorname);
 if (details.owner) {
   console.log("THORName already taken");
   return;
@@ -166,12 +167,12 @@ const registrationFee = AssetValue.from({
   value: years + 0.02,
 });
 
-const registerTx = await swapKit.thorchain.registerName({
+const registerTx = await uSwap.thorchain.registerName({
   assetValue: registrationFee,
   name: thorname,
   chain: "THOR",
-  address: swapKit.getAddress(Chain.THORChain),
-  owner: swapKit.getAddress(Chain.THORChain),
+  address: uSwap.getAddress(Chain.THORChain),
+  owner: uSwap.getAddress(Chain.THORChain),
   preferredAsset: "ETH.ETH",
 });
 ```
@@ -188,11 +189,11 @@ const preferredAsset = AssetValue.from({
   value: 0,
 });
 
-const setPreferredTx = await swapKit.thorchain.registerPreferredAsset({
+const setPreferredTx = await uSwap.thorchain.registerPreferredAsset({
   assetValue: AssetValue.from({ chain: Chain.THORChain }),
   name: thorname,
-  ownerAddress: swapKit.getAddress(Chain.THORChain),
-  payoutAddress: swapKit.getAddress(Chain.Ethereum),
+  ownerAddress: uSwap.getAddress(Chain.THORChain),
+  payoutAddress: uSwap.getAddress(Chain.Ethereum),
 });
 ```
 
@@ -203,12 +204,12 @@ Set addresses for different chains:
 ```typescript
 // @noErrorValidation
 
-const updateBtcTx = await swapKit.thorchain.registerName({
+const updateBtcTx = await uSwap.thorchain.registerName({
   assetValue: AssetValue.from({ chain: Chain.THORChain }),
   name: thorname,
   chain: "BTC",
-  address: swapKit.getAddress(Chain.Bitcoin),
-  owner: swapKit.getAddress(Chain.THORChain),
+  address: uSwap.getAddress(Chain.Bitcoin),
+  owner: uSwap.getAddress(Chain.THORChain),
 });
 
 const chainMap = {
@@ -218,12 +219,12 @@ const chainMap = {
 };
 
 for (const [chain, chainId] of Object.entries(chainMap)) {
-  await swapKit.thorchain.registerName({
+  await uSwap.thorchain.registerName({
     assetValue: AssetValue.from({ chain: Chain.THORChain }),
     name: thorname,
     chain: chainId,
-    address: swapKit.getAddress(chain as Chain),
-    owner: swapKit.getAddress(Chain.THORChain),
+    address: uSwap.getAddress(chain as Chain),
+    owner: uSwap.getAddress(Chain.THORChain),
   });
 }
 ```
@@ -232,7 +233,7 @@ for (const [chain, chainId] of Object.entries(chainMap)) {
 
 ```typescript
 // @noErrorValidation
-const thornameDetails = await SwapKitApi.thorchainMidgard.getTHORNameDetails(
+const thornameDetails = await USwapApi.thorchainMidgard.getTHORNameDetails(
   "myname"
 );
 
@@ -247,7 +248,7 @@ const ethAddress = thornameDetails.aliases.find(
 
 ## Node Operations
 
-For node operators, SwapKit provides bond management functions.
+For node operators, USwap provides bond management functions.
 
 ### Bond RUNE
 
@@ -258,7 +259,7 @@ import { MemoType } from "@uswap/sdk";
 const bondAmount = AssetValue.from({ asset: "THOR.RUNE", value: 100000 });
 const nodeAddress = "thor1abc...";
 
-const bondTx = await swapKit.thorchain.nodeAction({
+const bondTx = await uSwap.thorchain.nodeAction({
   type: MemoType.BOND,
   assetValue: bondAmount,
   address: nodeAddress,
@@ -270,13 +271,13 @@ const bondTx = await swapKit.thorchain.nodeAction({
 ```typescript
 // @noErrorValidation
 
-const unbondTx = await swapKit.thorchain.nodeAction({
+const unbondTx = await uSwap.thorchain.nodeAction({
   type: MemoType.UNBOND,
   assetValue: AssetValue.from({ asset: "THOR.RUNE", value: 50000 }),
   address: nodeAddress,
 });
 
-const leaveTx = await swapKit.thorchain.nodeAction({
+const leaveTx = await uSwap.thorchain.nodeAction({
   type: MemoType.LEAVE,
   address: nodeAddress,
 });
@@ -289,19 +290,19 @@ For advanced users, deposit directly to THORChain with custom memos:
 ```typescript
 // @noErrorValidation
 
-const customDeposit = await swapKit.thorchain.deposit({
+const customDeposit = await uSwap.thorchain.deposit({
   assetValue: AssetValue.from({ asset: "BTC.BTC", value: 0.1 }),
   recipient: "",
   memo: "SWAP:ETH.ETH:thor1...",
 });
 
-const poolDeposit = await swapKit.thorchain.depositToPool({
+const poolDeposit = await uSwap.thorchain.depositToPool({
   assetValue: AssetValue.from({ asset: "ETH.ETH", value: 1 }),
   memo: "ADD:ETH.ETH:thor1...",
   feeOptionKey: FeeOption.Fast,
 });
 
-const protocolDeposit = await swapKit.thorchain.depositToProtocol({
+const protocolDeposit = await uSwap.thorchain.depositToProtocol({
   assetValue: AssetValue.from({ asset: "THOR.RUNE", value: 10 }),
   memo: "BOND:thor1nodeaddress...",
 });
@@ -314,7 +315,7 @@ For EVM chains, THORChain requires token approvals before deposits:
 ```typescript
 // @noErrorValidation
 
-const isApproved = await swapKit.thorchain.isAssetValueApproved({
+const isApproved = await uSwap.thorchain.isAssetValueApproved({
   assetValue: AssetValue.from({
     asset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     value: 1000,
@@ -322,7 +323,7 @@ const isApproved = await swapKit.thorchain.isAssetValueApproved({
 });
 
 if (!isApproved) {
-  const approveTx = await swapKit.thorchain.approveAssetValue({
+  const approveTx = await uSwap.thorchain.approveAssetValue({
     assetValue: AssetValue.from({
       asset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       value: 1000,
@@ -335,13 +336,13 @@ if (!isApproved) {
 
 ## Maya Protocol
 
-Maya is a fork of THORChain with similar features. SwapKit supports Maya through the Maya plugin:
+Maya is a fork of THORChain with similar features. USwap supports Maya through the Maya plugin:
 
 ```typescript
 // @noErrorValidation
 
-const mayaPosition = await SwapKitApi.mayachainMidgard.getLiquidityPosition(
-  swapKit.getAddress(Chain.Maya)
+const mayaPosition = await USwapApi.mayachainMidgard.getLiquidityPosition(
+  uSwap.getAddress(Chain.Maya)
 );
 ```
 
@@ -352,7 +353,7 @@ Get inbound addresses and gas rates for any supported chain:
 ```typescript
 // @noErrorValidation
 
-const btcInbound = await swapKit.thorchain.getInboundDataByChain(Chain.Bitcoin);
+const btcInbound = await uSwap.thorchain.getInboundDataByChain(Chain.Bitcoin);
 
 console.log("BTC vault address:", btcInbound.address);
 console.log("BTC router:", btcInbound.router);
@@ -361,7 +362,7 @@ console.log("Chain halted:", btcInbound.halted);
 
 const chains = [Chain.Ethereum, Chain.Bitcoin, Chain.BinanceSmartChain];
 for (const chain of chains) {
-  const inbound = await swapKit.thorchain.getInboundDataByChain(chain);
+  const inbound = await uSwap.thorchain.getInboundDataByChain(chain);
   if (inbound.halted) {
     console.log(`${chain} is currently halted`);
   }
@@ -376,7 +377,7 @@ Before adding liquidity or making swaps:
 
 ```typescript
 // @noErrorValidation
-const pools = await SwapKitApi.thorchainMidgard.getPools();
+const pools = await USwapApi.thorchainMidgard.getPools();
 const btcPool = pools.find((p) => p.asset === "BTC.BTC");
 
 if (btcPool?.status !== "Available") {
@@ -391,7 +392,7 @@ For large liquidity operations:
 
 ```typescript
 // @noErrorValidation
-const quote = await SwapKitApi.getSwapQuote({
+const quote = await USwapApi.getSwapQuote({
   sellAsset: "THOR.RUNE",
   sellAmount: "1000000000000",
   buyAsset: "BTC.BTC",
@@ -407,7 +408,7 @@ Track THORChain transactions:
 
 ```typescript
 // @noErrorValidation
-const txStatus = await SwapKitApi.getTrackerDetails({
+const txStatus = await USwapApi.getTrackerDetails({
   txHash: "ABCD...",
   chain: "THOR",
 });
@@ -451,7 +452,7 @@ Here's a complete list of THORChain plugin methods:
 ### Utility Methods
 
 - `getInboundDataByChain()` - Get vault addresses and gas rates
-- `swap()` - Execute swaps (used internally by SwapKit)
+- `swap()` - Execute swaps (used internally by USwap)
 
 ## Next Steps
 

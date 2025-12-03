@@ -1,10 +1,8 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { SKConfig } from "./swapKitConfig";
+import { USwapConfig } from "./uSwapConfig";
 import { USwapError } from "./uSwapError";
 
 type RetryConfig = { maxRetries?: number; baseDelay?: number; maxDelay?: number; backoffMultiplier?: number };
@@ -54,7 +52,7 @@ function fetchWithConfig(method: "GET" | "POST", extendOptions: Options = {}) {
       responseHandler,
       ...fetchOptions
     } = { ...extendOptions, ...options };
-    const requestOptions = SKConfig.get("requestOptions");
+    const requestOptions = USwapConfig.get("requestOptions");
 
     const retryConfig = { ...requestOptions.retry, ...retry };
     const isJson = !!json || url.endsWith(".json");

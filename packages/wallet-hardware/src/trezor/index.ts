@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -12,7 +10,7 @@ import {
   FeeOption,
   filterSupportedChains,
   type GenericTransferParams,
-  SKConfig,
+  USwapConfig,
   USwapError,
   WalletOption,
 } from "@uswap/helpers";
@@ -313,10 +311,10 @@ export const trezorWallet = createWallet({
       const { success } = await TrezorConnect.getDeviceState();
 
       if (!success) {
-        const trezorConfig = SKConfig.get("integrations").trezor;
+        const trezorConfig = USwapConfig.get("integrations").trezor;
         const manifest = trezorConfig
-          ? { ...trezorConfig, appName: (trezorConfig as any).appName || "SwapKit" }
-          : { appName: "SwapKit", appUrl: "", email: "" };
+          ? { ...trezorConfig, appName: (trezorConfig as any).appName || "USwap" }
+          : { appName: "USwap", appUrl: "", email: "" };
         TrezorConnect.init({ lazyLoad: true, manifest });
       }
 

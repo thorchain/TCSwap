@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -13,9 +11,9 @@ export * from "./modules/assetValue";
 export * from "./modules/bigIntArithmetics";
 export * from "./modules/feeMultiplier";
 export * from "./modules/requestClient";
-export * from "./modules/swapKitConfig";
-export * from "./modules/swapKitNumber";
+export * from "./modules/uSwapConfig";
 export * from "./modules/uSwapError";
+export * from "./modules/uSwapNumber";
 /**
  * Types
  */

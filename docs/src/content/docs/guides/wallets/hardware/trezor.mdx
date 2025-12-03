@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Trezor Hardware Wallet Integration
-description: Complete guide to integrating Trezor hardware wallets with SwapKit SDK v4
+description: Complete guide to integrating Trezor hardware wallets with USwap SDK v4
 ---
 
-Trezor hardware wallets provide secure cryptocurrency storage by keeping private keys offline on a dedicated device. SwapKit SDK v4 supports both Trezor Model One and Model T devices across multiple blockchain networks.
+Trezor hardware wallets provide secure cryptocurrency storage by keeping private keys offline on a dedicated device. USwap SDK v4 supports both Trezor Model One and Model T devices across multiple blockchain networks.
 
 ## Supported Chains
 
-SwapKit supports Trezor devices on these chains:
+USwap supports Trezor devices on these chains:
 
 - **EVM Compatible**: Ethereum, Arbitrum, Aurora, Avalanche, Base, BinanceSmartChain, Gnosis, Optimism, Polygon
 - **UTXO Chains**: Bitcoin, Bitcoin Cash, Dash, Dogecoin, Litecoin
@@ -49,7 +50,7 @@ Trezor Connect works in modern browsers:
 - **Safari**: Limited support
 - **Mobile browsers**: Not supported
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
@@ -57,13 +58,13 @@ Trezor Connect works in modern browsers:
 
 ```ts twoslash
 
-import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@uswap/sdk";
 
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
 
     integrations: {
@@ -82,13 +83,13 @@ const swapKit = SwapKit({
 
 ```ts twoslash
 
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
     integrations: {
       trezor: {
@@ -107,13 +108,13 @@ const swapKit = createSwapKit({
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
@@ -121,10 +122,10 @@ async function connectTrezorBitcoin() {
   try {
     const derivationPath = NetworkDerivationPath.BTC;
 
-    await swapKit.connectTrezor([Chain.Bitcoin], derivationPath);
+    await uSwap.connectTrezor([Chain.Bitcoin], derivationPath);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
-    const balance = await swapKit.getBalance(Chain.Bitcoin, true);
+    const address = uSwap.getAddress(Chain.Bitcoin);
+    const balance = await uSwap.getBalance(Chain.Bitcoin, true);
 
     console.log("Bitcoin address:", address);
     console.log("Balance:", balance);
@@ -141,13 +142,13 @@ async function connectTrezorBitcoin() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
@@ -155,9 +156,9 @@ async function connectTrezorEthereum() {
   try {
     const derivationPath = NetworkDerivationPath.ETH;
 
-    await swapKit.connectTrezor([Chain.Ethereum], derivationPath);
+    await uSwap.connectTrezor([Chain.Ethereum], derivationPath);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("Ethereum address:", address);
 
     return { success: true, address };
@@ -172,13 +173,13 @@ async function connectTrezorEthereum() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
@@ -193,8 +194,8 @@ async function connectMultipleChains() {
 
   try {
     for (const { chain, derivationPath } of chainConfigs) {
-      await swapKit.connectTrezor([chain], derivationPath);
-      const address = swapKit.getAddress(chain);
+      await uSwap.connectTrezor([chain], derivationPath);
+      const address = uSwap.getAddress(chain);
       results.push({ chain, address });
       console.log(`Connected to ${chain}:`, address);
     }
@@ -211,13 +212,13 @@ async function connectMultipleChains() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   type DerivationPathArray,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
@@ -235,8 +236,8 @@ const ETHEREUM_PATHS = {
 
 async function connectWithCustomPath() {
   try {
-    await swapKit.connectTrezor([Chain.Bitcoin], BITCOIN_PATHS.LEGACY);
-    const legacyAddress = swapKit.getAddress(Chain.Bitcoin);
+    await uSwap.connectTrezor([Chain.Bitcoin], BITCOIN_PATHS.LEGACY);
+    const legacyAddress = uSwap.getAddress(Chain.Bitcoin);
 
     console.log("Bitcoin Legacy address:", legacyAddress);
 
@@ -253,28 +254,28 @@ async function connectWithCustomPath() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   AssetValue,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
-await swapKit.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
+await uSwap.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
 
 async function sendBitcoin() {
   const recipient = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const amount = AssetValue.fromChainOrSignature("BTC.BTC", 0.001);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
-      memo: "SwapKit Trezor Transaction",
+      memo: "USwap Trezor Transaction",
     });
 
     console.log("Transaction sent:", txHash);
@@ -290,12 +291,12 @@ async function sendBitcoinWithCustomFee() {
   const amount = AssetValue.fromChainOrSignature("BTC.BTC", 0.001);
 
   try {
-    const wallet = await swapKit.getWalletWithBalance(Chain.Bitcoin);
+    const wallet = await uSwap.getWalletWithBalance(Chain.Bitcoin);
     const feeRates = await wallet.getFeeRates();
 
     console.log("Available fee rates:", feeRates);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       feeRate: feeRates.fast,
@@ -313,25 +314,25 @@ async function sendBitcoinWithCustomFee() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   AssetValue,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
-await swapKit.connectTrezor([Chain.Ethereum], NetworkDerivationPath.ETH);
+await uSwap.connectTrezor([Chain.Ethereum], NetworkDerivationPath.ETH);
 
 async function sendEthereum() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
   const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -352,7 +353,7 @@ async function sendERC20Token() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -370,25 +371,25 @@ async function sendERC20Token() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   AssetValue,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
-await swapKit.connectTrezor([Chain.BitcoinCash], NetworkDerivationPath.BCH);
+await uSwap.connectTrezor([Chain.BitcoinCash], NetworkDerivationPath.BCH);
 
 async function sendBitcoinCash() {
   const recipient = "bitcoincash:qr95sy3j9xwd2ap32xkykttr4cvcu7as4y0qverfuy";
   const amount = AssetValue.fromChainOrSignature("BCH.BCH", 0.01);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -408,14 +409,14 @@ async function sendBitcoinCash() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
   FeeOption,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({ wallets: { ...trezorWallet } });
+const uSwap = USwap({ wallets: { ...trezorWallet } });
 
 async function setupBitcoinAddressTypes() {
   const paths = {
@@ -428,12 +429,12 @@ async function setupBitcoinAddressTypes() {
 
   for (const [type, path] of Object.entries(paths)) {
     try {
-      await swapKit.connectTrezor([Chain.Bitcoin], path);
-      const address = swapKit.getAddress(Chain.Bitcoin);
+      await uSwap.connectTrezor([Chain.Bitcoin], path);
+      const address = uSwap.getAddress(Chain.Bitcoin);
       results[type] = address;
       console.log(`${type} address:`, address);
 
-      swapKit.disconnectChain(Chain.Bitcoin);
+      uSwap.disconnectChain(Chain.Bitcoin);
     } catch (error) {
       console.error(`Failed to get ${type} address:`, error);
     }
@@ -447,13 +448,13 @@ async function setupBitcoinAddressTypes() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({ wallets: { ...trezorWallet } });
+const uSwap = USwap({ wallets: { ...trezorWallet } });
 
 async function setupEVMChains() {
   const evmChains = [
@@ -471,8 +472,8 @@ async function setupEVMChains() {
 
   for (const chain of evmChains) {
     try {
-      await swapKit.connectTrezor([chain], ethPath);
-      const address = swapKit.getAddress(chain);
+      await uSwap.connectTrezor([chain], ethPath);
+      const address = uSwap.getAddress(chain);
       results[chain] = address;
       console.log(`${chain} address:`, address);
     } catch (error) {
@@ -490,9 +491,9 @@ async function setupEVMChains() {
 
 ```ts twoslash
 
-import { SwapKit, trezorWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
@@ -500,10 +501,10 @@ async function diagnosticConnection() {
   try {
     console.log("Attempting to connect to Trezor...");
 
-    await swapKit.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
+    await uSwap.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
     console.log("✅ Trezor connected successfully");
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
+    const address = uSwap.getAddress(Chain.Bitcoin);
     console.log("✅ Address retrieved:", address);
 
     return { success: true, address };
@@ -553,7 +554,7 @@ async function checkTrezorBridge() {
 ```ts twoslash
 async function handleTransactionErrors() {
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       /* params */
     });
     return txHash;
@@ -586,7 +587,7 @@ async function handleTransactionErrors() {
 ```ts twoslash
 async function handleBrowserIssues() {
   try {
-    await swapKit.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
+    await uSwap.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
   } catch (error) {
     if (error.message.includes("popup")) {
       alert("Please allow popups for this website to use Trezor");
@@ -609,15 +610,15 @@ async function handleBrowserIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@uswap/sdk";
 
 async function verifyAddressOnDevice() {
-  const swapKit = SwapKit({ wallets: { ...trezorWallet } });
-  await swapKit.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
+  const uSwap = USwap({ wallets: { ...trezorWallet } });
+  await uSwap.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
 
-  const address = swapKit.getAddress(Chain.Bitcoin);
+  const address = uSwap.getAddress(Chain.Bitcoin);
 
-  console.log("Address from SwapKit:", address);
+  console.log("Address from USwap:", address);
   console.log(
     "⚠️ Please verify this address matches what's shown on your Trezor screen"
   );
@@ -636,7 +637,7 @@ async function secureTransaction() {
     "⚠️ Please verify these details on your Trezor screen before confirming"
   );
 
-  const txHash = await swapKit.transfer({
+  const txHash = await uSwap.transfer({
     assetValue: amount,
     recipient,
   });
@@ -647,7 +648,7 @@ async function secureTransaction() {
 async function transactionWithTimeout() {
   const timeoutMs = 60000;
 
-  const transactionPromise = swapKit.transfer({
+  const transactionPromise = uSwap.transfer({
     assetValue: AssetValue.fromChainOrSignature("BTC.BTC", 0.001),
     recipient: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
   });
@@ -675,7 +676,7 @@ async function transactionWithTimeout() {
 ```ts twoslash
 
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     integrations: {
       trezor: {
@@ -705,13 +706,13 @@ const swapKit = SwapKit({
 ### Custom Coin Support
 
 ```ts twoslash
-import { SwapKit, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@uswap/sdk";
 
 class CustomTrezorWallet {
-  private swapKit: any;
+  private uSwap: any;
 
   constructor() {
-    this.swapKit = SwapKit({ wallets: { ...trezorWallet } });
+    this.uSwap = USwap({ wallets: { ...trezorWallet } });
   }
 
   async connectWithAccountIndex(chain: Chain, accountIndex: number) {
@@ -728,8 +729,8 @@ class CustomTrezorWallet {
         throw new Error(`Unsupported chain: ${chain}`);
     }
 
-    await this.swapKit.connectTrezor([chain], basePath);
-    return this.swapKit.getAddress(chain);
+    await this.uSwap.connectTrezor([chain], basePath);
+    return this.uSwap.getAddress(chain);
   }
 
   async connectMultipleAccounts(chain: Chain, accountCount: number) {
@@ -740,7 +741,7 @@ class CustomTrezorWallet {
         const address = await this.connectWithAccountIndex(chain, i);
         accounts.push({ accountIndex: i, address });
 
-        this.swapKit.disconnectChain(chain);
+        this.uSwap.disconnectChain(chain);
       } catch (error) {
         console.error(`Failed to connect account ${i}:`, error);
       }
@@ -756,7 +757,7 @@ class CustomTrezorWallet {
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
 import {
-  SwapKit,
+  USwap,
   trezorWallet,
   Chain,
   NetworkDerivationPath,
@@ -773,7 +774,7 @@ export function TrezorWallet({ onConnect, onError }: TrezorWalletProps) {
   const [address, setAddress] = useState<string>("");
   const [selectedChain, setSelectedChain] = useState<Chain>(Chain.Bitcoin);
 
-  const swapKit = SwapKit({
+  const uSwap = USwap({
     config: {
       integrations: {
         trezor: {
@@ -791,8 +792,8 @@ export function TrezorWallet({ onConnect, onError }: TrezorWalletProps) {
 
     try {
       const derivationPath = NetworkDerivationPath[selectedChain];
-      await swapKit.connectTrezor([selectedChain], derivationPath);
-      const walletAddress = swapKit.getAddress(selectedChain);
+      await uSwap.connectTrezor([selectedChain], derivationPath);
+      const walletAddress = uSwap.getAddress(selectedChain);
 
       setAddress(walletAddress);
       setIsConnected(true);
@@ -805,7 +806,7 @@ export function TrezorWallet({ onConnect, onError }: TrezorWalletProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddress("");
   };
@@ -839,4 +840,4 @@ export function TrezorWallet({ onConnect, onError }: TrezorWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of Trezor integration with SwapKit SDK v4, including security best practices, troubleshooting, and advanced usage patterns.
+This comprehensive guide covers all aspects of Trezor integration with USwap SDK v4, including security best practices, troubleshooting, and advanced usage patterns.

@@ -1,47 +1,48 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Connecting Wallets
-description: How to connect different types of wallets with SwapKit
+description: How to connect different types of wallets with USwap
 ---
 
 import WalletConnectionDemo from "../../../../components/WalletConnectionDemo.astro";
 import TryItYourself from "../../../../components/TryItYourself.astro";
 import PlaygroundLinks from "../../../../components/PlaygroundLinks.astro";
 
-SwapKit provides multiple ways to connect wallets for different blockchain networks. This guide demonstrates how to connect various wallet types using both granular and all-in-one approaches.
+USwap provides multiple ways to connect wallets for different blockchain networks. This guide demonstrates how to connect various wallet types using both granular and all-in-one approaches.
 
 <WalletConnectionDemo
   chains={["Ethereum", "Bitcoin", "Thorchain", "Cosmos"]}
   walletTypes={["MetaMask", "Keystore", "WalletConnect", "Keplr"]}
 />
 
-## Two Approaches to Using SwapKit
+## Two Approaches to Using USwap
 
-You can use SwapKit in two ways:
+You can use USwap in two ways:
 
 1. **Granular approach** - Import only what you need from individual packages:
 
    ```ts
-   import { SwapKit, keystoreWallet } from "@uswap/sdk";
+   import { USwap, keystoreWallet } from "@uswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createSwapKit } from "@uswap/sdk";
+   import { createUSwap } from "@uswap/sdk";
    ```
 
 The granular approach is recommended for frontend applications as it results in smaller bundle sizes.
 
-## Initialize SwapKit
+## Initialize USwap
 
 ### Granular Approach (Frontend Recommended)
 
 ```ts twoslash
-import { SwapKit, keystoreWallet, ledgerWallet, evmWallet } from "@uswap/sdk";
+import { USwap, keystoreWallet, ledgerWallet, evmWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-swapkit-api-key",
+      uSwap: "your-uswap-api-key",
       walletConnectProjectId: "your-walletconnect-project-id",
     },
   },
@@ -52,12 +53,12 @@ const swapKit = SwapKit({
 ### All-in-one Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit } from "@uswap/sdk";
+import { createUSwap } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-swapkit-api-key",
+      uSwap: "your-uswap-api-key",
       walletConnectProjectId: "your-walletconnect-project-id",
     },
   },
@@ -71,13 +72,13 @@ const swapKit = createSwapKit({
 ```ts twoslash
 import {
   Chain,
-  SwapKit,
+  USwap,
   keystoreWallet,
   decryptFromKeystore,
   type Keystore,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keystoreWallet },
 });
 
@@ -89,11 +90,11 @@ async function connectWithKeystore(
   try {
     const phrase = await decryptFromKeystore(keystoreFile, password);
 
-    await swapKit.connectKeystore(chains, phrase);
+    await uSwap.connectKeystore(chains, phrase);
 
     const balances = await Promise.all(
       chains.map(async (chain) => {
-        const wallet = await swapKit.getWalletWithBalance(chain);
+        const wallet = await uSwap.getWalletWithBalance(chain);
         return wallet.balance;
       })
     );
@@ -113,12 +114,12 @@ await connectWithKeystore(keystoreFile, password, chains);
 ```ts twoslash
 import {
   Chain,
-  createSwapKit,
+  createUSwap,
   decryptFromKeystore,
   type Keystore,
 } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
 async function connectWithKeystore(
   keystoreFile: Keystore,
@@ -128,7 +129,7 @@ async function connectWithKeystore(
   try {
     const phrase = await decryptFromKeystore(keystoreFile, password);
 
-    await swapKit.connectKeystore(chains, phrase);
+    await uSwap.connectKeystore(chains, phrase);
 
     return { success: true };
   } catch (error) {
@@ -142,17 +143,17 @@ async function connectWithKeystore(
 ### Ledger Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, ledgerWallet } from "@uswap/sdk";
+import { Chain, USwap, ledgerWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...ledgerWallet },
 });
 
 async function connectLedger(chains: Chain[]) {
   try {
-    await swapKit.connectLedger(chains);
+    await uSwap.connectLedger(chains);
 
-    const ethAddress = swapKit.getAddress(Chain.Ethereum);
+    const ethAddress = uSwap.getAddress(Chain.Ethereum);
 
     return { success: true };
   } catch (error) {
@@ -167,19 +168,19 @@ async function connectLedger(chains: Chain[]) {
 import {
   Chain,
   NetworkDerivationPath,
-  SwapKit,
+  USwap,
   trezorWallet,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...trezorWallet },
 });
 
 async function connectTrezor(chains: Chain[]) {
   try {
-    await swapKit.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
+    await uSwap.connectTrezor([Chain.Bitcoin], NetworkDerivationPath.BTC);
 
-    const btcWallet = await swapKit.getWalletWithBalance(Chain.Bitcoin);
+    const btcWallet = await uSwap.getWalletWithBalance(Chain.Bitcoin);
 
     return { success: true, balance: btcWallet.balance };
   } catch (error) {
@@ -193,17 +194,17 @@ async function connectTrezor(chains: Chain[]) {
 ### MetaMask / EVM Wallets
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 async function connectEVMWallet() {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum, Chain.BinanceSmartChain]);
+    await uSwap.connectEVMWallet([Chain.Ethereum, Chain.BinanceSmartChain]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
 
     return { success: true, address };
   } catch (error) {
@@ -215,17 +216,17 @@ async function connectEVMWallet() {
 ### Keplr (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, keplrWallet } from "@uswap/sdk";
+import { Chain, USwap, keplrWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keplrWallet },
 });
 
 async function connectKeplr() {
   try {
-    await swapKit.connectKeplr([Chain.Cosmos]);
+    await uSwap.connectKeplr([Chain.Cosmos]);
 
-    const address = swapKit.getAddress(Chain.Cosmos);
+    const address = uSwap.getAddress(Chain.Cosmos);
 
     return { success: true, address };
   } catch (error) {
@@ -237,17 +238,17 @@ async function connectKeplr() {
 ### Cosmostation (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, cosmostationWallet } from "@uswap/sdk";
+import { Chain, USwap, cosmostationWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...cosmostationWallet },
 });
 
 async function connectCosmostation() {
   try {
-    await swapKit.connectCosmostation([Chain.Cosmos, Chain.THORChain]);
+    await uSwap.connectCosmostation([Chain.Cosmos, Chain.THORChain]);
 
-    const address = swapKit.getAddress(Chain.Cosmos);
+    const address = uSwap.getAddress(Chain.Cosmos);
 
     return { success: true, address };
   } catch (error) {
@@ -259,17 +260,17 @@ async function connectCosmostation() {
 ### Phantom (Solana) Wallet
 
 ```ts twoslash
-import { Chain, SwapKit, phantomWallet } from "@uswap/sdk";
+import { Chain, USwap, phantomWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...phantomWallet },
 });
 
 async function connectPhantom() {
   try {
-    await swapKit.connectPhantom([Chain.Solana]);
+    await uSwap.connectPhantom([Chain.Solana]);
 
-    const address = swapKit.getAddress(Chain.Solana);
+    const address = uSwap.getAddress(Chain.Solana);
 
     return { success: true, address };
   } catch (error) {
@@ -281,39 +282,39 @@ async function connectPhantom() {
 ## Managing Wallet Connections
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
 function getAllWallets() {
-  const wallets = swapKit.getAllWallets();
+  const wallets = uSwap.getAllWallets();
   return wallets;
 }
 
 function disconnectChain(chain: Chain) {
-  swapKit.disconnectChain(chain);
+  uSwap.disconnectChain(chain);
 }
 
 function disconnectAll() {
-  swapKit.disconnectAll();
+  uSwap.disconnectAll();
 }
 ```
 
 ## Getting Wallet Balances
 
 ```ts twoslash
-import { Chain, SwapKit, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet },
 });
 
-await swapKit.connectEVMWallet([Chain.Ethereum]);
+await uSwap.connectEVMWallet([Chain.Ethereum]);
 
 async function getChainBalance(chain: Chain) {
-  const balance = await swapKit.getBalance(chain, true);
+  const balance = await uSwap.getBalance(chain, true);
   return balance;
 }
 
@@ -321,7 +322,7 @@ async function getAllBalances(chains: Chain[]) {
   const balances = await Promise.all(
     chains.map(async (chain) => {
       try {
-        const wallet = await swapKit.getWalletWithBalance(chain);
+        const wallet = await uSwap.getWalletWithBalance(chain);
         return { chain, balance: wallet.balance };
       } catch (error) {
         return { chain, balance: [], error };
@@ -336,9 +337,9 @@ async function getAllBalances(chains: Chain[]) {
 ## Using WalletConnect
 
 ```ts twoslash
-import { Chain, SwapKit, walletconnectWallet } from "@uswap/sdk";
+import { Chain, USwap, walletconnectWallet } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
       walletConnectProjectId: "YOUR_WALLETCONNECT_PROJECT_ID",
@@ -349,13 +350,13 @@ const swapKit = SwapKit({
 
 async function connectWalletConnect() {
   try {
-    await swapKit.connectWalletconnect([
+    await uSwap.connectWalletconnect([
       Chain.Ethereum,
       Chain.BinanceSmartChain,
       Chain.Cosmos,
     ]);
 
-    const ethAddress = swapKit.getAddress(Chain.Ethereum);
+    const ethAddress = uSwap.getAddress(Chain.Ethereum);
 
     return { success: true };
   } catch (error) {
@@ -369,30 +370,30 @@ async function connectWalletConnect() {
 ```ts twoslash
 import {
   Chain,
-  SwapKit,
+  USwap,
   evmWallet,
   keplrWallet,
   keystoreWallet,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...evmWallet, ...keplrWallet, ...keystoreWallet },
 });
 
 async function connectMultipleWallets(phrase: string) {
   try {
-    await swapKit.connectEVMWallet([Chain.Ethereum]);
+    await uSwap.connectEVMWallet([Chain.Ethereum]);
 
-    await swapKit.connectKeplr([Chain.Cosmos]);
+    await uSwap.connectKeplr([Chain.Cosmos]);
 
-    await swapKit.connectKeystore([Chain.Bitcoin], phrase);
+    await uSwap.connectKeystore([Chain.Bitcoin], phrase);
 
-    const wallets = swapKit.getAllWallets();
+    const wallets = uSwap.getAllWallets();
 
     const addresses = {
-      [Chain.Ethereum]: swapKit.getAddress(Chain.Ethereum),
-      [Chain.Cosmos]: swapKit.getAddress(Chain.Cosmos),
-      [Chain.Bitcoin]: swapKit.getAddress(Chain.Bitcoin),
+      [Chain.Ethereum]: uSwap.getAddress(Chain.Ethereum),
+      [Chain.Cosmos]: uSwap.getAddress(Chain.Cosmos),
+      [Chain.Bitcoin]: uSwap.getAddress(Chain.Bitcoin),
     };
 
     return { success: true, addresses };

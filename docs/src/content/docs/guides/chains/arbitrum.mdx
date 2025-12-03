@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Arbitrum Integration
-description: Complete guide to integrating Arbitrum One with SwapKit SDK for Layer 2 DeFi and cross-chain operations
+description: Complete guide to integrating Arbitrum One with USwap SDK for Layer 2 DeFi and cross-chain operations
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Arbitrum One integration with SwapKit, including wallet connections, token transfers, cross-chain swaps, and Layer 2 specific optimizations.
+This guide covers Arbitrum One integration with USwap, including wallet connections, token transfers, cross-chain swaps, and Layer 2 specific optimizations.
 
 ## Overview
 
-Arbitrum One is a leading Ethereum Layer 2 scaling solution that provides faster and cheaper transactions while maintaining Ethereum security. SwapKit provides full Arbitrum support through:
+Arbitrum One is a leading Ethereum Layer 2 scaling solution that provides faster and cheaper transactions while maintaining Ethereum security. USwap provides full Arbitrum support through:
 
 - **Arbitrum Toolbox**: Optimized Layer 2 operations with lower gas costs
 - **Cross-Chain Bridging**: Seamless transfers between Ethereum and Arbitrum
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const arbWallet = await swapKit.getWallet(Chain.Arbitrum);
+const arbWallet = await uSwap.getWallet(Chain.Arbitrum);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Arbitrum using Ethereum-compatible wallets:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Arbitrum], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Arbitrum], "your mnemonic phrase");
 
-await swapKit.connectBrowserWallet(Chain.Arbitrum);
+await uSwap.connectBrowserWallet(Chain.Arbitrum);
 
-await swapKit.connectWalletConnect([Chain.Arbitrum]);
+await uSwap.connectWalletConnect([Chain.Arbitrum]);
 
-await swapKit.connectLedger([Chain.Arbitrum]);
+await uSwap.connectLedger([Chain.Arbitrum]);
 ```
 
 ### Native ETH Transfers
@@ -92,7 +93,7 @@ ETH on Arbitrum is the same as Ethereum ETH, just on Layer 2:
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Arbitrum,
@@ -111,7 +112,7 @@ Arbitrum supports the same ERC-20 standard with much lower gas costs:
 ```typescript
 // @noErrorValidation
 
-const usdcTransfer = await swapKit.transfer({
+const usdcTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Arbitrum,
@@ -227,25 +228,25 @@ const eip1559Tx = await toolbox.buildTransaction({
 ```typescript
 // @noErrorValidation
 
-const bridgeQuote = await swapKit.getQuote({
+const bridgeQuote = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "0.1",
   buyAsset: "ARB.ETH",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Arbitrum),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Arbitrum),
 });
 
-const bridgeTx = await swapKit.swap({
+const bridgeTx = await uSwap.swap({
   route: bridgeQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const usdcBridge = await swapKit.getQuote({
+const usdcBridge = await uSwap.getQuote({
   sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   sellAmount: "1000",
   buyAsset: "ARB.USDC-0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Arbitrum),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Arbitrum),
 });
 ```
 
@@ -254,25 +255,25 @@ const usdcBridge = await swapKit.getQuote({
 ```typescript
 // @noErrorValidation
 
-const arbToBtcQuote = await swapKit.getQuote({
+const arbToBtcQuote = await uSwap.getQuote({
   sellAsset: "ARB.ARB-0x912CE59144191C1204E64559FE8253a0e49E6548",
   sellAmount: "100",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Arbitrum),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Arbitrum),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
-const crossChainSwap = await swapKit.swap({
+const crossChainSwap = await uSwap.swap({
   route: arbToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const multiHopQuote = await swapKit.getQuote({
+const multiHopQuote = await uSwap.getQuote({
   sellAsset: "ARB.USDC-0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
   sellAmount: "500",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Arbitrum),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Arbitrum),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -283,30 +284,30 @@ Access native Arbitrum DEXs for optimal pricing:
 ```typescript
 // @noErrorValidation
 
-const camelotQuote = await swapKit.getQuote({
+const camelotQuote = await uSwap.getQuote({
   sellAsset: "ARB.ETH",
   sellAmount: "0.1",
   buyAsset: "ARB.USDC-0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-  senderAddress: swapKit.getAddress(Chain.Arbitrum),
-  recipientAddress: swapKit.getAddress(Chain.Arbitrum),
+  senderAddress: uSwap.getAddress(Chain.Arbitrum),
+  recipientAddress: uSwap.getAddress(Chain.Arbitrum),
   providers: ["CAMELOT"],
 });
 
-const traderjoeQuote = await swapKit.getQuote({
+const traderjoeQuote = await uSwap.getQuote({
   sellAsset: "ARB.USDC-0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
   sellAmount: "100",
   buyAsset: "ARB.ARB-0x912CE59144191C1204E64559FE8253a0e49E6548",
-  senderAddress: swapKit.getAddress(Chain.Arbitrum),
-  recipientAddress: swapKit.getAddress(Chain.Arbitrum),
+  senderAddress: uSwap.getAddress(Chain.Arbitrum),
+  recipientAddress: uSwap.getAddress(Chain.Arbitrum),
   providers: ["TRADERJOE_V2"],
 });
 
-const bestRateQuote = await swapKit.getQuote({
+const bestRateQuote = await uSwap.getQuote({
   sellAsset: "ARB.WETH-0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
   sellAmount: "1",
   buyAsset: "ARB.GMX-0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a",
-  senderAddress: swapKit.getAddress(Chain.Arbitrum),
-  recipientAddress: swapKit.getAddress(Chain.Arbitrum),
+  senderAddress: uSwap.getAddress(Chain.Arbitrum),
+  recipientAddress: uSwap.getAddress(Chain.Arbitrum),
   providers: ["CAMELOT", "TRADERJOE_V2", "SUSHISWAP"],
 });
 ```
@@ -319,7 +320,7 @@ const bestRateQuote = await swapKit.getQuote({
 // @noErrorValidation
 
 const arbBalance = await toolbox.getBalance(
-  swapKit.getAddress(Chain.Arbitrum),
+  uSwap.getAddress(Chain.Arbitrum),
   "0x912CE59144191C1204E64559FE8253a0e49E6548"
 );
 
@@ -345,7 +346,7 @@ const governanceVote = await toolbox.call({
 
 const batchOperations = async () => {
   const nonce = await toolbox.getTransactionCount(
-    swapKit.getAddress(Chain.Arbitrum)
+    uSwap.getAddress(Chain.Arbitrum)
   );
 
   const tx1 = await toolbox.buildTransaction({
@@ -375,10 +376,10 @@ const batchOperations = async () => {
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Arbitrum, [
+USwapConfig.setRpcUrl(Chain.Arbitrum, [
   "https:
   "https:
   "https:
@@ -399,8 +400,8 @@ const toolbox = await getArbitrumToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Arbitrum, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Arbitrum, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetTokens = {
@@ -418,7 +419,7 @@ Handle Arbitrum-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -530,7 +531,7 @@ const bundledOperations = async () => {
 4. **Optimize for Fast Settlement**:
 
    ```typescript
-   const fastTx = await swapKit.transfer({
+   const fastTx = await uSwap.transfer({
      recipient: "0x...",
      assetValue: AssetValue.from({ chain: Chain.Arbitrum, value: "0.1" }),
      feeOptionKey: FeeOption.Fastest,
@@ -574,7 +575,7 @@ const radiantSupply = await toolbox.call({
   funcParams: [
     "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     "1000000000",
-    swapKit.getAddress(Chain.Arbitrum),
+    uSwap.getAddress(Chain.Arbitrum),
     0,
   ],
 });
@@ -614,7 +615,7 @@ const radiantSupply = await toolbox.call({
      "https:
    ];
 
-   SKConfig.setRpcUrl(Chain.Arbitrum, providers);
+   USwapConfig.setRpcUrl(Chain.Arbitrum, providers);
    ```
 
 ## API Reference Summary

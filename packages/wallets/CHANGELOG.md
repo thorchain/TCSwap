@@ -1,3 +1,4 @@
+<!-- Modifications © 2025 Magic Systems. -->
 # @uswap/wallets
 
 ## 4.3.10
@@ -263,7 +264,7 @@
 - [#1538](https://github.com/horizontalsystems/USwap/pull/1538) [`0d56165`](https://github.com/horizontalsystems/USwap/commit/0d56165668372c41711bb3fbea21436cb1c7bbec) Thanks [@towanTG](https://github.com/towanTG)! - Add NEAR Wallet Selector integration
 
   - Added `walletSelector` wallet adapter supporting 5 NEAR wallet modules (MyNearWallet, Meteor, Sender, HERE Wallet, Nightly)
-  - Added `nearWalletSelector` configuration to SKConfig integrations for optional contractId
+  - Added `nearWalletSelector` configuration to USwapConfig integrations for optional contractId
   - Integrated wallet selector into SDK's default wallets
   - Modal auto-shows on connection for wallet selection
   - Supports mainnet only (hardcoded)
@@ -1063,7 +1064,7 @@
 
   - Added support for Xaman (formerly XUMM) mobile wallet for Ripple/XRP transactions
   - Added XAMAN to WalletOption enum in @uswap/helpers
-  - Added `xaman` to SKConfig apiKeys for centralized API key management
+  - Added `xaman` to USwapConfig apiKeys for centralized API key management
   - Added wallet-specific error codes for better error handling
   - Supports QR code and deep linking for mobile transaction signing
   - Includes destination tag support for exchange addresses

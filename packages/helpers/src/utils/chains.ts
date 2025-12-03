@@ -1,12 +1,10 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@uswap/types";
 import { match } from "ts-pattern";
-import { SKConfig } from "../modules/swapKitConfig";
+import { USwapConfig } from "../modules/uSwapConfig";
 import { USwapError } from "../modules/uSwapError";
 import { warnOnce } from "./others";
 
@@ -54,8 +52,8 @@ const rpcCache = new Map<Chain | StagenetChain, { timestamp: number; url: string
 const rpcCacheTTL = 1000 * 60 * 2; // 2 minutes
 
 export async function getRPCUrl(chain: Chain | StagenetChain) {
-  const { isStagenet } = SKConfig.get("envs");
-  const [rpcUrl = "", ...fallbackUrls] = SKConfig.get("rpcUrls")[chain];
+  const { isStagenet } = USwapConfig.get("envs");
+  const [rpcUrl = "", ...fallbackUrls] = USwapConfig.get("rpcUrls")[chain];
 
   if (!rpcUrl) {
     warnOnce({
@@ -92,8 +90,8 @@ export async function getRPCUrl(chain: Chain | StagenetChain) {
 
 /**
  * @deprecated
- * RPC URLs are now managed dynamically via SKConfig.
- * Please use static { rpcUrls, fallbackRpcUrls } SwapKit init config or dynamic SKConfig.setRpcUrl/setFallbackRpcUrl to configure RPC endpoints.
+ * RPC URLs are now managed dynamically via USwapConfig.
+ * Please use static { rpcUrls, fallbackRpcUrls } USwap init config or dynamic USwapConfig.setRpcUrl/setFallbackRpcUrl to configure RPC endpoints.
  * This function is obsolete and will be removed in a future release.
  */
 export function initializeRPCUrlsWithFallback(_chains: never) {
@@ -101,6 +99,6 @@ export function initializeRPCUrlsWithFallback(_chains: never) {
     condition: true,
     id: "initializeRPCUrlsWithFallback",
     warning:
-      "initializeRPCUrlsWithFallback is deprecated. Use static { rpcUrls, fallbackRpcUrls } SwapKit init config or dynamic SKConfig.setRpcUrl/setFallbackRpcUrl to configure RPC endpoints.",
+      "initializeRPCUrlsWithFallback is deprecated. Use static { rpcUrls, fallbackRpcUrls } USwap init config or dynamic USwapConfig.setRpcUrl/setFallbackRpcUrl to configure RPC endpoints.",
   });
 }

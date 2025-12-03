@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +13,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { cn } from "../../../lib/utils";
 import { useModal } from "../../hooks/use-modal";
-import { useSwapKit } from "../../swapkit-context";
+import { useUSwap } from "../../uswap-context";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -50,7 +54,7 @@ type KeystoreFormData = z.infer<typeof keystoreSchema>;
 export function WalletKeystoreConnectDialog() {
   const modal = useModal();
   const fileInputId = useId();
-  const { connectKeystore, isConnectingWallet } = useSwapKit();
+  const { connectKeystore, isConnectingWallet } = useUSwap();
 
   const form = useForm<KeystoreFormData>({
     defaultValues: { currentStep: 1, keystoreFile: { file: undefined, keystore: undefined }, password: "" },

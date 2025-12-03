@@ -1,11 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Docs
-    url: https://swapkit.github.io/SwapKit
-    about: Read the documentation to learn how to use SwapKit.
-  - name: Contact
-    url: https://partnerships.swapkit.dev
-    about: Contact the team to learn more about SwapKit.
-  - name: Discord
-    url: https://discord.gg/swapkit
-    about: Join the community to get support and stay updated.
+    url: https://uswap.github.io/USwap
+    about: Read the documentation to learn how to use USwap.

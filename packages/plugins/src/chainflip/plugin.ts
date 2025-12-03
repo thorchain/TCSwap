@@ -1,11 +1,9 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import { AssetValue, type Chain, ProviderName, USwapError } from "@uswap/helpers";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 import { createPlugin } from "../utils";
 import type { RequestSwapDepositAddressParams } from "./types";
 
@@ -38,7 +36,7 @@ export const ChainflipPlugin = createPlugin({
         throw new USwapError("core_wallet_connection_not_found");
       }
 
-      const { depositAddress } = await SwapKitApi.getChainflipDepositChannel({
+      const { depositAddress } = await USwapApi.getChainflipDepositChannel({
         ...chainflip,
         maxBoostFeeBps: maxBoostFeeBps || chainflip.maxBoostFeeBps,
       });
@@ -54,5 +52,5 @@ export const ChainflipPlugin = createPlugin({
     },
   }),
   name: "chainflip",
-  properties: { supportedSwapkitProviders: [ProviderName.CHAINFLIP, ProviderName.CHAINFLIP_STREAMING] as const },
+  properties: { supportedUSwapProviders: [ProviderName.CHAINFLIP, ProviderName.CHAINFLIP_STREAMING] as const },
 });

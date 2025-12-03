@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -11,7 +9,7 @@ import type { SwapKitPluginParams } from "./types";
 export function createPlugin<
   const Name extends string,
   T extends (params: SwapKitPluginParams) => Record<string, unknown>,
-  K extends { supportedSwapkitProviders?: readonly ProviderName[] },
+  K extends { supportedUSwapProviders?: readonly ProviderName[] },
 >({ name, properties, methods }: { name: Name; properties?: K; methods: T }) {
   function plugin(pluginParams: SwapKitPluginParams) {
     return { ...methods(pluginParams), ...properties } as K & ReturnType<T>;

@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Cosmos Hub Integration
-description: Complete guide to integrating Cosmos Hub with SwapKit SDK for ATOM operations and cross-chain swaps
+description: Complete guide to integrating Cosmos Hub with USwap SDK for ATOM operations and cross-chain swaps
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Cosmos Hub integration with SwapKit, including wallet connections, ATOM transfers, staking operations, and cross-chain swaps.
+This guide covers Cosmos Hub integration with USwap, including wallet connections, ATOM transfers, staking operations, and cross-chain swaps.
 
 ## Overview
 
-Cosmos Hub is the first blockchain in the Cosmos ecosystem, designed for interoperability and sovereignty. SwapKit provides comprehensive Cosmos Hub support through:
+Cosmos Hub is the first blockchain in the Cosmos ecosystem, designed for interoperability and sovereignty. USwap provides comprehensive Cosmos Hub support through:
 
 - **Cosmos Toolbox**: Native Cosmos SDK operations with ATOM
 - **Staking Support**: Delegate, undelegate, and claim staking rewards
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const cosmosWallet = await swapKit.getWallet(Chain.Cosmos);
+const cosmosWallet = await uSwap.getWallet(Chain.Cosmos);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Cosmos Hub using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Cosmos], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Cosmos], "your mnemonic phrase");
 
-await swapKit.connectKeplr([Chain.Cosmos]);
+await uSwap.connectKeplr([Chain.Cosmos]);
 
-await swapKit.connectLeap([Chain.Cosmos]);
+await uSwap.connectLeap([Chain.Cosmos]);
 
-await swapKit.connectLedger([Chain.Cosmos]);
+await uSwap.connectLedger([Chain.Cosmos]);
 ```
 
 ### Address Generation
@@ -91,7 +92,7 @@ Cosmos addresses use bech32 format with "cosmos" prefix:
 ```typescript
 // @noErrorValidation
 
-const cosmosAddress = swapKit.getAddress(Chain.Cosmos);
+const cosmosAddress = uSwap.getAddress(Chain.Cosmos);
 
 console.log("Cosmos address:", cosmosAddress);
 
@@ -110,7 +111,7 @@ console.log("Public key:", publicKey);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "cosmos1xv9tklw7d82sezh9haa573wufgy59vmwe6xxe5",
   assetValue: AssetValue.from({
     chain: Chain.Cosmos,
@@ -226,7 +227,7 @@ console.log("All rewards claimed:", claimAllTx);
 
 const compoundRewards = async () => {
   const totalRewards = await cosmosToolbox.getTotalRewards(
-    swapKit.getAddress(Chain.Cosmos)
+    uSwap.getAddress(Chain.Cosmos)
   );
 
   if (totalRewards.gt(0.1)) {
@@ -301,12 +302,12 @@ Cosmos Hub ATOM is supported in THORChain cross-chain swaps:
 ```typescript
 // @noErrorValidation
 
-const atomToBtcQuote = await swapKit.getQuote({
+const atomToBtcQuote = await uSwap.getQuote({
   sellAsset: "GAIA.ATOM",
   sellAmount: "100",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Cosmos),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Cosmos),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
 console.log("ATOM -> BTC quote:", {
@@ -315,25 +316,25 @@ console.log("ATOM -> BTC quote:", {
   timeEstimate: atomToBtcQuote.timeEstimate,
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: atomToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const atomToUsdcQuote = await swapKit.getQuote({
+const atomToUsdcQuote = await uSwap.getQuote({
   sellAsset: "GAIA.ATOM",
   sellAmount: "50",
   buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  senderAddress: swapKit.getAddress(Chain.Cosmos),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Cosmos),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
 });
 
-const atomToRuneQuote = await swapKit.getQuote({
+const atomToRuneQuote = await uSwap.getQuote({
   sellAsset: "GAIA.ATOM",
   sellAmount: "25",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Cosmos),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Cosmos),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -503,7 +504,7 @@ const msgs = [
   {
     typeUrl: "/cosmos.bank.v1beta1.MsgSend",
     value: {
-      fromAddress: swapKit.getAddress(Chain.Cosmos),
+      fromAddress: uSwap.getAddress(Chain.Cosmos),
       toAddress: "cosmos1xv9tklw7d82sezh9haa573wufgy59vmwe6xxe5",
       amount: [{ denom: "uatom", amount: "1000000" }],
     },
@@ -523,10 +524,10 @@ console.log(`Fee: ${fee.feeInAtom} ATOM`);
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Cosmos, [
+USwapConfig.setRpcUrl(Chain.Cosmos, [
   "https:
   "https:
   "https:
@@ -534,7 +535,7 @@ SKConfig.setRpcUrl(Chain.Cosmos, [
 
 
 const customCosmosRpc = "https:
-SKConfig.setRpcUrl(Chain.Cosmos, customCosmosRpc);
+USwapConfig.setRpcUrl(Chain.Cosmos, customCosmosRpc);
 
 
 const cosmosToolbox = await getCosmosToolbox({
@@ -549,8 +550,8 @@ const cosmosToolbox = await getCosmosToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Cosmos, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Cosmos, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetToolbox = await getCosmosToolbox({
@@ -573,7 +574,7 @@ Handle Cosmos-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -616,7 +617,7 @@ const batchOperations = async () => {
     {
       typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
       value: {
-        delegatorAddress: swapKit.getAddress(Chain.Cosmos),
+        delegatorAddress: uSwap.getAddress(Chain.Cosmos),
         validatorAddress:
           "cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0",
       },
@@ -624,7 +625,7 @@ const batchOperations = async () => {
     {
       typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
       value: {
-        delegatorAddress: swapKit.getAddress(Chain.Cosmos),
+        delegatorAddress: uSwap.getAddress(Chain.Cosmos),
         validatorAddress:
           "cosmosvaloper196ax4vc0lwpxndu9dyhvca7jhxp70rmcvrj90c",
       },
@@ -633,7 +634,7 @@ const batchOperations = async () => {
     {
       typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",
       value: {
-        delegatorAddress: swapKit.getAddress(Chain.Cosmos),
+        delegatorAddress: uSwap.getAddress(Chain.Cosmos),
         validatorAddress:
           "cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0",
         amount: { denom: "uatom", amount: "5000000" },
@@ -726,7 +727,7 @@ const efficientTransfer = await cosmosToolbox.transfer({
    ```typescript
    const monitorRewards = async () => {
      const rewards = await cosmosToolbox.getTotalRewards(
-       swapKit.getAddress(Chain.Cosmos)
+       uSwap.getAddress(Chain.Cosmos)
      );
 
      if (rewards.gt(1)) {
@@ -741,7 +742,7 @@ const efficientTransfer = await cosmosToolbox.transfer({
    ```typescript
    const handleUnbonding = async () => {
      const unbonding = await cosmosToolbox.getUnbondingDelegations(
-       swapKit.getAddress(Chain.Cosmos)
+       uSwap.getAddress(Chain.Cosmos)
      );
 
      unbonding.forEach((entry) => {
@@ -765,7 +766,7 @@ const efficientTransfer = await cosmosToolbox.transfer({
    const handleSequenceError = async () => {
      try {
        const account = await cosmosToolbox.getAccount(
-         swapKit.getAddress(Chain.Cosmos)
+         uSwap.getAddress(Chain.Cosmos)
        );
        console.log("Current sequence:", account.sequence);
 

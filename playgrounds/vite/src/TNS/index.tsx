@@ -1,15 +1,19 @@
-import { AllChains, AssetValue, Chain, getExplorerTxUrl, SwapKitApi, type THORNameDetails } from "@uswap/sdk";
-import { useCallback, useState } from "react";
-import type { SwapKitClient } from "../swapKitClient";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
 
-export default function TNS({ skClient }: { skClient: SwapKitClient }) {
+import { AllChains, AssetValue, Chain, getExplorerTxUrl, USwapApi, type THORNameDetails } from "@uswap/sdk";
+import { useCallback, useState } from "react";
+import type { USwapClient } from "../uSwapClient";
+
+export default function TNS({ skClient }: { skClient: USwapClient }) {
   const [selectedChain, setSelectedChain] = useState<Chain>(Chain.THORChain);
   const [name, setName] = useState("");
   const [tnsSearch, setTnsSearch] = useState("");
   const [tnsDetail, setTnsDetail] = useState<THORNameDetails>();
 
   const checkTns = useCallback(async () => {
-    const tnsDetail = await SwapKitApi.thorchainMidgard.getNameDetails(tnsSearch);
+    const tnsDetail = await USwapApi.thorchainMidgard.getNameDetails(tnsSearch);
     setTnsDetail(tnsDetail);
   }, [tnsSearch]);
 

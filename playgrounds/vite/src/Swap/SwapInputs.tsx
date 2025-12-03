@@ -1,7 +1,11 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
-import { type EVMTransaction, type QuoteResponseRoute, SwapKitApi } from "@uswap/helpers/api";
+import { type EVMTransaction, type QuoteResponseRoute, USwapApi } from "@uswap/helpers/api";
 import type { AssetValue, Chain, SwapKit } from "@uswap/sdk";
-import { ProviderName, SwapKitNumber } from "@uswap/sdk";
+import { ProviderName, USwapNumber } from "@uswap/sdk";
 import { useCallback, useState } from "react";
 
 type Props = {
@@ -39,7 +43,7 @@ export const SwapInputs = ({ skClient, inputAsset, outputAsset, handleSwap }: Pr
     // const providers = Object.values(ProviderName);
 
     try {
-      const { routes } = await SwapKitApi.getSwapQuote({
+      const { routes } = await USwapApi.getSwapQuote({
         affiliateFee: 0,
         buyAsset: outputAsset.toString(),
         destinationAddress,
@@ -144,7 +148,7 @@ export const SwapInputs = ({ skClient, inputAsset, outputAsset, handleSwap }: Pr
                 </div>
                 <div style={{ color: "#666", fontSize: 11 }}>
                   ~$
-                  {new SwapKitNumber(route.expectedBuyAmount)
+                  {new USwapNumber(route.expectedBuyAmount)
                     .mul(
                       route.meta.assets?.find(
                         (asset) => asset.asset.toLowerCase() === outputAsset?.toString().toLowerCase(),

@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -81,7 +79,7 @@ export async function createStargateClient(url: string) {
   const defaultRequestHeaders =
     typeof window !== "undefined"
       ? ({} as Record<string, string>)
-      : { referer: "https://sdk.swapkit.dev", referrer: "https://sdk.swapkit.dev" };
+      : { referer: "https://sdk.uswap.dev", referrer: "https://sdk.uswap.dev" };
 
   return StargateClient.connect({ headers: defaultRequestHeaders, url });
 }

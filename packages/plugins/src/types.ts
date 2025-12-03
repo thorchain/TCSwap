@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import type { Chain } from "@uswap/helpers";
 import type { FullWallet } from "@uswap/toolboxes";
 import type { ChainflipPlugin } from "./chainflip";
@@ -10,13 +14,13 @@ import type { ThorchainPlugin } from "./thorchain";
 export type * from "./chainflip/types";
 export type * from "./thorchain/types";
 
-export type SKPlugins = typeof ChainflipPlugin &
+export type USwapPlugins = typeof ChainflipPlugin &
   typeof ThorchainPlugin &
   typeof RadixPlugin &
   typeof SolanaPlugin &
   typeof EVMPlugin &
   typeof NearPlugin;
 
-export type PluginName = keyof SKPlugins;
+export type PluginName = keyof USwapPlugins;
 
 export type SwapKitPluginParams = { getWallet: <T extends Chain>(chain: T) => FullWallet[T] };

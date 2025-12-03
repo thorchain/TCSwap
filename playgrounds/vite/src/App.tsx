@@ -1,14 +1,18 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 // import { WalletWidget } from "@passkeys/react";
-import { type AssetValue, Chain, SKConfig } from "@uswap/core";
+import { type AssetValue, Chain, USwapConfig } from "@uswap/core";
 import type { FullWallet } from "@uswap/sdk";
-import { SwapKitWidget } from "@uswap/ui/react";
+import { USwapWidget } from "@uswap/ui/react";
 import { useCallback, useMemo, useState } from "react";
 import Liquidity from "./Liquidity";
 import Multisig from "./Multisig";
 import NearNames from "./NearNames";
 import Send from "./Send";
 import Swap from "./Swap";
-import { getSwapKitClient, resetSwapKitClient } from "./swapKitClient";
+import { getUSwapClient, resetUSwapClient } from "./uSwapClient";
 import TNS from "./TNS";
 import { Wallet } from "./Wallet";
 import { WalletPicker } from "./WalletPicker";
@@ -22,13 +26,13 @@ const App = () => {
   const [feature, setFeature] = useState<"swap" | "send" | "liquidity" | "tns" | "multisig">("swap");
   const [wallet, setWallet] = useState<WalletDataType>(null);
   const [phrase, setPhrase] = useState("");
-  const [stagenet, setStagenet] = useState(SKConfig.get("envs").isStagenet);
+  const [stagenet, setStagenet] = useState(USwapConfig.get("envs").isStagenet);
   const [loadingBalances, setLoadingBalances] = useState<Set<Chain>>(new Set());
   const [showWidget, setShowWidget] = useState(false);
-  const [isDev, setIsDev] = useState(SKConfig.get("envs").isDev);
+  const [isDev, setIsDev] = useState(USwapConfig.get("envs").isDev);
 
   const [keys, setKeys] = useState({
-    swapKit: (import.meta.env.VITE_TEST_API_KEY || "") as string,
+    uSwap: (import.meta.env.VITE_TEST_API_KEY || "") as string,
     walletConnectProjectId: (import.meta.env.WALLETCONNECT_PROJECT_ID || "") as string,
   });
 
@@ -36,12 +40,12 @@ const App = () => {
     {},
   );
 
-  const { skClient, config } = getSwapKitClient(keys);
+  const { uSwapClient, config } = getUSwapClient(keys);
 
   const toggleStagenet = useCallback(() => {
     setStagenet((v) => {
       const next = !v;
-      SKConfig.setEnv("isStagenet", next);
+      USwapConfig.setEnv("isStagenet", next);
       return next;
     });
   }, []);
@@ -49,7 +53,7 @@ const App = () => {
   const toggleBroker = useCallback(() => {
     setIsDev((v) => {
       const next = !v;
-      SKConfig.setEnv("isDev", next);
+      USwapConfig.setEnv("isDev", next);
       return next;
     });
   }, []);
@@ -76,9 +80,9 @@ const App = () => {
   }, []);
 
   const disconnectChain = (chain: Chain) => {
-    if (!skClient) return;
-    skClient.disconnectChain(chain);
-    setWallet(Object.values(skClient.getAllWallets()));
+    if (!uSwapClient) return;
+    uSwapClient.disconnectChain(chain);
+    setWallet(Object.values(uSwapClient.getAllWallets()));
     setLoadingBalances((prev) => {
       const next = new Set(prev);
       next.delete(chain);
@@ -87,18 +91,18 @@ const App = () => {
   };
 
   const disconnectAll = () => {
-    if (!skClient) return;
-    skClient.disconnectAll();
+    if (!uSwapClient) return;
+    uSwapClient.disconnectAll();
     setWallet([]);
     setLoadingBalances(new Set());
   };
 
   const updateWalletBalance = useCallback(
     async (chain: Chain) => {
-      if (!skClient) return;
+      if (!uSwapClient) return;
       setLoadingBalances((prev) => new Set(prev).add(chain));
       try {
-        const walletData = await skClient.getWalletWithBalance(chain, true);
+        const walletData = await uSwapClient.getWalletWithBalance(chain, true);
         setWallet((prev) => {
           if (!prev) return [walletData];
           if (Array.isArray(prev)) {
@@ -116,24 +120,24 @@ const App = () => {
         });
       }
     },
-    [skClient],
+    [uSwapClient],
   );
 
   const refreshClient = useCallback(() => {
-    resetSwapKitClient();
+    resetUSwapClient();
     setWallet([]);
     window.location.reload();
   }, []);
 
   const Screen = useMemo(
     () => ({
-      liquidity: skClient ? <Liquidity nativeAsset={inputAsset} otherAsset={outputAsset} skClient={skClient} /> : null,
-      multisig: skClient ? <Multisig inputAsset={inputAsset} phrase={phrase} skClient={skClient} /> : null,
-      send: skClient ? <Send inputAsset={inputAsset} skClient={skClient} /> : null,
-      swap: skClient ? <Swap inputAsset={inputAsset} outputAsset={outputAsset} skClient={skClient} /> : null,
-      tns: skClient ? <TNS skClient={skClient} /> : null,
+      liquidity: uSwapClient ? <Liquidity nativeAsset={inputAsset} otherAsset={outputAsset} skClient={uSwapClient} /> : null,
+      multisig: uSwapClient ? <Multisig inputAsset={inputAsset} phrase={phrase} skClient={uSwapClient} /> : null,
+      send: uSwapClient ? <Send inputAsset={inputAsset} skClient={uSwapClient} /> : null,
+      swap: uSwapClient ? <Swap inputAsset={inputAsset} outputAsset={outputAsset} skClient={uSwapClient} /> : null,
+      tns: uSwapClient ? <TNS skClient={uSwapClient} /> : null,
     }),
-    [skClient, inputAsset, outputAsset, phrase],
+    [uSwapClient, inputAsset, outputAsset, phrase],
   );
 
   return (
@@ -149,7 +153,7 @@ const App = () => {
           padding: 20,
           width: 200,
         }}>
-        <h3 style={{ fontSize: 18, margin: 0 }}>SwapKit Playground</h3>
+        <h3 style={{ fontSize: 18, margin: 0 }}>USwap Playground</h3>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <div style={{ color: "#999", fontSize: 11, fontWeight: 600 }}>CONFIGURATION</div>
@@ -233,12 +237,12 @@ const App = () => {
           ))}
 
           <div>
-            <label style={{ color: "#666", display: "block", fontSize: 10, marginBottom: 4 }}>swapKitApiKey</label>
+            <label style={{ color: "#666", display: "block", fontSize: 10, marginBottom: 4 }}>uSwapApiKey</label>
             <input
-              onChange={(e) => setKeys((k) => ({ ...k, swapKit: e.target.value }))}
-              placeholder="SwapKit API Key"
+              onChange={(e) => setKeys((k) => ({ ...k, uSwap: e.target.value }))}
+              placeholder="USwap API Key"
               style={{ fontSize: 11, width: "100%" }}
-              value={keys.swapKit}
+              value={keys.uSwap}
             />
           </div>
 
@@ -272,7 +276,7 @@ const App = () => {
             {showWidget ? "Hide Widget" : "Show Widget"}
           </button>
 
-          {skClient && (
+          {uSwapClient && (
             <div style={{ borderTop: "1px solid #222", marginTop: 16, paddingTop: 16 }}>
               <div style={{ color: "#666", fontSize: 10, fontWeight: 600, marginBottom: 8 }}>CURRENT CONFIG</div>
               <div style={{ color: "#555", display: "flex", flexDirection: "column", fontSize: 9, gap: 4 }}>
@@ -281,11 +285,11 @@ const App = () => {
                   {keys.walletConnectProjectId ? `${keys.walletConnectProjectId.slice(0, 8)}...` : "not set"}
                 </div>
                 <div>
-                  <span style={{ color: "#888" }}>Broker:</span> {SKConfig.get("envs").isDev ? "dev" : "prod"}
+                  <span style={{ color: "#888" }}>Broker:</span> {USwapConfig.get("envs").isDev ? "dev" : "prod"}
                 </div>
                 <div>
-                  <span style={{ color: "#888" }}>SwapKit API:</span>{" "}
-                  {keys.swapKit ? `${keys.swapKit.slice(0, 8)}...` : "not set"}
+                  <span style={{ color: "#888" }}>USwap API:</span>{" "}
+                  {keys.uSwap ? `${keys.uSwap.slice(0, 8)}...` : "not set"}
                 </div>
               </div>
             </div>
@@ -345,22 +349,22 @@ const App = () => {
 
       {showWidget ? (
         <div style={{ display: "flex", padding: 20 }}>
-          <SwapKitWidget config={config} />
+          <USwapWidget config={config} />
         </div>
       ) : (
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-start", overflow: "hidden" }}>
           <div style={{ maxWidth: 1200, overflowY: "auto", padding: 20 }}>
-            <div style={{ cursor: skClient ? "default" : "not-allowed" }}>
+            <div style={{ cursor: uSwapClient ? "default" : "not-allowed" }}>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 24,
                   maxWidth: 1200,
-                  opacity: skClient ? 1 : 0.5,
-                  pointerEvents: skClient ? "all" : "none",
+                  opacity: uSwapClient ? 1 : 0.5,
+                  pointerEvents: uSwapClient ? "all" : "none",
                 }}>
-                {skClient && (
+                {uSwapClient && (
                   <WalletPicker
                     setPhrase={setPhrase}
                     setWallet={(wallets) => {
@@ -373,7 +377,7 @@ const App = () => {
                         updateWalletBalance(wallets.chain);
                       }
                     }}
-                    skClient={skClient}
+                    skClient={uSwapClient}
                   />
                 )}
 
@@ -410,10 +414,10 @@ const App = () => {
               </div>
             </div>
 
-            {skClient &&
+            {uSwapClient &&
               wallet &&
               (Array.isArray(wallet) ? wallet.some((w) => w.chain === Chain.Near) : wallet?.chain === Chain.Near) && (
-                <NearNames skClient={skClient} />
+                <NearNames skClient={uSwapClient} />
               )}
           </div>
 
@@ -431,7 +435,7 @@ const App = () => {
             }}>
             {/* <WalletWidget /> */}
 
-            {skClient && wallet && (
+            {uSwapClient && wallet && (
               <>
                 <div
                   style={{

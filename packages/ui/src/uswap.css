@@ -1,3 +1,5 @@
+/* -- Modifications © 2025 Magic Systems. */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -45,7 +47,7 @@
   * {
     @apply sk-ui-border-border sk-ui-antialiased;
   }
-  
+
   body {
     @apply sk-ui-bg-background sk-ui-text-foreground;
   }

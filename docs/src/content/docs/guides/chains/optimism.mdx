@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Optimism Integration
-description: Complete guide to integrating Optimism with SwapKit SDK for Layer 2 scaling and DeFi operations
+description: Complete guide to integrating Optimism with USwap SDK for Layer 2 scaling and DeFi operations
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
-This guide covers Optimism integration with SwapKit, including wallet connections, token transfers, cross-chain swaps, and Optimism-specific features.
+This guide covers Optimism integration with USwap, including wallet connections, token transfers, cross-chain swaps, and Optimism-specific features.
 
 ## Overview
 
-Optimism is an Ethereum Layer 2 scaling solution using optimistic rollups for fast, cheap transactions. SwapKit provides comprehensive Optimism support through:
+Optimism is an Ethereum Layer 2 scaling solution using optimistic rollups for fast, cheap transactions. USwap provides comprehensive Optimism support through:
 
 - **Optimism Toolbox**: Fast operations with minimal ETH gas costs on L2
 - **Cross-Chain Bridging**: Seamless transfers between Ethereum and Optimism
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const opWallet = await swapKit.getWallet(Chain.Optimism);
+const opWallet = await uSwap.getWallet(Chain.Optimism);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Optimism using Ethereum-compatible wallets:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Optimism], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Optimism], "your mnemonic phrase");
 
-await swapKit.connectBrowserWallet(Chain.Optimism);
+await uSwap.connectBrowserWallet(Chain.Optimism);
 
-await swapKit.connectWalletConnect([Chain.Optimism]);
+await uSwap.connectWalletConnect([Chain.Optimism]);
 
-await swapKit.connectLedger([Chain.Optimism]);
+await uSwap.connectLedger([Chain.Optimism]);
 ```
 
 ### Native ETH Transfers
@@ -92,7 +93,7 @@ ETH on Optimism is the same as Ethereum ETH, just on Layer 2:
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Optimism,
@@ -111,7 +112,7 @@ Optimism supports ERC-20 tokens with much lower costs than Ethereum:
 ```typescript
 // @noErrorValidation
 
-const usdcTransfer = await swapKit.transfer({
+const usdcTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Optimism,
@@ -122,7 +123,7 @@ const usdcTransfer = await swapKit.transfer({
   feeOptionKey: FeeOption.Average,
 });
 
-const opTransfer = await swapKit.transfer({
+const opTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Optimism,
@@ -207,7 +208,7 @@ const velodromeSwap = await toolbox.call({
         stable: false,
       },
     ],
-    swapKit.getAddress(Chain.Optimism),
+    uSwap.getAddress(Chain.Optimism),
     Date.now() + 600000,
   ],
   txOverrides: {
@@ -253,25 +254,25 @@ const eip1559Tx = await toolbox.buildTransaction({
 ```typescript
 // @noErrorValidation
 
-const bridgeQuote = await swapKit.getQuote({
+const bridgeQuote = await uSwap.getQuote({
   sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   sellAmount: "1000",
   buyAsset: "OP.USDC-0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Optimism),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Optimism),
 });
 
-const bridgeTx = await swapKit.swap({
+const bridgeTx = await uSwap.swap({
   route: bridgeQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const ethToOpBridge = await swapKit.getQuote({
+const ethToOpBridge = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "0.5",
   buyAsset: "OP.ETH",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Optimism),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Optimism),
 });
 ```
 
@@ -280,25 +281,25 @@ const ethToOpBridge = await swapKit.getQuote({
 ```typescript
 // @noErrorValidation
 
-const opToBtcQuote = await swapKit.getQuote({
+const opToBtcQuote = await uSwap.getQuote({
   sellAsset: "OP.OP-0x4200000000000000000000000000000000000042",
   sellAmount: "100",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Optimism),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Optimism),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
-const crossChainSwap = await swapKit.swap({
+const crossChainSwap = await uSwap.swap({
   route: opToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const usdcToRuneQuote = await swapKit.getQuote({
+const usdcToRuneQuote = await uSwap.getQuote({
   sellAsset: "OP.USDC-0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
   sellAmount: "500",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Optimism),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Optimism),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 ```
 
@@ -309,34 +310,34 @@ Access native Optimism DEXs for optimal liquidity:
 ```typescript
 // @noErrorValidation
 
-const velodromeQuote = await swapKit.getQuote({
+const velodromeQuote = await uSwap.getQuote({
   sellAsset: "OP.ETH",
   sellAmount: "0.1",
   buyAsset: "OP.USDC-0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-  senderAddress: swapKit.getAddress(Chain.Optimism),
-  recipientAddress: swapKit.getAddress(Chain.Optimism),
+  senderAddress: uSwap.getAddress(Chain.Optimism),
+  recipientAddress: uSwap.getAddress(Chain.Optimism),
   providers: ["VELODROME"],
 });
 
-const uniswapQuote = await swapKit.getQuote({
+const uniswapQuote = await uSwap.getQuote({
   sellAsset: "OP.USDC-0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
   sellAmount: "500",
   buyAsset: "OP.WETH-0x4200000000000000000000000000000000000006",
-  senderAddress: swapKit.getAddress(Chain.Optimism),
-  recipientAddress: swapKit.getAddress(Chain.Optimism),
+  senderAddress: uSwap.getAddress(Chain.Optimism),
+  recipientAddress: uSwap.getAddress(Chain.Optimism),
   providers: ["UNISWAPV3"],
 });
 
-const bestRateQuote = await swapKit.getQuote({
+const bestRateQuote = await uSwap.getQuote({
   sellAsset: "OP.DAI-0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
   sellAmount: "1000",
   buyAsset: "OP.SNX-0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4",
-  senderAddress: swapKit.getAddress(Chain.Optimism),
-  recipientAddress: swapKit.getAddress(Chain.Optimism),
+  senderAddress: uSwap.getAddress(Chain.Optimism),
+  recipientAddress: uSwap.getAddress(Chain.Optimism),
   providers: ["VELODROME", "UNISWAPV3"],
 });
 
-const dexSwap = await swapKit.swap({
+const dexSwap = await uSwap.swap({
   route: bestRateQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
@@ -362,7 +363,7 @@ const optimismTokens = {
 
 const getOptimismPortfolio = async () => {
   const balances = {};
-  const address = swapKit.getAddress(Chain.Optimism);
+  const address = uSwap.getAddress(Chain.Optimism);
 
   balances.ETH = await toolbox.getBalance(address);
 
@@ -419,7 +420,7 @@ const addLiquidity = await toolbox.call({
     "500000000000000000",
     "0",
     "0",
-    swapKit.getAddress(Chain.Optimism),
+    uSwap.getAddress(Chain.Optimism),
     Date.now() + 600000,
   ],
 });
@@ -435,7 +436,7 @@ const claimRewards = await toolbox.call({
   contractAddress: "0x...",
   abi: gaugeABI,
   funcName: "getReward",
-  funcParams: [swapKit.getAddress(Chain.Optimism)],
+  funcParams: [uSwap.getAddress(Chain.Optimism)],
 });
 ```
 
@@ -469,10 +470,10 @@ const exchangeSynths = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Optimism, [
+USwapConfig.setRpcUrl(Chain.Optimism, [
   "https:
   "https:
   "https:
@@ -493,8 +494,8 @@ const toolbox = await getOptimismToolbox({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Optimism, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Optimism, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testnetTokens = {
@@ -512,7 +513,7 @@ Handle Optimism-specific errors:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -610,12 +611,12 @@ const batchOperations = async () => {
 2. **Use Native Optimism Infrastructure**:
 
    ```typescript
-   const veloQuote = await swapKit.getQuote({
+   const veloQuote = await uSwap.getQuote({
      sellAsset: "OP.ETH",
      sellAmount: "1",
      buyAsset: "OP.USDC-0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-     senderAddress: swapKit.getAddress(Chain.Optimism),
-     recipientAddress: swapKit.getAddress(Chain.Optimism),
+     senderAddress: uSwap.getAddress(Chain.Optimism),
+     recipientAddress: uSwap.getAddress(Chain.Optimism),
      providers: ["VELODROME"],
    });
    ```

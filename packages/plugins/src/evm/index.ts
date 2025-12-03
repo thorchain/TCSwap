@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -35,7 +33,7 @@ export const EVMPlugin = createPlugin({
   }),
   name: "evm",
   properties: {
-    supportedSwapkitProviders: [
+    supportedUSwapProviders: [
       ProviderName.CAMELOT_V3,
       ProviderName.OPENOCEAN_V2,
       ProviderName.OKX,

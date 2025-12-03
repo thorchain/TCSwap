@@ -1,9 +1,10 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
-title: Getting started with SwapKit
-description: Get started building your app with SwapKit.
+title: Getting started with USwap
+description: Get started building your app with USwap.
 hero:
   tagline:
-    SwapKit is a powerful suite of tools for building blockchain applications. It provides a modular framework for integrating with multiple blockchains, wallet providers, and DeFi protocols.
+    USwap is a powerful suite of tools for building blockchain applications. It provides a modular framework for integrating with multiple blockchains, wallet providers, and DeFi protocols.
     # actions:
     #   - text: SDK (Simple)
     #     link: #sdk-quick-start
@@ -22,10 +23,10 @@ import { Aside } from "@astrojs/starlight/components";
 
 ## Choose Your Implementation
 
-SwapKit offers two implementation approaches to suit your needs:
+USwap offers two implementation approaches to suit your needs:
 
 <Tabs>
-  <TabItem label="SwapKit SDK">
+  <TabItem label="USwap SDK">
     <div>
       <h3>Quick and Simple</h3>
       <p>The all-in-one solution that bundles Core with all available plugins and wallet integrations.</p>
@@ -45,7 +46,7 @@ SwapKit offers two implementation approaches to suit your needs:
     </div>
 
   </TabItem>
-  <TabItem label="SwapKit Core">
+  <TabItem label="USwap Core">
     <div>
       <h3>Flexible and Customized</h3>
       <p>The foundation package providing essential functionality.</p>
@@ -68,15 +69,15 @@ SwapKit offers two implementation approaches to suit your needs:
 </Tabs>
 
 <Aside type="note">
-  Choose the implementation that best suits your project's needs. SwapKit SDK is
+  Choose the implementation that best suits your project's needs. USwap SDK is
   recommended for most users getting started.
 </Aside>
 
 <div id="sdk-quick-start"></div>
 
-## SwapKit SDK: Quick Start
+## USwap SDK: Quick Start
 
-The fastest way to integrate SwapKit into your application.
+The fastest way to integrate USwap into your application.
 
 <Steps>
 1. **Install the SDK**
@@ -90,45 +91,45 @@ The fastest way to integrate SwapKit into your application.
      <TabItem label="yarn">```bash yarn add @uswap/sdk ```</TabItem>
    </Tabs>
 
-2. **Initialize SwapKit**
+2. **Initialize USwap**
 
    ```typescript
-   import { createSwapKit } from "@uswap/sdk";
+   import { createUSwap } from "@uswap/sdk";
 
-   const defaultSwapKit = createSwapKit();
+   const defaultUSwap = createUSwap();
 
-   const swapKit = createSwapKit({
+   const uSwap = createUSwap({
      config: {
        apiKeys: {
-         swapKit: "your-swapkit-api-key",
+         uSwap: "your-uswap-api-key",
        },
      },
    });
    ```
 
-3. **Start Using SwapKit**
+3. **Start Using USwap**
 
    Connect a wallet:
 
    ```typescript
-   import { createSwapKit, Chain } from "@uswap/sdk";
+   import { createUSwap, Chain } from "@uswap/sdk";
 
-   const swapKit = createSwapKit({
-     config: { apiKeys: { swapKit: "your-swapkit-api-key" } },
+   const uSwap = createUSwap({
+     config: { apiKeys: { uSwap: "your-uswap-api-key" } },
    });
 
-   const wallet = await swapKit.connectKeystore(
+   const wallet = await uSwap.connectKeystore(
      [Chain.Ethereum],
      "your mnemonic phrase here"
    );
 
-   const address = swapKit.getAddress(Chain.Ethereum);
+   const address = uSwap.getAddress(Chain.Ethereum);
    ```
 </Steps>
 
 <div id="core-setup"></div>
 
-## SwapKit Core: Advanced Setup
+## USwap Core: Advanced Setup
 
 For developers who need more control and custom configurations.
 
@@ -204,8 +205,8 @@ For developers who need more control and custom configurations.
 
        Install for interactions with specific protocols or products.
        Install the main plugins package below; you can then import specific plugin integrations as needed (e.g., `ThorchainPlugin` from `@uswap/sdk`).
-       By building your own plugins, you can extend SwapKit to support new protocols, products or actions.
-       Currently SwapKit includes plugins for Chainflip, Thorchain, EVM, Radix, and more.
+       By building your own plugins, you can extend USwap to support new protocols, products or actions.
+       Currently USwap includes plugins for Chainflip, Thorchain, EVM, Radix, and more.
      </TabItem>
 
      <TabItem label="Toolboxes">
@@ -215,22 +216,22 @@ For developers who need more control and custom configurations.
      </TabItem>
    </Tabs>
 
-3. **Configure SwapKit**
+3. **Configure USwap**
 
    ```typescript
-   import { SwapKit, Chain, ThorchainPlugin, EVMPlugin, keystoreWallet, ledgerWallet } from '@uswap/sdk';
+   import { USwap, Chain, ThorchainPlugin, EVMPlugin, keystoreWallet, ledgerWallet } from '@uswap/sdk';
 
-   const swapKit = SwapKit({
+   const uSwap = USwap({
      config: {
-       apiKeys: { swapKit: 'your-swapkit-api-key' }
+       apiKeys: { uSwap: 'your-uswap-api-key' }
      },
      plugins: { ...ThorchainPlugin, ...EVMPlugin },
      wallets: { ...keystoreWallet, ...ledgerWallet },
    });
 
 
-   await swapKit.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
-   const wallet = swapKit.getWallet(Chain.Ethereum);
+   await uSwap.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
+   const wallet = uSwap.getWallet(Chain.Ethereum);
    ```
 </Steps>
 
@@ -247,16 +248,16 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Check Balances" icon="seti:database">
     ```typescript
 
-    import { SwapKit, Chain } from '@uswap/sdk';
+    import { USwap, Chain } from '@uswap/sdk';
 
-    const swapKit = SwapKit({
-      config: { apiKeys: { swapKit: 'your-swapkit-api-key' } },
+    const uSwap = USwap({
+      config: { apiKeys: { uSwap: 'your-uswap-api-key' } },
     });
 
-    const balance = await swapKit.getBalance(Chain.Bitcoin, true);
+    const balance = await uSwap.getBalance(Chain.Bitcoin, true);
 
 
-    const allWallets = swapKit.getAllWallets();
+    const allWallets = uSwap.getAllWallets();
     ```
 
   </Card>
@@ -264,14 +265,14 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Transfer Assets" icon="seti:send">
     ```typescript
 
-    import { AssetValue, Chain, SwapKit, keystoreWallet } from '@uswap/sdk';
+    import { AssetValue, Chain, USwap, keystoreWallet } from '@uswap/sdk';
 
 
-    const swapKit = SwapKit({
-      config: { apiKeys: { swapKit: 'your-swapkit-api-key' }, wallets: { ...keystoreWallet } },
+    const uSwap = USwap({
+      config: { apiKeys: { uSwap: 'your-uswap-api-key' }, wallets: { ...keystoreWallet } },
     });
 
-    await swapKit.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
+    await uSwap.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
 
 
     const assetValue = AssetValue.from({
@@ -282,7 +283,7 @@ No matter which implementation you choose, you can use these common patterns:
     });
 
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue,
       recipient: '0xRecipientAddressHere',
       memo: 'Optional memo',
@@ -294,18 +295,18 @@ No matter which implementation you choose, you can use these common patterns:
   <Card title="Perform Swaps" icon="seti:swap">
     ```typescript
 
-    import { AssetValue, Chain, SwapKitApi, SwapKit, keystoreWallet } from '@uswap/sdk';
+    import { AssetValue, Chain, USwapApi, USwap, keystoreWallet } from '@uswap/sdk';
 
 
-    const swapKit = SwapKit({
-      config: { apiKeys: { swapKit: 'your-swapkit-api-key' }, wallets: { ...keystoreWallet } },
+    const uSwap = USwap({
+      config: { apiKeys: { uSwap: 'your-uswap-api-key' }, wallets: { ...keystoreWallet } },
     });
 
 
-    await swapKit.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
+    await uSwap.connectKeystore([Chain.Ethereum], 'your mnemonic phrase here');
 
 
-    const quoteResponse = await SwapKitApi.getSwapQ({
+    const quoteResponse = await USwapApi.getSwapQ({
       fromAsset: AssetValue.from({
         chain: Chain.Ethereum,
         symbol: 'ETH',
@@ -318,7 +319,7 @@ No matter which implementation you choose, you can use these common patterns:
     });
 
 
-    const swapTx = await swapKit.swap({ route: quoteResponse.routes[0] });
+    const swapTx = await uSwap.swap({ route: quoteResponse.routes[0] });
     ```
 
   </Card>
@@ -333,11 +334,11 @@ No matter which implementation you choose, you can use these common patterns:
 
 <CardGrid>
   <Card title="API Reference" icon="open-book">
-    Explore detailed documentation of all SwapKit components and APIs.
+    Explore detailed documentation of all USwap components and APIs.
     <LinkButton href="/references/">View References</LinkButton>
   </Card>
   <Card title="Guides" icon="document">
-    Learn how to implement specific use cases with SwapKit.
+    Learn how to implement specific use cases with USwap.
     <LinkButton href="/guides/">Browse Guides</LinkButton>
   </Card>
   <Card title="Toolboxes" icon="puzzle">
@@ -345,7 +346,7 @@ No matter which implementation you choose, you can use these common patterns:
     <LinkButton href="/references/toolboxes/">Explore Toolboxes</LinkButton>
   </Card>
   <Card title="Wallets" icon="seti:key">
-    Integrate with different wallet providers using SwapKit.
+    Integrate with different wallet providers using USwap.
     <LinkButton href="/references/wallets/">View Wallets</LinkButton>
   </Card>
 </CardGrid>

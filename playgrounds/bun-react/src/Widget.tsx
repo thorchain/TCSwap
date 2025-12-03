@@ -1,7 +1,11 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import "../styles/index.css";
 
 import { Chain, WalletOption } from "@uswap/helpers";
-import { SwapKitWidget } from "@uswap/ui/react";
+import { USwapWidget } from "@uswap/ui/react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function Widget() {
@@ -11,7 +15,7 @@ export function Widget() {
 
       <Card className="border-muted bg-card/50 backdrop-blur-sm">
         <CardContent className="pt-6">
-          <SwapKitWidget
+          <USwapWidget
             apiKey="1234567890"
             config={{ chains: [Chain.Cosmos, Chain.Bitcoin], wallets: [WalletOption.CTRL] }}
           />

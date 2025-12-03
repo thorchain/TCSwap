@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: OKX Wallet Browser Extension Integration
-description: Complete guide to integrating OKX Wallet with SwapKit SDK v4 for multi-chain support
+description: Complete guide to integrating OKX Wallet with USwap SDK v4 for multi-chain support
 ---
 
-OKX Wallet is a comprehensive multi-chain browser extension wallet that supports a wide range of blockchain networks. SwapKit SDK v4 provides extensive support for OKX Wallet across all its supported chains, making it an excellent choice for multi-chain applications.
+OKX Wallet is a comprehensive multi-chain browser extension wallet that supports a wide range of blockchain networks. USwap SDK v4 provides extensive support for OKX Wallet across all its supported chains, making it an excellent choice for multi-chain applications.
 
 ## Supported Chains
 
-SwapKit supports OKX Wallet for these chains:
+USwap supports OKX Wallet for these chains:
 
 - **EVM Compatible**: Ethereum, Arbitrum, Aurora, Avalanche, Base, BinanceSmartChain, Gnosis, Optimism, Polygon
 - **Bitcoin**: Native Bitcoin support
@@ -43,19 +44,19 @@ OKX Wallet works in:
 - **Edge**: Full support
 - **Brave**: Full support
 
-## SwapKit Integration
+## USwap Integration
 
 ### Basic Setup
 
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
   wallets: { ...okxWallet },
@@ -65,12 +66,12 @@ const swapKit = SwapKit({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
 });
@@ -81,18 +82,18 @@ const swapKit = createSwapKit({
 #### Single Chain Connection
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 async function connectOKXEthereum() {
   try {
-    await swapKit.connectOkx([Chain.Ethereum]);
+    await uSwap.connectOkx([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
-    const balance = await swapKit.getBalance(Chain.Ethereum, true);
+    const address = uSwap.getAddress(Chain.Ethereum);
+    const balance = await uSwap.getBalance(Chain.Ethereum, true);
 
     console.log("Ethereum address:", address);
     console.log("ETH balance:", balance);
@@ -108,9 +109,9 @@ async function connectOKXEthereum() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
@@ -125,18 +126,18 @@ async function connectMultipleChains() {
   ];
 
   try {
-    await swapKit.connectOkx(supportedChains);
+    await uSwap.connectOkx(supportedChains);
 
     const addresses = {};
     for (const chain of supportedChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
     const balances = await Promise.all(
       supportedChains.map(async (chain) => {
         try {
-          const balance = await swapKit.getBalance(chain, true);
+          const balance = await uSwap.getBalance(chain, true);
           return { chain, balance };
         } catch (error) {
           return { chain, balance: [], error: error.message };
@@ -155,17 +156,17 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 async function connectOKXBitcoin() {
   try {
-    await swapKit.connectOkx([Chain.Bitcoin]);
+    await uSwap.connectOkx([Chain.Bitcoin]);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
+    const address = uSwap.getAddress(Chain.Bitcoin);
     console.log("OKX Bitcoin address:", address);
 
     return { success: true, address };
@@ -177,9 +178,9 @@ async function connectOKXBitcoin() {
 
 async function connectOKXCosmos() {
   try {
-    await swapKit.connectOkx([Chain.Cosmos]);
+    await uSwap.connectOkx([Chain.Cosmos]);
 
-    const address = swapKit.getAddress(Chain.Cosmos);
+    const address = uSwap.getAddress(Chain.Cosmos);
     console.log("OKX Cosmos address:", address);
 
     return { success: true, address };
@@ -198,14 +199,14 @@ async function connectOKXCosmos() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 
-await swapKit.connectOkx([Chain.Ethereum]);
+await uSwap.connectOkx([Chain.Ethereum]);
 
 async function sendEthereum() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -216,7 +217,7 @@ async function sendEthereum() {
     console.log("Amount:", amount.toSignificant(6), "ETH");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -235,13 +236,13 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
-await swapKit.connectOkx([Chain.Ethereum]);
+await uSwap.connectOkx([Chain.Ethereum]);
 
 async function sendERC20Token() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
@@ -252,7 +253,7 @@ async function sendERC20Token() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -270,14 +271,14 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 
-await swapKit.connectOkx([Chain.Bitcoin]);
+await uSwap.connectOkx([Chain.Bitcoin]);
 
 async function sendBitcoin() {
   const recipient = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -288,7 +289,7 @@ async function sendBitcoin() {
     console.log("Amount:", amount.toSignificant(8), "BTC");
     console.log("To:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -308,21 +309,21 @@ async function sendBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 
-await swapKit.connectOkx([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
+await uSwap.connectOkx([Chain.Ethereum, Chain.Polygon, Chain.Arbitrum]);
 
 async function sendOnPolygon() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
   const amount = AssetValue.fromChainOrSignature("MATIC.MATIC", 1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -342,7 +343,7 @@ async function sendOnArbitrum() {
   const amount = AssetValue.fromChainOrSignature("ARB.ETH", 0.001);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -362,21 +363,21 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 
-await swapKit.connectOkx([Chain.Cosmos]);
+await uSwap.connectOkx([Chain.Cosmos]);
 
 async function sendAtom() {
   const recipient = "cosmos1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const amount = AssetValue.fromChainOrSignature("GAIA.ATOM", 1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "OKX Cosmos transaction",
@@ -397,21 +398,21 @@ async function sendAtom() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 
-await swapKit.connectOkx([Chain.Tron]);
+await uSwap.connectOkx([Chain.Tron]);
 
 async function sendTron() {
   const recipient = "TLPwm9iGkMiTUERrQ8KXWCFzPn5Q3wz5jc";
   const amount = AssetValue.fromChainOrSignature("TRON.TRX", 10);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -432,9 +433,9 @@ async function sendTron() {
 ### EVM Chain Management
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
@@ -450,15 +451,15 @@ async function manageEVMChains() {
   ];
 
   try {
-    await swapKit.connectOkx(evmChains);
+    await uSwap.connectOkx(evmChains);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("EVM address (same on all chains):", address);
 
     const balances = {};
     for (const chain of evmChains) {
       try {
-        const balance = await swapKit.getBalance(chain, true);
+        const balance = await uSwap.getBalance(chain, true);
         balances[chain] = balance;
       } catch (error) {
         console.log(`Could not fetch balance for ${chain}:`, error.message);
@@ -475,16 +476,16 @@ async function manageEVMChains() {
 ### Bitcoin Address Types
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 async function getBitcoinAddressInfo() {
-  await swapKit.connectOkx([Chain.Bitcoin]);
+  await uSwap.connectOkx([Chain.Bitcoin]);
 
-  const address = swapKit.getAddress(Chain.Bitcoin);
+  const address = uSwap.getAddress(Chain.Bitcoin);
   console.log("Bitcoin address:", address);
 
   let addressType = "Unknown";
@@ -507,23 +508,23 @@ async function getBitcoinAddressInfo() {
 ### Near Protocol Integration
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
 async function nearOperations() {
   try {
-    await swapKit.connectOkx([Chain.Near]);
+    await uSwap.connectOkx([Chain.Near]);
 
-    const address = swapKit.getAddress(Chain.Near);
+    const address = uSwap.getAddress(Chain.Near);
     console.log("Near address:", address);
 
     const recipient = "example.near";
     const amount = AssetValue.fromChainOrSignature("NEAR.NEAR", 1);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -543,9 +544,9 @@ async function nearOperations() {
 
 ```ts twoslash
 
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...okxWallet },
 });
 
@@ -560,9 +561,9 @@ async function diagnosticConnection() {
 
     console.log("🔍 OKX Wallet detected, attempting connection...");
 
-    await swapKit.connectOkx([Chain.Ethereum]);
+    await uSwap.connectOkx([Chain.Ethereum]);
 
-    const address = swapKit.getAddress(Chain.Ethereum);
+    const address = uSwap.getAddress(Chain.Ethereum);
     console.log("✅ Successfully connected:", address);
 
     return { success: true, address };
@@ -610,7 +611,7 @@ async function checkOKXProviders() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC",
     });
@@ -619,7 +620,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient balance for transaction + gas fees");
 
-      const balance = await swapKit.getBalance(Chain.Ethereum, true);
+      const balance = await uSwap.getBalance(Chain.Ethereum, true);
       console.log("Current balance:", balance);
       console.log("🔧 Add more ETH to your OKX Wallet");
     }
@@ -654,7 +655,7 @@ async function handleTransactionErrors() {
 ```ts twoslash
 async function handleNetworkIssues(chain: Chain) {
   try {
-    await swapKit.connectOkx([chain]);
+    await uSwap.connectOkx([chain]);
   } catch (error) {
     switch (chain) {
       case Chain.Bitcoin:
@@ -696,7 +697,7 @@ async function handleNetworkIssues(chain: Chain) {
 ### Best Practices
 
 ```ts twoslash
-import { SwapKit, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@uswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -738,8 +739,8 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
     throw new Error("Amount must be positive");
   }
 
-  const swapKit = SwapKit({ wallets: { ...okxWallet } });
-  await swapKit.connectOkx([chain]);
+  const uSwap = USwap({ wallets: { ...okxWallet } });
+  await uSwap.connectOkx([chain]);
 
   let assetValue: AssetValue;
   switch (chain) {
@@ -764,7 +765,7 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
   console.log("⚠️ Please verify these details in OKX Wallet before confirming");
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue,
       recipient,
     });
@@ -782,7 +783,7 @@ async function secureTransfer(chain: Chain, recipient: string, amount: number) {
 ```ts twoslash
 
 
-const secureSwapKit = SwapKit({
+const secureUSwap = USwap({
   config: {
 
     rpcUrls: {
@@ -792,7 +793,7 @@ const secureSwapKit = SwapKit({
       [Chain.Tron]: "https:
     },
     apiKeys: {
-      swapKit: process.env.SWAPKIT_API_KEY,
+      uSwap: process.env.USWAP_API_KEY,
     },
   },
   wallets: { ...okxWallet },
@@ -804,7 +805,7 @@ const secureSwapKit = SwapKit({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { SwapKit, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface OKXWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;
@@ -817,7 +818,7 @@ export function OKXWallet({ onConnect, onError }: OKXWalletProps) {
   const [addresses, setAddresses] = useState<Partial<Record<Chain, string>>>({});
   const [selectedChains, setSelectedChains] = useState<Chain[]>([Chain.Ethereum]);
 
-  const swapKit = SwapKit({ wallets: { ...okxWallet } });
+  const uSwap = USwap({ wallets: { ...okxWallet } });
 
 
   const isOKXInstalled = typeof window !== 'undefined' &&
@@ -832,11 +833,11 @@ export function OKXWallet({ onConnect, onError }: OKXWalletProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectOkx(selectedChains);
+      await uSwap.connectOkx(selectedChains);
 
       const connectedAddresses: Partial<Record<Chain, string>> = {};
       for (const chain of selectedChains) {
-        connectedAddresses[chain] = swapKit.getAddress(chain);
+        connectedAddresses[chain] = uSwap.getAddress(chain);
       }
 
       setAddresses(connectedAddresses);
@@ -850,7 +851,7 @@ export function OKXWallet({ onConnect, onError }: OKXWalletProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddresses({});
   };
@@ -934,4 +935,4 @@ export function OKXWallet({ onConnect, onError }: OKXWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of OKX Wallet integration with SwapKit SDK v4, including support for multiple chains, security best practices, and troubleshooting for common issues across different blockchain networks.
+This comprehensive guide covers all aspects of OKX Wallet integration with USwap SDK v4, including support for multiple chains, security best practices, and troubleshooting for common issues across different blockchain networks.

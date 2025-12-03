@@ -1,14 +1,18 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 import type { AssetValue } from "@uswap/sdk";
 import { useCallback, useState } from "react";
-import type { SwapKitClient } from "../swapKitClient";
+import type { USwapClient } from "../uSwapClient";
 
 export default function Liquidity({
   otherAsset,
   nativeAsset,
   skClient,
 }: {
-  skClient: SwapKitClient;
+  skClient: USwapClient;
   otherAsset?: AssetValue;
   nativeAsset?: AssetValue;
 }) {

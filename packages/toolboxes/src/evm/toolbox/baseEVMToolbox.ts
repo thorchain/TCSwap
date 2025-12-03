@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -14,8 +12,8 @@ import {
   EVMChains,
   FeeOption,
   isGasAsset,
-  SwapKitNumber,
   USwapError,
+  USwapNumber,
 } from "@uswap/helpers";
 import { erc20ABI } from "@uswap/helpers/contracts";
 import {
@@ -387,7 +385,7 @@ function getIsApproved({ provider, chain }: ToolboxWrapParams) {
   return async function isApproved({ assetAddress, spenderAddress, from, amount = MAX_APPROVAL }: IsApprovedParams) {
     const approvedAmount = await getApprovedAmount({ chain, provider })({ assetAddress, from, spenderAddress });
 
-    return SwapKitNumber.fromBigInt(approvedAmount).gte(SwapKitNumber.fromBigInt(BigInt(amount)));
+    return USwapNumber.fromBigInt(approvedAmount).gte(USwapNumber.fromBigInt(BigInt(amount)));
   };
 }
 
@@ -689,13 +687,13 @@ function getEstimateTransactionFee({
     const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = gasPrices[feeOption];
 
     if (!isEIP1559Compatible && gasPrice) {
-      return assetValue.set(SwapKitNumber.fromBigInt(gasPrice * gasLimit, assetValue.decimal));
+      return assetValue.set(USwapNumber.fromBigInt(gasPrice * gasLimit, assetValue.decimal));
     }
 
     if (maxFeePerGas && maxPriorityFeePerGas) {
       const fee = (maxFeePerGas + maxPriorityFeePerGas) * gasLimit;
 
-      return assetValue.set(SwapKitNumber.fromBigInt(fee, assetValue.decimal));
+      return assetValue.set(USwapNumber.fromBigInt(fee, assetValue.decimal));
     }
 
     throw new USwapError("toolbox_evm_no_gas_price");

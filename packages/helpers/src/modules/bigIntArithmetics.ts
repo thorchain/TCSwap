@@ -1,15 +1,13 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
 import { match } from "ts-pattern";
-import type { SwapKitNumber } from "./swapKitNumber";
+import type { USwapNumber } from "./uSwapNumber";
 
 type NumberPrimitivesType = { bigint: bigint; number: number; string: string };
 export type NumberPrimitives = bigint | number | string;
-type InitialisationValueType = NumberPrimitives | BigIntArithmetics | SwapKitNumber;
+type InitialisationValueType = NumberPrimitives | BigIntArithmetics | USwapNumber;
 
 type SKBigIntParams = InitialisationValueType | { decimal?: number; value: number | string };
 type AllowedNumberTypes = "bigint" | "number" | "string";
@@ -62,7 +60,7 @@ export class BigIntArithmetics {
     });
   }
 
-  static shiftDecimals({ value, from, to }: { value: InstanceType<typeof SwapKitNumber>; from: number; to: number }) {
+  static shiftDecimals({ value, from, to }: { value: InstanceType<typeof USwapNumber>; from: number; to: number }) {
     return BigIntArithmetics.fromBigInt((value.getBaseValue("bigint") * toMultiplier(to)) / toMultiplier(from), to);
   }
 

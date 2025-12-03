@@ -1,12 +1,16 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { visit } from 'unist-util-visit';
 
 /**
  * Remark plugin to rewrite internal markdown links with base path
- * Used for GitHub Pages deployment where base path is /SwapKit
+ * Used for GitHub Pages deployment where base path is /USwap
  */
 export function remarkRewriteLinks() {
   return (tree) => {
-    const base = process.env.REFERENCES ? '/SwapKit' : '';
+    const base = process.env.REFERENCES ? '/USwap' : '';
 
     if (!base) return; // Skip if no base path
 

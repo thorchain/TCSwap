@@ -1,17 +1,18 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: API Reference
-description: Complete reference for SwapKitApi methods including swap quotes, price feeds, token lists, and essential data access.
+description: Complete reference for USwapApi methods including swap quotes, price feeds, token lists, and essential data access.
 ---
 
-The `SwapKitApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@uswap/helpers/api` import.
+The `USwapApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@uswap/helpers/api` import.
 
 ## Getting Started
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
-const price = await SwapKitApi.getPrice({
+const price = await USwapApi.getPrice({
   identifier: "ETH.ETH",
   currency: "USD",
 });
@@ -25,7 +26,7 @@ Get swap quotes from multiple providers with enhanced v4 features:
 
 ```typescript
 // @noErrorValidation
-const { routes } = await SwapKitApi.getSwapQuote({
+const { routes } = await USwapApi.getSwapQuote({
   sellAsset: 'ETH.ETH',
   sellAmount: '1000000000000000000',
   buyAsset: 'BTC.BTC',
@@ -103,17 +104,17 @@ Get current asset prices:
 ```typescript
 // @noErrorValidation
 
-const priceData = await SwapKitApi.getPrice({
+const priceData = await USwapApi.getPrice({
   identifier: "ETH.ETH",
   currency: "USD",
 });
 
-const prices = await SwapKitApi.getPrice({
+const prices = await USwapApi.getPrice({
   identifiers: ["ETH.ETH", "BTC.BTC", "AVAX.AVAX"],
   currency: "USD",
 });
 
-const tokenPrice = await SwapKitApi.getPrice({
+const tokenPrice = await USwapApi.getPrice({
   identifier: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
 });
 ```
@@ -126,7 +127,7 @@ Get all token balances for an address on a specific chain with scam filtering:
 
 ```typescript
 // @noErrorValidation
-const balances = await SwapKitApi.getChainBalance({
+const balances = await USwapApi.getChainBalance({
   chain: "ETH",
   address: "0x742d35Cc6634C0532925a3b844Bc9e7595f6E321",
   scamFilter: true,
@@ -155,7 +156,7 @@ Get current gas rates for supported chains:
 ```typescript
 // @noErrorValidation
 
-const gasRates = await SwapKitApi.getGasRate();
+const gasRates = await USwapApi.getGasRate();
 
 
 {
@@ -186,7 +187,7 @@ Get comprehensive token metadata from a specific provider:
 ```typescript
 // @noErrorValidation
 
-const tokens = await SwapKitApi.getTokenList('UNISWAP_V2');
+const tokens = await USwapApi.getTokenList('UNISWAP_V2');
 
 
 [
@@ -209,7 +210,7 @@ Get list of available token list providers:
 
 ```typescript
 // @noErrorValidation
-const providers = await SwapKitApi.getTokenListProviders();
+const providers = await USwapApi.getTokenListProviders();
 
 
 [
@@ -227,7 +228,7 @@ Track transaction status and progress:
 
 ```typescript
 // @noErrorValidation
-const status = await SwapKitApi.getTrackerDetails({
+const status = await USwapApi.getTrackerDetails({
   txHash: '0x123...',
   chain: 'ETH',
   provider: 'thorchain',
@@ -258,7 +259,7 @@ Get token list from static CDN:
 ```typescript
 // @noErrorValidation
 
-const tokens = await SwapKitApi.getStaticTokenList('UNISWAP_V2');
+const tokens = await USwapApi.getStaticTokenList('UNISWAP_V2');
 
 
 [
@@ -283,7 +284,7 @@ Get list of all supported swap providers with their capabilities:
 
 ```typescript
 // @noErrorValidation
-const providers = await SwapKitApi.getProviders();
+const providers = await USwapApi.getProviders();
 
 
 [
@@ -320,8 +321,8 @@ The token list API now supports provider-specific filtering:
 ```typescript
 // @noErrorValidation
 
-const chainflipTokens = await SwapKitApi.getTokenList('CHAINFLIP');
-const jupiterTokens = await SwapKitApi.getTokenList('JUPITER');
+const chainflipTokens = await USwapApi.getTokenList('CHAINFLIP');
+const jupiterTokens = await USwapApi.getTokenList('JUPITER');
 
 
 {
@@ -360,13 +361,13 @@ Track any transaction across all supported providers and chains:
 ```typescript
 // @noErrorValidation
 
-const status = await SwapKitApi.trackTransaction({
+const status = await USwapApi.trackTransaction({
   hash: '0x123...',
   chain: 'ETH'
 });
 
 
-const detailedStatus = await SwapKitApi.trackTransaction({
+const detailedStatus = await USwapApi.trackTransaction({
   hash: '0x123...',
   chain: 'ETH',
   provider: 'THORCHAIN',
@@ -435,13 +436,13 @@ Screen addresses for compliance and risk assessment:
 ```typescript
 // @noErrorValidation
 
-const screening = await SwapKitApi.screenAddress({
+const screening = await USwapApi.screenAddress({
   address: '0x123...',
   chain: 'ETH'
 });
 
 
-const detailedScreening = await SwapKitApi.screenAddress({
+const detailedScreening = await USwapApi.screenAddress({
   address: '0x123...',
   chain: 'ETH',
   amount: '1000000000000000000',
@@ -499,13 +500,13 @@ Retrieve historical gas price data for better fee estimation:
 ```typescript
 // @noErrorValidation
 
-const gasHistory = await SwapKitApi.getGasHistory({
+const gasHistory = await USwapApi.getGasHistory({
   chain: 'ETH',
   period: '24h'
 });
 
 
-const customHistory = await SwapKitApi.getGasHistory({
+const customHistory = await USwapApi.getGasHistory({
   chain: 'ETH',
   startTime: 1704067200,
   endTime: 1704153600,
@@ -554,7 +555,7 @@ Create deposit channels for NEAR-based swaps:
 
 ```typescript
 // @noErrorValidation
-const nearChannel = await SwapKitApi.createNearChannel({
+const nearChannel = await USwapApi.createNearChannel({
   sellAsset: 'NEAR.NEAR',
   buyAsset: 'ETH.ETH',
   sellAmount: '10000000000000000000000000',
@@ -597,29 +598,29 @@ Direct access to THORChain node data:
 ```typescript
 // @noErrorValidation
 
-const lastBlock = await SwapKitApi.thornode.getLastBlock("thorchain");
+const lastBlock = await USwapApi.thornode.getLastBlock("thorchain");
 
-const queue = await SwapKitApi.thornode.getThorchainQueue();
+const queue = await USwapApi.thornode.getThorchainQueue();
 
-const nodes = await SwapKitApi.thornode.getNodes();
+const nodes = await USwapApi.thornode.getNodes();
 
-const mimir = await SwapKitApi.thornode.getMimirInfo();
+const mimir = await USwapApi.thornode.getMimirInfo();
 
-const inboundAddresses = await SwapKitApi.thornode.getInboundAddresses();
+const inboundAddresses = await USwapApi.thornode.getInboundAddresses();
 
-const tnsDetails = await SwapKitApi.thornode.getTHORNodeTNSDetails({
+const tnsDetails = await USwapApi.thornode.getTHORNodeTNSDetails({
   name: "myname",
   type: "thorchain",
 });
 
-const preferredAsset = await SwapKitApi.thornode.getTNSPreferredAsset({
+const preferredAsset = await USwapApi.thornode.getTNSPreferredAsset({
   tns: "myname",
   type: "thorchain",
 });
 
-const runePool = await SwapKitApi.thornode.getRunePoolInfo();
+const runePool = await USwapApi.thornode.getRunePoolInfo();
 
-const providerInfo = await SwapKitApi.thornode.getRunePoolProviderInfo({
+const providerInfo = await USwapApi.thornode.getRunePoolProviderInfo({
   thorAddress: "thor1...",
 });
 ```
@@ -631,24 +632,24 @@ Access THORChain and Maya midgard data:
 ```typescript
 // @noErrorValidation
 
-const thorLiquidity = await SwapKitApi.thorchainMidgard.getLiquidityPosition(
+const thorLiquidity = await USwapApi.thorchainMidgard.getLiquidityPosition(
   "thor1..."
 );
 
-const thorName = await SwapKitApi.thorchainMidgard.getNameDetails("myname");
+const thorName = await USwapApi.thorchainMidgard.getNameDetails("myname");
 
-const namesByAddress = await SwapKitApi.thorchainMidgard.getNamesByAddress(
+const namesByAddress = await USwapApi.thorchainMidgard.getNamesByAddress(
   "0x..."
 );
 
-const namesByOwner = await SwapKitApi.thorchainMidgard.getNamesByOwner(
+const namesByOwner = await USwapApi.thorchainMidgard.getNamesByOwner(
   "thor1..."
 );
 
-const mayaLiquidity = await SwapKitApi.mayachainMidgard.getLiquidityPosition(
+const mayaLiquidity = await USwapApi.mayachainMidgard.getLiquidityPosition(
   "maya1..."
 );
-const mayaName = await SwapKitApi.mayachainMidgard.getNameDetails("myname");
+const mayaName = await USwapApi.mayachainMidgard.getNameDetails("myname");
 ```
 
 ### Chainflip
@@ -657,7 +658,7 @@ Create deposit channels for Chainflip swaps:
 
 ```typescript
 // @noErrorValidation
-const channel = await SwapKitApi.getChainflipDepositChannel({
+const channel = await USwapApi.getChainflipDepositChannel({
   sellAsset: {
     chain: 'ETH',
     asset: 'ETH'
@@ -677,7 +678,7 @@ const channel = await SwapKitApi.getChainflipDepositChannel({
   channelMetadata: {
     cfParameters: '...',
     gasBudget: '1000000',
-    message: 'Swap via SwapKit'
+    message: 'Swap via USwap'
   },
   refundParameters: {
     minPrice: '0.01',
@@ -705,7 +706,7 @@ const channel = await SwapKitApi.getChainflipDepositChannel({
 
 ## Rate Limits
 
-The SwapKit API has rate limits that vary by endpoint:
+The USwap API has rate limits that vary by endpoint:
 
 - **Without API key**: 10 requests per minute
 - **With API key**: 100 requests per minute
@@ -714,12 +715,12 @@ Configure your API key in [Configuration](/start/configuration):
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit } from "@uswap/sdk";
+import { createUSwap } from "@uswap/sdk";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
     },
   },
 });
@@ -734,7 +735,7 @@ All API methods can throw errors that should be handled:
 import { USwapError } from '@uswap/sdk';
 
 try {
-  const quote = await SwapKitApi.getSwapQuote({...});
+  const quote = await USwapApi.getSwapQuote({...});
 } catch (error) {
   if (error instanceof USwapError) {
 
@@ -758,7 +759,7 @@ When getting swap quotes, the first route is typically the best:
 // @noErrorValidation
 import { AssetValue } from '@uswap/sdk';
 
-const { routes } = await SwapKitApi.getSwapQuote({...});
+const { routes } = await USwapApi.getSwapQuote({...});
 
 if (routes.length > 0) {
   const bestRoute = routes[0];
@@ -771,7 +772,7 @@ if (routes.length > 0) {
   });
 
   if (minOutput.gte(requiredAmount)) {
-    await swapKit.swap({ route: bestRoute });
+    await uSwap.swap({ route: bestRoute });
   }
 }
 ```
@@ -782,12 +783,12 @@ Calculate price impact for large swaps:
 
 ```typescript
 // @noErrorValidation
-const quote = await SwapKitApi.getSwapQuote({...});
+const quote = await USwapApi.getSwapQuote({...});
 const route = quote.routes[0];
 
 
-const sellPrice = await SwapKitApi.getPrice(route.sellAsset);
-const buyPrice = await SwapKitApi.getPrice(route.buyAsset);
+const sellPrice = await USwapApi.getPrice(route.sellAsset);
+const buyPrice = await USwapApi.getPrice(route.buyAsset);
 
 
 const sellValue = Number(route.sellAmount) * sellPrice;
@@ -806,7 +807,7 @@ Validate tokens before swapping:
 // @noErrorValidation
 async function validateToken(identifier: string) {
   try {
-    const token = await SwapKitApi.getTokenList(identifier);
+    const token = await USwapApi.getTokenList(identifier);
     return {
       valid: true,
       decimals: token.decimals,
@@ -821,26 +822,26 @@ async function validateToken(identifier: string) {
 
 ## Configuration Management
 
-### SKConfig API
+### USwapConfig API
 
-The `SKConfig` API provides methods to manage SwapKit's configuration at runtime. This includes RPC URLs, API keys, custom headers, and environment settings:
+The `USwapConfig` API provides methods to manage USwap's configuration at runtime. This includes RPC URLs, API keys, custom headers, and environment settings:
 
 ### Core Methods
 
 ```typescript
 // @noErrorValidation
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
 
-const rpcUrls = SKConfig.get('rpcUrls');
-const apiKeys = SKConfig.get('apiKeys');
-const midgardUrls = SKConfig.get('midgardUrls');
-const apiHeaders = SKConfig.get('apiHeaders');
+const rpcUrls = USwapConfig.get('rpcUrls');
+const apiKeys = USwapConfig.get('apiKeys');
+const midgardUrls = USwapConfig.get('midgardUrls');
+const apiHeaders = USwapConfig.get('apiHeaders');
 
 
-SKConfig.set({
+USwapConfig.set({
   rpcUrls: { ETH: 'https://eth-mainnet.g.alchemy.com/v2/your-key',
-  apiKeys: { swapKit: 'new-key' },
+  apiKeys: { uSwap: 'new-key' },
   midgardUrls: { THOR: 'https:
   apiHeaders: { midgard: { 'X-API-Key': 'secret' } }
 });
@@ -851,9 +852,9 @@ SKConfig.set({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setApiKey("swapKit", "your-swapkit-key");
-SKConfig.setApiKey("blockchair", "your-blockchair-key");
-SKConfig.setApiKey("walletConnectProjectId", "your-wc-id");
+USwapConfig.setApiKey("uSwap", "your-uswap-key");
+USwapConfig.setApiKey("blockchair", "your-blockchair-key");
+USwapConfig.setApiKey("walletConnectProjectId", "your-wc-id");
 ```
 
 ### RPC URLs
@@ -863,8 +864,8 @@ SKConfig.setApiKey("walletConnectProjectId", "your-wc-id");
 import { Chain } from '@uswap/sdk';
 
 
-SKConfig.setRpcUrl(Chain.Ethereum, 'https:
-SKConfig.setRpcUrl(Chain.Avalanche, 'https:
+USwapConfig.setRpcUrl(Chain.Ethereum, 'https:
+USwapConfig.setRpcUrl(Chain.Avalanche, 'https:
 ```
 
 ### Midgard URLs
@@ -874,8 +875,8 @@ SKConfig.setRpcUrl(Chain.Avalanche, 'https:
 import { Chain } from '@uswap/sdk';
 
 
-SKConfig.setMidgardUrl(Chain.THORChain, 'https:
-SKConfig.setMidgardUrl(Chain.Maya, 'https:
+USwapConfig.setMidgardUrl(Chain.THORChain, 'https:
+USwapConfig.setMidgardUrl(Chain.Maya, 'https:
 
 
 
@@ -887,15 +888,15 @@ SKConfig.setMidgardUrl(Chain.Maya, 'https:
 ```typescript
 // @noErrorValidation
 
-SKConfig.setApiHeaders("midgard", {
+USwapConfig.setApiHeaders("midgard", {
   "X-Client-ID": "your-client-id",
 });
 
-SKConfig.setApiHeaders("thornode", {
+USwapConfig.setApiHeaders("thornode", {
   "X-Client-ID": "your-client-id",
 });
 
-SKConfig.setApiHeaders("swapkitApi", {
+USwapConfig.setApiHeaders("uSwapApi", {
   "X-API-Key": "additional-api-key",
 });
 ```
@@ -905,12 +906,12 @@ SKConfig.setApiHeaders("swapkitApi", {
 ```typescript
 // @noErrorValidation
 
-SKConfig.setEnv('isDev', true);
-SKConfig.setEnv('isStagenet', true);
+USwapConfig.setEnv('isDev', true);
+USwapConfig.setEnv('isStagenet', true);
 
 
-SKConfig.setEnv('apiUrl', 'https:
-SKConfig.setEnv('devApiUrl', 'https:
+USwapConfig.setEnv('apiUrl', 'https:
+USwapConfig.setEnv('devApiUrl', 'https:
 ```
 
 ### Integration Configurations
@@ -918,7 +919,7 @@ SKConfig.setEnv('devApiUrl', 'https:
 ```typescript
 // @noErrorValidation
 
-SKConfig.setIntegrationConfig('radix', {
+USwapConfig.setIntegrationConfig('radix', {
   dAppDefinitionAddress: 'account_rdx...',
   applicationName: 'My dApp',
   applicationVersion: '1.0.0',
@@ -930,7 +931,7 @@ SKConfig.setIntegrationConfig('radix', {
 });
 
 
-SKConfig.setIntegrationConfig('chainflip', {
+USwapConfig.setIntegrationConfig('chainflip', {
   useSDKBroker: true,
   brokerUrl: 'https:
 });
@@ -941,20 +942,20 @@ SKConfig.setIntegrationConfig('chainflip', {
 ```typescript
 // @noErrorValidation
 
-SKConfig.setExplorerUrl(Chain.Ethereum, 'https:
-SKConfig.setExplorerUrl(Chain.Bitcoin, 'https:
+USwapConfig.setExplorerUrl(Chain.Ethereum, 'https:
+USwapConfig.setExplorerUrl(Chain.Bitcoin, 'https:
 ```
 
 ### Complete Example
 
 ```typescript
 // @noErrorValidation
-import { SKConfig, Chain, StagenetChain } from '@uswap/sdk';
+import { USwapConfig, Chain, StagenetChain } from '@uswap/sdk';
 
 
-SKConfig.set({
+USwapConfig.set({
   apiKeys: {
-    swapKit: process.env.SWAPKIT_API_KEY,
+    uSwap: process.env.USWAP_API_KEY,
     blockchair: process.env.BLOCKCHAIR_API_KEY
   },
   rpcUrls: {
@@ -981,14 +982,14 @@ SKConfig.set({
 
 
 if (userPrefersTestnet) {
-  SKConfig.setEnv('isStagenet', true);
+  USwapConfig.setEnv('isStagenet', true);
 
 }
 ```
 
 ### Fee Multiplier System
 
-SwapKit provides a unified fee multiplier system across all chains:
+USwap provides a unified fee multiplier system across all chains:
 
 ```typescript
 // @noErrorValidation
@@ -1012,14 +1013,14 @@ await wallet.transfer({
 ### Key Features
 
 - **Automatic Stagenet Support**: When `isStagenet` is true, appropriate stagenet URLs are used automatically
-- **Custom Headers**: Set authentication headers for Midgard, THORNode, and SwapKit APIs
-- **Runtime Updates**: All configuration can be updated dynamically without recreating SwapKit instances
+- **Custom Headers**: Set authentication headers for Midgard, THORNode, and USwap APIs
+- **Runtime Updates**: All configuration can be updated dynamically without recreating USwap instances
 - **Environment-Based Config**: Easily switch between development, staging, and production environments
 - **Unified Fee System**: Consistent fee multipliers across all supported chains
 
 ## TypeScript Type Definitions
 
-All SwapKit API methods are fully typed. Here are the comprehensive type definitions:
+All USwap API methods are fully typed. Here are the comprehensive type definitions:
 
 ```typescript
 // @noErrorValidation
@@ -1316,7 +1317,7 @@ interface PriceData {
   price: number;
 }
 
-interface SwapKitApiError {
+interface uSwapApiError {
   error: string;
   message: string;
   data?: any;

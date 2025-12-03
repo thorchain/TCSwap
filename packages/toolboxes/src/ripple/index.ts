@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -11,8 +9,8 @@ import {
   type GenericTransferParams,
   getChainConfig,
   getRPCUrl,
-  SwapKitNumber,
   USwapError,
+  USwapNumber,
 } from "@uswap/helpers";
 import type { Transaction } from "xrpl";
 import { Client, isValidAddress, type Payment, Wallet, xrpToDrops } from "xrpl";
@@ -94,7 +92,7 @@ export const getRippleToolbox = async (params: RippleToolboxParams = {}) => {
     return AssetValue.from({
       chain: Chain.Ripple,
       fromBaseDecimal: baseDecimal,
-      value: SwapKitNumber.fromBigInt(BigInt(feeDrops), baseDecimal),
+      value: USwapNumber.fromBigInt(BigInt(feeDrops), baseDecimal),
     });
   };
 

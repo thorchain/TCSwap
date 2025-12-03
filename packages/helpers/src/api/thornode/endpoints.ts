@@ -1,4 +1,8 @@
-import { AssetValue, RequestClient, SKConfig } from "@uswap/helpers";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { AssetValue, RequestClient, USwapConfig } from "@uswap/helpers";
 import { MAYAConfig, StagenetMAYAConfig, StagenetTHORConfig, THORConfig } from "@uswap/types";
 import type {
   InboundAddressesItem,
@@ -16,7 +20,7 @@ import type {
 } from "./types";
 
 function baseUrl(type?: THORNodeType) {
-  const { isStagenet } = SKConfig.get("envs");
+  const { isStagenet } = USwapConfig.get("envs");
 
   switch (type) {
     case "mayachain": {

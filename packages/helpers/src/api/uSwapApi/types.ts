@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { ErrorCode, FeeTypeEnum, ProviderName, WarningCodeEnum } from "@uswap/helpers";
 import { Chain, ChainId } from "@uswap/types";
 import { array, boolean, coerce, number, object, optional, string, union, unknown, type ZodType, z } from "zod/v4";

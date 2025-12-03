@@ -1,13 +1,14 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: KeepKey Hardware Wallet Integration
-description: Complete guide to integrating KeepKey hardware wallets with SwapKit SDK v4
+description: Complete guide to integrating KeepKey hardware wallets with USwap SDK v4
 ---
 
-KeepKey is a premium hardware wallet that provides secure cryptocurrency storage with a large OLED display for transaction verification. SwapKit SDK v4 supports KeepKey devices across multiple blockchain networks through the KeepKey SDK integration.
+KeepKey is a premium hardware wallet that provides secure cryptocurrency storage with a large OLED display for transaction verification. USwap SDK v4 supports KeepKey devices across multiple blockchain networks through the KeepKey SDK integration.
 
 ## Supported Chains
 
-SwapKit supports KeepKey devices on these chains:
+USwap supports KeepKey devices on these chains:
 
 - **EVM Compatible**: Ethereum, Arbitrum, Avalanche, Base, BinanceSmartChain, Optimism, Polygon
 - **UTXO Chains**: Bitcoin, Bitcoin Cash, Dash, Dogecoin, Litecoin
@@ -47,7 +48,7 @@ KeepKey works with modern browsers through the desktop bridge:
 - **Safari**: Full support
 - **Edge**: Full support
 
-## SwapKit Integration
+## USwap Integration
 
 ### Configuration Setup
 
@@ -55,18 +56,18 @@ Before using KeepKey, you need to configure the integration settings:
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     apiKeys: {
-      swapKit: "your-api-key",
+      uSwap: "your-api-key",
       keepKey: "your-keepkey-api-key",
     },
     integrations: {
       keepKey: {
 
-        serviceName: "SwapKit",
+        serviceName: "USwap",
         serviceImageUrl: "https:
 
       },
@@ -82,9 +83,9 @@ const swapKit = SwapKit({
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     integrations: {
       keepKey: {
@@ -99,10 +100,10 @@ const swapKit = SwapKit({
 async function connectKeepKeyBitcoin() {
   try {
 
-    await swapKit.connectKeepkey([Chain.Bitcoin]);
+    await uSwap.connectKeepkey([Chain.Bitcoin]);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
-    const balance = await swapKit.getBalance(Chain.Bitcoin, true);
+    const address = uSwap.getAddress(Chain.Bitcoin);
+    const balance = await uSwap.getBalance(Chain.Bitcoin, true);
 
     console.log("Bitcoin address:", address);
     console.log("Balance:", balance);
@@ -119,9 +120,9 @@ async function connectKeepKeyBitcoin() {
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   config: {
     integrations: {
       keepKey: {
@@ -138,11 +139,11 @@ async function connectMultipleChains() {
 
   try {
 
-    await swapKit.connectKeepkey(chains);
+    await uSwap.connectKeepkey(chains);
 
     const addresses = {};
     for (const chain of chains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
@@ -158,13 +159,13 @@ async function connectMultipleChains() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keepkeyWallet },
 });
 
@@ -178,11 +179,11 @@ async function connectWithCustomPaths() {
   const chains = [Chain.Bitcoin, Chain.Ethereum, Chain.Cosmos];
 
   try {
-    await swapKit.connectKeepkey(chains, derivationPaths);
+    await uSwap.connectKeepkey(chains, derivationPaths);
 
     const results = chains.map((chain) => ({
       chain,
-      address: swapKit.getAddress(chain),
+      address: uSwap.getAddress(chain),
       derivationPath: derivationPaths[chain],
     }));
 
@@ -199,13 +200,13 @@ async function connectWithCustomPaths() {
 ### Bitcoin Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keepkeyWallet },
 });
 
-await swapKit.connectKeepkey([Chain.Bitcoin]);
+await uSwap.connectKeepkey([Chain.Bitcoin]);
 
 async function sendBitcoin() {
   const recipient = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
@@ -216,7 +217,7 @@ async function sendBitcoin() {
     console.log("Amount:", amount.toSignificant(6), "BTC");
     console.log("Recipient:", recipient);
 
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "KeepKey Transaction",
@@ -234,20 +235,20 @@ async function sendBitcoin() {
 ### Ethereum Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keepkeyWallet },
 });
 
-await swapKit.connectKeepkey([Chain.Ethereum]);
+await uSwap.connectKeepkey([Chain.Ethereum]);
 
 async function sendEthereum() {
   const recipient = "0x742d35Cc6632C0532c718C5E6F99d7E89b12c9bC";
   const amount = AssetValue.fromChainOrSignature("ETH.ETH", 0.01);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -268,7 +269,7 @@ async function sendERC20Token() {
   );
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
     });
@@ -285,20 +286,20 @@ async function sendERC20Token() {
 ### Cosmos Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keepkeyWallet },
 });
 
-await swapKit.connectKeepkey([Chain.Cosmos]);
+await uSwap.connectKeepkey([Chain.Cosmos]);
 
 async function sendCosmos() {
   const recipient = "cosmos1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const amount = AssetValue.fromChainOrSignature("GAIA.ATOM", 1);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "KeepKey Cosmos transaction",
@@ -316,20 +317,20 @@ async function sendCosmos() {
 ### THORChain Transaction
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
-const swapKit = SwapKit({
+const uSwap = USwap({
   wallets: { ...keepkeyWallet },
 });
 
-await swapKit.connectKeepkey([Chain.THORChain]);
+await uSwap.connectKeepkey([Chain.THORChain]);
 
 async function sendThorchain() {
   const recipient = "thor1xy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const amount = AssetValue.fromChainOrSignature("THOR.RUNE", 10);
 
   try {
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient,
       memo: "KeepKey THORChain transaction",
@@ -348,7 +349,7 @@ async function depositToThorchain() {
   const memo = "ADD:BTC.BTC:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
 
   try {
-    const wallet = await swapKit.getWalletWithBalance(Chain.THORChain);
+    const wallet = await uSwap.getWalletWithBalance(Chain.THORChain);
     const txHash = await wallet.deposit({
       assetValue: amount,
       memo,
@@ -368,9 +369,9 @@ async function depositToThorchain() {
 ### EVM Chains Configuration
 
 ```ts twoslash
-import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
 
-const swapKit = SwapKit({ wallets: { ...keepkeyWallet } });
+const uSwap = USwap({ wallets: { ...keepkeyWallet } });
 
 async function setupEVMChains() {
   const evmChains = [
@@ -384,14 +385,14 @@ async function setupEVMChains() {
   ];
 
   try {
-    await swapKit.connectKeepkey(evmChains);
+    await uSwap.connectKeepkey(evmChains);
 
-    const evmAddress = swapKit.getAddress(Chain.Ethereum);
+    const evmAddress = uSwap.getAddress(Chain.Ethereum);
     console.log("EVM address (same on all EVM chains):", evmAddress);
 
     const balances = await Promise.all(
       evmChains.map(async (chain) => {
-        const balance = await swapKit.getBalance(chain, true);
+        const balance = await uSwap.getBalance(chain, true);
         return { chain, balance };
       })
     );
@@ -407,13 +408,13 @@ async function setupEVMChains() {
 
 ```ts twoslash
 import {
-  SwapKit,
+  USwap,
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
 } from "@uswap/sdk";
 
-const swapKit = SwapKit({ wallets: { ...keepkeyWallet } });
+const uSwap = USwap({ wallets: { ...keepkeyWallet } });
 
 async function setupUTXOChains() {
   const utxoChains = [
@@ -431,11 +432,11 @@ async function setupUTXOChains() {
   };
 
   try {
-    await swapKit.connectKeepkey(utxoChains, derivationPaths);
+    await uSwap.connectKeepkey(utxoChains, derivationPaths);
 
     const addresses = {};
     for (const chain of utxoChains) {
-      addresses[chain] = swapKit.getAddress(chain);
+      addresses[chain] = uSwap.getAddress(chain);
       console.log(`${chain} address:`, addresses[chain]);
     }
 
@@ -452,7 +453,7 @@ async function setupUTXOChains() {
 
 ```ts twoslash
 
-import { SwapKit, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
 
 async function diagnosticConnection() {
   try {
@@ -471,7 +472,7 @@ async function diagnosticConnection() {
 
     console.log("✅ KeepKey Desktop is available");
 
-    const swapKit = SwapKit({
+    const uSwap = USwap({
       config: {
         integrations: {
           keepKey: {
@@ -484,9 +485,9 @@ async function diagnosticConnection() {
     });
 
     console.log("🔗 Attempting to connect to KeepKey...");
-    await swapKit.connectKeepkey([Chain.Bitcoin]);
+    await uSwap.connectKeepkey([Chain.Bitcoin]);
 
-    const address = swapKit.getAddress(Chain.Bitcoin);
+    const address = uSwap.getAddress(Chain.Bitcoin);
     console.log("✅ KeepKey connected successfully");
     console.log("Address:", address);
 
@@ -529,7 +530,7 @@ async function checkKeepkeyAvailability(): Promise<boolean> {
 
 async function handleFirstTimePairing() {
   try {
-    const swapKit = SwapKit({
+    const uSwap = USwap({
       config: {
         apiKeys: {
           keepKey: "1234",
@@ -547,7 +548,7 @@ async function handleFirstTimePairing() {
     console.log("🔗 Initiating first-time pairing...");
     console.log("📱 Please follow instructions on your KeepKey device");
 
-    await swapKit.connectKeepkey([Chain.Bitcoin]);
+    await uSwap.connectKeepkey([Chain.Bitcoin]);
 
     console.log("✅ Pairing successful!");
     console.log("💾 Pairing information has been saved for future sessions");
@@ -575,7 +576,7 @@ async function handleFirstTimePairing() {
 async function handleTransactionErrors() {
   try {
     const amount = AssetValue.fromChainOrSignature("BTC.BTC", 0.001);
-    const txHash = await swapKit.transfer({
+    const txHash = await uSwap.transfer({
       assetValue: amount,
       recipient: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
     });
@@ -584,7 +585,7 @@ async function handleTransactionErrors() {
     if (error.message.includes("insufficient funds")) {
       console.error("❌ Insufficient balance for transaction + fees");
 
-      const balance = await swapKit.getBalance(Chain.Bitcoin, true);
+      const balance = await uSwap.getBalance(Chain.Bitcoin, true);
       console.log("Current balance:", balance);
     }
 
@@ -639,12 +640,12 @@ const secureConfig = {
 
 
 async function verifyAddressOnDevice() {
-  const swapKit = SwapKit(secureConfig);
-  await swapKit.connectKeepkey([Chain.Bitcoin]);
+  const uSwap = USwap(secureConfig);
+  await uSwap.connectKeepkey([Chain.Bitcoin]);
 
-  const address = swapKit.getAddress(Chain.Bitcoin);
+  const address = uSwap.getAddress(Chain.Bitcoin);
 
-  console.log("Address from SwapKit:", address);
+  console.log("Address from USwap:", address);
   console.log("⚠️ Please verify this address on your KeepKey screen");
 
 
@@ -661,7 +662,7 @@ async function secureTransaction() {
   console.log("Recipient:", recipient);
   console.log("⚠️ Please verify these details on your KeepKey screen");
 
-  const txHash = await swapKit.transfer({
+  const txHash = await uSwap.transfer({
     assetValue: amount,
     recipient,
   });
@@ -688,7 +689,7 @@ async function secureErrorHandling() {
 ```ts twoslash
 
 
-const secureSwapKit = SwapKit({
+const secureUSwap = USwap({
   config: {
     rpcUrls: {
 
@@ -710,11 +711,11 @@ const secureSwapKit = SwapKit({
 ```ts twoslash
 
 class KeepKeyAccountManager {
-  private swapKit: any;
+  private uSwap: any;
   private accounts: Map<number, Record<Chain, string>> = new Map();
 
   constructor() {
-    this.swapKit = SwapKit({
+    this.uSwap = USwap({
       config: {
         integrations: {
           keepKey: {
@@ -747,11 +748,11 @@ class KeepKeyAccountManager {
       }
     }
 
-    await this.swapKit.connectKeepkey(chains, derivationPaths);
+    await this.uSwap.connectKeepkey(chains, derivationPaths);
 
     const accountAddresses: Record<Chain, string> = {};
     for (const chain of chains) {
-      accountAddresses[chain] = this.swapKit.getAddress(chain);
+      accountAddresses[chain] = this.uSwap.getAddress(chain);
     }
 
     this.accounts.set(accountIndex, accountAddresses);
@@ -772,7 +773,7 @@ class KeepKeyAccountManager {
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { SwapKit, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
 
 interface KeepKeyWalletProps {
   onConnect: (addresses: Record<Chain, string>) => void;
@@ -787,7 +788,7 @@ export function KeepKeyWallet({ onConnect, onError }: KeepKeyWalletProps) {
     Chain.Bitcoin,
   ]);
 
-  const swapKit = SwapKit({
+  const uSwap = USwap({
     config: {
       integrations: {
         keepKey: {
@@ -803,11 +804,11 @@ export function KeepKeyWallet({ onConnect, onError }: KeepKeyWalletProps) {
     setIsConnecting(true);
 
     try {
-      await swapKit.connectKeepkey(selectedChains);
+      await uSwap.connectKeepkey(selectedChains);
 
       const connectedAddresses: Record<Chain, string> = {};
       for (const chain of selectedChains) {
-        connectedAddresses[chain] = swapKit.getAddress(chain);
+        connectedAddresses[chain] = uSwap.getAddress(chain);
       }
 
       setAddresses(connectedAddresses);
@@ -821,7 +822,7 @@ export function KeepKeyWallet({ onConnect, onError }: KeepKeyWalletProps) {
   };
 
   const disconnect = () => {
-    swapKit.disconnectAll();
+    uSwap.disconnectAll();
     setIsConnected(false);
     setAddresses({});
   };
@@ -876,4 +877,4 @@ export function KeepKeyWallet({ onConnect, onError }: KeepKeyWalletProps) {
 }
 ```
 
-This comprehensive guide covers all aspects of KeepKey integration with SwapKit SDK v4, including setup, usage, troubleshooting, and advanced features. The KeepKey integration provides secure hardware wallet functionality with support for multiple blockchain networks through a user-friendly interface.
+This comprehensive guide covers all aspects of KeepKey integration with USwap SDK v4, including setup, usage, troubleshooting, and advanced features. The KeepKey integration provides secure hardware wallet functionality with support for multiple blockchain networks through a user-friendly interface.

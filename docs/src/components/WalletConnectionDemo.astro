@@ -1,3 +1,4 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
 ---
 const props = {
   chains: ["Ethereum", "Bitcoin", "Thorchain"],
@@ -11,10 +12,10 @@ const props = {
   <div class="demo-header">
     <h3 class="demo-title">{props.title}</h3>
     <p class="demo-description">
-      Try connecting different wallet types to see how SwapKit handles multi-chain connections
+      Try connecting different wallet types to see how USwap handles multi-chain connections
     </p>
   </div>
-  
+
   <div class="demo-content">
     <div class="demo-controls">
       <div class="control-group">
@@ -22,9 +23,9 @@ const props = {
         <div class="chain-selector">
           {props.chains.map(chain => (
             <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                class="chain-checkbox" 
+              <input
+                type="checkbox"
+                class="chain-checkbox"
                 value={chain}
                 checked={chain === "Ethereum"}
               />
@@ -33,7 +34,7 @@ const props = {
           ))}
         </div>
       </div>
-      
+
       <div class="control-group">
         <label class="control-label">Select Wallet:</label>
         <select class="wallet-selector">
@@ -42,7 +43,7 @@ const props = {
           ))}
         </select>
       </div>
-      
+
       <div class="demo-actions">
         <button class="connect-btn primary-btn" id="connectWallet">
           <span class="btn-icon">🔗</span>
@@ -54,19 +55,19 @@ const props = {
         </button>
       </div>
     </div>
-    
+
     <div class="demo-output">
       <div class="output-header">
         <span class="output-title">Connection Status</span>
         <span class="status-indicator" id="statusIndicator">Disconnected</span>
       </div>
-      
+
       <div class="output-content" id="outputContent">
         <div class="placeholder-text">
           Select chains and a wallet type, then click "Connect Wallet" to see the connection process.
         </div>
       </div>
-      
+
       <div class="code-example" id="codeExample" style="display: none;">
         <div class="code-header">
           <span class="code-title">Generated Code:</span>
@@ -82,9 +83,9 @@ const props = {
       </div>
     </div>
   </div>
-  
+
   <div class="demo-note">
-    <strong>Note:</strong> This is a simulation for demonstration purposes. 
+    <strong>Note:</strong> This is a simulation for demonstration purposes.
     In a real application, you'd handle actual wallet connections and user interactions.
     <br>
     <a href="https://stackblitz.com/github/swapkit/swapkit/tree/develop/playgrounds/nextjs" target="_blank" rel="noopener noreferrer">
@@ -104,88 +105,88 @@ document.addEventListener('DOMContentLoaded', function() {
   const copyCodeBtn = document.getElementById('copyCodeBtn');
   const chainCheckboxes = document.querySelectorAll('.chain-checkbox');
   const walletSelector = document.querySelector('.wallet-selector');
-  
+
   if (!connectBtn || !disconnectBtn || !statusIndicator || !outputContent || !codeExample || !generatedCode || !copyCodeBtn || !walletSelector) {
     return;
   }
-  
+
   let isConnected = false;
-  
+
   function getSelectedChains() {
     return Array.from(chainCheckboxes)
       .filter(function(cb) { return cb.checked; })
       .map(function(cb) { return cb.value; });
   }
-  
+
   function generateCode() {
     const selectedChains = getSelectedChains();
     const selectedWallet = walletSelector.value;
-    
+
     if (selectedChains.length === 0) return '';
-    
+
     const chainImports = selectedChains.map(chain => `Chain.${chain}`).join(', ');
-    
-    let code = `import { createSwapKit, Chain, WalletOption } from '@uswap/sdk';\n\n`;
-    code += `const swapKit = createSwapKit();\n\n`;
-    
+
+    let code = `import { createUSwap, Chain, WalletOption } from '@uswap/sdk';\n\n`;
+    code += `const uSwap = createUSwap();\n\n`;
+
     if (selectedWallet === 'metamask') {
-      code += `await swapKit.connectEVMWallet([${chainImports}], WalletOption.METAMASK);\n`;
+      code += `await uSwap.connectEVMWallet([${chainImports}], WalletOption.METAMASK);\n`;
     } else if (selectedWallet === 'keystore') {
-      code += `await swapKit.connectKeystore(\n  [${chainImports}],\n  'your twelve word mnemonic phrase here'\n);\n`;
+      code += `await uSwap.connectKeystore(\n  [${chainImports}],\n  'your twelve word mnemonic phrase here'\n);\n`;
     } else if (selectedWallet === 'walletconnect') {
-      code += `await swapKit.connectWalletConnect([${chainImports}]);\n`;
+      code += `await uSwap.connectWalletConnect([${chainImports}]);\n`;
     }
-    
+
     code += `\n`;
     selectedChains.forEach(chain => {
-      code += `const ${chain.toLowerCase()}Address = swapKit.getAddress(Chain.${chain});\n`;
+      code += `const ${chain.toLowerCase()}Address = uSwap.getAddress(Chain.${chain});\n`;
     });
-    
+
     return code;
   }
-  
+
   function updateOutput() {
     const selectedChains = getSelectedChains();
     const selectedWallet = walletSelector.value;
-    
+
     if (!isConnected) {
       outputContent.innerHTML = '<div class="placeholder-text">Select chains and wallet type, then connect to see results.</div>';
       codeExample.style.display = 'none';
       return;
     }
-    
+
     let output = '<div class="connection-info">';
     output += `<div class="wallet-info"><strong>Connected Wallet:</strong> ${selectedWallet.charAt(0).toUpperCase() + selectedWallet.slice(1)}</div>`;
     output += '<div class="addresses-info"><strong>Addresses:</strong></div>';
     output += '<div class="addresses-list">';
-    
+
     selectedChains.forEach(chain => {
       const demoAddress = chain === 'Ethereum' ? '0x742d35Cc...f6E321' :
                          chain === 'Bitcoin' ? 'bc1qxy2k...jfhx0wlh' :
                          chain === 'Thorchain' ? 'thor1abc...xyz123' : 'demo-address';
       output += `<div class="address-item"><span class="chain-name">${chain}:</span> <code>${demoAddress}</code></div>`;
     });
-    
+
     output += '</div></div>';
     outputContent.innerHTML = output;
-    
+
     const code = generateCode();
     generatedCode.textContent = code;
     codeExample.style.display = 'block';
   }
-  
+
   connectBtn.addEventListener('click', function() {
     const selectedChains = getSelectedChains();
     if (selectedChains.length === 0) {
       alert('Please select at least one chain');
       return;
     }
-    
+
     connectBtn.disabled = true;
     connectBtn.innerHTML = '<span class="btn-icon">⏳</span> Connecting...';
     statusIndicator.textContent = 'Connecting...';
     statusIndicator.className = 'status-indicator connecting';
-    
+
     setTimeout(() => {
       isConnected = true;
       connectBtn.disabled = false;
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateOutput();
     }, 2000);
   });
-  
+
   disconnectBtn.addEventListener('click', function() {
     isConnected = false;
     disconnectBtn.disabled = true;
@@ -204,17 +205,17 @@ document.addEventListener('DOMContentLoaded', function() {
     statusIndicator.className = 'status-indicator disconnected';
     updateOutput();
   });
-  
+
   chainCheckboxes.forEach(function(cb) {
     cb.addEventListener('change', function() {
       if (isConnected) updateOutput();
     });
   });
-  
+
   walletSelector.addEventListener('change', () => {
     if (isConnected) updateOutput();
   });
-  
+
   copyCodeBtn.addEventListener('click', async function() {
     try {
       await navigator.clipboard.writeText(generatedCode.textContent || '');
@@ -546,12 +547,12 @@ document.addEventListener('DOMContentLoaded', function() {
   .demo-content {
     grid-template-columns: 1fr;
   }
-  
+
   .demo-controls {
     border-right: none;
     border-bottom: 1px solid var(--sl-color-hairline);
   }
-  
+
   .demo-actions {
     flex-direction: row;
   }

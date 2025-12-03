@@ -1,4 +1,8 @@
-import { type Chain, SKConfig } from "@uswap/core";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import { type Chain, USwapConfig } from "@uswap/core";
 import { useCallback, useState } from "react";
 
 type Props = { chains: Chain[]; setChains: (chains: Chain[]) => void; loading?: boolean };
@@ -26,7 +30,7 @@ export const ChainSelector = ({ chains, setChains, loading }: Props) => {
     [isDragging, handleChainSelect],
   );
 
-  const allChains = SKConfig.get("chains").concat().sort();
+  const allChains = USwapConfig.get("chains").concat().sort();
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 240 }}>

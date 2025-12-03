@@ -1,13 +1,17 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import "../styles/index.css";
 
 import { Chain, WalletOption } from "@uswap/core";
-import { SwapKitProvider, useSwapKit } from "@uswap/ui/react";
+import { USwapProvider, useUSwap } from "@uswap/ui/react";
 import { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 function Content() {
-  const { connect, getClient } = useSwapKit<["chainflip", "evm"]>();
+  const { connect, getClient } = useUSwap<["chainflip", "evm"]>();
 
   const connectSwapKit = useCallback(async () => {
     const skClient = await connect({ chains: [Chain.Cosmos, Chain.Ethereum], walletOption: WalletOption.CTRL });
@@ -50,8 +54,8 @@ function Content() {
 
 export function App() {
   return (
-    <SwapKitProvider config={{ apiKeys: { swapKit: "1234567890" } }} plugins={["chainflip", "evm"]}>
+    <USwapProvider config={{ apiKeys: { uSwap: "1234567890" } }} plugins={["chainflip", "evm"]}>
       <Content />
-    </SwapKitProvider>
+    </USwapProvider>
   );
 }

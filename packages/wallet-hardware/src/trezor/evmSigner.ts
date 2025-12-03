@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -9,8 +7,8 @@ import {
   ChainToChainId,
   type DerivationPathArray,
   derivationPathToString,
-  SwapKitNumber,
   USwapError,
+  USwapNumber,
   WalletOption,
 } from "@uswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest } from "ethers";
@@ -148,7 +146,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: TrezorEV
 
       const { r, s, v } = payload;
 
-      const signature = Signature.from({ r, s, v: new SwapKitNumber(BigInt(v)).getBaseValue("number") });
+      const signature = Signature.from({ r, s, v: new USwapNumber(BigInt(v)).getBaseValue("number") });
 
       const serializedTx = Transaction.from({
         ...formattedTx,

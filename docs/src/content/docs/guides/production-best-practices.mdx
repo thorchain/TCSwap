@@ -1,11 +1,12 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Production Best Practices
-description: Security, performance, and deployment guidelines for SwapKit applications
+description: Security, performance, and deployment guidelines for USwap applications
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-Building production-ready applications with SwapKit requires careful attention to security, performance, and user experience. This guide covers essential best practices.
+Building production-ready applications with USwap requires careful attention to security, performance, and user experience. This guide covers essential best practices.
 
 ## Security
 
@@ -21,14 +22,14 @@ const quote = await fetch("/api/swap-quote", {
   body: JSON.stringify(quoteParams),
 }).then((r) => r.json());
 
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
 export async function POST(request: Request) {
   const params = await request.json();
 
-  const quote = await SwapKitApi.getSwapQuote({
+  const quote = await USwapApi.getSwapQuote({
     ...params,
-    apiKey: process.env.SWAPKIT_API_KEY,
+    apiKey: process.env.USWAP_API_KEY,
   });
 
   return Response.json(quote);
@@ -41,13 +42,13 @@ Always use secure wallet connections instead of handling private keys directly:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-await swapKit.connectEVMWallet([Chain.Ethereum]);
-await swapKit.connectLedger([Chain.Bitcoin]);
-await swapKit.connectTrezor([Chain.Bitcoin]);
+await uSwap.connectEVMWallet([Chain.Ethereum]);
+await uSwap.connectLedger([Chain.Bitcoin]);
+await uSwap.connectTrezor([Chain.Bitcoin]);
 ```
 
 ### Input Validation
@@ -56,12 +57,12 @@ Always validate user inputs:
 
 ```typescript
 // @noErrorValidation
-import { createSwapKit, USwapError } from "@uswap/sdk";
+import { createUSwap, USwapError } from "@uswap/sdk";
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
 function validateSwapInput(params: any): void {
-  if (!swapKit.validateAddress(params.recipient, params.chain)) {
+  if (!uSwap.validateAddress(params.recipient, params.chain)) {
     throw new USwapError("core_swap_invalid_params", {
       message: "Invalid recipient address",
     });
@@ -92,9 +93,9 @@ Use the modular approach for smaller bundles:
   <TabItem label="Modular (Recommended)">
     ```typescript
 
-    import { SwapKit, ThorchainPlugin, evmWallet } from '@uswap/sdk';
+    import { USwap, ThorchainPlugin, evmWallet } from '@uswap/sdk';
 
-    const swapKit = SwapKit({
+    const uSwap = USwap({
       plugins: { ...ThorchainPlugin },
       wallets: { ...evmWallet }
     });
@@ -104,9 +105,9 @@ Use the modular approach for smaller bundles:
   <TabItem label="All-in-one">
     ```typescript
 
-    import { createSwapKit } from '@uswap/sdk';
+    import { createUSwap } from '@uswap/sdk';
 
-    const swapKit = createSwapKit();
+    const uSwap = createUSwap();
     ```
 
   </TabItem>
@@ -143,7 +144,7 @@ Implement caching for frequently accessed data:
 
 ```typescript
 // @noErrorValidation
-class SwapKitCache {
+class USwapCache {
   private cache = new Map<string, { data: any; timestamp: number }>();
   private ttl: Record<string, number> = {
     price: 60_000,
@@ -169,11 +170,11 @@ class SwapKitCache {
   }
 }
 
-const cache = new SwapKitCache();
+const cache = new USwapCache();
 
 const price = await cache.get(`price_${asset}`, "price", async () => {
-  const { SwapKitApi } = await import("@uswap/helpers/api");
-  return SwapKitApi.getPrice(asset);
+  const { USwapApi } = await import("@uswap/helpers/api");
+  return USwapApi.getPrice(asset);
 });
 ```
 
@@ -185,13 +186,13 @@ Batch multiple operations for efficiency:
 // @noErrorValidation
 import { Chain } from "@uswap/sdk";
 
-const ethBalance = await swapKit.getBalance(Chain.Ethereum);
-const btcBalance = await swapKit.getBalance(Chain.Bitcoin);
-const avaxBalance = await swapKit.getBalance(Chain.Avalanche);
+const ethBalance = await uSwap.getBalance(Chain.Ethereum);
+const btcBalance = await uSwap.getBalance(Chain.Bitcoin);
+const avaxBalance = await uSwap.getBalance(Chain.Avalanche);
 
 const chains = [Chain.Ethereum, Chain.Bitcoin, Chain.Avalanche];
 const balances = await Promise.all(
-  chains.map((chain) => swapKit.getBalance(chain))
+  chains.map((chain) => uSwap.getBalance(chain))
 );
 ```
 
@@ -207,7 +208,7 @@ import { USwapError } from "@uswap/sdk";
 
 async function executeSwap(route: SwapRoute) {
   try {
-    const txHash = await swapKit.swap({ route });
+    const txHash = await uSwap.swap({ route });
     return { success: true, txHash };
   } catch (error) {
     if (error instanceof USwapError) {
@@ -242,7 +243,7 @@ Implement retry logic for transient failures:
 
 ```typescript
 // @noErrorValidation
-import { USwapError, SwapKitApi } from "@uswap/sdk";
+import { USwapError, USwapApi } from "@uswap/sdk";
 
 async function withRetry<T>(
   fn: () => Promise<T>,
@@ -269,7 +270,7 @@ async function withRetry<T>(
   throw lastError!;
 }
 
-const quote = await withRetry(() => SwapKitApi.getSwapQuote(params));
+const quote = await withRetry(() => USwapApi.getSwapQuote(params));
 ```
 
 ## User Experience
@@ -280,7 +281,7 @@ Provide clear feedback during operations:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@uswap/sdk";
+import { USwapApi } from "@uswap/sdk";
 
 interface SwapState {
   status: "idle" | "quoting" | "approving" | "swapping" | "success" | "error";
@@ -293,13 +294,13 @@ async function performSwap(params: SwapParams) {
 
   try {
     setState({ status: "quoting", message: "Getting best price..." });
-    const quote = await SwapKitApi.getSwapQuote(params);
+    const quote = await USwapApi.getSwapQuote(params);
 
     setState({ status: "approving", message: "Approving tokens..." });
-    await swapKit.approveAssetValue(assetValue);
+    await uSwap.approveAssetValue(assetValue);
 
     setState({ status: "swapping", message: "Executing swap..." });
-    const txHash = await swapKit.swap({ route: quote.routes[0] });
+    const txHash = await uSwap.swap({ route: quote.routes[0] });
 
     setState({ status: "success", txHash });
   } catch (error) {
@@ -317,7 +318,7 @@ Track transaction status for better UX:
 
 ```typescript
 // @noErrorValidation
-import { Chain, SwapKitApi } from "@uswap/sdk";
+import { Chain, USwapApi } from "@uswap/sdk";
 
 async function trackTransaction(
   txHash: string,
@@ -329,7 +330,7 @@ async function trackTransaction(
 
   while (attempts < maxAttempts) {
     try {
-      const status = await SwapKitApi.getTrackerDetails({ txHash, chain });
+      const status = await USwapApi.getTrackerDetails({ txHash, chain });
 
       onUpdate(status.status);
 
@@ -396,13 +397,13 @@ Implement dynamic gas pricing:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi } from "@uswap/sdk";
+import { USwapApi } from "@uswap/sdk";
 
 async function getOptimalGasPrice(
   chain: Chain,
   priority: "low" | "medium" | "high"
 ) {
-  const gasRates = await SwapKitApi.getGasRate(chain);
+  const gasRates = await USwapApi.getGasRate(chain);
 
   const multipliers = {
     low: 0.9,
@@ -440,7 +441,7 @@ Sentry.init({
 });
 
 try {
-  await swapKit.swap({ route });
+  await uSwap.swap({ route });
 } catch (error) {
   Sentry.captureException(error, {
     tags: {
@@ -486,7 +487,7 @@ class PerformanceTracker {
 
 const tracker = new PerformanceTracker();
 
-const txHash = await tracker.track("swap", () => swapKit.swap({ route }));
+const txHash = await tracker.track("swap", () => uSwap.swap({ route }));
 ```
 
 ## Deployment Checklist
@@ -525,12 +526,12 @@ if (features.newSwapFlow) {
 
 ```typescript
 // @noErrorValidation
-import { SwapKitApi, Chain } from "@uswap/sdk";
+import { USwapApi, Chain } from "@uswap/sdk";
 
 async function healthCheck(): Promise<HealthStatus> {
   const checks = await Promise.allSettled([
-    SwapKitApi.getPrice("ETH"),
-    swapKit.validateAddress("0x...", Chain.Ethereum),
+    USwapApi.getPrice("ETH"),
+    uSwap.validateAddress("0x...", Chain.Ethereum),
     fetch(rpcUrls[Chain.Ethereum]),
   ]);
 

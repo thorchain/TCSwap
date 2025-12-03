@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
 import { FeeOption } from "../../types";
@@ -8,15 +12,15 @@ import {
   getFeeMultiplier,
   getFeeMultiplierAsBigInt,
 } from "../feeMultiplier";
-import { SKConfig } from "../swapKitConfig";
+import { USwapConfig } from "../uSwapConfig";
 
 describe("feeMultiplier", () => {
   beforeEach(() => {
-    SKConfig.reinitialize();
+    USwapConfig.reinitialize();
   });
 
   afterEach(() => {
-    SKConfig.reinitialize();
+    USwapConfig.reinitialize();
   });
 
   describe("getFeeMultiplier", () => {
@@ -30,8 +34,10 @@ describe("feeMultiplier", () => {
       expect(getFeeMultiplier()).toBe(1.0);
     });
 
-    test("uses custom multipliers from SKConfig when set", () => {
-      SKConfig.set({ feeMultipliers: { [FeeOption.Average]: 1.2, [FeeOption.Fast]: 1.8, [FeeOption.Fastest]: 2.5 } });
+    test("uses custom multipliers from USwapConfig when set", () => {
+      USwapConfig.set({
+        feeMultipliers: { [FeeOption.Average]: 1.2, [FeeOption.Fast]: 1.8, [FeeOption.Fastest]: 2.5 },
+      });
 
       expect(getFeeMultiplier(FeeOption.Average)).toBe(1.2);
       expect(getFeeMultiplier(FeeOption.Fast)).toBe(1.8);

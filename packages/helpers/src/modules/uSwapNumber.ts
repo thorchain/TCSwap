@@ -1,13 +1,17 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { BigIntArithmetics, formatBigIntToSafeValue } from "./bigIntArithmetics";
 
 export type SwapKitValueType = BigIntArithmetics | string | number;
 
-export class SwapKitNumber extends BigIntArithmetics {
+export class USwapNumber extends BigIntArithmetics {
   eq(value: SwapKitValueType) {
     return this.eqValue(value);
   }
 
   static fromBigInt(value: bigint, decimal?: number) {
-    return new SwapKitNumber({ decimal, value: formatBigIntToSafeValue({ bigIntDecimal: decimal, decimal, value }) });
+    return new USwapNumber({ decimal, value: formatBigIntToSafeValue({ bigIntDecimal: decimal, decimal, value }) });
   }
 }

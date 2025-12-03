@@ -1,17 +1,18 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Testing
-description: Comprehensive guide to testing SwapKit applications with unit tests, integration tests, mocking strategies, and chain-specific examples.
+description: Comprehensive guide to testing USwap applications with unit tests, integration tests, mocking strategies, and chain-specific examples.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Testing is essential for building reliable SwapKit applications. This guide covers unit testing, integration testing, mocking strategies, and testing different chain interactions.
+Testing is essential for building reliable USwap applications. This guide covers unit testing, integration testing, mocking strategies, and testing different chain interactions.
 
 ## Testing Setup
 
 ### Test Framework Configuration
 
-SwapKit uses Bun's built-in test runner. Set up your testing environment:
+USwap uses Bun's built-in test runner. Set up your testing environment:
 
 <Tabs>
   <TabItem label="bun.config.ts">
@@ -57,12 +58,12 @@ Configure test environment variables:
 // @noErrorValidation
 
 import { beforeAll, beforeEach } from "bun:test";
-import { SKConfig } from "@uswap/helpers";
+import { USwapConfig } from "@uswap/helpers";
 
 beforeAll(() => {
-  SKConfig.set({
+  USwapConfig.set({
     apiKeys: {
-      swapKit: process.env.TEST_API_KEY || "test-api-key",
+      uSwap: process.env.TEST_API_KEY || "test-api-key",
     },
     envs: {
       isDev: true,
@@ -71,13 +72,13 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  SKConfig.reset();
+  USwapConfig.reset();
 });
 ```
 
 ## Unit Testing
 
-### Testing SwapKit Configuration
+### Testing USwap Configuration
 
 Test configuration management:
 
@@ -85,38 +86,38 @@ Test configuration management:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from 'bun:test';
-import { SKConfig } from '@uswap/helpers';
+import { USwapConfig } from '@uswap/helpers';
 import { Chain } from '@uswap/types';
 
-describe('SwapKit Configuration', () => {
+describe('USwap Configuration', () => {
   beforeEach(() => {
-    SKConfig.reset();
+    USwapConfig.reset();
   });
 
   test('should set and get API keys', () => {
     const apiKey = 'test-api-key-123';
 
-    SKConfig.setApiKey('swapKit', apiKey);
+    USwapConfig.setApiKey('uSwap', apiKey);
 
-    const config = SKConfig.get('apiKeys');
-    expect(config.swapKit).toBe(apiKey);
+    const config = USwapConfig.get('apiKeys');
+    expect(config.uSwap).toBe(apiKey);
   });
 
   test('should set explorer URLs', () => {
     const customUrl = 'https:
 
-    SKConfig.setExplorerUrl(Chain.Ethereum, customUrl);
+    USwapConfig.setExplorerUrl(Chain.Ethereum, customUrl);
 
-    const explorerUrls = SKConfig.get('explorerUrls');
+    const explorerUrls = USwapConfig.get('explorerUrls');
     expect(explorerUrls[Chain.Ethereum]).toBe(customUrl);
   });
 
   test('should preserve existing config when adding new keys', () => {
-    SKConfig.setApiKey('swapKit', 'key1');
-    SKConfig.setApiKey('walletConnectProjectId', 'key2');
+    USwapConfig.setApiKey('uSwap', 'key1');
+    USwapConfig.setApiKey('walletConnectProjectId', 'key2');
 
-    const apiKeys = SKConfig.get('apiKeys');
-    expect(apiKeys.swapKit).toBe('key1');
+    const apiKeys = USwapConfig.get('apiKeys');
+    expect(apiKeys.uSwap).toBe('key1');
     expect(apiKeys.walletConnectProjectId).toBe('key2');
   });
 });
@@ -179,7 +180,7 @@ describe("AssetValue", () => {
 });
 ```
 
-### Testing SwapKit Error Handling
+### Testing USwap Error Handling
 
 Test error creation and handling:
 
@@ -293,15 +294,15 @@ Test wallet connection functionality:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from "bun:test";
-import { SwapKit } from "@uswap/core";
+import { USwap } from "@uswap/core";
 import { keystoreWallet } from "@uswap/wallets/keystore";
 import { Chain } from "@uswap/types";
 
 describe("Wallet Integration", () => {
-  let swapKit: ReturnType<typeof SwapKit>;
+  let uSwap: ReturnType<typeof USwap>;
 
   beforeEach(() => {
-    swapKit = SwapKit({
+    uSwap = USwap({
       wallets: { keystore: keystoreWallet },
     });
   });
@@ -315,9 +316,9 @@ describe("Wallet Integration", () => {
       }
 
       const chains = [Chain.Ethereum, Chain.Bitcoin];
-      await swapKit.connectKeystore(chains, process.env.TEST_PHRASE);
+      await uSwap.connectKeystore(chains, process.env.TEST_PHRASE);
 
-      const wallets = swapKit.getAllWallets();
+      const wallets = uSwap.getAllWallets();
 
       expect(wallets.ethereum).toBeDefined();
       expect(wallets.ethereum.address).toBeDefined();
@@ -335,9 +336,9 @@ describe("Wallet Integration", () => {
         return;
       }
 
-      await swapKit.connectKeystore([Chain.Ethereum], process.env.TEST_PHRASE);
+      await uSwap.connectKeystore([Chain.Ethereum], process.env.TEST_PHRASE);
 
-      const wallet = await swapKit.getWalletWithBalance(Chain.Ethereum);
+      const wallet = await uSwap.getWalletWithBalance(Chain.Ethereum);
 
       expect(wallet).toBeDefined();
       expect(wallet.balance).toBeDefined();
@@ -350,7 +351,7 @@ describe("Wallet Integration", () => {
     const invalidPhrase = "invalid mnemonic phrase";
 
     await expect(
-      swapKit.connectKeystore([Chain.Ethereum], invalidPhrase)
+      uSwap.connectKeystore([Chain.Ethereum], invalidPhrase)
     ).rejects.toThrow();
   });
 });
@@ -364,13 +365,13 @@ Test API calls and responses:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
 describe("API Integration", () => {
   test(
     "should get asset price",
     async () => {
-      const price = await SwapKitApi.getPrice("ETH");
+      const price = await USwapApi.getPrice("ETH");
 
       expect(price).toBeDefined();
       expect(typeof price).toBe("number");
@@ -390,7 +391,7 @@ describe("API Integration", () => {
         recipientAddress: "0x742d35Cc6486C0D8C50fb5F04F08E8b23e20Ab8A",
       };
 
-      const quote = await SwapKitApi.getSwapQuote(quoteParams);
+      const quote = await USwapApi.getSwapQuote(quoteParams);
 
       expect(quote).toBeDefined();
       expect(quote.routes).toBeDefined();
@@ -401,13 +402,13 @@ describe("API Integration", () => {
   );
 
   test("should handle invalid asset gracefully", async () => {
-    await expect(SwapKitApi.getPrice("INVALID.ASSET")).rejects.toThrow();
+    await expect(USwapApi.getPrice("INVALID.ASSET")).rejects.toThrow();
   });
 
   test(
     "should get gas rates",
     async () => {
-      const gasRate = await SwapKitApi.getGasRate("ETH");
+      const gasRate = await USwapApi.getGasRate("ETH");
 
       expect(gasRate).toBeDefined();
       expect(typeof gasRate).toBe("string");
@@ -426,16 +427,16 @@ Test end-to-end swap functionality:
 // @noErrorValidation
 
 import { describe, expect, test, beforeEach } from "bun:test";
-import { SwapKit } from "@uswap/core";
+import { USwap } from "@uswap/core";
 import { ThorchainPlugin } from "@uswap/plugins/thorchain";
 import { keystoreWallet } from "@uswap/wallets/keystore";
 import { Chain, AssetValue } from "@uswap/helpers";
 
 describe("Swap Integration", () => {
-  let swapKit: ReturnType<typeof SwapKit>;
+  let uSwap: ReturnType<typeof USwap>;
 
   beforeEach(() => {
-    swapKit = SwapKit({
+    uSwap = USwap({
       plugins: { thorchain: ThorchainPlugin },
       wallets: { keystore: keystoreWallet },
     });
@@ -453,7 +454,7 @@ describe("Swap Integration", () => {
         recipientAddress: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
       };
 
-      const quote = await swapKit.getQuote(quoteParams);
+      const quote = await uSwap.getQuote(quoteParams);
 
       expect(quote).toBeDefined();
       expect(quote.routes).toBeDefined();
@@ -474,7 +475,7 @@ describe("Swap Integration", () => {
       recipientAddress: "invalid-address",
     };
 
-    await expect(swapKit.getQuote(invalidParams as any)).rejects.toThrow();
+    await expect(uSwap.getQuote(invalidParams as any)).rejects.toThrow();
   });
 
   test(
@@ -488,7 +489,7 @@ describe("Swap Integration", () => {
         recipientAddress: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
       };
 
-      await expect(swapKit.getQuote(quoteParams)).rejects.toThrow();
+      await expect(uSwap.getQuote(quoteParams)).rejects.toThrow();
     },
     { timeout: 30000 }
   );
@@ -506,7 +507,7 @@ Create mocks for external API calls:
 
 import { mock } from "bun:test";
 
-export const mockSwapKitApi = {
+export const mockuSwapApi = {
   getPrice: mock(() => Promise.resolve(2500)),
 
   getSwapQuote: mock(() =>
@@ -852,7 +853,7 @@ export const testAddresses = {
   [Chain.THORChain]: "thor1x96cfrxhe2qfvs5qqe3t9z8gk8chkwaqmhc4vj",
 };
 
-export function expectSwapKitError(error: any, expectedKey: string) {
+export function expectUSwapError(error: any, expectedKey: string) {
   expect(error).toBeInstanceOf(USwapError);
   expect(error.message).toContain(expectedKey);
 }
@@ -896,7 +897,7 @@ Test performance under load:
 // @noErrorValidation
 
 import { describe, expect, test } from "bun:test";
-import { SwapKitApi } from "@uswap/helpers/api";
+import { USwapApi } from "@uswap/helpers/api";
 
 describe("Performance Tests", () => {
   test(
@@ -906,7 +907,7 @@ describe("Performance Tests", () => {
       const startTime = performance.now();
 
       const prices = await Promise.all(
-        assets.map((asset) => SwapKitApi.getPrice(asset))
+        assets.map((asset) => USwapApi.getPrice(asset))
       );
 
       const duration = performance.now() - startTime;
@@ -923,7 +924,7 @@ describe("Performance Tests", () => {
     async () => {
       const requests = Array(50)
         .fill(0)
-        .map(() => SwapKitApi.getPrice("ETH"));
+        .map(() => USwapApi.getPrice("ETH"));
 
       const results = await Promise.allSettled(requests);
       const successful = results.filter((r) => r.status === "fulfilled").length;

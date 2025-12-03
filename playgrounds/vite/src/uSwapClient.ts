@@ -1,43 +1,47 @@
-import { AssetValue, createSwapKit, SKConfig } from "@uswap/sdk";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
 
-let skClient: ReturnType<typeof createSwapKit> | undefined;
-let currentConfig: { walletConnectProjectId?: string; brokerEndpoint?: string; swapKit?: string } = {};
+import { AssetValue, createUSwap, USwapConfig } from "@uswap/sdk";
 
-export const getSwapKitClient = ({
+let uSwapClient: ReturnType<typeof createUSwap> | undefined;
+let currentConfig: { walletConnectProjectId?: string; brokerEndpoint?: string; uSwap?: string } = {};
+
+export const getUSwapClient = ({
   walletConnectProjectId,
   brokerEndpoint,
-  swapKit,
+  uSwap,
 }: {
   walletConnectProjectId?: string;
   brokerEndpoint?: string;
-  swapKit?: string;
+  uSwap?: string;
 } = {}) => {
   const configChanged =
     currentConfig.walletConnectProjectId !== walletConnectProjectId ||
     currentConfig.brokerEndpoint !== brokerEndpoint ||
-    currentConfig.swapKit !== swapKit;
+    currentConfig.uSwap !== uSwap;
 
-  if (skClient && !configChanged) {
+  if (uSwapClient && !configChanged) {
     const { apiKeys, envs, integrations, apis, chains, feeMultipliers, requestOptions, rpcUrls, wallets } =
-      SKConfig.getState();
+      USwapConfig.getState();
 
     return {
       config: { apiKeys, apis, chains, envs, feeMultipliers, integrations, requestOptions, rpcUrls, wallets },
-      skClient,
+      uSwapClient,
     };
   }
 
-  if (configChanged && skClient) {
-    skClient.disconnectAll();
-    skClient = undefined;
+  if (configChanged && uSwapClient) {
+    uSwapClient.disconnectAll();
+    uSwapClient = undefined;
   }
 
-  currentConfig = { brokerEndpoint, swapKit, walletConnectProjectId };
+  currentConfig = { brokerEndpoint, uSwap: uSwap, walletConnectProjectId };
 
   const config = {
     apiKeys: {
       keepKey: localStorage.getItem("keepkeyApiKey") || "1234",
-      swapKit: swapKit || process.env.TEST_API_KEY || "",
+      uSwap: uSwap || process.env.TEST_API_KEY || "",
       walletConnectProjectId: walletConnectProjectId || "",
       xaman: process.env.XAMAN_API_KEY || "",
     },
@@ -47,25 +51,25 @@ export const getSwapKitClient = ({
       keepKey: {
         basePath: "http://localhost:1646/spec/swagger.json",
         imageUrl: "https://repository-images.githubusercontent.com/587472295/feec8a61-39b2-4615-b293-145e97f49b5a",
-        name: "swapKit-demo-app",
+        name: "uSwap-demo-app",
         url: "http://localhost:1646",
       },
     },
   };
 
-  skClient = createSwapKit({ config });
+  uSwapClient = createUSwap({ config });
 
-  return { config, skClient };
+  return { config, uSwapClient };
 };
 
-export const resetSwapKitClient = () => {
-  if (skClient) {
-    skClient.disconnectAll();
+export const resetUSwapClient = () => {
+  if (uSwapClient) {
+    uSwapClient.disconnectAll();
   }
-  skClient = undefined;
+  uSwapClient = undefined;
   currentConfig = {};
 };
 
 await AssetValue.loadStaticAssets();
 
-export type SwapKitClient = ReturnType<typeof getSwapKitClient>["skClient"];
+export type USwapClient = ReturnType<typeof getUSwapClient>["uSwapClient"];

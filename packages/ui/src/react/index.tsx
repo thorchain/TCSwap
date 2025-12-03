@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 export * from "./components/asset-icon";
 export * from "./components/chain-icon";
 export * from "./components/composable/swap-asset-item";
@@ -7,6 +11,6 @@ export * from "./components/dialogs/wallet-connect-dialog";
 export * from "./components/wallet-icon";
 
 export * from "./hooks/use-modal";
-export * from "./swapkit-context";
-export * from "./swapkit-widget";
 export * from "./types";
+export * from "./uswap-context";
+export * from "./uswap-widget";

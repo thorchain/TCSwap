@@ -1,3 +1,7 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 
 import { AssetValue, Chain, getMAYANameCost } from "@uswap/helpers";
@@ -29,8 +33,8 @@ export default function Send() {
                 return;
               }
 
-              swapKit.mayachain.registerName({
-                address: swapKit.getAddress(Chain.Maya),
+              uSwap.mayachain.registerName({
+                address: uSwap.getAddress(Chain.Maya),
                 assetValue: AssetValue.from({ chain: Chain.Maya, value: getMAYANameCost(1) }),
                 chain: Chain.Maya,
                 name,

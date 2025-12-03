@@ -1,5 +1,9 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test";
-import { AssetValue, Chain, SKConfig } from "@uswap/helpers";
+import { AssetValue, Chain, USwapConfig } from "@uswap/helpers";
 import { createTronToolbox, getTronAddressValidator } from "../toolbox";
 
 const context: {
@@ -16,7 +20,7 @@ beforeEach(async () => {
 });
 
 afterAll(() => {
-  SKConfig.reinitialize();
+  USwapConfig.reinitialize();
 });
 
 describe("TRON Address Validation", () => {

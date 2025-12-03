@@ -1,8 +1,12 @@
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
 "use client";
 import { type AssetValue, FeeOption, getExplorerTxUrl, type QuoteResponseRoute } from "@uswap/sdk";
 import { useCallback } from "react";
 
-import type { SwapKitClient } from "../swapKitClient";
+import type { USwapClient } from "../uSwapClient";
 import { SwapInputs } from "./SwapInputs";
 
 export default function Swap({
@@ -12,7 +16,7 @@ export default function Swap({
 }: {
   inputAsset?: AssetValue;
   outputAsset?: AssetValue;
-  skClient?: SwapKitClient;
+  skClient?: USwapClient;
 }) {
   const handleSwap = useCallback(
     async (route: QuoteResponseRoute, isChainflipBoost = false) => {

@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -28,5 +26,5 @@ export const SolanaPlugin = createPlugin({
     },
   }),
   name: "solana",
-  properties: { supportedSwapkitProviders: [ProviderName.JUPITER] as const },
+  properties: { supportedUSwapProviders: [ProviderName.JUPITER] as const },
 });

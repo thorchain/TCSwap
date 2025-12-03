@@ -1,6 +1,4 @@
 /**
- * Based on code from SwapKit (https://github.com/swapkit/SwapKit),
- * licensed under the Apache License 2.0.
  * Modifications © 2025 Horizontal Systems.
  */
 
@@ -15,7 +13,7 @@ import {
   derivationPathToString,
   FeeOption,
   NetworkDerivationPath,
-  SKConfig,
+  USwapConfig,
   USwapError,
   updateDerivationPath,
 } from "@uswap/helpers";
@@ -63,7 +61,7 @@ function createZcashSignerFromPhrase({
   const keyPair = ECPair.fromPrivateKey(Buffer.from(node.privateKey), { network: ecpairNetwork });
 
   const pubKeyHash = crypto.hash160(keyPair.publicKey);
-  const { isStagenet } = SKConfig.get("envs");
+  const { isStagenet } = USwapConfig.get("envs");
 
   const prefix = isStagenet
     ? Buffer.from([0x1d, 0x25]) // testnet prefix (results in tm... addresses)

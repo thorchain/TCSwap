@@ -1,17 +1,18 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
-title: Creating a SwapKit Plugin
-description: Learn how to create a custom plugin for SwapKit
+title: Creating a USwap Plugin
+description: Learn how to create a custom plugin for USwap
 ---
 
-SwapKit plugins extend the functionality of the core library to support various DeFi protocols and services. This guide explains how to create a custom plugin for SwapKit.
+USwap plugins extend the functionality of the core library to support various DeFi protocols and services. This guide explains how to create a custom plugin for USwap.
 
 ## Plugin Structure
 
-A SwapKit plugin consists of the following components:
+A USwap plugin consists of the following components:
 
 1. A plugin factory created with `createPlugin`
 2. Plugin methods that interact with external services or smart contracts
-3. Integration with the SwapKit client
+3. Integration with the USwap client
 
 ## Basic Plugin Example
 
@@ -43,7 +44,7 @@ type QuoteParams = {
 export const ExamplePlugin = createPlugin({
   name: "example",
   properties: {
-    supportedSwapkitProviders: ["your-provider-name"],
+    supportedUSwapProviders: ["your-provider-name"],
   },
   methods: ({ getWallet }) => ({
     swap: async function exampleSwap({ route }: SwapParams) {
@@ -140,7 +141,7 @@ const approve = ({ approveMode, getWallet }) =>
 export const ExchangePlugin = createPlugin({
   name: "exchange",
   properties: {
-    supportedSwapkitProviders: [ProviderName.CUSTOM_EXCHANGE],
+    supportedUSwapProviders: [ProviderName.CUSTOM_EXCHANGE],
   },
   methods: ({ getWallet }) => ({
 
@@ -236,41 +237,41 @@ export const ExchangePlugin = createPlugin({
 });
 ```
 
-## Using Your Plugin with SwapKit
+## Using Your Plugin with USwap
 
-Once you've created your plugin, you can use it with the SwapKit client:
+Once you've created your plugin, you can use it with the USwap client:
 
 ```ts twoslash
-import { createSwapKit, Chain, keystoreWallet } from "@uswap/sdk";
+import { createUSwap, Chain, keystoreWallet } from "@uswap/sdk";
 
 import { ExamplePlugin } from "./example-plugin";
 
-const swapKit = createSwapKit({
+const uSwap = createUSwap({
   plugins: { examplePlugin: ExamplePlugin },
   wallets: { ...keystoreWallet },
 });
 
 async function connectAndUsePlugin() {
-  await swapKit.connectKeystore(
+  await uSwap.connectKeystore(
     [Chain.Bitcoin, Chain.Ethereum],
     "your secret phrase here"
   );
 
-  const quoteResponse = await swapKit.examplePlugin.getQuote({
+  const quoteResponse = await uSwap.examplePlugin.getQuote({
     sellAsset: "ETH.ETH",
     buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     sellAmount: "0.1",
   });
 
   if (quoteResponse.success) {
-    const txHash = await swapKit.swap({ route: quoteResponse.data.routes[0] });
+    const txHash = await uSwap.swap({ route: quoteResponse.data.routes[0] });
   }
 }
 ```
 
 ## Best Practices
 
-When creating a SwapKit plugin, follow these best practices:
+When creating a USwap plugin, follow these best practices:
 
 1. **Error Handling**: Use USwapError for consistent error reporting
 2. **Type Safety**: Leverage TypeScript to provide proper type definitions
@@ -279,4 +280,4 @@ When creating a SwapKit plugin, follow these best practices:
 5. **Validation**: Validate inputs to prevent runtime errors
 6. **Security**: Be careful with sensitive data and external API calls
 
-By following this guide, you should be able to create, test, and integrate custom plugins with SwapKit.
+By following this guide, you should be able to create, test, and integrate custom plugins with USwap.

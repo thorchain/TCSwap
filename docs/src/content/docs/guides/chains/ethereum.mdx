@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Ethereum Integration
-description: Complete guide to integrating Ethereum with SwapKit SDK for DeFi operations and cross-chain swaps
+description: Complete guide to integrating Ethereum with USwap SDK for DeFi operations and cross-chain swaps
 ---
 
 import { Card, CardGrid, Code, Tabs, TabItem } from "@astrojs/starlight/components";
 
-This guide covers Ethereum integration with SwapKit, including wallet connections, token transfers, cross-chain swaps, and EVM-specific features.
+This guide covers Ethereum integration with USwap, including wallet connections, token transfers, cross-chain swaps, and EVM-specific features.
 
 ## Overview
 
-Ethereum is the leading smart contract blockchain and the foundation of DeFi. SwapKit provides comprehensive Ethereum support through:
+Ethereum is the leading smart contract blockchain and the foundation of DeFi. USwap provides comprehensive Ethereum support through:
 
 - **Ethereum Toolbox**: Core blockchain operations (transfers, contract calls, gas estimation)
 - **EVM Plugin**: Enhanced features for decentralized exchanges and cross-chain operations
@@ -35,11 +36,11 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createSwapKit, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@uswap/sdk';
 
-const swapKit = createSwapKit();
+const uSwap = createUSwap();
 
-const ethWallet = await swapKit.getWallet(Chain.Ethereum);
+const ethWallet = await uSwap.getWallet(Chain.Ethereum);
 
 ````
 </TabItem>
@@ -75,13 +76,13 @@ Connect to Ethereum using various wallet types:
 // @noErrorValidation
 import { Chain, FeeOption } from "@uswap/sdk";
 
-await swapKit.connectKeystore([Chain.Ethereum], "your mnemonic phrase");
+await uSwap.connectKeystore([Chain.Ethereum], "your mnemonic phrase");
 
-await swapKit.connectBrowserWallet(Chain.Ethereum);
+await uSwap.connectBrowserWallet(Chain.Ethereum);
 
-await swapKit.connectWalletConnect([Chain.Ethereum]);
+await uSwap.connectWalletConnect([Chain.Ethereum]);
 
-await swapKit.connectLedger([Chain.Ethereum]);
+await uSwap.connectLedger([Chain.Ethereum]);
 ```
 
 ### Native ETH Transfers
@@ -90,7 +91,7 @@ await swapKit.connectLedger([Chain.Ethereum]);
 // @noErrorValidation
 import { AssetValue } from "@uswap/sdk";
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Ethereum,
@@ -107,7 +108,7 @@ console.log(`Transaction hash: ${txHash}`);
 ```typescript
 // @noErrorValidation
 
-const usdcTransfer = await swapKit.transfer({
+const usdcTransfer = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({
     chain: Chain.Ethereum,
@@ -230,28 +231,28 @@ Use Ethereum as source or destination for cross-chain swaps via THORChain:
 ```typescript
 // @noErrorValidation
 
-const ethToBtcQuote = await swapKit.getQuote({
+const ethToBtcQuote = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "1",
   buyAsset: "BTC.BTC",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Bitcoin),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Bitcoin),
 });
 
-const swapTx = await swapKit.swap({
+const swapTx = await uSwap.swap({
   route: ethToBtcQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
 
-const usdcToRuneQuote = await swapKit.getQuote({
+const usdcToRuneQuote = await uSwap.getQuote({
   sellAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   sellAmount: "1000",
   buyAsset: "THOR.RUNE",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.THORChain),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.THORChain),
 });
 
-const swapResult = await swapKit.swap({
+const swapResult = await uSwap.swap({
   route: usdcToRuneQuote.routes[0],
   feeOptionKey: FeeOption.Average,
 });
@@ -259,30 +260,30 @@ const swapResult = await swapKit.swap({
 
 ## DEX Integration
 
-SwapKit supports major Ethereum DEXs through integrated routing:
+USwap supports major Ethereum DEXs through integrated routing:
 
 ```typescript
 // @noErrorValidation
 
-const uniswapQuote = await swapKit.getQuote({
+const uniswapQuote = await uSwap.getQuote({
   sellAsset: "ETH.ETH",
   sellAmount: "1",
   buyAsset: "ETH.USDC-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
   providers: ["UNISWAPV3"],
 });
 
-const oneinchQuote = await swapKit.getQuote({
+const oneinchQuote = await uSwap.getQuote({
   sellAsset: "ETH.DAI-0x6B175474E89094C44Da98b954EedeAC495271d0F",
   sellAmount: "1000",
   buyAsset: "ETH.WBTC-0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-  senderAddress: swapKit.getAddress(Chain.Ethereum),
-  recipientAddress: swapKit.getAddress(Chain.Ethereum),
+  senderAddress: uSwap.getAddress(Chain.Ethereum),
+  recipientAddress: uSwap.getAddress(Chain.Ethereum),
   providers: ["ONEINCH"],
 });
 
-const dexSwap = await swapKit.swap({
+const dexSwap = await uSwap.swap({
   route: oneinchQuote.routes[0],
   feeOptionKey: FeeOption.Fast,
 });
@@ -325,7 +326,7 @@ const feeOptions = {
   [FeeOption.Fastest]: 2.0,
 };
 
-const customTx = await swapKit.transfer({
+const customTx = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
   assetValue: AssetValue.from({ chain: Chain.Ethereum, value: "0.1" }),
   gasLimit: "21000",
@@ -343,7 +344,7 @@ Handle Ethereum-specific errors appropriately:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.transfer({
+  await uSwap.transfer({
     /* ... */
   });
 } catch (error) {
@@ -388,9 +389,9 @@ const toolbox = await getEthereumToolbox({
 });
 
 
-import { SKConfig } from '@uswap/sdk';
+import { USwapConfig } from '@uswap/sdk';
 
-SKConfig.setRpcUrl(Chain.Ethereum, [
+USwapConfig.setRpcUrl(Chain.Ethereum, [
   "https:
   "https:
   "https:
@@ -402,8 +403,8 @@ SKConfig.setRpcUrl(Chain.Ethereum, [
 ```typescript
 // @noErrorValidation
 
-SKConfig.setRpcUrl(Chain.Ethereum, "https:
-SKConfig.setEnv('isMainnet', false);
+USwapConfig.setRpcUrl(Chain.Ethereum, "https:
+USwapConfig.setEnv('isMainnet', false);
 
 
 const testToolbox = await getEthereumToolbox({ phrase: "..." });
@@ -414,7 +415,7 @@ const testToolbox = await getEthereumToolbox({ phrase: "..." });
 ```typescript
 // @noErrorValidation
 
-const txHash = await swapKit.transfer({
+const txHash = await uSwap.transfer({
   /* ... */
 });
 
@@ -546,9 +547,9 @@ const privateTx = await toolbox.sendPrivateTransaction({
 ```typescript
 // @noErrorValidation
 
-import { SKConfig } from "@uswap/sdk";
+import { USwapConfig } from "@uswap/sdk";
 
-SKConfig.setEnv("debug", true);
+USwapConfig.setEnv("debug", true);
 
 const txParams = await toolbox.buildTransaction({
   recipient: "0x...",
@@ -618,7 +619,7 @@ console.log("Transaction parameters:", txParams);
 
 ## Quick Navigation
 
-**New to SwapKit?** Start with [Getting Started](/start/getting-started) to learn the basics.
+**New to USwap?** Start with [Getting Started](/start/getting-started) to learn the basics.
 
 **Building multi-chain apps?** Explore [Bitcoin](/guides/chains/bitcoin) and [Cosmos](/guides/chains/cosmos) integrations.
 

@@ -1,4 +1,8 @@
-import type { PluginName, SKPlugins } from "./types";
+/**
+ * Modifications © 2025 Horizontal Systems.
+ */
+
+import type { PluginName, USwapPlugins } from "./types";
 
 export * from "./types";
 export * from "./utils";
@@ -33,5 +37,5 @@ export async function loadPlugin<P extends PluginName>(pluginName: P) {
     })
     .exhaustive();
 
-  return plugin as unknown as SKPlugins[P];
+  return plugin as unknown as USwapPlugins[P];
 }

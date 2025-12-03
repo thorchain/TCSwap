@@ -1,11 +1,12 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
-title: What's New in SwapKit v4
-description: Discover the latest features, improvements, and breaking changes in SwapKit v4
+title: What's New in USwap v4
+description: Discover the latest features, improvements, and breaking changes in USwap v4
 ---
 
 import { Card, CardGrid, Badge } from "@astrojs/starlight/components";
 
-SwapKit v4 brings significant improvements to developer experience, runtime flexibility, and overall architecture. Here's everything new and exciting in this major release.
+USwap v4 brings significant improvements to developer experience, runtime flexibility, and overall architecture. Here's everything new and exciting in this major release.
 
 ## 🚀 Major Features
 
@@ -13,14 +14,14 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
   <Card title="Runtime Configuration Updates" icon="setting">
     <Badge text="Game Changer" variant="success" size="small" />
 
-    Update API keys, RPC URLs, and settings without recreating the SwapKit client. Perfect for production environments and dynamic configuration management.
+    Update API keys, RPC URLs, and settings without recreating the USwap client. Perfect for production environments and dynamic configuration management.
 
     ```typescript
-    import { SKConfig } from '@uswap/sdk';
+    import { USwapConfig } from '@uswap/sdk';
 
 
-    SKConfig.setRpcUrl(Chain.Ethereum, "https:
-    SKConfig.setApiKey("swapKit", "new-api-key");
+    USwapConfig.setRpcUrl(Chain.Ethereum, "https:
+    USwapConfig.setApiKey("uSwap", "new-api-key");
     ```
 
     [Learn more →](/others/migrate-to-v4#major-breaking-changes)
@@ -34,7 +35,7 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
 
     ```typescript
 
-    import { createSwapKit, Chain } from '@uswap/sdk';
+    import { createUSwap, Chain } from '@uswap/sdk';
     import { ThorchainPlugin } from '@uswap/plugins/thorchain';
     ```
 
@@ -56,7 +57,7 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
   <Card title="Standardized Creation Helpers" icon="star">
     <Badge text="Developer Experience" variant="tip" size="small" />
 
-    New `createPlugin` and `createWallet` helpers provide consistent interfaces for extending SwapKit functionality.
+    New `createPlugin` and `createWallet` helpers provide consistent interfaces for extending USwap functionality.
 
     ```typescript
     import { createPlugin } from '@uswap/plugins';
@@ -79,7 +80,7 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
 
 ### Configuration System
 
-- Introduced centralized `SKConfig` system
+- Introduced centralized `USwapConfig` system
 - Removed direct API/RPC parameters from constructors
 - Runtime configuration updates now possible
 
@@ -115,7 +116,7 @@ SwapKit v4 brings significant improvements to developer experience, runtime flex
 ```typescript
 // @noErrorValidation
 
-const client = SwapKit({
+const client = USwap({
   apis: { [Chain.Ethereum]: customApi },
   rpcUrls: { [Chain.Ethereum]: "https:
   config: { stagenet: false },
@@ -124,7 +125,7 @@ const client = SwapKit({
 });
 
 
-const client = createSwapKit({
+const client = createUSwap({
   config: {
     rpcUrls: { [Chain.Ethereum]: "https:
     apiKeys: { blockchair: "your-key" }
@@ -139,11 +140,11 @@ const client = createSwapKit({
 ```typescript
 // @noErrorValidation
 
-SKConfig.setEnv("isStagenet", true);
-SKConfig.setRpcUrl(Chain.THORChain, "https:
+USwapConfig.setEnv("isStagenet", true);
+USwapConfig.setRpcUrl(Chain.THORChain, "https:
 
 
-const balance = await swapKit.getBalance(Chain.THORChain);
+const balance = await uSwap.getBalance(Chain.THORChain);
 ```
 
 ### Enhanced Error Handling
@@ -183,12 +184,12 @@ Improved error messages with more context and better debugging information for f
 ```typescript
 // @noErrorValidation
 
-SKConfig.setApiKey("swapKit", "premium-key");
-SKConfig.setApiKey("blockchair", "enterprise-key");
+USwapConfig.setApiKey("uSwap", "premium-key");
+USwapConfig.setApiKey("blockchair", "enterprise-key");
 
 
-SKConfig.setRpcUrl(Chain.Ethereum, "https:
-SKConfig.setRpcUrl(Chain.Arbitrum, "https:
+USwapConfig.setRpcUrl(Chain.Ethereum, "https:
+USwapConfig.setRpcUrl(Chain.Arbitrum, "https:
 ```
 
 ### Bulk Configuration
@@ -196,14 +197,14 @@ SKConfig.setRpcUrl(Chain.Arbitrum, "https:
 ```typescript
 // @noErrorValidation
 
-SKConfig.set({
+USwapConfig.set({
   rpcUrls: {
     [Chain.Ethereum]: "https:
     [Chain.Arbitrum]: "https:
   },
   apiKeys: {
     blockchair: "enterprise-key",
-    swapKit: "premium-key"
+    uSwap: "premium-key"
   },
   envs: {
     isStagenet: false,
@@ -217,18 +218,18 @@ SKConfig.set({
 ```typescript
 // @noErrorValidation
 
-SKConfig.set({
+USwapConfig.set({
   envs: { isDev: false, isStagenet: false },
   apiKeys: {
-    swapKit: process.env.SWAPKIT_PROD_KEY,
+    uSwap: process.env.USWAP_PROD_KEY,
     blockchair: process.env.BLOCKCHAIR_PROD_KEY,
   },
 });
 
-SKConfig.set({
+USwapConfig.set({
   envs: { isDev: true, isStagenet: true },
   apiKeys: {
-    swapKit: process.env.SWAPKIT_DEV_KEY,
+    uSwap: process.env.USWAP_DEV_KEY,
     blockchair: process.env.BLOCKCHAIR_DEV_KEY,
   },
 });
@@ -241,7 +242,7 @@ Ready to upgrade? Follow our comprehensive migration guide:
 1. **[Review Breaking Changes](/others/migrate-to-v4#major-breaking-changes)** - Understand what's changed
 2. **[Update Dependencies](/others/migrate-to-v4#step-1-update-dependencies)** - Install v4 packages
 3. **[Update Imports](/others/migrate-to-v4#step-2-update-imports)** - Fix import paths
-4. **[Refactor Configuration](/others/migrate-to-v4#step-3-update-client-initialization)** - Use SKConfig system
+4. **[Refactor Configuration](/others/migrate-to-v4#step-3-update-client-initialization)** - Use USwapConfig system
 5. **[Test Integration](/others/migrate-to-v4#migration-checklist)** - Verify everything works
 
 ## 💬 Community & Support

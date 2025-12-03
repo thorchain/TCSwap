@@ -1,15 +1,16 @@
+{/* Modifications © 2025 Horizontal Systems. */}
 ---
 title: Core Concepts
-description: Understanding SwapKit's fundamental building blocks - AssetValue, SwapKitNumber, and error handling
+description: Understanding USwap's fundamental building blocks - AssetValue, USwapNumber, and error handling
 ---
 
 import { Card, CardGrid, Code, Tabs, TabItem } from "@astrojs/starlight/components";
 
-Before diving into SwapKit's features, it's essential to understand its core concepts. These building blocks are used throughout the SDK and understanding them will make your development experience much smoother.
+Before diving into USwap's features, it's essential to understand its core concepts. These building blocks are used throughout the SDK and understanding them will make your development experience much smoother.
 
 ## AssetValue
 
-`AssetValue` is SwapKit's primary way of representing amounts of any asset across all supported chains. It handles decimal precision, formatting, and arithmetic operations automatically.
+`AssetValue` is USwap's primary way of representing amounts of any asset across all supported chains. It handles decimal precision, formatting, and arithmetic operations automatically.
 
 ### Creating AssetValue
 
@@ -31,7 +32,7 @@ const oneEthInWei = AssetValue.from({
 
 ### Asset Notation
 
-SwapKit uses a consistent format for identifying assets:
+USwap uses a consistent format for identifying assets:
 
 ```typescript
 // @noErrorValidation
@@ -118,17 +119,17 @@ usdcAmount.isGasAsset();
 synthEth.isSynthetic();
 ```
 
-## SwapKitNumber
+## USwapNumber
 
-`SwapKitNumber` provides utilities for safe numeric operations with BigInt support:
+`USwapNumber` provides utilities for safe numeric operations with BigInt support:
 
 ```typescript
 // @noErrorValidation
-import { SwapKitNumber } from "@uswap/sdk";
+import { USwapNumber } from "@uswap/sdk";
 
-const num1 = new SwapKitNumber(123.456);
-const num2 = new SwapKitNumber("789.012");
-const num3 = new SwapKitNumber({ value: 100, decimal: 18 });
+const num1 = new USwapNumber(123.456);
+const num2 = new USwapNumber("789.012");
+const num3 = new USwapNumber({ value: 100, decimal: 18 });
 
 const sum = num1.add(num2);
 const product = num1.mul(num2);
@@ -139,7 +140,7 @@ num1.toFixed(2);
 
 ## Chain Types
 
-SwapKit uses consistent chain identifiers across the entire SDK:
+USwap uses consistent chain identifiers across the entire SDK:
 
 ```typescript
 // @noErrorValidation
@@ -174,7 +175,7 @@ Chain.Ripple;
 
 ## Error Handling
 
-SwapKit uses a typed error system for better debugging:
+USwap uses a typed error system for better debugging:
 
 ### USwapError
 
@@ -185,7 +186,7 @@ The base error class with additional context:
 import { USwapError } from "@uswap/sdk";
 
 try {
-  await swapKit.swap({ route });
+  await uSwap.swap({ route });
 } catch (error) {
   if (error instanceof USwapError) {
     console.error("Error:", error.message);
@@ -197,7 +198,7 @@ try {
 
 ### Common Error Codes
 
-SwapKit uses standardized error codes:
+USwap uses standardized error codes:
 
 ```typescript
 // @noErrorValidation
@@ -239,7 +240,7 @@ catch (error) {
 
 ## Wallet Types
 
-SwapKit supports various wallet types through the `WalletOption` enum:
+USwap supports various wallet types through the `WalletOption` enum:
 
 ```typescript
 // @noErrorValidation
@@ -264,7 +265,7 @@ FeeOption.Average;
 FeeOption.Fast;
 FeeOption.Fastest;
 
-await swapKit.transfer({
+await uSwap.transfer({
   assetValue,
   recipient,
   feeOptionKey: FeeOption.Fast,
@@ -273,7 +274,7 @@ await swapKit.transfer({
 
 ## Provider Types
 
-SwapKit integrates with multiple swap providers:
+USwap integrates with multiple swap providers:
 
 ```typescript
 // @noErrorValidation
@@ -295,9 +296,9 @@ ProviderName.PANCAKESWAP;
 // @noErrorValidation
 
 const amount = AssetValue.from({ asset: "ETH.ETH", value: 1 });
-await swapKit.transfer({ assetValue: amount, recipient });
+await uSwap.transfer({ assetValue: amount, recipient });
 
-await swapKit.transfer({ value: 1, recipient });
+await uSwap.transfer({ value: 1, recipient });
 ```
 
 ### 2. Handle Decimal Precision
@@ -345,16 +346,16 @@ const usdValue = btcBalance.toCurrency("USD", btcPrice);
 
 ## Next Steps
 
-Now that you understand SwapKit's core concepts, you're ready to build your first application:
+Now that you understand USwap's core concepts, you're ready to build your first application:
 
 <CardGrid>
   <Card title="🔧 Configuration Setup" icon="setting">
     Configure API keys, RPC URLs, and production settings for optimal
-    performance. [Configure SwapKit →](/start/configuration)
+    performance. [Configure USwap →](/start/configuration)
   </Card>
 
   <Card title="⚡ Essential Actions" icon="star">
-    Learn the core functionality every SwapKit application needs to implement.
+    Learn the core functionality every USwap application needs to implement.
     [Connect Wallets →](/guides/actions/connect-wallet)
   </Card>
 
@@ -364,7 +365,7 @@ Now that you understand SwapKit's core concepts, you're ready to build your firs
   </Card>
 
   <Card title="📚 API Reference" icon="document">
-    Explore the complete SwapKit API with detailed method documentation. [API
+    Explore the complete USwap API with detailed method documentation. [API
     Reference →](/guides/api-reference)
   </Card>
 </CardGrid>
