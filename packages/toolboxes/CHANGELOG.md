@@ -9,6 +9,13 @@
 - Updated dependencies []:
   - @uswap/helpers@4.5.11
 
+## 4.3.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.9
+
 ## 4.3.9
 
 ### Patch Changes

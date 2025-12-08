@@ -10,6 +10,16 @@
   - @uswap/wallets@4.3.12
   - @uswap/core@4.1.12
 
+## 4.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/core@4.1.11
+  - @uswap/helpers@4.5.9
+  - @uswap/plugins@4.2.10
+  - @uswap/wallets@4.3.11
+
 ## 4.1.10
 
 ### Patch Changes

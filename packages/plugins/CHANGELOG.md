@@ -8,6 +8,14 @@
   - @uswap/toolboxes@4.3.11
   - @uswap/helpers@4.5.11
 
+## 4.2.10
+
+### Patch Changes
+
+- Updated dependencies [[`7cbd7b6`](https://github.com/horizontalsystems/USwap/commit/7cbd7b6aac79fbf186149ebc78954f513e7ae0dd), [`a3c50c0`](https://github.com/horizontalsystems/USwap/commit/a3c50c0ef56eb00121009ed9f13ea601cc8ece38)]:
+  - @uswap/toolboxes@4.3.10
+  - @uswap/helpers@4.5.9
+
 ## 4.2.9
 
 ### Patch Changes

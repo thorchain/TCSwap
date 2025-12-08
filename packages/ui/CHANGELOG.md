@@ -12,6 +12,16 @@
 
 # @uswap/ui
 
+## 0.3.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.9
+  - @uswap/sdk@4.2.11
+  - @uswap/wallet-keystore@4.1.10
+  - @uswap/wallets@4.3.11
+
 ## 0.3.10
 
 ### Patch Changes
