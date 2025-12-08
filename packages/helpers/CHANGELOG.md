@@ -1,4 +1,14 @@
 <!-- Modifications © 2025 Magic Systems. -->
+
+## 4.5.11
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/tokens@4.1.4
+
 # @uswap/helpers
 
 ## 4.5.9

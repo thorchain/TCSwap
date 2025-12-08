@@ -1,5 +1,17 @@
 # @uswap/browser
 
+## 4.1.12
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.11
+  - @uswap/plugins@4.2.11
+  - @uswap/wallets@4.3.12
+  - @uswap/core@4.1.12
+
 ## 4.1.10
 
 ### Patch Changes

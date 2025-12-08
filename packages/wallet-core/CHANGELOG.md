@@ -1,5 +1,14 @@
 # @uswap/wallet-core
 
+## 4.0.55
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.11
+
 ## 4.0.53
 
 ### Patch Changes

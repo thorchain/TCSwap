@@ -1,5 +1,13 @@
 # @uswap/wallet-mobile
 
+## 4.0.55
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/toolboxes@4.3.11
+  - @uswap/helpers@4.5.11
+
 ## 4.0.53
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @uswap/wallet-keystore
 
+## 4.1.11
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/wallet-core@4.0.55
+  - @uswap/toolboxes@4.3.11
+  - @uswap/helpers@4.5.11
+
 ## 4.1.9
 
 ### Patch Changes

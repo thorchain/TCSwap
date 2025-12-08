@@ -1,5 +1,15 @@
 # @uswap/plugins
 
+## 4.2.11
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/toolboxes@4.3.11
+  - @uswap/helpers@4.5.11
+
 ## 4.2.9
 
 ### Patch Changes

@@ -1,4 +1,17 @@
 <!-- Modifications © 2025 Magic Systems. -->
+
+## 4.1.12
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/toolboxes@4.3.11
+  - @uswap/helpers@4.5.11
+  - @uswap/plugins@4.2.11
+  - @uswap/wallets@4.3.12
+
 # @uswap/core
 
 ## 4.1.10

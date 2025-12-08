@@ -1,4 +1,17 @@
 <!-- Modifications © 2025 Magic Systems. -->
+
+## 0.3.12
+
+### Patch Changes
+
+- Annotations and cleanup
+
+- Updated dependencies []:
+  - @uswap/wallet-keystore@4.1.11
+  - @uswap/helpers@4.5.11
+  - @uswap/wallets@4.3.12
+  - @uswap/sdk@4.2.12
+
 # @uswap/ui
 
 ## 0.3.10
