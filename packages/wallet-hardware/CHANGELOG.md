@@ -1,10 +1,21 @@
+<!-- Modifications © 2025 Horizontal Systems. -->
+
 # @uswap/wallet-hardware
+
+## 4.2.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/wallet-core@4.0.55
+  - @uswap/toolboxes@4.3.11
+  - @uswap/helpers@4.5.11
 
 ## 4.2.10
 
 ### Patch Changes
 
-- Updated dependencies [[`4bf4ca6`](https://github.com/swapkit/SwapKit/commit/4bf4ca65b55ea81c00aafa555aef6f50009e7a20)]:
+- Updated dependencies [[`4bf4ca6`](https://github.com/horizontalsystems/USwap/commit/4bf4ca65b55ea81c00aafa555aef6f50009e7a20)]:
   - @uswap/helpers@4.5.9
   - @uswap/toolboxes@4.3.9
   - @uswap/wallet-core@4.0.53
@@ -13,13 +24,13 @@
 
 ### Patch Changes
 
-- [#1612](https://github.com/swapkit/SwapKit/pull/1612) [`e792600`](https://github.com/swapkit/SwapKit/commit/e792600199e2e488bd1817f405839f649d9debde) Thanks [@0xepicode](https://github.com/0xepicode)! - Add monad support to wallets
+- [#1612](https://github.com/horizontalsystems/USwap/pull/1612) [`e792600`](https://github.com/horizontalsystems/USwap/commit/e792600199e2e488bd1817f405839f649d9debde) Thanks [@0xepicode](https://github.com/0xepicode)! - Add monad support to wallets
 
 ## 4.2.8
 
 ### Patch Changes
 
-- Updated dependencies [[`eb73020`](https://github.com/swapkit/SwapKit/commit/eb73020fc9703e778c23ee4a17954b00730d1461), [`3f02210`](https://github.com/swapkit/SwapKit/commit/3f02210940cb5861ceb8319d7ba1fdd8ea8fb0a0)]:
+- Updated dependencies [[`eb73020`](https://github.com/horizontalsystems/USwap/commit/eb73020fc9703e778c23ee4a17954b00730d1461), [`3f02210`](https://github.com/horizontalsystems/USwap/commit/3f02210940cb5861ceb8319d7ba1fdd8ea8fb0a0)]:
   - @uswap/toolboxes@4.3.8
   - @uswap/helpers@4.5.8
   - @uswap/wallet-core@4.0.52
@@ -28,9 +39,9 @@
 
 ### Patch Changes
 
-- [#1607](https://github.com/swapkit/SwapKit/pull/1607) [`3ef370f`](https://github.com/swapkit/SwapKit/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c) Thanks [@towanTG](https://github.com/towanTG)! - Updates Zcash Consensus branch id
+- [#1607](https://github.com/horizontalsystems/USwap/pull/1607) [`3ef370f`](https://github.com/horizontalsystems/USwap/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c) Thanks [@towanTG](https://github.com/towanTG)! - Updates Zcash Consensus branch id
 
-- Updated dependencies [[`3ef370f`](https://github.com/swapkit/SwapKit/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c), [`b4ad8d4`](https://github.com/swapkit/SwapKit/commit/b4ad8d4a06eb8a12250e80c82eb2a5998badb2d1)]:
+- Updated dependencies [[`3ef370f`](https://github.com/horizontalsystems/USwap/commit/3ef370fd628a8cc4d37d3643209b66927b16b48c), [`b4ad8d4`](https://github.com/horizontalsystems/USwap/commit/b4ad8d4a06eb8a12250e80c82eb2a5998badb2d1)]:
   - @uswap/toolboxes@4.3.7
   - @uswap/helpers@4.5.7
   - @uswap/wallet-core@4.0.51

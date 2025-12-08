@@ -1,4 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
+
+## 4.1.4
+
+### Patch Changes
+
+- Annotations and cleanup
+
 # @uswap/tokens
 
 ## 4.1.2
