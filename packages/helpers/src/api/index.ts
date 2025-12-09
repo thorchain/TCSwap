@@ -4,10 +4,10 @@
 
 import { mayachainMidgard, thorchainMidgard } from "./midgard/endpoints";
 import * as thornode from "./thornode/endpoints";
-import * as uSwap from "./uSwapApi/endpoints";
+import * as uSwap from "./uswap/endpoints";
 
 export * from "./midgard/types";
 export * from "./thornode/types";
-export * from "./uSwapApi/types";
+export * from "./uswap/types";
 
 export const USwapApi = { ...uSwap, mayachainMidgard, thorchainMidgard, thornode };
