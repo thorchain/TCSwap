@@ -9,6 +9,7 @@ import {
   isGasAsset,
   type ProviderName,
   RequestClient,
+  type RequestOptions,
   USwapConfig,
   USwapError,
 } from "@uswap/helpers";
@@ -45,8 +46,8 @@ const SKRequestClient = RequestClient.extend({
   },
 });
 
-export async function getTrackerDetails(json: TrackingRequest) {
-  const response = await SKRequestClient.post<TrackerResponse>(getApiUrl("/track"), { json });
+export async function getTrackerDetails(json: TrackingRequest, options?: RequestOptions) {
+  const response = await SKRequestClient.post<TrackerResponse>(getApiUrl("/track"), { json, ...options });
 
   try {
     const parsedResponse = TrackerResponseSchema.safeParse(response);
@@ -62,12 +63,12 @@ export async function getTrackerDetails(json: TrackingRequest) {
   }
 }
 
-export async function getSwapQuote(json: QuoteRequest) {
+export async function getSwapQuote(json: QuoteRequest, options?: RequestOptions) {
   const { getQuote } = USwapConfig.get("endpoints");
 
   if (getQuote) return getQuote(json);
 
-  const response = await SKRequestClient.post<QuoteResponse>(getApiUrl("/quote"), { json });
+  const response = await SKRequestClient.post<QuoteResponse>(getApiUrl("/quote"), { json, ...options });
 
   if (response.error) {
     throw new USwapError("api_v2_server_error", { message: response.error });

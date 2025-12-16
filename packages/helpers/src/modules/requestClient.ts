@@ -5,9 +5,9 @@
 import { USwapConfig } from "./uSwapConfig";
 import { USwapError } from "./uSwapError";
 
-type RetryConfig = { maxRetries?: number; baseDelay?: number; maxDelay?: number; backoffMultiplier?: number };
+export type RetryConfig = { maxRetries?: number; baseDelay?: number; maxDelay?: number; backoffMultiplier?: number };
 
-type Options = RequestInit & {
+export type RequestOptions = RequestInit & {
   /**
    * @deprecated @V4 Use onSuccess instead - will be removed in next major
    */
@@ -36,8 +36,8 @@ const makeRequest = async (url: string, config: RequestInit) => {
   return response.json();
 };
 
-function fetchWithConfig(method: "GET" | "POST", extendOptions: Options = {}) {
-  return async function methodFetchWithConfig<T>(url: string, options: Options = {}): Promise<T> {
+function fetchWithConfig(method: "GET" | "POST", extendOptions: RequestOptions = {}) {
+  return async function methodFetchWithConfig<T>(url: string, options: RequestOptions = {}): Promise<T> {
     const {
       searchParams,
       json,
@@ -104,8 +104,8 @@ function buildUrl(url: string, searchParams?: Record<string, string>) {
 }
 
 export const RequestClient = {
-  extend: (extendOptions: Options) => ({
-    extend: (newOptions: Options) => RequestClient.extend({ ...extendOptions, ...newOptions }),
+  extend: (extendOptions: RequestOptions) => ({
+    extend: (newOptions: RequestOptions) => RequestClient.extend({ ...extendOptions, ...newOptions }),
     get: fetchWithConfig("GET", extendOptions),
     post: fetchWithConfig("POST", extendOptions),
   }),
