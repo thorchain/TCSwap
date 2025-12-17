@@ -44,9 +44,9 @@ export const SwapQuoteRouteSelectDialog = ({
                 <div className="sk-ui-flex sk-ui-items-center sk-ui-gap-2">
                   <span className="sk-ui-font-medium sk-ui-text-base sk-ui-text-foreground">{route?.providerName}</span>
 
-                  {route?.tags?.length > 0 && (
+                  {route?.tags && route.tags.length > 0 && (
                     <div className="sk-ui-rounded sk-ui-bg-success sk-ui-px-1 sk-ui-py-0.5 sk-ui-text-success-foreground sk-ui-text-xs">
-                      {match(route?.tags)
+                      {match(route.tags)
                         .when(
                           (tags) => tags?.includes(PriorityLabel.RECOMMENDED),
                           () => "Best",

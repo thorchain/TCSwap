@@ -57,7 +57,7 @@ export function USwapWidget({ config }: USwapWidgetProps) {
 
       const inputAssetValue = AssetValue.from({ asset: route?.sellAsset, value: route?.sellAmount });
 
-      if (!inputAssetValue || !uSwap) {
+      if (!inputAssetValue || !uSwap || !route?.sourceAddress || !route.routeId) {
         throw new Error("Invalid route parameters. Please check the route details and try again.");
       }
 

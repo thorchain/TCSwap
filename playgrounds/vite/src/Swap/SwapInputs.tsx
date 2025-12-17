@@ -47,7 +47,7 @@ export const SwapInputs = ({ skClient, inputAsset, outputAsset, handleSwap }: Pr
         affiliateFee: 0,
         buyAsset: outputAsset.toString(),
         destinationAddress,
-        includeTx: true,
+        dry: false,
         sellAmount: inputAssetValue.getValue("string"),
         sellAsset: inputAsset.toString(),
         slippage: 3,

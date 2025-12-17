@@ -85,7 +85,7 @@ export const useSwapQuote = ({ inputAsset, outputAsset, amount }: UseSwapQuotePa
       const quote = await USwapApi.getSwapQuote({
         buyAsset: outputAssetIdentifier,
         destinationAddress,
-        includeTx: true,
+        dry: false,
         sellAmount: amount,
         sellAsset: inputAssetIdentifier,
         slippage: 3,

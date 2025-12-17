@@ -204,7 +204,7 @@ export const QuoteRequestSchema = object({
   cfBoost: optional(boolean().describe("Set to true to enable CF boost to speed up Chainflip swaps. BTC only.")),
   destinationAddress: optional(string().describe("Address to send asset to")),
   disableSecurityChecks: optional(boolean().describe("Disable security checks")),
-  includeTx: optional(boolean().describe("Set to true to include an transaction object (EVM only)")),
+  dry: optional(boolean().describe("Set to false to include an transaction object")),
   providers: optional(
     array(
       string()
@@ -216,6 +216,7 @@ export const QuoteRequestSchema = object({
     ),
   ),
   referrer: optional(string().describe("Referrer address (referral program)")),
+  refundAddress: optional(string().describe("Address to refund")),
   sellAmount: string()
     .describe("Amount of asset to sell")
     .refine((amount) => +amount > 0, { message: "sellAmount must be greater than 0", path: ["sellAmount"] }),
@@ -526,7 +527,7 @@ export const RouteQuoteMetadataSchema = object({
   maxStreamingQuantity: number().optional(),
   referrer: string().optional(),
   streamingInterval: number().optional(),
-  tags: array(z.enum(PriorityLabel)),
+  tags: array(z.enum(PriorityLabel)).optional(),
 });
 
 export const RouteQuoteMetadataV2Schema = RouteQuoteMetadataSchema.extend({
@@ -566,19 +567,20 @@ export const QuoteResponseRouteItem = object({
   expiration: optional(string().describe("Expiration")),
   fees: FeesSchema,
   inboundAddress: optional(string().describe("Inbound address")),
-  legs: array(QuoteResponseRouteLegItem),
+  legs: optional(array(QuoteResponseRouteLegItem)),
   memo: optional(string().describe("Memo")),
   meta: RouteQuoteMetadataV2Schema,
   providers: array(z.enum(ProviderName)),
-  routeId: string().describe("Route ID"),
+  refundAddress: optional(string().describe("Refund address")),
+  routeId: optional(string().describe("Route ID")),
   sellAmount: string().describe("Sell amount"),
   sellAsset: string().describe("Asset to sell"),
-  sourceAddress: string().describe("Source address"),
+  sourceAddress: optional(string().describe("Source address")),
   targetAddress: optional(string().describe("Target address")),
-  totalSlippageBps: number().describe("Total slippage in bps"),
+  totalSlippageBps: optional(number().describe("Total slippage in bps")),
   tx: optional(union([EVMTransactionSchema, CosmosTransactionSchema, string()])),
   txType: optional(z.enum(RouteQuoteTxType)),
-  warnings: RouteQuoteWarningSchema,
+  warnings: optional(RouteQuoteWarningSchema),
 });
 
 export const QuoteResponseSchema = object({
@@ -592,7 +594,7 @@ export const QuoteResponseSchema = object({
       }),
     ),
   ),
-  quoteId: string().describe("Quote ID"),
+  quoteId: optional(string().describe("Quote ID")),
   routes: array(QuoteResponseRouteItem),
 });
 
