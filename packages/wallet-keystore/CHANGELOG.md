@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.12
+  - @uswap/toolboxes@4.3.12
+  - @uswap/wallet-core@4.0.56
+
 # @uswap/wallet-keystore
 
 ## 4.1.11

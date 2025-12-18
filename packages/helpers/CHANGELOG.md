@@ -1,5 +1,12 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/tokens@4.1.4
+
 ## 4.5.11
 
 ### Patch Changes

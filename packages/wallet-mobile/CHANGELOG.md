@@ -1,5 +1,13 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.0.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.12
+  - @uswap/toolboxes@4.3.12
+
 # @uswap/wallet-mobile
 
 ## 4.0.55
