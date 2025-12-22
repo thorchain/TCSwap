@@ -131,6 +131,14 @@ export enum ErrorCode {
   sellAssetAmountTooSmall = "sellAssetAmountTooSmall",
   missingPrivateKey = "missingPrivateKey",
   noMemoPriceProtection = "noMemoPriceProtection",
+  rateExpired = "rateExpired",
+  amountTooSmall = "amountTooSmall",
+  amountTooBig = "amountTooBig",
+  amountOutOfRange = "amountOutOfRange",
+  requestTimeOut = "requestTimeOut",
+  networkError = "networkError",
+  unknownApiError = "unknownApiError",
+  invalidResponseFormat = "invalidResponseFormat",
 }
 
 export enum WarningCodeEnum {

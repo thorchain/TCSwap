@@ -9,7 +9,7 @@ type NumberPrimitivesType = { bigint: bigint; number: number; string: string };
 export type NumberPrimitives = bigint | number | string;
 type InitialisationValueType = NumberPrimitives | BigIntArithmetics | USwapNumber;
 
-type SKBigIntParams = InitialisationValueType | { decimal?: number; value: number | string };
+type USwapBigIntParams = InitialisationValueType | { decimal?: number; value: number | string };
 type AllowedNumberTypes = "bigint" | "number" | "string";
 
 const DEFAULT_DECIMAL = 8;
@@ -64,7 +64,7 @@ export class BigIntArithmetics {
     return BigIntArithmetics.fromBigInt((value.getBaseValue("bigint") * toMultiplier(to)) / toMultiplier(from), to);
   }
 
-  constructor(params: SKBigIntParams) {
+  constructor(params: USwapBigIntParams) {
     const value = getStringValue(params);
     const isComplex = typeof params === "object";
     this.decimal = isComplex ? params.decimal : undefined;
@@ -77,7 +77,7 @@ export class BigIntArithmetics {
     this.#setValue(value);
   }
 
-  set(value: SKBigIntParams): this {
+  set(value: USwapBigIntParams): this {
     return new (this.constructor as any)({
       decimal: this.decimal,
       identifier: (this as any).toString?.({ includeSynthProtocol: true }),
@@ -346,7 +346,7 @@ function getFloatDecimals(value: string) {
   return Math.max(decimals, DEFAULT_DECIMAL);
 }
 
-function getStringValue(param: SKBigIntParams) {
+function getStringValue(param: USwapBigIntParams) {
   return typeof param === "object" ? ("getValue" in param ? param.getValue("string") : param.value) : param;
 }
 

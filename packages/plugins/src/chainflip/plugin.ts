@@ -10,7 +10,7 @@ import type { RequestSwapDepositAddressParams } from "./types";
 export const ChainflipPlugin = createPlugin({
   methods: ({ getWallet }) => ({
     swap: async function chainflipSwap(swapParams: RequestSwapDepositAddressParams) {
-      if (!(swapParams?.route?.buyAsset && swapParams.route.meta.chainflip)) {
+      if (!(swapParams?.route?.buyAsset && swapParams.route.meta?.chainflip)) {
         throw new USwapError("core_swap_invalid_params", { ...swapParams });
       }
 

@@ -156,16 +156,10 @@ export const NearPlugin = createPlugin({
     },
     async swap(swapParams: SwapParams<"near", QuoteResponseRoute>) {
       const {
-        route: {
-          buyAsset: buyAssetString,
-          sellAsset: sellAssetString,
-          inboundAddress,
-          sellAmount,
-          meta: { near },
-        },
+        route: { buyAsset: buyAssetString, sellAsset: sellAssetString, inboundAddress, sellAmount, meta },
       } = swapParams;
 
-      if (!(sellAssetString && buyAssetString && near?.sellAsset)) {
+      if (!(sellAssetString && buyAssetString && meta?.near?.sellAsset)) {
         throw new USwapError("core_swap_asset_not_recognized");
       }
 

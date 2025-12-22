@@ -378,7 +378,6 @@ const TxnMetaSchema = object({
   ),
   provider: optional(z.enum(ProviderName)),
   providerAction: z.optional(z.enum(ProviderAction)),
-  quoteId: optional(string()),
   wallet: optional(string()),
 });
 
@@ -560,24 +559,22 @@ const QuoteResponseRouteLegItem = object({
 
 export const QuoteResponseRouteItem = object({
   buyAsset: string().describe("Asset to buy"),
-  destinationAddress: string().describe("Destination address"),
+  destinationAddress: optional(string().describe("Destination address")),
   estimatedTime: optional(EstimatedTimeSchema),
   expectedBuyAmount: string().describe("Expected Buy amount"),
-  expectedBuyAmountMaxSlippage: string().describe("Expected Buy amount max slippage"),
+  expectedBuyAmountMaxSlippage: optional(string().describe("Expected Buy amount max slippage")),
   expiration: optional(string().describe("Expiration")),
   fees: FeesSchema,
   inboundAddress: optional(string().describe("Inbound address")),
   legs: optional(array(QuoteResponseRouteLegItem)),
   memo: optional(string().describe("Memo")),
-  meta: RouteQuoteMetadataV2Schema,
+  meta: optional(RouteQuoteMetadataV2Schema),
   providers: array(z.enum(ProviderName)),
   refundAddress: optional(string().describe("Refund address")),
-  routeId: optional(string().describe("Route ID")),
   sellAmount: string().describe("Sell amount"),
   sellAsset: string().describe("Asset to sell"),
   sourceAddress: optional(string().describe("Source address")),
   targetAddress: optional(string().describe("Target address")),
-  totalSlippageBps: optional(number().describe("Total slippage in bps")),
   tx: optional(union([EVMTransactionSchema, CosmosTransactionSchema, string()])),
   txType: optional(z.enum(RouteQuoteTxType)),
   warnings: optional(RouteQuoteWarningSchema),
@@ -594,7 +591,6 @@ export const QuoteResponseSchema = object({
       }),
     ),
   ),
-  quoteId: optional(string().describe("Quote ID")),
   routes: array(QuoteResponseRouteItem),
 });
 

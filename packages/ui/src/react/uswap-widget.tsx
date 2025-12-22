@@ -6,7 +6,7 @@
 
 import "@uswap/ui/uswap.css";
 
-import { AssetValue, type QuoteResponseRoute, USwapApi, useUSwapStore } from "@uswap/sdk";
+import { AssetValue, type QuoteResponseRoute, useUSwapStore } from "@uswap/sdk";
 import { ArrowDownUpIcon, Loader2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { match, P } from "ts-pattern";
@@ -57,7 +57,7 @@ export function USwapWidget({ config }: USwapWidgetProps) {
 
       const inputAssetValue = AssetValue.from({ asset: route?.sellAsset, value: route?.sellAmount });
 
-      if (!inputAssetValue || !uSwap || !route?.sourceAddress || !route.routeId) {
+      if (!inputAssetValue || !uSwap || !route?.sourceAddress) {
         throw new Error("Invalid route parameters. Please check the route details and try again.");
       }
 
@@ -67,26 +67,26 @@ export function USwapWidget({ config }: USwapWidgetProps) {
         await uSwap.approveAssetValue(inputAssetValue, route?.sourceAddress);
       }
 
-      const destinationAsset = AssetValue.from({ asset: route?.buyAsset });
-      const sourceAsset = AssetValue.from({ asset: route?.sellAsset });
+      // const destinationAsset = AssetValue.from({ asset: route?.buyAsset });
+      // const sourceAsset = AssetValue.from({ asset: route?.sellAsset });
+      //
+      // const routeWithTx = await USwapApi.getRouteWithTx({
+      //   destinationAddress: uSwap.getAddress(destinationAsset.chain),
+      //   routeId: route.routeId,
+      //   sourceAddress: uSwap.getAddress(sourceAsset.chain),
+      // });
+      //
+      // if (!routeWithTx) throw new Error("No route with TX found");
+      //
+      // if (
+      //   !routeWithTx?.sourceAddress ||
+      //   !routeWithTx?.destinationAddress ||
+      //   Number.parseFloat(routeWithTx?.sellAmount) <= 0
+      // ) {
+      //   throw new Error("Invalid route parameters. Please check the route details and try again.");
+      // }
 
-      const routeWithTx = await USwapApi.getRouteWithTx({
-        destinationAddress: uSwap.getAddress(destinationAsset.chain),
-        routeId: route.routeId,
-        sourceAddress: uSwap.getAddress(sourceAsset.chain),
-      });
-
-      if (!routeWithTx) throw new Error("No route with TX found");
-
-      if (
-        !routeWithTx?.sourceAddress ||
-        !routeWithTx?.destinationAddress ||
-        Number.parseFloat(routeWithTx?.sellAmount) <= 0
-      ) {
-        throw new Error("Invalid route parameters. Please check the route details and try again.");
-      }
-
-      const swap = await uSwap.swap({ route: routeWithTx });
+      const swap = await uSwap.swap({ route: route });
 
       await swap?.wait?.();
 
