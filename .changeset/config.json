@@ -1,8 +1,8 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.1/schema.json",
   "access": "public",
-  "baseBranch": "develop",
-  "changelog": ["@changesets/changelog-github", { "repo": "swapkit/SwapKit" }],
+  "baseBranch": "main",
+  "changelog": ["@changesets/changelog-github", { "repo": "horizontalsystems/USwap" }],
   "commit": false,
   "fixed": [],
   "ignore": ["@internal/*"],
