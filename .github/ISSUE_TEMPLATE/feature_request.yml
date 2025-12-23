@@ -7,11 +7,6 @@ body:
       value: |
         Thanks for taking the time to fill out this feature request!
 
-        If this is not a feature request, please use other relevant channels:
-
-        - [Ask questions on Discord](https://discord.com/invite/swapkit)
-        - [Contact the team for partnerships](https://partnerships.swapkit.dev)
-
   - type: checkboxes
     attributes:
       label: Requested functionality area
