@@ -1,5 +1,12 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.0.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.13
+
 ## 4.0.56
 
 ### Patch Changes

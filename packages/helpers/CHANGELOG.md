@@ -1,5 +1,12 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/tokens@4.1.4
+
 ## 4.5.12
 
 ### Patch Changes
@@ -56,7 +63,7 @@
 
 ### Patch Changes
 
-- [#1599](https://github.com/horizontalsystems/USwap/pull/1599) [`d38864a`](https://github.com/horizontalsystems/USwap/commit/d38864a0d82f65f52e75cb4360b3880801b2b9cc) Thanks [@0xepicode](https://github.com/0xepicode)! - Adds swapkit endpoint api key supporting client
+- [#1599](https://github.com/horizontalsystems/USwap/pull/1599) [`d38864a`](https://github.com/horizontalsystems/USwap/commit/d38864a0d82f65f52e75cb4360b3880801b2b9cc) Thanks [@0xepicode](https://github.com/0xepicode)! - Adds uswap endpoint api key supporting client
 
 - Updated dependencies []:
   - @uswap/tokens@4.1.1
@@ -514,7 +521,7 @@
 
 - [#1404](https://github.com/horizontalsystems/USwap/pull/1404) [`0c7a3a2`](https://github.com/horizontalsystems/USwap/commit/0c7a3a24dbfdfe0562b838993f34ded4dbe573bc) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Server/Client split, type definitions and new goodies
 
-- [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197) Thanks [@towanTG](https://github.com/towanTG)! - Adds all midgard endpoint and updates Swapkit Api types
+- [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197) Thanks [@towanTG](https://github.com/towanTG)! - Adds all midgard endpoint and updates USwap Api types
 
 - [#1418](https://github.com/horizontalsystems/USwap/pull/1418) [`a333581`](https://github.com/horizontalsystems/USwap/commit/a333581318eeb6c8d47be567e84d1efaab790cc5) Thanks [@towanTG](https://github.com/towanTG)! - Add TronLink wallet integration
 
@@ -612,7 +619,7 @@
 
 - [#1426](https://github.com/horizontalsystems/USwap/pull/1426) [`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2) Thanks [@ice-chillios](https://github.com/ice-chillios)! - Update for new exports and usability
 
-- [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197) Thanks [@towanTG](https://github.com/towanTG)! - Adds all midgard endpoint and updates Swapkit Api types
+- [`66d9b26`](https://github.com/horizontalsystems/USwap/commit/66d9b2611b7eba507209c119a254b6cdd8d23197) Thanks [@towanTG](https://github.com/towanTG)! - Adds all midgard endpoint and updates USwap Api types
 
 - Updated dependencies [[`bd61ef7`](https://github.com/horizontalsystems/USwap/commit/bd61ef7b0f5adf4f5a517b76d5988cb42bd002b2)]:
   - @uswap/tokens@4.0.0-beta.9

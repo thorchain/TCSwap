@@ -1,5 +1,17 @@
 <!-- Modifications © 2025 Magic Systems. -->
 
+## 4.3.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.13
+  - @uswap/toolboxes@4.3.13
+  - @uswap/wallet-core@4.0.57
+  - @uswap/wallet-extensions@4.1.14
+  - @uswap/wallet-hardware@4.2.14
+  - @uswap/wallet-keystore@4.1.13
+
 ## 4.3.13
 
 ### Patch Changes
