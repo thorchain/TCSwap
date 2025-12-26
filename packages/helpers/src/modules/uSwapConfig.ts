@@ -60,17 +60,26 @@ const rpcUrls = AllChains.reduce(
 );
 
 const initialState = {
-  apiKeys: { blockchair: "", keepKey: "", passkeys: "", uSwap: "", walletConnectProjectId: "", xaman: "" },
+  apiKeys: {
+    blockchair: "",
+    keepKey: "",
+    memoless: "",
+    passkeys: "",
+    uSwap: "",
+    walletConnectProjectId: "",
+    xaman: "",
+  },
   chains: AllChains,
   endpoints: {} as CustomApiEndpoints,
   envs: {
-    apiUrl: "http://swap-api.unstoppable.money",
-    devApiUrl: "http://swap-api-dev.unstoppable.money",
+    apiUrl: "https://swap-api.unstoppable.money",
+    devApiUrl: "https://swap-api-dev.unstoppable.money",
     experimental_apiKey: null as string | null,
     experimental_apiUrlQuote: null as string | null,
     experimental_apiUrlSwap: null as string | null,
     isDev: false,
     isStagenet: false,
+    memolessApiUrl: "https://swap.unstoppable.money/memoless/api/v1",
   },
   feeMultipliers: undefined as FeeMultiplierConfig | undefined,
   integrations: {

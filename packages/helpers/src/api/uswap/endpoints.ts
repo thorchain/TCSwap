@@ -39,7 +39,7 @@ import {
   type TrackingRequest,
 } from "./types";
 
-const SKRequestClient = RequestClient.extend({
+const USwapRequestClient = RequestClient.extend({
   dynamicHeader: () => {
     const { uSwap } = USwapConfig.get("apiKeys");
     return uSwap ? { "x-api-key": uSwap } : {};
@@ -47,7 +47,7 @@ const SKRequestClient = RequestClient.extend({
 });
 
 export async function getTrackerDetails(json: TrackingRequest, options?: RequestOptions) {
-  const response = await SKRequestClient.post<TrackerResponse>(getApiUrl("/track"), { json, ...options });
+  const response = await USwapRequestClient.post<TrackerResponse>(getApiUrl("/track"), { json, ...options });
 
   try {
     const parsedResponse = TrackerResponseSchema.safeParse(response);
@@ -68,7 +68,7 @@ export async function getSwapQuote(json: QuoteRequest, options?: RequestOptions)
 
   if (getQuote) return getQuote(json);
 
-  const response = await SKRequestClient.post<QuoteResponse>(getApiUrl("/quote"), { json, ...options });
+  const response = await USwapRequestClient.post<QuoteResponse>(getApiUrl("/quote"), { json, ...options });
 
   if (response.error) {
     throw new USwapError("api_v2_server_error", { message: response.error });
@@ -93,7 +93,7 @@ export async function getRouteWithTx(json: { routeId: string; sourceAddress: str
 
   if (getRouteWithTx) return getRouteWithTx(json);
 
-  const response = await SKRequestClient.post<QuoteResponseRoute>(getApiUrl("/swap"), { json });
+  const response = await USwapRequestClient.post<QuoteResponseRoute>(getApiUrl("/swap"), { json });
 
   try {
     const parsedResponse = QuoteResponseRouteItem.safeParse(response);
@@ -122,24 +122,24 @@ export async function getChainBalance<T extends Chain>({
   if (getBalance) return getBalance({ address, chain });
 
   const url = getApiUrl(`/balance?chain=${chain}&address=${address}`);
-  const balanceResponse = await SKRequestClient.get<BalanceResponse>(url);
+  const balanceResponse = await USwapRequestClient.get<BalanceResponse>(url);
   const balances = Array.isArray(balanceResponse) ? balanceResponse : [];
   return scamFilter ? filterAssets(balances) : balances;
 }
 
 export function getTokenListProviders() {
   const url = getApiUrl("/providers");
-  return SKRequestClient.get<TokenListProvidersResponse>(url);
+  return USwapRequestClient.get<TokenListProvidersResponse>(url);
 }
 
 export function getTokenList(provider: ProviderName) {
   const url = getApiUrl(`/tokens?provider=${provider}`);
-  return SKRequestClient.get<TokensResponseV2>(url);
+  return USwapRequestClient.get<TokensResponseV2>(url);
 }
 
 export async function getPrice(body: PriceRequest) {
   const url = getApiUrl("/price");
-  const response = await SKRequestClient.post<PriceResponse>(url, { json: body });
+  const response = await USwapRequestClient.post<PriceResponse>(url, { json: body });
 
   try {
     const parsedResponse = PriceResponseSchema.safeParse(response);
@@ -156,7 +156,7 @@ export async function getPrice(body: PriceRequest) {
 
 export async function getGasRate() {
   const url = getApiUrl("/gas");
-  const response = await SKRequestClient.get<GasResponse>(url);
+  const response = await USwapRequestClient.get<GasResponse>(url);
 
   try {
     const parsedResponse = GasResponseSchema.safeParse(response);
@@ -180,7 +180,7 @@ export async function getChainflipDepositChannel(body: BrokerDepositChannelParam
   }
   const url = USwapConfig.get("integrations").chainflip?.brokerUrl || getApiUrl("/chainflip/broker/channel");
 
-  const response = await SKRequestClient.post<DepositChannelResponse>(url, { json: body });
+  const response = await USwapRequestClient.post<DepositChannelResponse>(url, { json: body });
 
   try {
     const parsedResponse = DepositChannelResponseSchema.safeParse(response);
@@ -203,7 +203,7 @@ export async function getNearDepositChannel(body: NearDepositChannelParams) {
   }
   const url = getApiUrl("/near/channel");
 
-  const response = await SKRequestClient.post<NearSwapResponse>(url, { json: body });
+  const response = await USwapRequestClient.post<NearSwapResponse>(url, { json: body });
 
   try {
     const parsedResponse = NearSwapResponseSchema.safeParse(response);
