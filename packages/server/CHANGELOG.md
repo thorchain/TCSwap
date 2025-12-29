@@ -1,5 +1,15 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.0.58
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.14
+  - @uswap/tokens@4.1.4
+  - @uswap/toolboxes@4.3.14
+  - @uswap/wallet-keystore@4.1.14
+
 ## 4.0.57
 
 ### Patch Changes

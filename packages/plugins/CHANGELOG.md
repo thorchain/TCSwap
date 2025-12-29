@@ -1,5 +1,13 @@
 # @uswap/plugins
 
+## 4.2.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.14
+  - @uswap/toolboxes@4.3.14
+
 ## 4.2.13
 
 ### Patch Changes

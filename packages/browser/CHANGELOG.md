@@ -1,5 +1,15 @@
 # @uswap/browser
 
+## 4.1.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uswap/helpers@4.5.14
+  - @uswap/core@4.1.15
+  - @uswap/plugins@4.2.14
+  - @uswap/wallets@4.3.15
+
 ## 4.1.14
 
 ### Patch Changes
