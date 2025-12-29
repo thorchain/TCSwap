@@ -30,8 +30,10 @@ const makeRequest = async (url: string, config: RequestInit) => {
   const response = await fetch(url, config);
 
   if (!response.ok) {
+    const errorBody = await response.json().catch(() => null);
     const errorData = { status: response.status, statusText: response.statusText };
-    throw new USwapError({ errorKey: "helpers_invalid_response", info: errorData }, errorData);
+    const errorInfo = { ...errorData, ...(errorBody && { errorData: errorBody }) };
+    throw new USwapError({ errorKey: "helpers_invalid_response", info: errorData }, errorInfo);
   }
   return response.json();
 };
