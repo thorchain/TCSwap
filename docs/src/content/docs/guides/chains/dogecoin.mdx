@@ -24,10 +24,10 @@ Dogecoin is a fun, friendly cryptocurrency originally created as a joke but has 
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const dogeWallet = await uSwap.getWallet(Chain.Dogecoin);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getDogecoinToolbox } from '@uswap/toolboxes/utxo';
+import { getDogecoinToolbox } from '@tcswap/toolboxes/utxo';
 
 
 const dogeToolbox = await getDogecoinToolbox({
@@ -74,7 +74,7 @@ Connect to Dogecoin using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Dogecoin], "your mnemonic phrase");
 
@@ -105,7 +105,7 @@ console.log("Valid DOGE address:", validateDogeAddress(dogeAddress));
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L",
@@ -524,7 +524,7 @@ const gamingRewards = {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Dogecoin, [
@@ -571,7 +571,7 @@ Handle Dogecoin-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({
@@ -777,7 +777,7 @@ const bulkOperations = async () => {
 
 ```typescript
 // @noErrorValidation
-import { validateDogecoinAddress } from "@uswap/toolboxes/utxo";
+import { validateDogecoinAddress } from "@tcswap/toolboxes/utxo";
 
 const validateDogeAddr = (address: string): boolean => {
   if (!address.startsWith("D") || address.length !== 34) {

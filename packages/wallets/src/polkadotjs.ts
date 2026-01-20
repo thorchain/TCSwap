@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/polkadotjs";
+export * from "@tcswap/wallet-extensions/polkadotjs";

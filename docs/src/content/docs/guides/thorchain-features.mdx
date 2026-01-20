@@ -15,7 +15,7 @@ To use THORChain features, you need:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain, FeeOption } from "@uswap/sdk";
+import { createUSwap, Chain, FeeOption } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -32,7 +32,7 @@ THORChain uses an asymmetric liquidity model where you can provide single-sided 
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const runeAmount = AssetValue.from({ asset: "THOR.RUNE", value: 100 });
 const ethAmount = AssetValue.from({ asset: "ETH.ETH", value: 0.5 });
@@ -133,7 +133,7 @@ const toAssetOnly = await uSwap.thorchain.withdraw({
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/helpers/api";
+import { USwapApi } from "@tcswap/helpers/api";
 
 const thorAddress = uSwap.getAddress(Chain.THORChain);
 const position = await USwapApi.thorchainMidgard.getLiquidityPosition(
@@ -254,7 +254,7 @@ For node operators, USwap provides bond management functions.
 
 ```typescript
 // @noErrorValidation
-import { MemoType } from "@uswap/sdk";
+import { MemoType } from "@tcswap/sdk";
 
 const bondAmount = AssetValue.from({ asset: "THOR.RUNE", value: 100000 });
 const nodeAddress = "thor1abc...";

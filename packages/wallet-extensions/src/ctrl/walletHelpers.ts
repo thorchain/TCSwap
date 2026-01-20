@@ -15,8 +15,8 @@ import {
   type TCLikeChain,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import type { SolanaProvider } from "@uswap/toolboxes/solana";
+} from "@tcswap/helpers";
+import type { SolanaProvider } from "@tcswap/toolboxes/solana";
 import type { Eip1193Provider } from "ethers";
 import { match } from "ts-pattern";
 import type { NearBrowserWalletProvider } from "../helpers/near";

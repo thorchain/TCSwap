@@ -22,12 +22,12 @@ You can use USwap in two ways:
 1. **Granular approach** - Import only what you need from individual packages:
 
    ```ts
-   import { USwap, keystoreWallet } from "@uswap/sdk";
+   import { USwap, keystoreWallet } from "@tcswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createUSwap } from "@uswap/sdk";
+   import { createUSwap } from "@tcswap/sdk";
    ```
 
 The granular approach is recommended for frontend applications as it results in smaller bundle sizes.
@@ -37,7 +37,7 @@ The granular approach is recommended for frontend applications as it results in 
 ### Granular Approach (Frontend Recommended)
 
 ```ts twoslash
-import { USwap, keystoreWallet, ledgerWallet, evmWallet } from "@uswap/sdk";
+import { USwap, keystoreWallet, ledgerWallet, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -53,7 +53,7 @@ const uSwap = USwap({
 ### All-in-one Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -76,7 +76,7 @@ import {
   keystoreWallet,
   decryptFromKeystore,
   type Keystore,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keystoreWallet },
@@ -117,7 +117,7 @@ import {
   createUSwap,
   decryptFromKeystore,
   type Keystore,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -143,7 +143,7 @@ async function connectWithKeystore(
 ### Ledger Wallet
 
 ```ts twoslash
-import { Chain, USwap, ledgerWallet } from "@uswap/sdk";
+import { Chain, USwap, ledgerWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...ledgerWallet },
@@ -170,7 +170,7 @@ import {
   NetworkDerivationPath,
   USwap,
   trezorWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -194,7 +194,7 @@ async function connectTrezor(chains: Chain[]) {
 ### MetaMask / EVM Wallets
 
 ```ts twoslash
-import { Chain, USwap, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -216,7 +216,7 @@ async function connectEVMWallet() {
 ### Keplr (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, USwap, keplrWallet } from "@uswap/sdk";
+import { Chain, USwap, keplrWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -238,7 +238,7 @@ async function connectKeplr() {
 ### Cosmostation (Cosmos) Wallet
 
 ```ts twoslash
-import { Chain, USwap, cosmostationWallet } from "@uswap/sdk";
+import { Chain, USwap, cosmostationWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...cosmostationWallet },
@@ -260,7 +260,7 @@ async function connectCosmostation() {
 ### Phantom (Solana) Wallet
 
 ```ts twoslash
-import { Chain, USwap, phantomWallet } from "@uswap/sdk";
+import { Chain, USwap, phantomWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -282,7 +282,7 @@ async function connectPhantom() {
 ## Managing Wallet Connections
 
 ```ts twoslash
-import { Chain, USwap, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -305,7 +305,7 @@ function disconnectAll() {
 ## Getting Wallet Balances
 
 ```ts twoslash
-import { Chain, USwap, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -337,7 +337,7 @@ async function getAllBalances(chains: Chain[]) {
 ## Using WalletConnect
 
 ```ts twoslash
-import { Chain, USwap, walletconnectWallet } from "@uswap/sdk";
+import { Chain, USwap, walletconnectWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -374,7 +374,7 @@ import {
   evmWallet,
   keplrWallet,
   keystoreWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet, ...keplrWallet, ...keystoreWallet },

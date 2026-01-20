@@ -9,8 +9,8 @@ import {
   prepareNetworkSwitch,
   switchEVMWalletNetwork,
   USwapError,
-} from "@uswap/helpers";
-import type { TronTransaction } from "@uswap/toolboxes/tron";
+} from "@tcswap/helpers";
+import type { TronTransaction } from "@tcswap/toolboxes/tron";
 import { Psbt } from "bitcoinjs-lib";
 import type { Eip1193Provider } from "ethers";
 
@@ -53,7 +53,7 @@ export async function getWalletMethods(chain: Chain) {
       }
       const { unisat: wallet } = bitget;
 
-      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
       const [address] = await wallet.requestAccounts();
 
       async function signTransaction(psbt: Psbt) {
@@ -79,7 +79,7 @@ export async function getWalletMethods(chain: Chain) {
       const accounts = await offlineSigner.getAccounts();
       if (!accounts?.[0]) throw new USwapError("wallet_bitkeep_no_accounts", { chain: Chain.Cosmos });
 
-      const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
+      const { getCosmosToolbox } = await import("@tcswap/toolboxes/cosmos");
       const [{ address }] = accounts;
 
       const signer = {
@@ -97,7 +97,7 @@ export async function getWalletMethods(chain: Chain) {
         throw new USwapError("wallet_bitkeep_not_found");
       }
 
-      const { getSolanaToolbox } = await import("@uswap/toolboxes/solana");
+      const { getSolanaToolbox } = await import("@tcswap/toolboxes/solana");
       const provider = bitget?.solana;
 
       // Connect to get the public key
@@ -116,7 +116,7 @@ export async function getWalletMethods(chain: Chain) {
         throw new USwapError("wallet_bitkeep_not_found");
       }
 
-      const { createTronToolbox } = await import("@uswap/toolboxes/tron");
+      const { createTronToolbox } = await import("@tcswap/toolboxes/tron");
       const { tronLink, tronWeb } = bitget;
 
       // Request account access
@@ -161,7 +161,7 @@ export const getWeb3WalletMethods = async ({
   walletProvider?: Eip1193Provider;
   chain: EVMChain;
 }) => {
-  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+  const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
   const { BrowserProvider } = await import("ethers");
   if (!walletProvider) throw new USwapError("wallet_provider_not_found");
 

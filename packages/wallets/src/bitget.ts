@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/bitget";
+export * from "@tcswap/wallet-extensions/bitget";

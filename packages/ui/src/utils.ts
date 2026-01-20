@@ -11,7 +11,7 @@ import {
   USwapError,
   type USwapPlugins,
   type WalletOption,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 export async function getUSClient<W extends WalletOption, P extends PluginName[]>({
   walletOption,

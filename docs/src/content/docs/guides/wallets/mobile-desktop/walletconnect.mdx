@@ -63,7 +63,7 @@ WalletConnect works in all modern browsers:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -79,7 +79,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -96,7 +96,7 @@ const uSwap = createUSwap({
 #### Basic Connection
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -133,7 +133,7 @@ async function connectWalletConnect() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -186,7 +186,7 @@ async function connectMultipleChains() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -231,7 +231,7 @@ async function connectWithAdvancedOptions() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -274,7 +274,7 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -316,7 +316,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -381,7 +381,7 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -423,7 +423,7 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -487,7 +487,7 @@ async function depositToTHORChain() {
 ### EVM Chain Support
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -535,7 +535,7 @@ async function connectEVMChains() {
 ### Cosmos Ecosystem Support
 
 ```ts twoslash
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -576,7 +576,7 @@ async function connectCosmosEcosystem() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -730,7 +730,7 @@ async function handleSessionIssues() {
 
 ```ts twoslash
 
-import { USwap, walletconnectWallet, Chain } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain } from "@tcswap/sdk";
 
 
 const uSwap = USwap({
@@ -848,7 +848,7 @@ const uSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, walletconnectWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, walletconnectWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface WalletConnectProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

@@ -1,5 +1,5 @@
 import type { PublicKey, Transaction, VersionedTransaction } from "@solana/web3.js";
-import type { GenericCreateTransactionParams, GenericTransferParams } from "@uswap/helpers";
+import type { GenericCreateTransactionParams, GenericTransferParams } from "@tcswap/helpers";
 import type { getSolanaToolbox } from "./toolbox";
 
 // type DisplayEncoding = "utf8" | "hex";

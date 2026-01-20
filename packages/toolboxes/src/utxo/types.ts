@@ -1,4 +1,4 @@
-import type { GenericCreateTransactionParams, GenericTransferParams, Witness } from "@uswap/helpers";
+import type { GenericCreateTransactionParams, GenericTransferParams, Witness } from "@tcswap/helpers";
 
 import type { UTXOScriptType } from "./helpers";
 

@@ -50,13 +50,13 @@ body:
       description: |
         Which packages are affected by the issue?
       options:
-        - label: "@uswap/core"
-        - label: "@uswap/helpers"
-        - label: "@uswap/plugins"
-        - label: "@uswap/sdk"
-        - label: "@uswap/toolboxes"
-        - label: "@uswap/ui"
-        - label: "@uswap/wallets"
+        - label: "@tcswap/core"
+        - label: "@tcswap/helpers"
+        - label: "@tcswap/plugins"
+        - label: "@tcswap/sdk"
+        - label: "@tcswap/toolboxes"
+        - label: "@tcswap/ui"
+        - label: "@tcswap/wallets"
 
   - type: textarea
     attributes:
@@ -66,7 +66,7 @@ body:
       value: |
         Package versions:
         ```bash
-        # Paste the output of `<npm|yarn|pnpm|bun pm> ls --depth=0 | grep @uswap` here
+        # Paste the output of `<npm|yarn|pnpm|bun pm> ls --depth=0 | grep @tcswap` here
         ```
     validations:
       required: true

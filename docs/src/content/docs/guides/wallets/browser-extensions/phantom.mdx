@@ -49,7 +49,7 @@ Phantom works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -64,7 +64,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -80,7 +80,7 @@ const uSwap = createUSwap({
 #### Single Chain Connection
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -107,7 +107,7 @@ async function connectPhantomSolana() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -143,7 +143,7 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -186,7 +186,7 @@ async function connectPhantomBitcoin() {
 
 ```ts twoslash
 
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -223,7 +223,7 @@ async function sendSol() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -277,7 +277,7 @@ async function sendToPDA() {
 
 ```ts twoslash
 
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -330,7 +330,7 @@ async function sendERC20FromPhantom() {
 
 ```ts twoslash
 
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -369,7 +369,7 @@ async function sendBitcoinFromPhantom() {
 ### Solana-Specific Operations
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -433,7 +433,7 @@ async function handleSPLTokenAccount() {
 ### Network Switching
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -468,7 +468,7 @@ async function switchBetweenChains() {
 
 ```ts twoslash
 
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...phantomWallet },
@@ -608,7 +608,7 @@ async function handleNetworkSpecificIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { USwap, phantomWallet, Chain } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain } from "@tcswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -716,7 +716,7 @@ const secureUSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, phantomWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, phantomWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface PhantomWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

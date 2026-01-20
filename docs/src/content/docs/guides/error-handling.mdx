@@ -18,7 +18,7 @@ The `USwapError` class extends the native `Error` class with additional context:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 
 try {
   await uSwap.swap({ route });
@@ -92,8 +92,8 @@ Handle wallet connection failures gracefully:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/helpers";
-import { Chain } from "@uswap/types";
+import { USwapError } from "@tcswap/helpers";
+import { Chain } from "@tcswap/types";
 
 async function connectWallet() {
   try {
@@ -147,7 +147,7 @@ Handle transaction-related failures:
 
 ```typescript
 // @noErrorValidation
-import { USwapError, AssetValue } from "@uswap/helpers";
+import { USwapError, AssetValue } from "@tcswap/helpers";
 
 async function executeTransaction(params: TransactionParams) {
   try {
@@ -221,7 +221,7 @@ Handle swap-specific errors with context:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 
 async function performSwap(route: SwapRoute) {
   try {

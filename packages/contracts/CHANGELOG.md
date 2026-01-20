@@ -1,4 +1,4 @@
-# @uswap/contracts
+# @tcswap/contracts
 
 ## 4.0.1
 

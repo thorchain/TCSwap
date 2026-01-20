@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, createUSwap, USwapConfig } from "@uswap/sdk";
+import { AssetValue, createUSwap, USwapConfig } from "@tcswap/sdk";
 
 let uSwapClient: ReturnType<typeof createUSwap> | undefined;
 let currentConfig: { walletConnectProjectId?: string; brokerEndpoint?: string; uSwap?: string } = {};

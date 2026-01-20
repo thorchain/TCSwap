@@ -5,7 +5,7 @@
 import type { KeyPair } from "@near-js/crypto";
 import type { Provider } from "@near-js/providers";
 import { KeyPairSigner } from "@near-js/signers";
-import { type DerivationPathArray, derivationPathToString, USwapError } from "@uswap/helpers";
+import { type DerivationPathArray, derivationPathToString, USwapError } from "@tcswap/helpers";
 import type { NearSigner } from "../types";
 
 export async function getValidateNearAddress() {

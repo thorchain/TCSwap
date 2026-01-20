@@ -14,8 +14,8 @@ import {
   isGasAsset,
   USwapError,
   USwapNumber,
-} from "@uswap/helpers";
-import { erc20ABI } from "@uswap/helpers/contracts";
+} from "@tcswap/helpers";
+import { erc20ABI } from "@tcswap/helpers/contracts";
 import {
   BrowserProvider,
   Contract,

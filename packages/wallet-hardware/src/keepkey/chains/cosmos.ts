@@ -1,5 +1,5 @@
 import type { KeepKeySdk } from "@keepkey/keepkey-sdk";
-import type { GenericTransferParams } from "@uswap/helpers";
+import type { GenericTransferParams } from "@tcswap/helpers";
 import {
   Chain,
   DerivationPath,
@@ -7,7 +7,7 @@ import {
   derivationPathToString,
   GAIAConfig,
   getRPCUrl,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 
 import { bip32ToAddressNList } from "../coins";
 
@@ -19,7 +19,7 @@ export async function cosmosWalletMethods({
   derivationPath?: DerivationPathArray;
 }): Promise<any> {
   const { DEFAULT_COSMOS_FEE_MAINNET, getCosmosToolbox, getFeeRateFromSwapKit, createStargateClient } = await import(
-    "@uswap/toolboxes/cosmos"
+    "@tcswap/toolboxes/cosmos"
   );
   const derivationPathString = derivationPath ? derivationPathToString(derivationPath) : `${DerivationPath.GAIA}/0`;
 

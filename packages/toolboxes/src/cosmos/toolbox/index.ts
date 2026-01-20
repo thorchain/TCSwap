@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, type CosmosChain, USwapError } from "@uswap/helpers";
+import { Chain, type CosmosChain, USwapError } from "@tcswap/helpers";
 
 import type { CosmosToolboxParams } from "../types";
 import { createCosmosToolbox } from "./cosmos";

@@ -22,7 +22,7 @@ import {
   NetworkDerivationPath,
   USwapError,
   updateDerivationPath,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import { match, P } from "ts-pattern";
 import type { SolanaCreateTransactionParams, SolanaProvider, SolanaTransferParams } from "./index";
 

@@ -16,10 +16,10 @@
     "@radix-ui/react-switch": "1.2.6",
     "@radix-ui/react-tabs": "1.1.13",
     "@radix-ui/react-tooltip": "1.2.8",
-    "@uswap/helpers": "workspace:*",
-    "@uswap/sdk": "workspace:*",
-    "@uswap/wallet-keystore": "workspace:*",
-    "@uswap/wallets": "workspace:*",
+    "@tcswap/helpers": "workspace:*",
+    "@tcswap/sdk": "workspace:*",
+    "@tcswap/wallet-keystore": "workspace:*",
+    "@tcswap/wallets": "workspace:*",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.552.0",
@@ -50,15 +50,11 @@
     "./uswap.css": { "bun": "./src/uswap.css", "default": "./dist/uswap.css" }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/ui",
+  "name": "@tcswap/ui",
   "private": true,
-  "repository": {
-    "directory": "packages/ui",
-    "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
-  },
+  "repository": { "directory": "packages/ui", "type": "git", "url": "git+https://github.com/thorchain/TCSwap.git" },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

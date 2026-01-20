@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test } from "bun:test";
-import { Chain } from "@uswap/helpers";
+import { Chain } from "@tcswap/helpers";
 import { getCardanoToolbox } from "../toolbox";
 
 const TEST_PHRASE = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";

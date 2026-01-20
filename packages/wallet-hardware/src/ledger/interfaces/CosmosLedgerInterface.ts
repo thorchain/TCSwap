@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type DerivationPathArray, LedgerErrorCode, NetworkDerivationPath, USwapError } from "@uswap/helpers";
+import { type DerivationPathArray, LedgerErrorCode, NetworkDerivationPath, USwapError } from "@tcswap/helpers";
 
 import { THORChainApp } from "../clients/thorchain/lib";
 import { getLedgerTransport } from "../helpers/getLedgerTransport";

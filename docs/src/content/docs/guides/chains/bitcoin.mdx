@@ -24,10 +24,10 @@ Bitcoin is the first and most valuable cryptocurrency, using a UTXO (Unspent Tra
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const btcWallet = await uSwap.getWallet(Chain.Bitcoin);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getBitcoinToolbox } from '@uswap/toolboxes/utxo';
+import { getBitcoinToolbox } from '@tcswap/toolboxes/utxo';
 
 
 const btcToolbox = await getBitcoinToolbox({
@@ -74,7 +74,7 @@ Connect to Bitcoin using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Bitcoin], "your mnemonic phrase");
 
@@ -107,7 +107,7 @@ console.log("Bitcoin addresses:", addresses);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
@@ -355,7 +355,7 @@ const timelockTx = await btcToolbox.buildTransaction({
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Bitcoin, [
@@ -402,7 +402,7 @@ Handle Bitcoin-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({
@@ -536,7 +536,7 @@ const optimizedTx = await btcToolbox.transfer({
 3. **Validate Addresses**:
 
    ```typescript
-   import { validateBitcoinAddress } from "@uswap/toolboxes/utxo";
+   import { validateBitcoinAddress } from "@tcswap/toolboxes/utxo";
 
    const isValid = validateBitcoinAddress(recipient);
    if (!isValid) {
@@ -562,7 +562,7 @@ const optimizedTx = await btcToolbox.transfer({
 
 ```typescript
 // @noErrorValidation
-import { validateBitcoinAddress } from "@uswap/toolboxes/utxo";
+import { validateBitcoinAddress } from "@tcswap/toolboxes/utxo";
 
 const addresses = [
   "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",

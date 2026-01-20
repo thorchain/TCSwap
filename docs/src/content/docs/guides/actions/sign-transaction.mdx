@@ -13,12 +13,12 @@ You can use USwap in two ways:
 1. **Granular approach** - Import only what you need from individual packages (recommended for frontend):
 
    ```ts
-   import { USwap, evmWallet } from "@uswap/sdk";
+   import { USwap, evmWallet } from "@tcswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createUSwap } from "@uswap/sdk";
+   import { createUSwap } from "@tcswap/sdk";
    ```
 
 ## Signing Messages
@@ -28,7 +28,7 @@ Signing messages is useful for authentication, proving ownership of an address, 
 ### Granular Approach
 
 ```ts twoslash
-import { Chain, USwap, evmWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -55,7 +55,7 @@ async function signMessageExample() {
 ### All-in-one Approach
 
 ```ts twoslash
-import { Chain, createUSwap } from "@uswap/sdk";
+import { Chain, createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -82,7 +82,7 @@ async function signMessageExample() {
 Different blockchains have different message signing formats:
 
 ```ts twoslash
-import { Chain, USwap, evmWallet, keystoreWallet } from "@uswap/sdk";
+import { Chain, USwap, evmWallet, keystoreWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet, ...keystoreWallet },
@@ -118,7 +118,7 @@ async function signCosmosMessage() {
 After signing a message, you or others may want to verify the signature:
 
 ```ts twoslash
-import { Chain, USwap, keystoreWallet } from "@uswap/sdk";
+import { Chain, USwap, keystoreWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keystoreWallet },
@@ -157,7 +157,7 @@ For more control over the signing process, you can use toolboxes directly:
 
 ```ts twoslash
 
-import { Chain, getEvmToolbox, ethers } from "@uswap/sdk";
+import { Chain, getEvmToolbox, ethers } from "@tcswap/sdk";
 
 
 async function signEthereumTransaction() {
@@ -198,7 +198,7 @@ async function signEthereumTransaction() {
 For UTXO chains like Bitcoin, the process involves creating inputs and outputs:
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
+import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@tcswap/sdk";
 
 async function signBitcoinTransaction() {
   const btcToolbox = await getUtxoToolbox(Chain.Bitcoin);
@@ -247,7 +247,7 @@ import {
   FeeOption,
   USwap,
   ledgerWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...ledgerWallet },
@@ -279,7 +279,7 @@ async function signWithLedger() {
 For complete control over the signing process, you can use toolbox-specific methods:
 
 ```ts twoslash
-import { Chain, getCosmosToolbox } from "@uswap/sdk";
+import { Chain, getCosmosToolbox } from "@tcswap/sdk";
 
 async function cosmosWallet() {
   const cosmosToolbox = await getCosmosToolbox(Chain.THORChain);

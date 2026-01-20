@@ -9,8 +9,8 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { AssetValue, Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 
 export const radixWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>

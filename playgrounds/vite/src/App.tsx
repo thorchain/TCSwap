@@ -3,9 +3,9 @@
  */
 
 // import { WalletWidget } from "@passkeys/react";
-import { type AssetValue, Chain, USwapConfig } from "@uswap/core";
-import type { FullWallet } from "@uswap/sdk";
-import { USwapWidget } from "@uswap/ui/react";
+import { type AssetValue, Chain, USwapConfig } from "@tcswap/core";
+import type { FullWallet } from "@tcswap/sdk";
+import { USwapWidget } from "@tcswap/ui/react";
 import { useCallback, useMemo, useState } from "react";
 import Liquidity from "./Liquidity";
 import Multisig from "./Multisig";

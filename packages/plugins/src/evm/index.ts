@@ -10,8 +10,8 @@ import {
   ProviderName,
   type SwapParams,
   USwapError,
-} from "@uswap/helpers";
-import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
+} from "@tcswap/helpers";
+import type { EVMTransaction, QuoteResponseRoute } from "@tcswap/helpers/api";
 import { approve, createPlugin } from "../utils";
 
 export const EVMPlugin = createPlugin({

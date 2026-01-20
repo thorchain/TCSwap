@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import base58check from "bs58check";
 // @ts-expect-error
 import cashaddr from "cashaddrjs";

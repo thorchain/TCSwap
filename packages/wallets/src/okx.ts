@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/okx";
+export * from "@tcswap/wallet-extensions/okx";

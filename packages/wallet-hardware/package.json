@@ -18,10 +18,10 @@
     "@near-js/crypto": "~2.5.0",
     "@near-js/transactions": "~2.5.0",
     "@scure/base": "~2.0.0",
+    "@tcswap/helpers": "workspace:*",
+    "@tcswap/toolboxes": "workspace:*",
+    "@tcswap/wallet-core": "workspace:*",
     "@trezor/connect-web": "~9.6.4",
-    "@uswap/helpers": "workspace:*",
-    "@uswap/toolboxes": "workspace:*",
-    "@uswap/wallet-core": "workspace:*",
     "cosmjs-types": "~0.10.1",
     "ethers": "^6.14.0",
     "ripple-binary-codec": "2.5.1",
@@ -79,13 +79,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/wallet-hardware",
+  "name": "@tcswap/wallet-hardware",
   "repository": {
     "directory": "packages/wallet-hardware",
     "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
+    "url": "git+https://github.com/thorchain/TCSwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

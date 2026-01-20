@@ -1,5 +1,5 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import type { Asset, ChainId, GenericTransferParams } from "@uswap/helpers";
+import type { Asset, ChainId, GenericTransferParams } from "@tcswap/helpers";
 import type { CosmosCreateTransactionParams } from "../../types";
 
 enum TxType {

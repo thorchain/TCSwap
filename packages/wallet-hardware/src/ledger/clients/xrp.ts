@@ -1,7 +1,7 @@
 import Xrp from "@ledgerhq/hw-app-xrp";
 import type Transport from "@ledgerhq/hw-transport";
-import { Chain, type DerivationPathArray, derivationPathToString, NetworkDerivationPath } from "@uswap/helpers";
-import type { Transaction } from "@uswap/toolboxes/ripple";
+import { Chain, type DerivationPathArray, derivationPathToString, NetworkDerivationPath } from "@tcswap/helpers";
+import type { Transaction } from "@tcswap/toolboxes/ripple";
 import { encode } from "ripple-binary-codec";
 import type { Payment } from "xrpl";
 import { getLedgerTransport } from "../helpers/getLedgerTransport";
@@ -30,7 +30,7 @@ export const XRPLedger = async (derivationPath?: DerivationPathArray) => {
   const { address, publicKey } = await xrpInstance.getAddress(path);
 
   async function signTransaction(transaction: Payment | Transaction) {
-    const { hashes } = await import("@uswap/toolboxes/ripple");
+    const { hashes } = await import("@tcswap/toolboxes/ripple");
     const cleanedTxWithPubKey = cleanTransactionObject(transaction);
     const transactionJSON = {
       ...cleanedTxWithPubKey,

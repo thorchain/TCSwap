@@ -1,4 +1,4 @@
-import { type BaseWallet, Chain } from "@uswap/helpers";
+import { type BaseWallet, Chain } from "@tcswap/helpers";
 import type { CardanoWallet } from "./cardano";
 import type { CosmosWallets, ThorchainWallets } from "./cosmos";
 import type { EVMToolboxes } from "./evm";

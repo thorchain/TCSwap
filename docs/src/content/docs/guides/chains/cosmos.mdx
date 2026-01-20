@@ -24,10 +24,10 @@ Cosmos Hub is the first blockchain in the Cosmos ecosystem, designed for interop
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const cosmosWallet = await uSwap.getWallet(Chain.Cosmos);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getCosmosToolbox } from '@uswap/toolboxes/cosmos';
+import { getCosmosToolbox } from '@tcswap/toolboxes/cosmos';
 
 
 const cosmosToolbox = await getCosmosToolbox({
@@ -74,7 +74,7 @@ Connect to Cosmos Hub using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Cosmos], "your mnemonic phrase");
 
@@ -96,7 +96,7 @@ const cosmosAddress = uSwap.getAddress(Chain.Cosmos);
 
 console.log("Cosmos address:", cosmosAddress);
 
-import { validateCosmosAddress } from "@uswap/toolboxes/cosmos";
+import { validateCosmosAddress } from "@tcswap/toolboxes/cosmos";
 
 const isValidAddress = validateCosmosAddress(cosmosAddress);
 console.log("Valid ATOM address:", isValidAddress);
@@ -109,7 +109,7 @@ console.log("Public key:", publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "cosmos1xv9tklw7d82sezh9haa573wufgy59vmwe6xxe5",
@@ -524,7 +524,7 @@ console.log(`Fee: ${fee.feeInAtom} ATOM`);
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Cosmos, [
@@ -571,7 +571,7 @@ Handle Cosmos-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

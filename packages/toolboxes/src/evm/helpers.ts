@@ -1,4 +1,4 @@
-import { Chain, type EVMChain, getChainConfig, getRPCUrl, type NetworkParams } from "@uswap/helpers";
+import { Chain, type EVMChain, getChainConfig, getRPCUrl, type NetworkParams } from "@tcswap/helpers";
 import { match } from "ts-pattern";
 
 export async function getProvider(chain: EVMChain, customUrl?: string) {

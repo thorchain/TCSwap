@@ -3,7 +3,7 @@
  */
 
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
-import { USwapConfig } from "@uswap/helpers";
+import { USwapConfig } from "@tcswap/helpers";
 import { createKeystoreWallet, KEYSTORE_SUPPORTED_CHAINS } from "../src";
 import { testKeystoreWalletData } from "./fixtures";
 

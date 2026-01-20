@@ -1,4 +1,4 @@
-import { Chain, type TCLikeChain } from "@uswap/helpers";
+import { Chain, type TCLikeChain } from "@tcswap/helpers";
 import { base64ToBech32, bech32ToBase64 } from "./addressFormat";
 
 export async function createDefaultRegistry() {

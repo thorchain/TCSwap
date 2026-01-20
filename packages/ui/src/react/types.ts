@@ -2,9 +2,9 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { AssetValue, Chain, ChainWallet, createUSwap, USwapConfigState, WalletOption } from "@uswap/sdk";
+import type { AssetValue, Chain, ChainWallet, createUSwap, USwapConfigState, WalletOption } from "@tcswap/sdk";
 
-export type KeystoreFile = { keystore: import("@uswap/sdk/wallets").Keystore | null; file: File; chains: Chain[] };
+export type KeystoreFile = { keystore: import("@tcswap/sdk/wallets").Keystore | null; file: File; chains: Chain[] };
 
 export interface USwapState {
   uSwap: ReturnType<typeof createUSwap> | null;

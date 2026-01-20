@@ -4,7 +4,7 @@
 
 "use client";
 
-import { AllChains, type Chain } from "@uswap/sdk";
+import { AllChains, type Chain } from "@tcswap/sdk";
 import { SearchIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { match } from "ts-pattern";

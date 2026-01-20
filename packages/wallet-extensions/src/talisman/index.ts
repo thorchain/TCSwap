@@ -10,8 +10,8 @@ import {
   switchEVMWalletNetwork,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+} from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import type { Eip1193Provider } from "ethers";
 
 export const talismanWallet = createWallet({
@@ -55,7 +55,7 @@ async function getWeb3WalletMethods({
   walletProvider: Eip1193Provider | undefined;
   chain: EVMChain;
 }) {
-  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+  const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
   const { BrowserProvider } = await import("ethers");
 
   if (!walletProvider) {
@@ -103,7 +103,7 @@ async function getWalletMethods(chain: Chain) {
 
     case Chain.Polkadot:
     case Chain.Chainflip: {
-      const { getSubstrateToolbox, SubstrateNetwork } = await import("@uswap/toolboxes/substrate");
+      const { getSubstrateToolbox, SubstrateNetwork } = await import("@tcswap/toolboxes/substrate");
 
       const injectedExtension = window?.injectedWeb3?.talisman;
       const rawExtension = await injectedExtension?.enable?.("talisman");

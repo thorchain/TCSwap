@@ -24,8 +24,8 @@ import {
   USwapError,
   USwapNumber,
   updateDerivationPath,
-} from "@uswap/helpers";
-import { USwapApi } from "@uswap/helpers/api";
+} from "@tcswap/helpers";
+import { USwapApi } from "@tcswap/helpers/api";
 import { match, P } from "ts-pattern";
 import type { CosmosToolboxParams } from "../types";
 import {

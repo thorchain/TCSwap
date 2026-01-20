@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, USwapError, WalletOption } from "@uswap/helpers";
-import { createTronToolbox, type TronTransaction } from "@uswap/toolboxes/tron";
+import { Chain, USwapError, WalletOption } from "@tcswap/helpers";
+import { createTronToolbox, type TronTransaction } from "@tcswap/toolboxes/tron";
 import type { TronLinkWindow } from "./types.js";
 import { TronLinkResponseCode } from "./types.js";
 

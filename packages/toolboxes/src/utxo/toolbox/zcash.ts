@@ -16,7 +16,7 @@ import {
   USwapConfig,
   USwapError,
   updateDerivationPath,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import bs58check from "bs58check";
 import { match, P } from "ts-pattern";
 import { accumulative, compileMemo, getUtxoApi } from "../helpers";

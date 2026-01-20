@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { Chain } from "@uswap/types";
+import { Chain } from "@tcswap/types";
 
 import { findAssetBy } from "../asset";
 import { getChainIdentifier, getMAYANameCost, getTHORNameCost, warnOnce, wrapWithThrow } from "../others";

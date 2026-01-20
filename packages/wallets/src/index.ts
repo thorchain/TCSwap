@@ -1,3 +1,3 @@
-export * from "@uswap/wallet-core";
+export * from "@tcswap/wallet-core";
 export * from "./types";
 export * from "./utils";

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { Chain } from "@uswap/types";
+import { Chain } from "@tcswap/types";
 import { MemoType } from "../../types";
 
 import {

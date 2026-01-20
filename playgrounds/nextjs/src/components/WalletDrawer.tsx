@@ -1,5 +1,5 @@
 "use client";
-import { ChainIcon, useModal, useSwapKit } from "@uswap/ui/react";
+import { ChainIcon, useModal, useSwapKit } from "@tcswap/ui/react";
 import { LogOut } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "~/components/ui/sheet";

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { Chain, CosmosChains, EVMChains, getChainConfig, UTXOChains } from "@uswap/helpers";
+import { Chain, CosmosChains, EVMChains, getChainConfig, UTXOChains } from "@tcswap/helpers";
 import { getExplorerAddressUrl, getExplorerTxUrl } from "../explorerUrls";
 
 describe("Explorer URLs", () => {

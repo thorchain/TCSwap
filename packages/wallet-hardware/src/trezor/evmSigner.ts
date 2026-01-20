@@ -10,7 +10,7 @@ import {
   USwapError,
   USwapNumber,
   WalletOption,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 
 type TrezorEVMSignerParams = {
@@ -108,7 +108,7 @@ export async function getEVMSigner({ chain, derivationPath, provider }: TrezorEV
       }
 
       const TrezorConnect = (await import("@trezor/connect-web")).default;
-      const { toHexString } = await import("@uswap/toolboxes/evm");
+      const { toHexString } = await import("@tcswap/toolboxes/evm");
       const { Transaction } = await import("ethers");
 
       const additionalFields = isEIP1559

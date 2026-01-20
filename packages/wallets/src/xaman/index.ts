@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, filterSupportedChains, USwapConfig, USwapError, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { Xumm } from "xumm";
 import { getWalletForChain } from "./helpers";
 import type { XamanConfig } from "./types";

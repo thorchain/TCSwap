@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, Chain, ChainId, filterSupportedChains, USwapError, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { AssetValue, Chain, ChainId, filterSupportedChains, USwapError, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import type { Eip1193Provider } from "ethers";
 import {
   getKEEPKEYAddress,
@@ -61,7 +61,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
   switch (chain) {
     case Chain.Maya:
     case Chain.THORChain: {
-      const { getCosmosToolbox, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import("@uswap/toolboxes/cosmos");
+      const { getCosmosToolbox, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import("@tcswap/toolboxes/cosmos");
 
       const gasLimit = chain === Chain.Maya ? MAYA_GAS_VALUE : THORCHAIN_GAS_VALUE;
       const toolbox = await getCosmosToolbox(chain);
@@ -75,7 +75,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
 
     case Chain.Cosmos:
     case Chain.Kujira: {
-      const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
+      const { getCosmosToolbox } = await import("@tcswap/toolboxes/cosmos");
 
       // @ts-expect-error assumed available connection
       const signer = window.keepkey?.cosmos?.getOfflineSignerOnlyAmino(ChainId[chain]);
@@ -95,7 +95,7 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
     case Chain.BitcoinCash:
     case Chain.Dogecoin:
     case Chain.Litecoin: {
-      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
       const toolbox = await getUtxoToolbox(chain);
 
       const getBalance = async () => {
@@ -116,8 +116,8 @@ async function getWalletMethods(chain: (typeof KEEPKEY_BEX_SUPPORTED_CHAINS)[num
     case Chain.Optimism:
     case Chain.Polygon:
     case Chain.Avalanche: {
-      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@uswap/helpers");
-      const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@tcswap/helpers");
+      const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
       const { BrowserProvider } = await import("ethers");
       const ethereumWindowProvider = getKEEPKEYProvider(chain) as Eip1193Provider;
 

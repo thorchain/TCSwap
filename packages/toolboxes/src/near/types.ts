@@ -5,7 +5,7 @@ import type {
   DerivationPathArray,
   GenericCreateTransactionParams,
   GenericTransferParams,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 
 export interface NearSigner extends Signer, Omit<ChainSigner<Transaction, SignedTransaction>, "signTransaction"> {
   signAndSendTransactions?(params: { transactions: Transaction[] }): Promise<string>;

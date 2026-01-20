@@ -1,7 +1,7 @@
 import type { Account, Contract } from "@near-js/accounts";
 import type { JsonRpcProvider } from "@near-js/providers";
 import type { Action, SignedTransaction, Transaction } from "@near-js/transactions";
-import type { AssetValue, DerivationPathArray } from "@uswap/helpers";
+import type { AssetValue, DerivationPathArray } from "@tcswap/helpers";
 import type { NEP141Token } from "../helpers/nep141";
 import type { NearCreateTransactionParams, NearFunctionCallParams, NearSigner, NearTransferParams } from "../types";
 import type { NearContractInterface, NearGasEstimateParams } from "../types/contract";

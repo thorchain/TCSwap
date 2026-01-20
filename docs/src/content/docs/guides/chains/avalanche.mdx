@@ -24,10 +24,10 @@ Avalanche is a high-performance blockchain platform with sub-second finality and
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const avaxWallet = await uSwap.getWallet(Chain.Avalanche);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getAvalancheToolbox } from '@uswap/toolboxes/evm';
+import { getAvalancheToolbox } from '@tcswap/toolboxes/evm';
 
 
 const avaxToolbox = await getAvalancheToolbox({
@@ -74,7 +74,7 @@ Connect to Avalanche using Ethereum-compatible wallets:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Avalanche], "your mnemonic phrase");
 
@@ -91,7 +91,7 @@ AVAX is the native gas and utility token of Avalanche:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -425,7 +425,7 @@ const subnetInteraction = async () => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Avalanche, [
@@ -465,7 +465,7 @@ Handle Avalanche-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

@@ -53,7 +53,7 @@ For browser extension:
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 
 const uSwap = USwap({
@@ -78,7 +78,7 @@ const uSwap = USwap({
 
 ```ts twoslash
 
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 
 const uSwap = createUSwap({
@@ -102,7 +102,7 @@ const uSwap = createUSwap({
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -143,7 +143,7 @@ async function connectCoinbaseWallet() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -199,7 +199,7 @@ async function connectMultipleChains() {
 #### Browser Extension Connection
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -226,7 +226,7 @@ async function connectCoinbaseExtension() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -273,7 +273,7 @@ async function sendEther() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -317,7 +317,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -380,7 +380,7 @@ async function sendBaseToken() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -446,7 +446,7 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -503,7 +503,7 @@ async function manageNetworks() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, coinbaseWallet, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 function detectCoinbaseWalletType() {
 
@@ -566,7 +566,7 @@ async function connectOptimalCoinbaseWallet() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -726,7 +726,7 @@ async function handleSDKIssues() {
 
 ```ts twoslash
 
-import { USwap, coinbaseWallet, Chain } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain } from "@tcswap/sdk";
 
 
 const uSwap = USwap({
@@ -836,7 +836,7 @@ async function mobileSecurityChecks() {
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { USwap, coinbaseWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, coinbaseWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface CoinbaseWalletProps {
   onConnect: (address: string) => void;

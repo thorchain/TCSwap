@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-keystore";
+export * from "@tcswap/wallet-keystore";

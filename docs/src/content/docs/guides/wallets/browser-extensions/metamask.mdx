@@ -60,7 +60,7 @@ EVM extensions work in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -75,7 +75,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -91,7 +91,7 @@ const uSwap = createUSwap({
 #### Basic Connection
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -118,7 +118,7 @@ async function connectMetaMask() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -159,7 +159,7 @@ async function connectMultipleEVMChains() {
 #### Brave Wallet
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -183,7 +183,7 @@ async function connectBraveWallet() {
 #### Coinbase Wallet Extension
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -207,7 +207,7 @@ async function connectCoinbaseWallet() {
 #### Trust Wallet Extension
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -234,7 +234,7 @@ async function connectTrustWallet() {
 #### EIP-6963 Compatible Wallets
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -294,7 +294,7 @@ async function showAvailableWallets() {
 
 ```ts twoslash
 
-import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -337,7 +337,7 @@ import {
   Chain,
   AssetValue,
   WalletOption,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -397,7 +397,7 @@ async function sendAnyERC20Token(
 
 ```ts twoslash
 
-import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, AssetValue, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -452,7 +452,7 @@ async function sendOnArbitrum() {
 ### Automatic Network Switching
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -524,7 +524,7 @@ async function addCustomNetwork() {
 ### Connection Issues
 
 ```ts twoslash
-import { USwap, evmWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -777,7 +777,7 @@ const secureUSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, evmWallet, Chain, WalletOption, AssetValue } from "@uswap/sdk";
+import { USwap, evmWallet, Chain, WalletOption, AssetValue } from "@tcswap/sdk";
 
 interface MetaMaskWalletProps {
   onConnect: (address: string) => void;

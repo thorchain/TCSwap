@@ -16,7 +16,7 @@ Before diving into USwap's features, it's essential to understand its core conce
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const oneEth = AssetValue.from({
   asset: "ETH.ETH",
@@ -125,7 +125,7 @@ synthEth.isSynthetic();
 
 ```typescript
 // @noErrorValidation
-import { USwapNumber } from "@uswap/sdk";
+import { USwapNumber } from "@tcswap/sdk";
 
 const num1 = new USwapNumber(123.456);
 const num2 = new USwapNumber("789.012");
@@ -144,7 +144,7 @@ USwap uses consistent chain identifiers across the entire SDK:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@uswap/sdk";
+import { Chain } from "@tcswap/sdk";
 
 Chain.Ethereum;
 Chain.Avalanche;
@@ -183,7 +183,7 @@ The base error class with additional context:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.swap({ route });
@@ -244,7 +244,7 @@ USwap supports various wallet types through the `WalletOption` enum:
 
 ```typescript
 // @noErrorValidation
-import { WalletOption } from "@uswap/sdk";
+import { WalletOption } from "@tcswap/sdk";
 
 WalletOption.METAMASK;
 WalletOption.LEDGER;
@@ -259,7 +259,7 @@ Control transaction fees with the `FeeOption` enum:
 
 ```typescript
 // @noErrorValidation
-import { FeeOption } from "@uswap/sdk";
+import { FeeOption } from "@tcswap/sdk";
 
 FeeOption.Average;
 FeeOption.Fast;
@@ -278,7 +278,7 @@ USwap integrates with multiple swap providers:
 
 ```typescript
 // @noErrorValidation
-import { ProviderName } from "@uswap/sdk";
+import { ProviderName } from "@tcswap/sdk";
 
 ProviderName.THORCHAIN;
 ProviderName.CHAINFLIP;

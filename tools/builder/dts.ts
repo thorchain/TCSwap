@@ -1,7 +1,7 @@
 import { $ } from "bun";
 
 const dtsPlugin = {
-  name: "@uswap/bun-dts-plugin",
+  name: "@tcswap/bun-dts-plugin",
   setup: async (pkgName: string) => {
     const scope = `./packages/${pkgName}`;
 
@@ -49,7 +49,7 @@ const dtsPlugin = {
         console.error(Buffer.from(error.stdout).toString());
       }
       throw new Error(
-        `Error building @uswap/${pkgName} d.ts files
+        `Error building @tcswap/${pkgName} d.ts files
          Fix the errors above and run "bun build:dts" again`,
       );
     } finally {
@@ -79,6 +79,6 @@ export const orderedPackages = [
 ];
 
 for (const pkg of orderedPackages) {
-  console.info(`Building @uswap/${pkg} d.ts files`);
+  console.info(`Building @tcswap/${pkg} d.ts files`);
   await dtsPlugin.setup(pkg);
 }

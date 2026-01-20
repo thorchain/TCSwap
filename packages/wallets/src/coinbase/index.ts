@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, ChainToChainId, filterSupportedChains, USwapConfig, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, ChainToChainId, filterSupportedChains, USwapConfig, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 
 import { getWalletMethods } from "./signer";
 

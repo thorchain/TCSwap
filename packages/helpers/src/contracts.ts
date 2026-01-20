@@ -1,1 +1,1 @@
-export * from "@uswap/contracts";
+export * from "@tcswap/contracts";

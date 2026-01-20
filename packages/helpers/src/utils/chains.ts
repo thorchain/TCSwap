@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@uswap/types";
+import { Chain, CosmosChains, EVMChains, type StagenetChain, StagenetChains, UTXOChains } from "@tcswap/types";
 import { match } from "ts-pattern";
 import { USwapConfig } from "../modules/uSwapConfig";
 import { USwapError } from "../modules/uSwapError";

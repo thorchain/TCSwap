@@ -1,4 +1,4 @@
-import type { EVMChain } from "@uswap/helpers";
+import type { EVMChain } from "@tcswap/helpers";
 import { getBalance } from "../utils";
 
 export function getEvmApi(chain: EVMChain) {

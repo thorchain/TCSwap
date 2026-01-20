@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { ErrorCode, FeeTypeEnum, ProviderName, WarningCodeEnum } from "@uswap/helpers";
-import { Chain, ChainId } from "@uswap/types";
+import { ErrorCode, FeeTypeEnum, ProviderName, WarningCodeEnum } from "@tcswap/helpers";
+import { Chain, ChainId } from "@tcswap/types";
 import { array, boolean, coerce, number, object, optional, string, union, unknown, type ZodType, z } from "zod/v4";
 
 export enum PriorityLabel {

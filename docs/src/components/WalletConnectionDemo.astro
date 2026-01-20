@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const chainImports = selectedChains.map(chain => `Chain.${chain}`).join(', ');
 
-    let code = `import { createUSwap, Chain, WalletOption } from '@uswap/sdk';\n\n`;
+    let code = `import { createUSwap, Chain, WalletOption } from '@tcswap/sdk';\n\n`;
     code += `const uSwap = createUSwap();\n\n`;
 
     if (selectedWallet === 'metamask') {

@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, RequestClient, USwapNumber } from "@uswap/helpers";
-import { Chain, getChainConfig, type TCLikeChain } from "@uswap/types";
+import { AssetValue, RequestClient, USwapNumber } from "@tcswap/helpers";
+import { Chain, getChainConfig, type TCLikeChain } from "@tcswap/types";
 import type {
   Action,
   ActionQuery,

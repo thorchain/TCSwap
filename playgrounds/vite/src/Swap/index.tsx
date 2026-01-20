@@ -3,7 +3,7 @@
  */
 
 "use client";
-import { type AssetValue, FeeOption, getExplorerTxUrl, type QuoteResponseRoute } from "@uswap/sdk";
+import { type AssetValue, FeeOption, getExplorerTxUrl, type QuoteResponseRoute } from "@tcswap/sdk";
 import { useCallback } from "react";
 
 import type { USwapClient } from "../uSwapClient";

@@ -3,7 +3,7 @@
  */
 
 import type Transport from "@ledgerhq/hw-transport";
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 
 const getNavigatorUsb = () =>
   navigator?.usb as unknown as {

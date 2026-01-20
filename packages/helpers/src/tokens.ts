@@ -1,1 +1,1 @@
-export * from "@uswap/tokens";
+export * from "@tcswap/tokens";

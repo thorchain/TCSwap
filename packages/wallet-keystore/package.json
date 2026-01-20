@@ -2,9 +2,9 @@
   "author": "swapkit-oss",
   "dependencies": {
     "@scure/bip39": "2.0.1",
-    "@uswap/helpers": "workspace:*",
-    "@uswap/toolboxes": "workspace:*",
-    "@uswap/wallet-core": "workspace:*",
+    "@tcswap/helpers": "workspace:*",
+    "@tcswap/toolboxes": "workspace:*",
+    "@tcswap/wallet-core": "workspace:*",
     "blakejs": "1.2.1"
   },
   "description": "USwap - Wallet Keystore",
@@ -17,13 +17,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/wallet-keystore",
+  "name": "@tcswap/wallet-keystore",
   "repository": {
     "directory": "packages/wallet-keystore",
     "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
+    "url": "git+https://github.com/thorchain/TCSwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

@@ -6,8 +6,8 @@
 
 import type { Account } from "@near-js/accounts";
 import { type Action, SignedTransaction, type Transaction } from "@near-js/transactions";
-import { USwapError } from "@uswap/helpers";
-import type { NearSigner } from "@uswap/toolboxes/near";
+import { USwapError } from "@tcswap/helpers";
+import type { NearSigner } from "@tcswap/toolboxes/near";
 
 /**
  * NEAR Browser Wallet Provider Interface

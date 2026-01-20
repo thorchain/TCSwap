@@ -6,7 +6,7 @@
     KeepKey Specific bip32 path conventions
 */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 
 const HARDENED = 0x80000000;
 

@@ -2,9 +2,9 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain } from "@uswap/helpers";
-import { keystoreWallet, SwapKit } from "@uswap/sdk";
-import { KEYSTORE_SUPPORTED_CHAINS } from "@uswap/wallets/keystore";
+import { Chain } from "@tcswap/helpers";
+import { keystoreWallet, SwapKit } from "@tcswap/sdk";
+import { KEYSTORE_SUPPORTED_CHAINS } from "@tcswap/wallets/keystore";
 
 const swapKit = SwapKit({ wallets: keystoreWallet });
 

@@ -3,7 +3,7 @@
  */
 
 import { base64, bech32 } from "@scure/base";
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import { fromByteArray, toByteArray } from "base64-js";
 
 export function bech32ToBase64(address: string) {

@@ -24,10 +24,10 @@ Ethereum is the leading smart contract blockchain and the foundation of DeFi. US
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const ethWallet = await uSwap.getWallet(Chain.Ethereum);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getEthereumToolbox } from '@uswap/toolboxes/evm';
+import { getEthereumToolbox } from '@tcswap/toolboxes/evm';
 
 
 const ethToolbox = await getEthereumToolbox({
@@ -74,7 +74,7 @@ Connect to Ethereum using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Ethereum], "your mnemonic phrase");
 
@@ -89,7 +89,7 @@ await uSwap.connectLedger([Chain.Ethereum]);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -293,7 +293,7 @@ const dexSwap = await uSwap.swap({
 
 ```typescript
 // @noErrorValidation
-import { validateEthereumAddress } from "@uswap/toolboxes/evm";
+import { validateEthereumAddress } from "@tcswap/toolboxes/evm";
 
 const isValidAddress = validateEthereumAddress(
   "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7"
@@ -318,7 +318,7 @@ Configure gas fees based on network conditions:
 
 ```typescript
 // @noErrorValidation
-import { FeeOption } from "@uswap/sdk";
+import { FeeOption } from "@tcswap/sdk";
 
 const feeOptions = {
   [FeeOption.Average]: 1.0,
@@ -341,7 +341,7 @@ Handle Ethereum-specific errors appropriately:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({
@@ -389,7 +389,7 @@ const toolbox = await getEthereumToolbox({
 });
 
 
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 USwapConfig.setRpcUrl(Chain.Ethereum, [
   "https:
@@ -547,7 +547,7 @@ const privateTx = await toolbox.sendPrivateTransaction({
 ```typescript
 // @noErrorValidation
 
-import { USwapConfig } from "@uswap/sdk";
+import { USwapConfig } from "@tcswap/sdk";
 
 USwapConfig.setEnv("debug", true);
 

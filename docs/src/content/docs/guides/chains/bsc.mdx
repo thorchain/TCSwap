@@ -24,10 +24,10 @@ BNB Smart Chain is a fast, low-cost blockchain compatible with Ethereum Virtual 
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const bscWallet = await uSwap.getWallet(Chain.BinanceSmartChain);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getBSCToolbox } from '@uswap/toolboxes/evm';
+import { getBSCToolbox } from '@tcswap/toolboxes/evm';
 
 
 const bscToolbox = await getBSCToolbox({
@@ -74,7 +74,7 @@ Connect to BSC using Ethereum-compatible wallets:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore(
   [Chain.BinanceSmartChain],
@@ -94,7 +94,7 @@ BNB is the native gas and utility token of BSC:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -433,7 +433,7 @@ const addLiquidity = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.BinanceSmartChain, [
@@ -474,7 +474,7 @@ Handle BSC-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

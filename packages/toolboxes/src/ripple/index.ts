@@ -11,7 +11,7 @@ import {
   getRPCUrl,
   USwapError,
   USwapNumber,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import type { Transaction } from "xrpl";
 import { Client, isValidAddress, type Payment, Wallet, xrpToDrops } from "xrpl";
 

@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { Chain } from "@uswap/helpers";
-import type { FullWallet } from "@uswap/toolboxes";
+import type { Chain } from "@tcswap/helpers";
+import type { FullWallet } from "@tcswap/toolboxes";
 import type { ChainflipPlugin } from "./chainflip";
 import type { EVMPlugin } from "./evm";
 import type { NearPlugin } from "./near";

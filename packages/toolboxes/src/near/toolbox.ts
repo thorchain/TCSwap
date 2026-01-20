@@ -4,7 +4,7 @@
 
 import type { Account, Contract } from "@near-js/accounts";
 import type { SignedTransaction, Transaction } from "@near-js/transactions";
-import { AssetValue, Chain, getChainConfig, getRPCUrl, USwapError } from "@uswap/helpers";
+import { AssetValue, Chain, getChainConfig, getRPCUrl, USwapError } from "@tcswap/helpers";
 import { getBalance } from "../utils";
 import {
   getFullAccessPublicKey,

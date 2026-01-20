@@ -1,6 +1,6 @@
 "use client";
 
-import type { WalletOption } from "@uswap/helpers";
+import type { WalletOption } from "@tcswap/helpers";
 import { cn } from "../../lib/utils";
 import { temp_host } from "./asset-icon";
 

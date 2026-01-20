@@ -24,10 +24,10 @@ Radix DLT is a layer-1 protocol designed specifically for DeFi with atomic compo
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const radixWallet = await uSwap.getWallet(Chain.Radix);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getRadixToolbox } from '@uswap/toolboxes/radix';
+import { getRadixToolbox } from '@tcswap/toolboxes/radix';
 
 
 const radixToolbox = await getRadixToolbox({
@@ -74,7 +74,7 @@ Connect to Radix using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Radix], "your mnemonic phrase");
 
@@ -94,7 +94,7 @@ const radixAddress = uSwap.getAddress(Chain.Radix);
 
 console.log("Radix address:", radixAddress);
 
-import { validateRadixAddress } from "@uswap/toolboxes/radix";
+import { validateRadixAddress } from "@tcswap/toolboxes/radix";
 
 const isValidAddress = validateRadixAddress(radixAddress);
 console.log("Valid XRD address:", isValidAddress);
@@ -107,7 +107,7 @@ console.log("Radix public key:", publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient:
@@ -423,7 +423,7 @@ const arbitrageOpportunity = async () => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Radix, [

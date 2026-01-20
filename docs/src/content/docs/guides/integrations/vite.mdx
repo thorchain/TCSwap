@@ -14,16 +14,16 @@ Install USwap and required dependencies:
 
 <Tabs syncKey="package-manager">
   <TabItem label="bun" icon="bun">
-    ```bash bun add @uswap/sdk vite-plugin-node-polyfills ```
+    ```bash bun add @tcswap/sdk vite-plugin-node-polyfills ```
   </TabItem>
   <TabItem label="pnpm">
-    ```bash pnpm add @uswap/sdk vite-plugin-node-polyfills ```
+    ```bash pnpm add @tcswap/sdk vite-plugin-node-polyfills ```
   </TabItem>
   <TabItem label="npm">
-    ```bash npm install @uswap/sdk vite-plugin-node-polyfills ```
+    ```bash npm install @tcswap/sdk vite-plugin-node-polyfills ```
   </TabItem>
   <TabItem label="yarn">
-    ```bash yarn add @uswap/sdk vite-plugin-node-polyfills ```
+    ```bash yarn add @tcswap/sdk vite-plugin-node-polyfills ```
   </TabItem>
 </Tabs>
 
@@ -77,7 +77,7 @@ Create a USwap client instance:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
 
 export const uSwapClient = createUSwap();
 ```
@@ -89,7 +89,7 @@ Here's a basic example of using USwap in a React component:
 ```tsx
 import { useState, useEffect } from "react";
 import { uSwapClient } from "./uSwapClient";
-import { Chain, WalletOption } from "@uswap/sdk";
+import { Chain, WalletOption } from "@tcswap/sdk";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
@@ -149,7 +149,7 @@ Then configure USwap:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, USwapConfig } from "@uswap/sdk";
+import { createUSwap, USwapConfig } from "@tcswap/sdk";
 
 USwapConfig.setApiKey("uSwap", import.meta.env.VITE_USWAP_API_KEY);
 USwapConfig.setApiKey(

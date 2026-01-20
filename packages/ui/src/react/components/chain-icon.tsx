@@ -1,6 +1,6 @@
 "use client";
 
-import { AssetValue, type Chain } from "@uswap/helpers";
+import { AssetValue, type Chain } from "@tcswap/helpers";
 import { cn } from "../../lib/utils";
 
 interface ChainIconProps {

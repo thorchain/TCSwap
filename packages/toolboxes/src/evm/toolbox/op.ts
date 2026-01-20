@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { applyFeeMultiplierToBigInt, Chain, FeeOption, getRPCUrl, USwapError } from "@uswap/helpers";
+import { applyFeeMultiplierToBigInt, Chain, FeeOption, getRPCUrl, USwapError } from "@tcswap/helpers";
 import type { Authorization, BrowserProvider, JsonRpcProvider, Provider, TransactionRequest } from "ethers";
 import { Contract, HDNodeWallet } from "ethers";
 import { match, P } from "ts-pattern";

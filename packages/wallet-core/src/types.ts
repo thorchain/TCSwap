@@ -1,4 +1,4 @@
-import type { AddChainType, Chain, WalletOption } from "@uswap/helpers";
+import type { AddChainType, Chain, WalletOption } from "@tcswap/helpers";
 
 export type ConnectFunction<
   ConnectParams extends any[],

@@ -13,7 +13,7 @@ async function setVersions() {
     const { version } = await Bun.file(filePath).json();
     const [name] = file.split("/");
 
-    versions[`@uswap/${name}`] = { filePath, version };
+    versions[`@tcswap/${name}`] = { filePath, version };
   }
 
   console.info(`Versions: ${JSON.stringify(versions, null, 2)}`);

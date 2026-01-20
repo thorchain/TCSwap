@@ -4,4 +4,4 @@
  * - Add dynamic wallets
  */
 
-export * from "@uswap/core";
+export * from "@tcswap/core";

@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, RequestClient, USwapConfig } from "@uswap/helpers";
-import { MAYAConfig, StagenetMAYAConfig, StagenetTHORConfig, THORConfig } from "@uswap/types";
+import { AssetValue, RequestClient, USwapConfig } from "@tcswap/helpers";
+import { MAYAConfig, StagenetMAYAConfig, StagenetTHORConfig, THORConfig } from "@tcswap/types";
 import type {
   InboundAddressesItem,
   LastBlockItem,

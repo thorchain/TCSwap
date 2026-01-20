@@ -9,8 +9,8 @@ import {
   type GenericTransferParams,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+} from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 
 import { getCtrlAddress, getCtrlProvider, walletTransfer } from "./walletHelpers";
 
@@ -64,7 +64,7 @@ export const CTRL_SUPPORTED_CHAINS = getWalletSupportedChains(ctrlWallet);
 async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
   switch (chain) {
     case Chain.Solana: {
-      const { getSolanaToolbox } = await import("@uswap/toolboxes/solana");
+      const { getSolanaToolbox } = await import("@tcswap/toolboxes/solana");
       const provider = getCtrlProvider(chain);
 
       if (!provider) {
@@ -77,7 +77,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
 
     case Chain.Maya:
     case Chain.THORChain: {
-      const { getCosmosToolbox, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import("@uswap/toolboxes/cosmos");
+      const { getCosmosToolbox, THORCHAIN_GAS_VALUE, MAYA_GAS_VALUE } = await import("@tcswap/toolboxes/cosmos");
 
       const gasLimit = chain === Chain.Maya ? MAYA_GAS_VALUE : THORCHAIN_GAS_VALUE;
       const toolbox = await getCosmosToolbox(chain);
@@ -92,7 +92,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
     case Chain.Cosmos:
     case Chain.Kujira:
     case Chain.Noble: {
-      const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
+      const { getCosmosToolbox } = await import("@tcswap/toolboxes/cosmos");
       const chainId = ChainToChainId[chain];
       const provider = getCtrlProvider(chain);
 
@@ -112,7 +112,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
     case Chain.BitcoinCash:
     case Chain.Dogecoin:
     case Chain.Litecoin: {
-      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
       const toolbox = await getUtxoToolbox(chain);
 
       return { ...toolbox, transfer: walletTransfer };
@@ -130,8 +130,8 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
     case Chain.Optimism:
     case Chain.Polygon:
     case Chain.XLayer: {
-      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@uswap/helpers");
-      const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+      const { prepareNetworkSwitch, switchEVMWalletNetwork } = await import("@tcswap/helpers");
+      const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
       const { BrowserProvider } = await import("ethers");
       const ethereumWindowProvider = getCtrlProvider(chain);
 
@@ -166,7 +166,7 @@ async function getWalletMethods(chain: (typeof CTRL_SUPPORTED_CHAINS)[number]) {
       }
 
       const { createNearSignerFromProvider } = await import("../helpers/near");
-      const { getNearToolbox } = await import("@uswap/toolboxes/near");
+      const { getNearToolbox } = await import("@tcswap/toolboxes/near");
 
       const signer = await createNearSignerFromProvider(provider, "CTRL");
       const accountId = await signer.getAddress();

@@ -53,7 +53,7 @@ Bitget Wallet works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -68,7 +68,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -84,7 +84,7 @@ const uSwap = createUSwap({
 #### Single Chain Connection
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -111,7 +111,7 @@ async function connectBitgetEthereum() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -160,7 +160,7 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -203,7 +203,7 @@ async function connectBitgetSolana() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -241,7 +241,7 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -278,7 +278,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -319,7 +319,7 @@ async function sendBitcoin() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -356,7 +356,7 @@ async function sendSolana() {
 #### SPL Token Transfer
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -391,7 +391,7 @@ async function sendSPLToken() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -427,7 +427,7 @@ async function sendOnPolygon() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -462,7 +462,7 @@ async function sendCosmos() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -497,7 +497,7 @@ async function sendTron() {
 ### EVM Chain Management
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -540,7 +540,7 @@ async function manageEVMChains() {
 ### Multi-Chain Portfolio View
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -592,7 +592,7 @@ async function getPortfolioOverview() {
 
 ```ts twoslash
 
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...bitgetWallet },
@@ -753,7 +753,7 @@ async function handleChainSpecificIssues(chain: Chain) {
 ### Best Practices
 
 ```ts twoslash
-import { USwap, bitgetWallet, Chain } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain } from "@tcswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -861,7 +861,7 @@ const secureUSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, bitgetWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, bitgetWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface BitgetWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

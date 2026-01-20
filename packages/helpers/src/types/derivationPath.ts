@@ -1,4 +1,4 @@
-import { AllChains, type Chain, getChainConfig } from "@uswap/types";
+import { AllChains, type Chain, getChainConfig } from "@tcswap/types";
 
 export type DerivationPathArray = ReturnType<typeof getChainConfig>["networkDerivationPath"];
 

@@ -24,10 +24,10 @@ Solana is a high-performance blockchain known for fast transactions and low fees
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const solWallet = await uSwap.getWallet(Chain.Solana);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getSolanaToolbox } from '@uswap/toolboxes/solana';
+import { getSolanaToolbox } from '@tcswap/toolboxes/solana';
 
 
 const solToolbox = await getSolanaToolbox({
@@ -74,7 +74,7 @@ Connect to Solana using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Solana], "your mnemonic phrase");
 
@@ -96,7 +96,7 @@ const solanaAddress = uSwap.getAddress(Chain.Solana);
 
 console.log("Solana address:", solanaAddress);
 
-import { validateSolanaAddress } from "@uswap/toolboxes/solana";
+import { validateSolanaAddress } from "@tcswap/toolboxes/solana";
 
 const isValidAddress = validateSolanaAddress(solanaAddress);
 console.log("Valid SOL address:", isValidAddress);
@@ -109,7 +109,7 @@ console.log("Public key:", publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
@@ -463,7 +463,7 @@ const listNFT = async (nftMint: string, price: number) => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Solana, [
@@ -510,7 +510,7 @@ Handle Solana-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

@@ -1,6 +1,6 @@
 "use client";
 
-import { showModal, useSwapKit, WalletConnectDialog } from "@uswap/ui/react";
+import { showModal, useSwapKit, WalletConnectDialog } from "@tcswap/ui/react";
 import { Button } from "~/components/ui/button";
 import { WalletDrawer } from "./WalletDrawer";
 

@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type AssetValue, Chain, USwapError } from "@uswap/helpers";
+import { type AssetValue, Chain, USwapError } from "@tcswap/helpers";
 import type { Xumm } from "xumm";
 import { sendXamanTransaction } from "./walletMethods";
 
@@ -15,7 +15,7 @@ interface GetWalletForChainParams {
 export async function getWalletForChain({ xumm, chain, address }: GetWalletForChainParams) {
   switch (chain) {
     case Chain.Ripple: {
-      const { getRippleToolbox } = await import("@uswap/toolboxes/ripple");
+      const { getRippleToolbox } = await import("@tcswap/toolboxes/ripple");
 
       // const api = apis?.[chain]; // Unused for now
       const toolbox = await getRippleToolbox({});

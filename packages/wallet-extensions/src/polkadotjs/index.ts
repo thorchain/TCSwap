@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, filterSupportedChains, USwapError, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, filterSupportedChains, USwapError, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 
 export const polkadotWallet = createWallet({
   connect: ({ addChain, supportedChains, walletType }) =>
@@ -30,7 +30,7 @@ export const POLKADOT_SUPPORTED_CHAINS = getWalletSupportedChains(polkadotWallet
 async function getWalletMethods(chain: Chain) {
   switch (chain) {
     case Chain.Polkadot: {
-      const { getSubstrateToolbox } = await import("@uswap/toolboxes/substrate");
+      const { getSubstrateToolbox } = await import("@tcswap/toolboxes/substrate");
       const injectedExtension = window?.injectedWeb3?.["polkadot-js"];
 
       const rawExtension = await injectedExtension?.enable?.("polkadot-js");

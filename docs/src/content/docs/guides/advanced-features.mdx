@@ -16,8 +16,8 @@ Fetch balances across all connected chains efficiently:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from "@uswap/sdk";
-import { USwapApi } from "@uswap/helpers/api";
+import { createUSwap, Chain } from "@tcswap/sdk";
+import { USwapApi } from "@tcswap/helpers/api";
 
 const uSwap = createUSwap();
 
@@ -64,7 +64,7 @@ Execute multiple transactions across different chains:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, FeeOption } from "@uswap/sdk";
+import { AssetValue, FeeOption } from "@tcswap/sdk";
 
 const transactions = [
   {
@@ -120,7 +120,7 @@ Convert L1 assets to synthetics for faster swaps:
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/helpers/api";
+import { USwapApi } from "@tcswap/helpers/api";
 
 const mintQuote = await USwapApi.getSwapQuote({
   sellAsset: "BTC.BTC",
@@ -200,7 +200,7 @@ const thornameeMemo = "~:name:chain:address";
 
 ```typescript
 // @noErrorValidation
-import { getMemoForDeposit, getMemoForWithdraw, MemoType } from "@uswap/sdk";
+import { getMemoForDeposit, getMemoForWithdraw, MemoType } from "@tcswap/sdk";
 
 const depositMemo = getMemoForDeposit({
   chain: Chain.Bitcoin,
@@ -263,8 +263,8 @@ await uSwap.swap({ route: modifiedRoute });
 Optimize gas usage across different chains:
 
 ```typescript
-import { Chain, ChainId } from '@uswap/sdk';
-import { USwapApi } from '@uswap/helpers/api';
+import { Chain, ChainId } from '@tcswap/sdk';
+import { USwapApi } from '@tcswap/helpers/api';
 
 const gasRatesArray = await USwapApi.getGasRate();
 
@@ -317,8 +317,8 @@ Manage custom token lists and metadata:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, ProviderName } from '@uswap/sdk';
-import { USwapApi } from '@uswap/helpers/api';
+import { AssetValue, ProviderName } from '@tcswap/sdk';
+import { USwapApi } from '@tcswap/helpers/api';
 
 
 async function loadTokenList(provider: ProviderName) {
@@ -397,8 +397,8 @@ registry.addCustomToken({
 Implement advanced transaction tracking:
 
 ```typescript
-import { ChainId } from '@uswap/types';
-import { USwapApi } from '@uswap/helpers/api';
+import { ChainId } from '@tcswap/types';
+import { USwapApi } from '@tcswap/helpers/api';
 
 class TransactionTracker {
   private pendingTxs: Map<string, any> = new Map();
@@ -444,7 +444,7 @@ Implement robust error handling and recovery:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 class USwapRetry {
   async executeWithRetry<T>(

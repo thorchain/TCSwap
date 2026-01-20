@@ -24,10 +24,10 @@ Litecoin is a peer-to-peer cryptocurrency based on Bitcoin with faster block tim
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const ltcWallet = await uSwap.getWallet(Chain.Litecoin);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getLitecoinToolbox } from '@uswap/toolboxes/utxo';
+import { getLitecoinToolbox } from '@tcswap/toolboxes/utxo';
 
 
 const ltcToolbox = await getLitecoinToolbox({
@@ -74,7 +74,7 @@ Connect to Litecoin using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Litecoin], "your mnemonic phrase");
 
@@ -107,7 +107,7 @@ console.log("Litecoin addresses:", addresses);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
@@ -376,7 +376,7 @@ const lightningExample = async () => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Litecoin, [
@@ -423,7 +423,7 @@ Handle Litecoin-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({
@@ -567,7 +567,7 @@ const consolidateUTXOs = async () => {
 
 ```typescript
 // @noErrorValidation
-import { validateLitecoinAddress } from "@uswap/toolboxes/utxo";
+import { validateLitecoinAddress } from "@tcswap/toolboxes/utxo";
 
 const addresses = [
   "ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",

@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type Chain, USwapConfig } from "@uswap/core";
+import { type Chain, USwapConfig } from "@tcswap/core";
 import { useCallback, useState } from "react";
 
 type Props = { chains: Chain[]; setChains: (chains: Chain[]) => void; loading?: boolean };

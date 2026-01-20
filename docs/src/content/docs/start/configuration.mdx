@@ -26,7 +26,7 @@ When creating a USwap instance, you can provide configuration options:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap } from '@uswap/sdk';
+import { createUSwap } from '@tcswap/sdk';
 
 const uSwap = createUSwap({
   config: {
@@ -108,7 +108,7 @@ USwap provides default RPC URLs for all supported chains, but you can override t
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap({
   config: {
@@ -132,7 +132,7 @@ Override the default Midgard endpoints:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap({
   config: {
@@ -155,7 +155,7 @@ Add custom headers for Midgard API authentication:
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from "@uswap/sdk";
+import { USwapConfig } from "@tcswap/sdk";
 
 USwapConfig.setApiHeaders("midgard", {
   "X-Client-ID": "your-client-id",
@@ -184,7 +184,7 @@ Update Midgard configuration at runtime:
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig, Chain } from '@uswap/sdk';
+import { USwapConfig, Chain } from '@tcswap/sdk';
 
 
 USwapConfig.setMidgardUrl(Chain.THORChain, 'https:
@@ -217,7 +217,7 @@ USwap supports custom headers for all API endpoints (Midgard, THORNode, and USwa
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from "@uswap/sdk";
+import { USwapConfig } from "@tcswap/sdk";
 
 USwapConfig.set({
   apiHeaders: {
@@ -272,7 +272,7 @@ You can update configuration after initialization using `USwapConfig`:
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig, Chain } from '@uswap/sdk';
+import { USwapConfig, Chain } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Ethereum, 'https:
@@ -342,7 +342,7 @@ Provide custom API implementations for specific chains:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@uswap/sdk";
+import { Chain } from "@tcswap/sdk";
 
 const customBitcoinApi = {
   getBalance: async (address: string) => {},
@@ -438,7 +438,7 @@ Here's a production-ready configuration example:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, USwapConfig, Chain } from '@uswap/sdk';
+import { createUSwap, USwapConfig, Chain } from '@tcswap/sdk';
 
 
 const config = {
@@ -527,7 +527,7 @@ Verify your API keys are working:
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/sdk";
+import { USwapApi } from "@tcswap/sdk";
 
 try {
   const price = await USwapApi.getPrice("ETH");

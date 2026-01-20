@@ -1,4 +1,4 @@
-import type { AssetValue, FeeOption, MemoType } from "@uswap/helpers";
+import type { AssetValue, FeeOption, MemoType } from "@tcswap/helpers";
 
 export type AddLiquidityPartParams = {
   assetValue: AssetValue;

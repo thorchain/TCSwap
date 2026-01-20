@@ -20,12 +20,12 @@ You can use USwap in two ways:
 1. **Granular approach** - Import only what you need from individual packages (recommended for frontend):
 
    ```ts
-   import { USwap, ThorchainPlugin, evmWallet } from "@uswap/sdk";
+   import { USwap, ThorchainPlugin, evmWallet } from "@tcswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createUSwap } from "@uswap/sdk";
+   import { createUSwap } from "@tcswap/sdk";
    ```
 
 ## Basic Swap Flow
@@ -64,7 +64,7 @@ import {
   keystoreWallet,
   ThorchainPlugin,
   EVMPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -90,7 +90,7 @@ async function connectWallets() {
 ### All-in-one Approach (Backend)
 
 ```ts twoslash
-import { Chain, createUSwap } from "@uswap/sdk";
+import { Chain, createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -117,7 +117,7 @@ Before executing a swap, you need to get a quote to see available routes, prices
 <SwapQuoteDemo />
 
 ```ts twoslash
-import { USwapApi } from "@uswap/helpers/api";
+import { USwapApi } from "@tcswap/helpers/api";
 
 async function getSwapQuote() {
   const sellAsset = "ETH.ETH";
@@ -146,8 +146,8 @@ async function getSwapQuote() {
 }
 
 async function getProviderQuote() {
-  const { ProviderName } = await import("@uswap/sdk");
-  const { USwapApi } = await import("@uswap/helpers/api");
+  const { ProviderName } = await import("@tcswap/sdk");
+  const { USwapApi } = await import("@tcswap/helpers/api");
 
   const quoteResponse = await USwapApi.getSwapQuote({
     sellAsset: "ETH.ETH",
@@ -177,7 +177,7 @@ import {
   USwap,
   evmWallet,
   EVMPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   plugins: { ...EVMPlugin },
@@ -245,7 +245,7 @@ import {
   FeeOption,
   USwapApi,
   createUSwap,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -292,7 +292,7 @@ import {
   USwap,
   evmWallet,
   ChainflipPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 
 const uSwap = USwap({
@@ -359,7 +359,7 @@ import {
   evmWallet,
   keystoreWallet,
   ThorchainPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   plugins: { ...ThorchainPlugin },
@@ -412,7 +412,7 @@ import {
   USwap,
   evmWallet,
   EVMPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   plugins: { ...EVMPlugin },
@@ -472,7 +472,7 @@ import {
   evmWallet,
   ThorchainPlugin,
   ChainflipPlugin,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   plugins: { ...ThorchainPlugin, ...ChainflipPlugin },

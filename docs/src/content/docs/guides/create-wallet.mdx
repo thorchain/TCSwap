@@ -27,7 +27,7 @@ import {
   type ChainWallet,
   type EVMChain,
   getEvmToolbox,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 export const myCustomWallet = createWallet({
   name: "connectMyCustomWallet",
@@ -90,7 +90,7 @@ import {
   type ChainWallet,
   getEvmToolbox,
   getUtxoToolbox,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 export const customHardwareWallet = createWallet({
   name: "connectCustomHardware",
@@ -203,7 +203,7 @@ export const customHardwareWallet = createWallet({
 To use your custom wallet adapter with USwap:
 
 ```ts twoslash
-import { USwap, Chain } from "@uswap/sdk";
+import { USwap, Chain } from "@tcswap/sdk";
 import { myCustomWallet } from "./my-custom-wallet";
 
 const uSwap = USwap({
@@ -223,7 +223,7 @@ Test your wallet adapter thoroughly before using it in production:
 
 ```ts twoslash
 import { describe, jest, it, expect, beforeEach } from "bun:test";
-import { Chain, AssetValue, USwap } from "@uswap/sdk";
+import { Chain, AssetValue, USwap } from "@tcswap/sdk";
 import { myCustomWallet } from "./my-custom-wallet";
 
 describe("MyCustomWallet", () => {

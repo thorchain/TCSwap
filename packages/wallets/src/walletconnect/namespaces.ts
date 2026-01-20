@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import type { ProposalTypes } from "@walletconnect/types";
 import {
   DEFAULT_COSMOS_METHODS,

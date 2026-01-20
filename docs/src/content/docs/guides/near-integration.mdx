@@ -24,10 +24,10 @@ The NEAR integration provides:
 
 ```bash
 # Using the full SDK (recommended)
-npm install @uswap/sdk
+npm install @tcswap/sdk
 
 # Or individual packages for smaller bundles
-npm install @uswap/toolboxes @uswap/plugins
+npm install @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ npm install @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap } from '@uswap/sdk';
+import { createUSwap } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const nearWallet = await uSwap.getWallet(Chain.Near);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getNearToolbox } from '@uswap/toolboxes/near';
+import { getNearToolbox } from '@tcswap/toolboxes/near';
 
 
 const nearToolbox = await getNearToolbox({
@@ -93,7 +93,7 @@ console.log(publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await toolbox.transfer({
   recipient: "receiver.near",
@@ -215,7 +215,7 @@ const transferFee = await toolbox.estimateTransactionFee({
   assetValue: AssetValue.from({ chain: Chain.Near, value: "1" }),
 });
 
-import { estimateGas } from "@uswap/toolboxes/near";
+import { estimateGas } from "@tcswap/toolboxes/near";
 
 const gasEstimate = await estimateGas(
   {
@@ -248,7 +248,7 @@ NEAR Names is a decentralized naming service similar to ENS on Ethereum:
 
 ```typescript
 // @noErrorValidation
-import { USwap } from "@uswap/sdk";
+import { USwap } from "@tcswap/sdk";
 
 const uSwap = USwap.create();
 
@@ -317,7 +317,7 @@ NEAR operations can throw specific errors that should be handled:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await toolbox.transfer({
@@ -383,7 +383,7 @@ To use NEAR testnet:
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setEnv('isStagenet', true);
@@ -399,7 +399,7 @@ The toolbox provides utility functions for gas calculations:
 
 ```typescript
 // @noErrorValidation
-import { tgasToGas, gasToTGas } from "@uswap/toolboxes/near";
+import { tgasToGas, gasToTGas } from "@tcswap/toolboxes/near";
 
 const gasUnits = tgasToGas("30");
 
@@ -411,7 +411,7 @@ const tgas = gasToTGas("30000000000000");
 1. **Always validate addresses** before sending transactions:
 
    ```typescript
-   import { validateNearAddress } from "@uswap/toolboxes/near";
+   import { validateNearAddress } from "@tcswap/toolboxes/near";
 
    if (!validateNearAddress(recipient)) {
      throw new Error("Invalid NEAR address");

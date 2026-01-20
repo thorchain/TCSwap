@@ -2,7 +2,7 @@ import type { Signer as InjectedSigner } from "@polkadot/api/types";
 import type { ProviderInterface } from "@polkadot/rpc-provider/types";
 import type { ExtDef } from "@polkadot/types/extrinsic/signedExtensions/types";
 import type { KeypairType } from "@polkadot/util-crypto/types";
-import type { GenericTransferParams, SubstrateChain } from "@uswap/helpers";
+import type { GenericTransferParams, SubstrateChain } from "@tcswap/helpers";
 
 const polkadotNetwork = {
   decimals: [10],

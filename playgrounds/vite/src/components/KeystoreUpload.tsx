@@ -1,4 +1,4 @@
-import { WalletOption } from "@uswap/helpers";
+import { WalletOption } from "@tcswap/helpers";
 import { availableChainsByWallet } from "../WalletPicker";
 
 type Props = { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void };

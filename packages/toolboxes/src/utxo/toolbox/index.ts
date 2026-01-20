@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, type DerivationPathArray, USwapError, type UTXOChain } from "@uswap/helpers";
+import { Chain, type DerivationPathArray, USwapError, type UTXOChain } from "@tcswap/helpers";
 import { createBCHToolbox } from "./bitcoinCash";
 import type { UtxoToolboxParams } from "./params";
 import { createUTXOToolbox } from "./utxo";

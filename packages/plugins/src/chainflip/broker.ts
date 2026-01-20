@@ -4,9 +4,9 @@
 
 import { decodeAddress } from "@polkadot/keyring";
 import { isHex, u8aToHex } from "@polkadot/util";
-import { AssetValue, Chain, USwapError, wrapWithThrow } from "@uswap/helpers";
-import type { getEvmToolbox } from "@uswap/toolboxes/evm";
-import type { getSubstrateToolbox } from "@uswap/toolboxes/substrate";
+import { AssetValue, Chain, USwapError, wrapWithThrow } from "@tcswap/helpers";
+import type { getEvmToolbox } from "@tcswap/toolboxes/evm";
+import type { getSubstrateToolbox } from "@tcswap/toolboxes/substrate";
 
 import type { WithdrawFeeResponse } from "./types";
 
@@ -87,7 +87,7 @@ const fundStateChainAccount =
     stateChainAccount: string;
     assetValue: AssetValue;
   }) => {
-    const { chainflipGateway } = await import("@uswap/helpers/contracts");
+    const { chainflipGateway } = await import("@tcswap/helpers/contracts");
 
     const flipAssetValue = AssetValue.from({ asset: "ETH.FLIP" });
 

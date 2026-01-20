@@ -17,10 +17,10 @@ USwap is designed to work with secure wallet providers that manage private keys 
 <Tabs>
   <TabItem label="✅ Secure Approach">
     ```typescript
-    import { USwap } from '@uswap/core';
-    import { evmWallet } from '@uswap/wallets/evm-extensions';
-    import { ledgerWallet } from '@uswap/wallets/ledger';
-    import { Chain } from '@uswap/types';
+    import { USwap } from '@tcswap/core';
+    import { evmWallet } from '@tcswap/wallets/evm-extensions';
+    import { ledgerWallet } from '@tcswap/wallets/ledger';
+    import { Chain } from '@tcswap/types';
 
     const uSwap = USwap({
       wallets: {
@@ -59,8 +59,8 @@ When using keystore wallets, follow security best practices:
 
 ```typescript
 // @noErrorValidation
-import { USwap } from "@uswap/core";
-import { keystoreWallet } from "@uswap/wallets/keystore";
+import { USwap } from "@tcswap/core";
+import { keystoreWallet } from "@tcswap/wallets/keystore";
 
 const uSwap = USwap({
   wallets: { keystore: keystoreWallet },
@@ -117,7 +117,7 @@ For server-side applications, use environment variables securely:
   <TabItem label="Environment Setup">
     ```typescript
 
-    import { USwapConfig } from '@uswap/helpers';
+    import { USwapConfig } from '@tcswap/helpers';
 
     export function configureSecurely() {
 
@@ -152,9 +152,9 @@ Hardware wallets provide the highest security for transaction signing:
 
 ```typescript
 // @noErrorValidation
-import { USwap } from "@uswap/core";
-import { ledgerWallet, trezorWallet } from "@uswap/wallets";
-import { Chain, AssetValue, USwapError } from "@uswap/helpers";
+import { USwap } from "@tcswap/core";
+import { ledgerWallet, trezorWallet } from "@tcswap/wallets";
+import { Chain, AssetValue, USwapError } from "@tcswap/helpers";
 
 const uSwap = USwap({
   wallets: {
@@ -274,7 +274,7 @@ Always validate transactions before signing:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue, USwapError } from "@uswap/helpers";
+import { AssetValue, USwapError } from "@tcswap/helpers";
 
 interface TransactionValidation {
   isValid: boolean;

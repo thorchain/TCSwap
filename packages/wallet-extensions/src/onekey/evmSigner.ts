@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { Chain, DerivationPathArray } from "@uswap/helpers";
-import { USwapError, WalletOption } from "@uswap/helpers";
+import type { Chain, DerivationPathArray } from "@tcswap/helpers";
+import { USwapError, WalletOption } from "@tcswap/helpers";
 import type { JsonRpcProvider, Provider, Signer, TypedDataDomain, TypedDataField } from "ethers";
 
 type OneKeyEVMSignerParams = {

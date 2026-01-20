@@ -16,7 +16,7 @@ import {
   USwapError,
   type UTXOChain,
   UTXOChains,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import type { getCardanoToolbox } from "./cardano";
 import type { getCosmosToolbox } from "./cosmos";
 import type { ETHToolbox, EVMCreateTransactionParams, getEvmToolbox } from "./evm";

@@ -3,7 +3,7 @@
  */
 
 import type { ApiPromise } from "@polkadot/api";
-import { AssetValue, Chain, USwapNumber } from "@uswap/helpers";
+import { AssetValue, Chain, USwapNumber } from "@tcswap/helpers";
 
 /**
  * Get balance for standard Substrate chains (Polkadot, etc.)

@@ -4,8 +4,8 @@
 
 import "../styles/index.css";
 
-import { Chain, WalletOption } from "@uswap/helpers";
-import { USwapWidget } from "@uswap/ui/react";
+import { Chain, WalletOption } from "@tcswap/helpers";
+import { USwapWidget } from "@tcswap/ui/react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function Widget() {

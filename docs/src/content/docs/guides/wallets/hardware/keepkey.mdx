@@ -56,7 +56,7 @@ Before using KeepKey, you need to configure the integration settings:
 
 ```ts twoslash
 
-import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -83,7 +83,7 @@ const uSwap = USwap({
 
 ```ts twoslash
 
-import { USwap, keepkeyWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, NetworkDerivationPath } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -120,7 +120,7 @@ async function connectKeepKeyBitcoin() {
 
 ```ts twoslash
 
-import { USwap, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, NetworkDerivationPath, type DerivationPathArray } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -163,7 +163,7 @@ import {
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keepkeyWallet },
@@ -200,7 +200,7 @@ async function connectWithCustomPaths() {
 ### Bitcoin Transaction
 
 ```ts twoslash
-import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keepkeyWallet },
@@ -235,7 +235,7 @@ async function sendBitcoin() {
 ### Ethereum Transaction
 
 ```ts twoslash
-import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keepkeyWallet },
@@ -286,7 +286,7 @@ async function sendERC20Token() {
 ### Cosmos Transaction
 
 ```ts twoslash
-import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keepkeyWallet },
@@ -317,7 +317,7 @@ async function sendCosmos() {
 ### THORChain Transaction
 
 ```ts twoslash
-import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keepkeyWallet },
@@ -369,7 +369,7 @@ async function depositToThorchain() {
 ### EVM Chains Configuration
 
 ```ts twoslash
-import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({ wallets: { ...keepkeyWallet } });
 
@@ -412,7 +412,7 @@ import {
   keepkeyWallet,
   Chain,
   type DerivationPathArray,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({ wallets: { ...keepkeyWallet } });
 
@@ -453,7 +453,7 @@ async function setupUTXOChains() {
 
 ```ts twoslash
 
-import { USwap, keepkeyWallet, Chain } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain } from "@tcswap/sdk";
 
 async function diagnosticConnection() {
   try {
@@ -773,7 +773,7 @@ class KeepKeyAccountManager {
 
 ```tsx twoslash
 import React, { useState, useEffect } from "react";
-import { USwap, keepkeyWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keepkeyWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface KeepKeyWalletProps {
   onConnect: (addresses: Record<Chain, string>) => void;

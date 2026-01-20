@@ -1,4 +1,4 @@
-import { Chain, EVMChains } from "@uswap/helpers";
+import { Chain, EVMChains } from "@tcswap/helpers";
 import type { KEYSTORE_SUPPORTED_CHAINS } from "../src";
 
 const evmChains = EVMChains.reduce(

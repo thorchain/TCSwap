@@ -24,10 +24,10 @@ Optimism is an Ethereum Layer 2 scaling solution using optimistic rollups for fa
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const opWallet = await uSwap.getWallet(Chain.Optimism);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getOptimismToolbox } from '@uswap/toolboxes/evm';
+import { getOptimismToolbox } from '@tcswap/toolboxes/evm';
 
 
 const opToolbox = await getOptimismToolbox({
@@ -74,7 +74,7 @@ Connect to Optimism using Ethereum-compatible wallets:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Optimism], "your mnemonic phrase");
 
@@ -91,7 +91,7 @@ ETH on Optimism is the same as Ethereum ETH, just on Layer 2:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -470,7 +470,7 @@ const exchangeSynths = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Optimism, [
@@ -510,7 +510,7 @@ Handle Optimism-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

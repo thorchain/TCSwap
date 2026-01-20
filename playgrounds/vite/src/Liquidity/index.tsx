@@ -3,7 +3,7 @@
  */
 
 "use client";
-import type { AssetValue } from "@uswap/sdk";
+import type { AssetValue } from "@tcswap/sdk";
 import { useCallback, useState } from "react";
 import type { USwapClient } from "../uSwapClient";
 

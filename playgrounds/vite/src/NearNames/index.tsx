@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain } from "@uswap/helpers";
+import { Chain } from "@tcswap/helpers";
 import { useCallback, useEffect, useState } from "react";
 import type { USwapClient } from "../uSwapClient";
 

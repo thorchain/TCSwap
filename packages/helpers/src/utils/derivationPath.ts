@@ -1,4 +1,4 @@
-import { Chain, type EVMChain, EVMChains } from "@uswap/types";
+import { Chain, type EVMChain, EVMChains } from "@tcswap/types";
 import { type DerivationPathArray, NetworkDerivationPath } from "../types";
 
 type Params = {

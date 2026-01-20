@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AllChains, AssetValue, Chain, getExplorerTxUrl, USwapApi, type THORNameDetails } from "@uswap/sdk";
+import { AllChains, AssetValue, Chain, getExplorerTxUrl, USwapApi, type THORNameDetails } from "@tcswap/sdk";
 import { useCallback, useState } from "react";
 import type { USwapClient } from "../uSwapClient";
 

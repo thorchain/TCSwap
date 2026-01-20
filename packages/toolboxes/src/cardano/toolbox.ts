@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, Chain, type DerivationPathArray, getChainConfig, USwapError } from "@uswap/helpers";
+import { AssetValue, Chain, type DerivationPathArray, getChainConfig, USwapError } from "@tcswap/helpers";
 import { match, P } from "ts-pattern";
 import type { CardanoProvider } from "./index";
 

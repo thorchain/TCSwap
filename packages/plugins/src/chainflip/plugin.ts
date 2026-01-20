@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, type Chain, ProviderName, USwapError } from "@uswap/helpers";
-import { USwapApi } from "@uswap/helpers/api";
+import { AssetValue, type Chain, ProviderName, USwapError } from "@tcswap/helpers";
+import { USwapApi } from "@tcswap/helpers/api";
 import { createPlugin } from "../utils";
 import type { RequestSwapDepositAddressParams } from "./types";
 

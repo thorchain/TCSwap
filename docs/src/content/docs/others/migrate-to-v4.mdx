@@ -17,21 +17,21 @@ v4 fundamentally changes how packages are organized:
 **v3 Structure**: Individual packages for each component
 
 ```bash
-@uswap/plugin-chainflip
-@uswap/plugin-evm
-@uswap/toolbox-cosmos
-@uswap/wallet-keystore
-@uswap/api
+@tcswap/plugin-chainflip
+@tcswap/plugin-evm
+@tcswap/toolbox-cosmos
+@tcswap/wallet-keystore
+@tcswap/api
 ```
 
 **v4 Structure**: Consolidated monolithic packages with submodule exports
 
 ```bash
-@uswap/plugins/*     # All plugins in one package
-@uswap/toolboxes/*   # All toolboxes in one package
-@uswap/wallets/*     # All wallets in one package
-@uswap/helpers       # Utilities and API (previously @uswap/api)
-@uswap/sdk          # Complete bundle with everything
+@tcswap/plugins/*     # All plugins in one package
+@tcswap/toolboxes/*   # All toolboxes in one package
+@tcswap/wallets/*     # All wallets in one package
+@tcswap/helpers       # Utilities and API (previously @tcswap/api)
+@tcswap/sdk          # Complete bundle with everything
 ```
 
 ### 2. Import Path Changes
@@ -40,24 +40,24 @@ All imports must be updated:
 
 ```diff
 
-- import { ChainflipPlugin } from "@uswap/plugin-chainflip";
-- import { EVMPlugin } from "@uswap/plugin-evm";
-+ import { ChainflipPlugin } from "@uswap/plugins/chainflip";
-+ import { EVMPlugin } from "@uswap/plugins/evm";
+- import { ChainflipPlugin } from "@tcswap/plugin-chainflip";
+- import { EVMPlugin } from "@tcswap/plugin-evm";
++ import { ChainflipPlugin } from "@tcswap/plugins/chainflip";
++ import { EVMPlugin } from "@tcswap/plugins/evm";
 
 
-- import { getToolboxByChain } from "@uswap/toolbox-cosmos";
-- import { EVMToolbox } from "@uswap/toolbox-evm";
-+ import { getCosmosToolbox } from "@uswap/toolboxes/cosmos";
-+ import { getEvmToolbox } from "@uswap/toolboxes/evm";
+- import { getToolboxByChain } from "@tcswap/toolbox-cosmos";
+- import { EVMToolbox } from "@tcswap/toolbox-evm";
++ import { getCosmosToolbox } from "@tcswap/toolboxes/cosmos";
++ import { getEvmToolbox } from "@tcswap/toolboxes/evm";
 
 
-- import { keystoreWallet } from "@uswap/wallet-keystore";
-+ import { keystoreWallet } from "@uswap/wallets/keystore";
+- import { keystoreWallet } from "@tcswap/wallet-keystore";
++ import { keystoreWallet } from "@tcswap/wallets/keystore";
 
 
-- import { USwapApi } from "@uswap/api";
-+ import { USwapApi } from "@uswap/helpers/api";
+- import { USwapApi } from "@tcswap/api";
++ import { USwapApi } from "@tcswap/helpers/api";
 ```
 
 ### 3. Client Initialization Changes
@@ -66,7 +66,7 @@ The USwap client initialization has changed:
 
 ```diff
 
-- import { USwap } from "@uswap/core";
+- import { USwap } from "@tcswap/core";
 - const client = USwap({
 -   apis: { /* custom APIs */ },
 -   rpcUrls: { /* RPC URLs */ },
@@ -76,7 +76,7 @@ The USwap client initialization has changed:
 - });
 
 
-+ import { USwap } from "@uswap/core";
++ import { USwap } from "@tcswap/core";
 + const client = USwap({
 +   config: {
 +     rpcUrls: { /* RPC URLs */ },
@@ -99,7 +99,7 @@ v4 introduces a centralized configuration system:
 - });
 
 
-+ import { USwapConfig } from "@uswap/helpers";
++ import { USwapConfig } from "@tcswap/helpers";
 + USwapConfig.set({
 +   rpcUrls: { [Chain.Ethereum]: "https:
 +   apiKeys: {
@@ -123,7 +123,7 @@ Plugins now use the `createPlugin` helper:
 - }
 
 
-+ import { createPlugin } from "@uswap/plugins";
++ import { createPlugin } from "@tcswap/plugins";
 + export const MyPlugin = createPlugin({
 +   name: "myPlugin",
 +   properties: { supportedUSwapProviders: [ProviderName.THORCHAIN] },
@@ -143,7 +143,7 @@ Wallets now use the `createWallet` helper:
 -   };
 
 
-+ import { createWallet } from "@uswap/wallets";
++ import { createWallet } from "@tcswap/wallets";
 + export const keystoreWallet = createWallet({
 +   name: "keystore",
 +   hooks: ({ config }) => ({
@@ -175,12 +175,12 @@ Several type imports have changed:
 
 ```diff
 
-- import type { EVMWallets } from "@uswap/toolbox-evm";
-+ import type { EVMToolboxes } from "@uswap/toolboxes/evm";
+- import type { EVMWallets } from "@tcswap/toolbox-evm";
++ import type { EVMToolboxes } from "@tcswap/toolboxes/evm";
 
 
-- import type { QuoteRequest } from "@uswap/api";
-+ import type { QuoteRequest } from "@uswap/helpers/api";
+- import type { QuoteRequest } from "@tcswap/api";
++ import type { QuoteRequest } from "@tcswap/helpers/api";
 
 
 - USwaUpPluParamUs<CoctConfig>
@@ -202,48 +202,48 @@ Several type imports have changed:
   <TabItem label="bun" icon="bun">
     ```bash
     # Remove v3 packages
-    bun remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
+    bun remove @tcswap/plugin-* @tcswap/toolbox-* @tcswap/wallet-*
 
     # Install v4 packages
-    bun add @uswap/sdk
+    bun add @tcswap/sdk
     # or individual packages
-    bun add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
+    bun add @tcswap/core @tcswap/plugins @tcswap/toolboxes @tcswap/wallets
     ```
 
   </TabItem>
   <TabItem label="pnpm">
     ```bash
     # Remove v3 packages
-    pnpm remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
+    pnpm remove @tcswap/plugin-* @tcswap/toolbox-* @tcswap/wallet-*
 
     # Install v4 packages
-    pnpm add @uswap/sdk
+    pnpm add @tcswap/sdk
     # or individual packages
-    pnpm add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
+    pnpm add @tcswap/core @tcswap/plugins @tcswap/toolboxes @tcswap/wallets
     ```
 
   </TabItem>
   <TabItem label="npm">
     ```bash
     # Remove v3 packages
-    npm uninstall @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
+    npm uninstall @tcswap/plugin-* @tcswap/toolbox-* @tcswap/wallet-*
 
     # Install v4 packages
-    npm install @uswap/sdk
+    npm install @tcswap/sdk
     # or individual packages
-    npm install @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
+    npm install @tcswap/core @tcswap/plugins @tcswap/toolboxes @tcswap/wallets
     ```
 
   </TabItem>
   <TabItem label="yarn">
     ```bash
     # Remove v3 packages
-    yarn remove @uswap/plugin-* @uswap/toolbox-* @uswap/wallet-*
+    yarn remove @tcswap/plugin-* @tcswap/toolbox-* @tcswap/wallet-*
 
     # Install v4 packages
-    yarn add @uswap/sdk
+    yarn add @tcswap/sdk
     # or individual packages
-    yarn add @uswap/core @uswap/plugins @uswap/toolboxes @uswap/wallets
+    yarn add @tcswap/core @tcswap/plugins @tcswap/toolboxes @tcswap/wallets
     ```
 
   </TabItem>
@@ -254,20 +254,20 @@ Several type imports have changed:
 Replace all v3 imports with v4 equivalents:
 
 ```diff
--import { THORChainPlugin } from "@uswap/plugin-thorchain";
--import { EVMToolbox } from "@uswap/toolbox-evm";
--import { ledgerWallet } from "@uswap/wallet-ledger";
+-import { THORChainPlugin } from "@tcswap/plugin-thorchain";
+-import { EVMToolbox } from "@tcswap/toolbox-evm";
+-import { ledgerWallet } from "@tcswap/wallet-ledger";
 
-+import { ThorchainPlugin } from "@uswap/plugins/thorchain";
-+import { getEvmToolbox } from "@uswap/toolboxes/evm";
-+import { ledgerWallet } from "@uswap/wallets/ledger";
++import { ThorchainPlugin } from "@tcswap/plugins/thorchain";
++import { getEvmToolbox } from "@tcswap/toolboxes/evm";
++import { ledgerWallet } from "@tcswap/wallets/ledger";
 ```
 
 ### Step 3: Update Client Initialization
 
 ```diff
--import { USwapCore } from "@uswap/core";
-+import { createUSwap } from "@uswap/sdk";
+-import { USwapCore } from "@tcswap/core";
++import { createUSwap } from "@tcswap/sdk";
 
 -const client = new USwapCore({
 +const client = createUSwap({
@@ -282,7 +282,7 @@ The wallet connection pattern remains similar but uses the new import paths:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const client = createUSwap({});
 
@@ -320,7 +320,7 @@ const client2 = USwap({
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, USwapConfig, Chain } from '@uswap/sdk';
+import { createUSwap, USwapConfig, Chain } from '@tcswap/sdk';
 
 
 const uSwap = createUSwap({
@@ -472,7 +472,7 @@ console.log(apiKeys.blockchair);
 ```typescript
 // @noErrorValidation
 
-import { USwapApi } from "@uswap/sdk";
+import { USwapApi } from "@tcswap/sdk";
 ```
 
 ### 2. Missing RPC URL Parameter
@@ -483,7 +483,7 @@ import { USwapApi } from "@uswap/sdk";
 
 
 
-import { USwapConfig, Chain, getEvmToolbox } from "@uswap/sdk";
+import { USwapConfig, Chain, getEvmToolbox } from "@tcswap/sdk";
 
 USwapConfig.set({ rpcUrls: { [Chain.Ethereum]: "https:
 const signer = /* your signer instance */;
@@ -495,7 +495,7 @@ const toolbox = getEvmToolbox(Chain.Ethereum, { signer });
 ```typescript
 // @noErrorValidation
 
-import { createPlugin } from "@uswap/sdk";
+import { createPlugin } from "@tcswap/sdk";
 
 const swap = async (params) => {
   /* implementation */

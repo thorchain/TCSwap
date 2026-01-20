@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, USwapError, WalletOption } from "@uswap/helpers";
+import { Chain, USwapError, WalletOption } from "@tcswap/helpers";
 
 import type { getNearLedgerClient } from "../clients/near";
 import type { TronLedger } from "../clients/tron";

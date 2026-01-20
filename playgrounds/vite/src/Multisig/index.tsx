@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type AssetValue, Chain } from "@uswap/helpers";
-import { buildAminoMsg, getCosmosToolbox } from "@uswap/toolboxes/cosmos";
+import { type AssetValue, Chain } from "@tcswap/helpers";
+import { buildAminoMsg, getCosmosToolbox } from "@tcswap/toolboxes/cosmos";
 import { fromByteArray } from "base64-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { USwapClient } from "../uSwapClient";

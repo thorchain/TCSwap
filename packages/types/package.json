@@ -10,14 +10,10 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/types",
-  "repository": {
-    "directory": "packages/types",
-    "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
-  },
+  "name": "@tcswap/types",
+  "repository": { "directory": "packages/types", "type": "git", "url": "git+https://github.com/thorchain/TCSwap.git" },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

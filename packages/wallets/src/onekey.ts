@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/onekey";
+export * from "@tcswap/wallet-extensions/onekey";

@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, ProviderName, USwapConfig } from "@uswap/helpers";
-import { USwapApi } from "@uswap/helpers/api";
+import { Chain, ProviderName, USwapConfig } from "@tcswap/helpers";
+import { USwapApi } from "@tcswap/helpers/api";
 
 USwapConfig.set({ apiKeys: { uSwap: process.env.TEST_API_KEY || "" }, envs: { isDev: false } });
 

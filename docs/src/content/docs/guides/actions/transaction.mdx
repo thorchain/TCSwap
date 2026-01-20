@@ -13,12 +13,12 @@ You can use USwap in two ways:
 1. **Granular approach** - Import only what you need from individual packages (recommended for frontend):
 
    ```ts
-   import { USwap, evmWallet } from "@uswap/sdk";
+   import { USwap, evmWallet } from "@tcswap/sdk";
    ```
 
 2. **All-in-one approach** - Import everything from the SDK (better for backend/Node.js):
    ```ts
-   import { createUSwap } from "@uswap/sdk";
+   import { createUSwap } from "@tcswap/sdk";
    ```
 
 ## Basic Asset Transfer
@@ -34,7 +34,7 @@ import {
   FeeOption,
   USwap,
   keystoreWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keystoreWallet },
@@ -72,7 +72,7 @@ async function transferAsset() {
 ### All-in-one Approach (Backend)
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, createUSwap } from "@uswap/sdk";
+import { AssetValue, Chain, FeeOption, createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -104,7 +104,7 @@ async function transferAsset() {
 ### Transferring ERC20 Tokens
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, USwap, evmWallet } from "@uswap/sdk";
+import { AssetValue, Chain, FeeOption, USwap, evmWallet } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...evmWallet },
@@ -140,7 +140,7 @@ import {
   FeeOption,
   USwap,
   keystoreWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keystoreWallet },
@@ -175,7 +175,7 @@ import {
   FeeOption,
   USwap,
   keplrWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -208,8 +208,8 @@ For lower-level control, you can use the toolboxes directly instead of USwap's h
 ### EVM Toolbox Transfers
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getEvmToolbox } from "@uswap/sdk";
-import { getProvider } from "@uswap/helpers";
+import { AssetValue, Chain, FeeOption, getEvmToolbox } from "@tcswap/sdk";
+import { getProvider } from "@tcswap/helpers";
 import { ethers } from "ethers";
 
 async function directEVMTransfer() {
@@ -238,7 +238,7 @@ async function directEVMTransfer() {
 ### UTXO Toolbox Transfers
 
 ```ts twoslash
-import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@uswap/sdk";
+import { AssetValue, Chain, FeeOption, getUtxoToolbox } from "@tcswap/sdk";
 
 async function directBitcoinTransfer() {
   const btcToolbox = await getUtxoToolbox(Chain.Bitcoin);
@@ -287,8 +287,8 @@ async function directBitcoinTransfer() {
 For EVM chains, you can interact with smart contracts using the EVM toolbox:
 
 ```ts twoslash
-import { Chain, getEvmToolbox, erc20ABI } from "@uswap/sdk";
-import { getProvider } from "@uswap/helpers";
+import { Chain, getEvmToolbox, erc20ABI } from "@tcswap/sdk";
+import { getProvider } from "@tcswap/helpers";
 import { ethers } from "ethers";
 
 async function interactWithContract() {

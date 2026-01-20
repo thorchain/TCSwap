@@ -1,5 +1,5 @@
-import { Chain, filterSupportedChains, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, filterSupportedChains, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { getExpectedTronNetwork, getWalletForChain, setupEventListeners } from "./helpers.js";
 
 export const tronlinkWallet = createWallet({

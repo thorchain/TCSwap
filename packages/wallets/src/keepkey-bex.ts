@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/keepkey-bex";
+export * from "@tcswap/wallet-extensions/keepkey-bex";

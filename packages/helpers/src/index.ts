@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-export * from "@uswap/tokens";
-export * from "@uswap/types";
+export * from "@tcswap/tokens";
+export * from "@tcswap/types";
 /**
  * Modules
  */

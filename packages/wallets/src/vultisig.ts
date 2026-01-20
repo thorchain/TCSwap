@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/vultisig";
+export * from "@tcswap/wallet-extensions/vultisig";

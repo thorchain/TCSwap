@@ -4,9 +4,9 @@
 
 "use client";
 
-import "@uswap/ui/uswap.css";
+import "@tcswap/ui/uswap.css";
 
-import { AssetValue, type QuoteResponseRoute, useUSwapStore } from "@uswap/sdk";
+import { AssetValue, type QuoteResponseRoute, useUSwapStore } from "@tcswap/sdk";
 import { ArrowDownUpIcon, Loader2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { match, P } from "ts-pattern";

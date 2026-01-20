@@ -12,11 +12,11 @@ import {
   THORConfig,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import type { ThorchainDepositParams } from "@uswap/toolboxes/cosmos";
-import type { UTXOBuildTxParams } from "@uswap/toolboxes/utxo";
+} from "@tcswap/helpers";
+import type { ThorchainDepositParams } from "@tcswap/toolboxes/cosmos";
+import type { UTXOBuildTxParams } from "@tcswap/toolboxes/utxo";
 
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { getLedgerAddress, getLedgerClient } from "./helpers";
 
 export const ledgerWallet = createWallet({
@@ -105,7 +105,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     case Chain.Dogecoin:
     case Chain.Litecoin:
     case Chain.Zcash: {
-      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
       const toolbox = await getUtxoToolbox(chain as typeof Chain.Bitcoin);
 
       const signer = await getLedgerClient({ chain, derivationPath });
@@ -142,7 +142,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     case Chain.Gnosis:
     case Chain.Monad:
     case Chain.XLayer: {
-      const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+      const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
       const signer = await getLedgerClient({ chain, derivationPath });
       const address = await getLedgerAddress({ chain, ledgerClient: signer });
       const toolbox = await getEvmToolbox(chain, { signer });
@@ -152,7 +152,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
 
     case Chain.Cosmos: {
       const { createSigningStargateClient, getMsgSendDenom, getCosmosToolbox } = await import(
-        "@uswap/toolboxes/cosmos"
+        "@tcswap/toolboxes/cosmos"
       );
       const toolbox = await getCosmosToolbox(Chain.Cosmos);
       const signer = await getLedgerClient({ chain, derivationPath });
@@ -202,7 +202,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
         getDefaultChainFee,
         fromBase64,
         parseAminoMessageForDirectSigning,
-      } = await import("@uswap/toolboxes/cosmos");
+      } = await import("@tcswap/toolboxes/cosmos");
       const toolbox = await getCosmosToolbox(chain);
       const signer = await getLedgerClient({ chain, derivationPath });
       const address = await getLedgerAddress({ chain, ledgerClient: signer });
@@ -271,7 +271,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     }
 
     case Chain.Near: {
-      const { getNearToolbox } = await import("@uswap/toolboxes/near");
+      const { getNearToolbox } = await import("@tcswap/toolboxes/near");
       const signer = await getLedgerClient({ chain, derivationPath });
       const accountId = await signer.getAddress();
       const toolbox = await getNearToolbox({ signer });
@@ -280,7 +280,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     }
 
     case Chain.Ripple: {
-      const { getRippleToolbox } = await import("@uswap/toolboxes/ripple");
+      const { getRippleToolbox } = await import("@tcswap/toolboxes/ripple");
       const signer = await getLedgerClient({ chain, derivationPath });
       const address = signer.getAddress();
       const toolbox = await getRippleToolbox({ signer });
@@ -289,7 +289,7 @@ async function getWalletMethods({ chain, derivationPath }: { chain: Chain; deriv
     }
 
     case Chain.Tron: {
-      const { createTronToolbox } = await import("@uswap/toolboxes/tron");
+      const { createTronToolbox } = await import("@tcswap/toolboxes/tron");
       const signer = await getLedgerClient({ chain, derivationPath });
       const address = await getLedgerAddress({ chain, ledgerClient: signer });
       const toolbox = await createTronToolbox({ signer });

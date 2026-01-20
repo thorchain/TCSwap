@@ -11,11 +11,11 @@ import {
   USwapConfig,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 
 export type { PairingInfo } from "@keepkey/keepkey-sdk";
 
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { cosmosWalletMethods } from "./chains/cosmos";
 import { KeepKeySigner } from "./chains/evm";
 import { mayachainWalletMethods } from "./chains/mayachain";
@@ -91,7 +91,7 @@ async function getWalletMethods({
   chain: Chain;
   derivationPath?: DerivationPathArray;
 }) {
-  const { getProvider, getEvmToolbox } = await import("@uswap/toolboxes/evm");
+  const { getProvider, getEvmToolbox } = await import("@tcswap/toolboxes/evm");
 
   switch (chain) {
     case Chain.BinanceSmartChain:

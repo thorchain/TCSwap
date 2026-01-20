@@ -1,4 +1,4 @@
-import { Chain, type EVMChain, FeeOption, getRPCUrl } from "@uswap/helpers";
+import { Chain, type EVMChain, FeeOption, getRPCUrl } from "@tcswap/helpers";
 import { match, P } from "ts-pattern";
 
 import { multicallAbi } from "../contracts/eth/multicall";

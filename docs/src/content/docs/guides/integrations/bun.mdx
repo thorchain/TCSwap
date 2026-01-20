@@ -14,11 +14,11 @@ Install USwap:
 
 <Tabs syncKey="package-manager">
   <TabItem label="bun" icon="bun">
-    ```bash bun add @uswap/sdk ```
+    ```bash bun add @tcswap/sdk ```
   </TabItem>
-  <TabItem label="pnpm">```bash pnpm add @uswap/sdk ```</TabItem>
-  <TabItem label="npm">```bash npm install @uswap/sdk ```</TabItem>
-  <TabItem label="yarn">```bash yarn add @uswap/sdk ```</TabItem>
+  <TabItem label="pnpm">```bash pnpm add @tcswap/sdk ```</TabItem>
+  <TabItem label="npm">```bash npm install @tcswap/sdk ```</TabItem>
+  <TabItem label="yarn">```bash yarn add @tcswap/sdk ```</TabItem>
 </Tabs>
 
 ## Project Setup
@@ -80,7 +80,7 @@ Create your main React application with USwap:
 
 ```tsx
 import { useState } from "react";
-import { createUSwap, Chain, WalletOption } from "@uswap/sdk";
+import { createUSwap, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -202,7 +202,7 @@ Access them in your code:
 ```typescript
 // @noErrorValidation
 
-import { USwapConfig } from "@uswap/sdk";
+import { USwapConfig } from "@tcswap/sdk";
 
 if (process.env.BUN_PUBLIC_USWAP_API_KEY) {
   USwapConfig.setApiKey("uswap", process.env.BUN_PUBLIC_USWAP_API_KEY);

@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import { opcodes, script } from "bitcoinjs-lib";
 import type { TargetOutput, UTXOCalculateTxSizeParams, UTXOInputWithScriptType, UTXOType } from "../types";
 

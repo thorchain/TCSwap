@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import type { TronGridAccountResponse } from "../types";
 
 const TRONGRID_API_BASE = "https://api.trongrid.io";

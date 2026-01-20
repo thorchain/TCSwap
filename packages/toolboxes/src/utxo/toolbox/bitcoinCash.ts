@@ -17,7 +17,7 @@ import {
   NetworkDerivationPath,
   USwapError,
   updateDerivationPath,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import { Psbt } from "bitcoinjs-lib";
 import { accumulative, compileMemo, getUtxoApi, getUtxoNetwork, toCashAddress, toLegacyAddress } from "../helpers";
 import type {

@@ -1,5 +1,5 @@
-import type { TokenNames } from "@uswap/tokens";
-import { Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@uswap/types";
+import type { TokenNames } from "@tcswap/tokens";
+import { Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@tcswap/types";
 import { match } from "ts-pattern";
 import type { AssetValue } from "../modules/assetValue";
 import { RequestClient } from "../modules/requestClient";

@@ -12,8 +12,8 @@ import {
   switchEVMWalletNetwork,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+} from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import type { BrowserProvider, Eip1193Provider } from "ethers";
 
 export type EVMWalletOptions =
@@ -55,7 +55,7 @@ export const getWeb3WalletMethods = async ({
   provider: BrowserProvider;
 }) => {
   if (!walletProvider) throw new USwapError("wallet_evm_extensions_not_found");
-  const { getEvmToolbox } = await import("@uswap/toolboxes/evm");
+  const { getEvmToolbox } = await import("@tcswap/toolboxes/evm");
 
   const signer = await provider.getSigner();
   const toolbox = await getEvmToolbox(chain, { provider, signer });

@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { TokenListName, TokenNames, TokenTax } from "@uswap/tokens";
-import { AllChains, Chain, type ChainId, type EVMChain, EVMChains, getChainConfig } from "@uswap/types";
+import type { TokenListName, TokenNames, TokenTax } from "@tcswap/tokens";
+import { AllChains, Chain, type ChainId, type EVMChain, EVMChains, getChainConfig } from "@tcswap/types";
 import { getAddress } from "ethers";
 import { match } from "ts-pattern";
 import {
@@ -216,7 +216,7 @@ export class AssetValue extends BigIntArithmetics {
       id: `assetValue_static_decimal_not_found_${chain}`,
       warning: `Couldn't find static decimal for one or more tokens on ${chain} (Using default ${baseDecimal} decimal as fallback).
 This can result in incorrect calculations and mess with amount sent on transactions.
-You can load static assets by installing @uswap/tokens package and calling AssetValue.loadStaticAssets()
+You can load static assets by installing @tcswap/tokens package and calling AssetValue.loadStaticAssets()
 or by passing asyncTokenLookup: true to the from() function, which will make it async and return a promise.`,
     });
 
@@ -238,7 +238,7 @@ or by passing asyncTokenLookup: true to the from() function, which will make it 
   }
 
   static async loadStaticAssets(listNames?: TokenListName[]) {
-    const { loadTokenLists } = await import("@uswap/tokens");
+    const { loadTokenLists } = await import("@tcswap/tokens");
     const lists = await loadTokenLists(listNames);
 
     for (const { tokens } of Object.values(lists)) {

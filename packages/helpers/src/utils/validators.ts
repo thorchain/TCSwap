@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { Chain } from "@uswap/types";
+import type { Chain } from "@tcswap/types";
 import { USwapConfig } from "../modules/uSwapConfig";
 import { USwapError } from "../modules/uSwapError";
 

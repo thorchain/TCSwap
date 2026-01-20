@@ -1,4 +1,4 @@
-import type { TronSignedTransaction, TronTransaction } from "@uswap/toolboxes/tron";
+import type { TronSignedTransaction, TronTransaction } from "@tcswap/toolboxes/tron";
 
 declare global {
   interface Window {

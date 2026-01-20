@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, type CosmosChain, type EVMChain, USwapConfig } from "@uswap/helpers";
+import { Chain, type CosmosChain, type EVMChain, USwapConfig } from "@tcswap/helpers";
 
 import {
   ARBITRUM_ONE_MAINNET_ID,

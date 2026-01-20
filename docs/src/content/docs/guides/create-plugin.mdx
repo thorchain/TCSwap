@@ -25,7 +25,7 @@ import {
   USwapError,
   createPlugin,
   type EVMChain,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 type SwapParams = {
   route: {
@@ -104,7 +104,7 @@ import {
   USwapError,
   createPlugin,
   type QuoteResponseRoute
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 
 const approve = ({ approveMode, getWallet }) =>
@@ -242,7 +242,7 @@ export const ExchangePlugin = createPlugin({
 Once you've created your plugin, you can use it with the USwap client:
 
 ```ts twoslash
-import { createUSwap, Chain, keystoreWallet } from "@uswap/sdk";
+import { createUSwap, Chain, keystoreWallet } from "@tcswap/sdk";
 
 import { ExamplePlugin } from "./example-plugin";
 

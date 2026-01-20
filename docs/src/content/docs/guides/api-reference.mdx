@@ -4,13 +4,13 @@ title: API Reference
 description: Complete reference for USwapApi methods including swap quotes, price feeds, token lists, and essential data access.
 ---
 
-The `USwapApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@uswap/helpers/api` import.
+The `USwapApi` provides access to swap quotes, price feeds, token lists, and other essential data. All methods are available through the `@tcswap/helpers/api` import.
 
 ## Getting Started
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/helpers/api";
+import { USwapApi } from "@tcswap/helpers/api";
 
 const price = await USwapApi.getPrice({
   identifier: "ETH.ETH",
@@ -714,7 +714,7 @@ Configure your API key in [Configuration](/start/configuration):
 
 ```typescript
 // @noErrorValidation
-import { createUSwap } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -731,7 +731,7 @@ All API methods can throw errors that should be handled:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from '@uswap/sdk';
+import { USwapError } from '@tcswap/sdk';
 
 try {
   const quote = await USwapApi.getSwapQuote({...});
@@ -756,7 +756,7 @@ When getting swap quotes, the first route is typically the best:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from '@uswap/sdk';
+import { AssetValue } from '@tcswap/sdk';
 
 const { routes } = await USwapApi.getSwapQuote({...});
 
@@ -829,7 +829,7 @@ The `USwapConfig` API provides methods to manage USwap's configuration at runtim
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 const rpcUrls = USwapConfig.get('rpcUrls');
@@ -860,7 +860,7 @@ USwapConfig.setApiKey("walletConnectProjectId", "your-wc-id");
 
 ```typescript
 // @noErrorValidation
-import { Chain } from '@uswap/sdk';
+import { Chain } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Ethereum, 'https:
@@ -871,7 +871,7 @@ USwapConfig.setRpcUrl(Chain.Avalanche, 'https:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from '@uswap/sdk';
+import { Chain } from '@tcswap/sdk';
 
 
 USwapConfig.setMidgardUrl(Chain.THORChain, 'https:
@@ -949,7 +949,7 @@ USwapConfig.setExplorerUrl(Chain.Bitcoin, 'https:
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig, Chain, StagenetChain } from '@uswap/sdk';
+import { USwapConfig, Chain, StagenetChain } from '@tcswap/sdk';
 
 
 USwapConfig.set({
@@ -992,7 +992,7 @@ USwap provides a unified fee multiplier system across all chains:
 
 ```typescript
 // @noErrorValidation
-import { FeeOption, getFeeMultiplier } from "@uswap/sdk";
+import { FeeOption, getFeeMultiplier } from "@tcswap/sdk";
 
 const slowMultiplier = getFeeMultiplier(FeeOption.Slow);
 const avgMultiplier = getFeeMultiplier(FeeOption.Average);

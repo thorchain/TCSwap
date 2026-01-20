@@ -1,4 +1,4 @@
-import { Chain, type EVMChain } from "@uswap/helpers";
+import { Chain, type EVMChain } from "@tcswap/helpers";
 import { match } from "ts-pattern";
 
 import { getProvider } from "../helpers";

@@ -24,10 +24,10 @@ Maya Protocol is a fork of THORChain focused on privacy-preserving cross-chain l
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const mayaWallet = await uSwap.getWallet(Chain.Maya);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getMayaToolbox } from '@uswap/toolboxes/cosmos';
+import { getMayaToolbox } from '@tcswap/toolboxes/cosmos';
 
 
 const mayaToolbox = await getMayaToolbox({
@@ -74,7 +74,7 @@ Connect to Maya Protocol using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Maya], "your mnemonic phrase");
 
@@ -94,7 +94,7 @@ const mayaAddress = uSwap.getAddress(Chain.Maya);
 
 console.log("Maya address:", mayaAddress);
 
-import { validateMayaAddress } from "@uswap/toolboxes/cosmos";
+import { validateMayaAddress } from "@tcswap/toolboxes/cosmos";
 
 const isValidAddress = validateMayaAddress(mayaAddress);
 console.log("Valid CACAO address:", isValidAddress);
@@ -107,7 +107,7 @@ console.log("Maya public key:", publicKey);
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "maya1xv9tklw7d82sezh9haa573wufgy59vmwe6xxe5",
@@ -236,7 +236,7 @@ const withdrawLiquidity = async () => {
 };
 
 const getLiquidityPosition = async () => {
-  import { USwapApi } from "@uswap/helpers/api";
+  import { USwapApi } from "@tcswap/helpers/api";
 
   const position = await USwapApi.mayachainMidgard.getLiquidityPosition(
     uSwap.getAddress(Chain.Maya)
@@ -353,7 +353,7 @@ const updateMayaName = async () => {
 };
 
 const lookupMayaName = async () => {
-  import { USwapApi } from "@uswap/helpers/api";
+  import { USwapApi } from "@tcswap/helpers/api";
 
   const nameDetails = await USwapApi.mayachainMidgard.getMayaNameDetails(
     "privacy"
@@ -461,7 +461,7 @@ const analyzePrivacyMetrics = async () => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Maya, [
@@ -507,7 +507,7 @@ Handle Maya-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

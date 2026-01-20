@@ -3,7 +3,7 @@
  */
 
 import { base64 } from "@scure/base";
-import { type DerivationPathArray, NetworkDerivationPath, USwapError } from "@uswap/helpers";
+import { type DerivationPathArray, NetworkDerivationPath, USwapError } from "@tcswap/helpers";
 
 import { CosmosLedgerInterface } from "../../interfaces/CosmosLedgerInterface";
 import type { GetAddressAndPubKeyResponse } from "../../types";

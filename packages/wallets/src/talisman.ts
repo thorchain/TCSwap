@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/talisman";
+export * from "@tcswap/wallet-extensions/talisman";

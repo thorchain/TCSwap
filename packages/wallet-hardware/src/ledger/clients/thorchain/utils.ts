@@ -3,7 +3,7 @@
  */
 
 import { base64 } from "@scure/base";
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 
 export const getSignature = (signatureArray: any) => {
   // Check Type Length Value encoding

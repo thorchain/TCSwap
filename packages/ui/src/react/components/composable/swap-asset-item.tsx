@@ -1,6 +1,6 @@
 "use client";
 
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 import { AssetIcon } from "../asset-icon";
 
 export function SwapAssetItem({ asset }: { asset: string | null | undefined }) {

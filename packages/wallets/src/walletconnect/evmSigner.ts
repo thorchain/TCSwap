@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type EVMChain, USwapError, WalletOption } from "@uswap/helpers";
+import { type EVMChain, USwapError, WalletOption } from "@tcswap/helpers";
 import type { JsonRpcProvider, Provider, TransactionRequest, TransactionResponse } from "ethers";
 import { AbstractSigner } from "ethers";
 
@@ -80,7 +80,7 @@ class WalletconnectSigner extends AbstractSigner {
   signTypedData = () => {
     throw new USwapError("wallet_walletconnect_method_not_supported", { method: "signTypedData" });
 
-    // const { toHexString } = await import('@uswap/toolboxes/evm');
+    // const { toHexString } = await import('@tcswap/toolboxes/evm');
 
     // const baseTx = {
     //   from,
@@ -102,7 +102,7 @@ class WalletconnectSigner extends AbstractSigner {
   };
 
   sendTransaction = async ({ from, to, value, data }: TransactionRequest) => {
-    const { toHexString } = await import("@uswap/toolboxes/evm");
+    const { toHexString } = await import("@tcswap/toolboxes/evm");
 
     const baseTx = { data, from, to, value: toHexString(BigInt(value || 0)) };
     const response = await this.walletconnect?.client.request({

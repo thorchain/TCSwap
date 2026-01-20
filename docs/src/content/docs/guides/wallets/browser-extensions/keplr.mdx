@@ -50,7 +50,7 @@ Keplr works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -65,7 +65,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -81,7 +81,7 @@ const uSwap = createUSwap({
 #### Basic Cosmos Connection
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -108,7 +108,7 @@ async function connectKeplr() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -149,7 +149,7 @@ async function connectMultipleCosmosChains() {
 #### Using Leap Wallet
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, WalletOption } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -176,7 +176,7 @@ async function connectLeapWallet() {
 
 ```ts twoslash
 
-import { USwap, keplrWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -215,7 +215,7 @@ async function sendAtom() {
 
 ```ts twoslash
 
-import { USwap, keplrWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -270,7 +270,7 @@ async function depositToThorchain() {
 ### IBC Transfers
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -301,7 +301,7 @@ async function ibcTransfer() {
 ### Noble USDC Operations
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -335,7 +335,7 @@ async function sendUSDCOnNoble() {
 
 ```ts twoslash
 
-import { USwap, keplrWallet, Chain } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -418,7 +418,7 @@ async function manuallyAddChain() {
 ### Gas and Fee Configuration
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -456,7 +456,7 @@ async function transactionWithCustomGas() {
 
 ```ts twoslash
 
-import { USwap, keplrWallet, Chain } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...keplrWallet },
@@ -602,7 +602,7 @@ async function handleChainAdditionIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { USwap, keplrWallet, Chain } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain } from "@tcswap/sdk";
 
 async function verifyAddress() {
   const uSwap = USwap({ wallets: { ...keplrWallet } });
@@ -681,7 +681,7 @@ const secureUSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, keplrWallet, Chain, WalletOption, AssetValue } from "@uswap/sdk";
+import { USwap, keplrWallet, Chain, WalletOption, AssetValue } from "@tcswap/sdk";
 
 interface KeplrWalletProps {
   onConnect: (addresses: Record<Chain, string>) => void;

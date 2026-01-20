@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, Chain, ProviderName, type SwapParams, USwapError } from "@uswap/helpers";
-import type { QuoteResponseRoute } from "@uswap/helpers/api";
+import { AssetValue, Chain, ProviderName, type SwapParams, USwapError } from "@tcswap/helpers";
+import type { QuoteResponseRoute } from "@tcswap/helpers/api";
 import { createPlugin } from "../utils";
 
 export const RadixPlugin = createPlugin({

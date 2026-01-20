@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { AssetValue, Chain, USwapConfig } from "@uswap/helpers";
-import { erc20ABI } from "@uswap/helpers/contracts";
+import { AssetValue, Chain, USwapConfig } from "@tcswap/helpers";
+import { erc20ABI } from "@tcswap/helpers/contracts";
 import type { JsonRpcProvider, Signer } from "ethers";
 import { getEvmToolbox } from "../toolbox";
 

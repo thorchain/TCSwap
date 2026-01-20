@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { RequestClient, type RequestOptions, USwapConfig, USwapError } from "@uswap/helpers";
+import { RequestClient, type RequestOptions, USwapConfig, USwapError } from "@tcswap/helpers";
 import {
   type MemolessAssetsResponse,
   type PreflightRequest,

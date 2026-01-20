@@ -5,8 +5,8 @@ import type {
   FeeOption,
   GenericCreateTransactionParams,
   GenericTransferParams,
-} from "@uswap/helpers";
-import { Chain } from "@uswap/helpers";
+} from "@tcswap/helpers";
+import { Chain } from "@tcswap/helpers";
 import type {
   BigNumberish,
   BrowserProvider,

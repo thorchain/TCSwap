@@ -3,7 +3,7 @@
  */
 
 import { networks as zcashNetworks } from "@bitgo/utxo-lib";
-import { Chain, getRPCUrl, RequestClient, USwapConfig, USwapError, type UTXOChain, warnOnce } from "@uswap/helpers";
+import { Chain, getRPCUrl, RequestClient, USwapConfig, USwapError, type UTXOChain, warnOnce } from "@tcswap/helpers";
 import { networks } from "bitcoinjs-lib";
 // @ts-expect-error
 import coininfo from "coininfo";

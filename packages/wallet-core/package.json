@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "dependencies": { "@uswap/helpers": "workspace:*" },
+  "dependencies": { "@tcswap/helpers": "workspace:*" },
   "description": "USwap - Wallet Core",
   "exports": {
     ".": {
@@ -11,13 +11,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/wallet-core",
+  "name": "@tcswap/wallet-core",
   "repository": {
     "directory": "packages/wallet-core",
     "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
+    "url": "git+https://github.com/thorchain/TCSwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

@@ -12,7 +12,7 @@ import {
   type RequestOptions,
   USwapConfig,
   USwapError,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import { match, P } from "ts-pattern";
 import {
   type BalanceResponse,

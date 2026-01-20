@@ -1,4 +1,4 @@
-import type { Chain } from "@uswap/types";
+import type { Chain } from "@tcswap/types";
 import type { ChainWallet } from "./wallet";
 
 export type AddChainType<M = { [key in string]: any }> = <T extends Chain>(

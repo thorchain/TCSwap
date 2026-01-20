@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, ChainId, ChainToChainId, filterSupportedChains, USwapError, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, ChainId, ChainToChainId, filterSupportedChains, USwapError, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { chainRegistry } from "./chainRegistry";
 
 const keplrSupportedChainIds = [ChainId.Cosmos, ChainId.Kujira, ChainId.Noble, ChainId.THORChain] as const;
@@ -33,7 +33,7 @@ export const keplrWallet = createWallet({
           const signer = keplrClient?.getOfflineSignerOnlyAmino(chainId);
           if (!signer) throw new USwapError("wallet_keplr_signer_not_found");
 
-          const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
+          const { getCosmosToolbox } = await import("@tcswap/toolboxes/cosmos");
 
           const accounts = await signer.getAccounts();
           if (!accounts?.[0]?.address) throw new USwapError("wallet_keplr_no_accounts");

@@ -9,7 +9,7 @@ import type {
   StateEntityFungiblesPageRequest,
   StateEntityFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { AssetValue, Chain, USwapConfig, type USwapConfigIntegrations, USwapError } from "@uswap/helpers";
+import { AssetValue, Chain, USwapConfig, type USwapConfigIntegrations, USwapError } from "@tcswap/helpers";
 
 export type RadixWallet = Awaited<ReturnType<typeof RadixToolbox>>;
 

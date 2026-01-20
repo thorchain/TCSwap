@@ -27,8 +27,8 @@ import {
   type TCLikeChain,
   USwapError,
   wrapWithThrow,
-} from "@uswap/helpers";
-import { type InboundAddressesItem, type QuoteResponseRoute, type THORNodeType, USwapApi } from "@uswap/helpers/api";
+} from "@tcswap/helpers";
+import { type InboundAddressesItem, type QuoteResponseRoute, type THORNodeType, USwapApi } from "@tcswap/helpers/api";
 import {
   MayaArbitrumVaultAbi,
   MayaEthereumVaultAbi,
@@ -36,7 +36,7 @@ import {
   TCBaseDepositABI,
   TCBscDepositABI,
   TCEthereumVaultAbi,
-} from "@uswap/helpers/contracts";
+} from "@tcswap/helpers/contracts";
 import type { SwapKitPluginParams } from "../types";
 import { createPlugin } from "../utils";
 import { prepareTxParams, validateAddressType } from "./shared";
@@ -170,7 +170,7 @@ function createTCBasedPlugin<T extends TCLikeChain>(pluginChain: T) {
           return shouldDeposit ? wallet.deposit(params) : wallet.transfer(params);
         }
 
-        const { getChecksumAddressFromAsset } = await import("@uswap/toolboxes/evm");
+        const { getChecksumAddressFromAsset } = await import("@tcswap/toolboxes/evm");
         const wallet = getWallet(chain as EVMChain);
 
         return wallet.call<string>({

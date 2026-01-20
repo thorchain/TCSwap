@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@uswap/sdk": "workspace:*"
+    "@tcswap/sdk": "workspace:*"
   },
   "name": "@internal/playground-bun-backend",
   "private": true,

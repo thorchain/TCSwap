@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { USwapError } from "@uswap/helpers";
+import { USwapError } from "@tcswap/helpers";
 import { CLA, ERROR_CODE, errorCodeToString, INS, P2_VALUES, PAYLOAD_TYPE, processErrorResponse } from "./common";
 
 export function serializePathv1(path: number[]) {

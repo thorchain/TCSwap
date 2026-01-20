@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type Chain, getChainConfig } from "@uswap/types";
+import { type Chain, getChainConfig } from "@tcswap/types";
 import type { BrowserProvider, JsonRpcProvider } from "ethers";
 import { USwapError } from "../modules/uSwapError";
 import {

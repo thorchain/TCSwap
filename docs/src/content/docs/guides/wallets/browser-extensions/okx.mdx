@@ -51,7 +51,7 @@ OKX Wallet works in:
 #### Granular Approach (Recommended for Frontend)
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   config: {
@@ -66,7 +66,7 @@ const uSwap = USwap({
 #### All-in-One Approach (Backend/Node.js)
 
 ```ts twoslash
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -82,7 +82,7 @@ const uSwap = createUSwap({
 #### Single Chain Connection
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -109,7 +109,7 @@ async function connectOKXEthereum() {
 #### Multi-Chain Connection
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -156,7 +156,7 @@ async function connectMultipleChains() {
 #### Chain-Specific Connections
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -199,7 +199,7 @@ async function connectOKXCosmos() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -236,7 +236,7 @@ async function sendEthereum() {
 #### ERC-20 Token Transfer
 
 ```ts twoslash
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -271,7 +271,7 @@ async function sendERC20Token() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -309,7 +309,7 @@ async function sendBitcoin() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -363,7 +363,7 @@ async function sendOnArbitrum() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -398,7 +398,7 @@ async function sendAtom() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -433,7 +433,7 @@ async function sendTron() {
 ### EVM Chain Management
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -476,7 +476,7 @@ async function manageEVMChains() {
 ### Bitcoin Address Types
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -508,7 +508,7 @@ async function getBitcoinAddressInfo() {
 ### Near Protocol Integration
 
 ```ts twoslash
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -544,7 +544,7 @@ async function nearOperations() {
 
 ```ts twoslash
 
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...okxWallet },
@@ -697,7 +697,7 @@ async function handleNetworkIssues(chain: Chain) {
 ### Best Practices
 
 ```ts twoslash
-import { USwap, okxWallet, Chain } from "@uswap/sdk";
+import { USwap, okxWallet, Chain } from "@tcswap/sdk";
 
 function validateAddress(address: string, chain: Chain): boolean {
   switch (chain) {
@@ -805,7 +805,7 @@ const secureUSwap = USwap({
 ```tsx twoslash
 
 import React, { useState, useEffect } from 'react';
-import { USwap, okxWallet, Chain, AssetValue } from "@uswap/sdk";
+import { USwap, okxWallet, Chain, AssetValue } from "@tcswap/sdk";
 
 interface OKXWalletProps {
   onConnect: (addresses: Partial<Record<Chain, string>>) => void;

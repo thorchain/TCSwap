@@ -3,7 +3,7 @@
  */
 
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test";
-import { AssetValue, Chain, USwapConfig } from "@uswap/helpers";
+import { AssetValue, Chain, USwapConfig } from "@tcswap/helpers";
 import { createTronToolbox, getTronAddressValidator } from "../toolbox";
 
 const context: {

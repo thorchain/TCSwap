@@ -21,12 +21,12 @@ import {
   USwapError,
   UTXOChains,
   type WalletOption,
-} from "@uswap/helpers";
-import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
-import type { createPlugin } from "@uswap/plugins";
-import type { FullWallet } from "@uswap/toolboxes";
-import type { EVMCreateTransactionParams, EVMTransferParams } from "@uswap/toolboxes/evm";
-import type { createWallet } from "@uswap/wallets";
+} from "@tcswap/helpers";
+import type { EVMTransaction, QuoteResponseRoute } from "@tcswap/helpers/api";
+import type { createPlugin } from "@tcswap/plugins";
+import type { FullWallet } from "@tcswap/toolboxes";
+import type { EVMCreateTransactionParams, EVMTransferParams } from "@tcswap/toolboxes/evm";
+import type { createWallet } from "@tcswap/wallets";
 
 export type USwapParams<P, W> = { config?: USwapConfigState; plugins?: P; wallets?: W };
 
@@ -299,7 +299,7 @@ export function USwap<
       throw new USwapError({ errorKey: "core_verify_message_not_supported", info: { chain } });
     }
 
-    const { getCosmosToolbox } = await import("@uswap/toolboxes/cosmos");
+    const { getCosmosToolbox } = await import("@tcswap/toolboxes/cosmos");
     const toolbox = await getCosmosToolbox(chain);
 
     return toolbox.verifySignature({ address, message, signature });
@@ -366,7 +366,7 @@ export function USwap<
         return wallet.estimateTransactionFee({ ...params, feeOptionKey, recipient: address, sender: address });
       })
       .with(...CosmosChains, async () => {
-        const { estimateTransactionFee } = await import("@uswap/toolboxes/cosmos");
+        const { estimateTransactionFee } = await import("@tcswap/toolboxes/cosmos");
         return estimateTransactionFee(params);
       })
       .with(Chain.Polkadot, (chain) => {
@@ -406,4 +406,4 @@ export function USwap<
   };
 }
 
-export * from "@uswap/helpers";
+export * from "@tcswap/helpers";

@@ -22,7 +22,7 @@ const quote = await fetch("/api/swap-quote", {
   body: JSON.stringify(quoteParams),
 }).then((r) => r.json());
 
-import { USwapApi } from "@uswap/helpers/api";
+import { USwapApi } from "@tcswap/helpers/api";
 
 export async function POST(request: Request) {
   const params = await request.json();
@@ -42,7 +42,7 @@ Always use secure wallet connections instead of handling private keys directly:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -57,7 +57,7 @@ Always validate user inputs:
 
 ```typescript
 // @noErrorValidation
-import { createUSwap, USwapError } from "@uswap/sdk";
+import { createUSwap, USwapError } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -93,7 +93,7 @@ Use the modular approach for smaller bundles:
   <TabItem label="Modular (Recommended)">
     ```typescript
 
-    import { USwap, ThorchainPlugin, evmWallet } from '@uswap/sdk';
+    import { USwap, ThorchainPlugin, evmWallet } from '@tcswap/sdk';
 
     const uSwap = USwap({
       plugins: { ...ThorchainPlugin },
@@ -105,7 +105,7 @@ Use the modular approach for smaller bundles:
   <TabItem label="All-in-one">
     ```typescript
 
-    import { createUSwap } from '@uswap/sdk';
+    import { createUSwap } from '@tcswap/sdk';
 
     const uSwap = createUSwap();
     ```
@@ -119,20 +119,20 @@ Load toolboxes only when needed:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@uswap/sdk";
+import { Chain } from "@tcswap/sdk";
 
 async function getToolboxForChain(chain: Chain) {
   switch (chain) {
     case Chain.Ethereum:
-      const { getEvmToolbox } = await import("@uswap/sdk");
+      const { getEvmToolbox } = await import("@tcswap/sdk");
       return getEvmToolbox(chain);
 
     case Chain.Bitcoin:
-      const { getUtxoToolbox } = await import("@uswap/sdk");
+      const { getUtxoToolbox } = await import("@tcswap/sdk");
       return getUtxoToolbox(chain);
 
     default:
-      const { getToolbox } = await import("@uswap/sdk");
+      const { getToolbox } = await import("@tcswap/sdk");
       return getToolbox(chain);
   }
 }
@@ -173,7 +173,7 @@ class USwapCache {
 const cache = new USwapCache();
 
 const price = await cache.get(`price_${asset}`, "price", async () => {
-  const { USwapApi } = await import("@uswap/helpers/api");
+  const { USwapApi } = await import("@tcswap/helpers/api");
   return USwapApi.getPrice(asset);
 });
 ```
@@ -184,7 +184,7 @@ Batch multiple operations for efficiency:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from "@uswap/sdk";
+import { Chain } from "@tcswap/sdk";
 
 const ethBalance = await uSwap.getBalance(Chain.Ethereum);
 const btcBalance = await uSwap.getBalance(Chain.Bitcoin);
@@ -204,7 +204,7 @@ Handle all error scenarios gracefully:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 async function executeSwap(route: SwapRoute) {
   try {
@@ -243,7 +243,7 @@ Implement retry logic for transient failures:
 
 ```typescript
 // @noErrorValidation
-import { USwapError, USwapApi } from "@uswap/sdk";
+import { USwapError, USwapApi } from "@tcswap/sdk";
 
 async function withRetry<T>(
   fn: () => Promise<T>,
@@ -281,7 +281,7 @@ Provide clear feedback during operations:
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/sdk";
+import { USwapApi } from "@tcswap/sdk";
 
 interface SwapState {
   status: "idle" | "quoting" | "approving" | "swapping" | "success" | "error";
@@ -318,7 +318,7 @@ Track transaction status for better UX:
 
 ```typescript
 // @noErrorValidation
-import { Chain, USwapApi } from "@uswap/sdk";
+import { Chain, USwapApi } from "@tcswap/sdk";
 
 async function trackTransaction(
   txHash: string,
@@ -355,7 +355,7 @@ Configure multiple RPC endpoints for reliability:
 
 ```typescript
 // @noErrorValidation
-import { Chain } from '@uswap/sdk';
+import { Chain } from '@tcswap/sdk';
 
 const rpcEndpoints = {
   [Chain.Ethereum]: [
@@ -397,7 +397,7 @@ Implement dynamic gas pricing:
 
 ```typescript
 // @noErrorValidation
-import { USwapApi } from "@uswap/sdk";
+import { USwapApi } from "@tcswap/sdk";
 
 async function getOptimalGasPrice(
   chain: Chain,
@@ -526,7 +526,7 @@ if (features.newSwapFlow) {
 
 ```typescript
 // @noErrorValidation
-import { USwapApi, Chain } from "@uswap/sdk";
+import { USwapApi, Chain } from "@tcswap/sdk";
 
 async function healthCheck(): Promise<HealthStatus> {
   const checks = await Promise.allSettled([

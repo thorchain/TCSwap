@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test } from "bun:test";
-import { Chain } from "@uswap/helpers";
+import { Chain } from "@tcswap/helpers";
 import { getAddressValidator } from "../index";
 
 const context: { validateAddress: (params: { address: string; chain: Chain }) => boolean } = {} as any;

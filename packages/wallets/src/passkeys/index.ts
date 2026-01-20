@@ -12,9 +12,9 @@ import {
   USwapConfig,
   USwapError,
   WalletOption,
-} from "@uswap/helpers";
-import type { SolanaProvider } from "@uswap/toolboxes/solana";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+} from "@tcswap/helpers";
+import type { SolanaProvider } from "@tcswap/toolboxes/solana";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { Psbt } from "bitcoinjs-lib";
 import {
   AddressPurpose,
@@ -40,7 +40,7 @@ async function getPasskeyWallet() {
 function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain: Chain }) {
   return match(paramChain)
     .with(Chain.Bitcoin, async (chain) => {
-      const { getUtxoToolbox } = await import("@uswap/toolboxes/utxo");
+      const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
       const provider = await wallet.getProvider("bitcoin");
 
       if (!provider) {
@@ -100,7 +100,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
       return { ...toolbox, address };
     })
     .with(...EVMChains, async (chain) => {
-      const { getProvider, getEvmToolbox } = await import("@uswap/toolboxes/evm");
+      const { getProvider, getEvmToolbox } = await import("@tcswap/toolboxes/evm");
       const { BrowserProvider } = await import("ethers");
 
       const walletProvider = await wallet.getProvider("ethereum");
@@ -129,7 +129,7 @@ function getWalletMethods({ wallet, chain: paramChain }: { wallet: Wallet; chain
       return { ...prepareNetworkSwitch({ chain, provider: browserProvider, toolbox }), address };
     })
     .with(Chain.Solana, async () => {
-      const { getSolanaToolbox } = await import("@uswap/toolboxes/solana");
+      const { getSolanaToolbox } = await import("@tcswap/toolboxes/solana");
       const provider = (await wallet.getProvider("solana")) as any as SolanaProvider;
       const providerConnection = await provider.connect();
       const address = providerConnection.publicKey.toString();

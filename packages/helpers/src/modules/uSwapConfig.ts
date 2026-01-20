@@ -9,7 +9,7 @@ import {
   StagenetChain,
   StagenetMAYAConfig,
   StagenetTHORConfig,
-} from "@uswap/types";
+} from "@tcswap/types";
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import type { BalanceResponse, QuoteRequest, QuoteResponse, QuoteResponseRoute } from "../api";

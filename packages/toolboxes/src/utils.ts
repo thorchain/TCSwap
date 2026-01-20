@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { AssetValue, type Chain, getChainConfig } from "@uswap/helpers";
-import { USwapApi } from "@uswap/helpers/api";
+import { AssetValue, type Chain, getChainConfig } from "@tcswap/helpers";
+import { USwapApi } from "@tcswap/helpers/api";
 
 const pid = typeof process !== "undefined" && process.pid ? process.pid.toString(36) : "";
 

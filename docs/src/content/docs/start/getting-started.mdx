@@ -25,22 +25,22 @@ Before starting, ensure you have:
 <Tabs>
   <TabItem label="bun">
     ```bash
-    bun add @uswap/sdk
+    bun add @tcswap/sdk
     ```
   </TabItem>
   <TabItem label="pnpm">
     ```bash
-    pnpm add @uswap/sdk
+    pnpm add @tcswap/sdk
     ```
   </TabItem>
   <TabItem label="npm">
     ```bash
-    npm install @uswap/sdk
+    npm install @tcswap/sdk
     ```
   </TabItem>
   <TabItem label="yarn">
     ```bash
-    yarn add @uswap/sdk
+    yarn add @tcswap/sdk
     ```
   </TabItem>
 </Tabs>
@@ -52,7 +52,7 @@ Before starting, ensure you have:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 ```
@@ -75,7 +75,7 @@ For production applications, you'll want to add your own API keys and custom set
 ```typescript
 // @noErrorValidation
 
-import { createUSwap } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
 
 const uSwap = createUSwap({
   config: {
@@ -103,7 +103,7 @@ USwap supports 20+ blockchain networks with a unified [Chain](/start/core-concep
 ```typescript
 // @noErrorValidation
 
-import { Chain } from "@uswap/sdk";
+import { Chain } from "@tcswap/sdk";
 
 const ethereum = Chain.Ethereum;
 const bitcoin = Chain.Bitcoin;
@@ -118,7 +118,7 @@ const thorchain = Chain.THORChain;
 ```typescript
 // @noErrorValidation
 
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const eth = AssetValue.from({ asset: "ETH.ETH", value: 1 });
 const btc = AssetValue.from({ asset: "BTC.BTC", value: 0.1 });
@@ -136,7 +136,7 @@ USwap supports 20+ [wallet types](/start/core-concepts#wallet-types):
 ```typescript
 // @noErrorValidation
 
-import { WalletOption } from "@uswap/sdk";
+import { WalletOption } from "@tcswap/sdk";
 
 const metamask = WalletOption.METAMASK;
 const keplr = WalletOption.KEPLR;
@@ -153,7 +153,7 @@ const keystore = WalletOption.KEYSTORE;
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, Chain, WalletOption } from "@uswap/sdk";
+import { createUSwap, Chain, WalletOption } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -176,7 +176,7 @@ const wallets = uSwap.getAllWallets();
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -197,7 +197,7 @@ Use the [USwap API](/guides/api-reference) to get quotes and execute swaps:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, Chain, FeeOption, USwapApi } from "@uswap/sdk";
+import { createUSwap, Chain, FeeOption, USwapApi } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -232,7 +232,7 @@ console.log(`Swap transaction: ${txHash}`);
     {
       title: "Install and Initialize USwap",
       description: "Set up USwap in your project with the required dependencies",
-      code: `bun add @uswap/sdk\n\nimport { createUSwap } from '@uswap/sdk';\n\nconst uSwap = createUSwap({
+      code: `bun add @tcswap/sdk\n\nimport { createUSwap } from '@tcswap/sdk';\n\nconst uSwap = createUSwap({
   config: {
     apiKeys: {
       uSwap: 'your-api-key-here'
@@ -271,7 +271,7 @@ console.log('Connected:', ethAddress);`,
     {
       title: "Get a Swap Quote",
       description: "Fetch quotes from multiple DEX aggregators to find the best rate",
-      code: `import { USwapApi } from '@uswap/sdk';
+      code: `import { USwapApi } from '@tcswap/sdk';
 
 const quoteResponse = await USwapApi.getSwapQuote({
 sellAsset: 'ETH.ETH',
@@ -295,7 +295,7 @@ console.log('Expected output:', bestRoute.expectedBuyAmount);`,
     {
       title: "Execute the Swap",
       description: "Perform the cross-chain swap using the selected route",
-      code: `import { FeeOption } from '@uswap/sdk';
+      code: `import { FeeOption } from '@tcswap/sdk';
 
 const txHash = await uSwap.swap({
 route: bestRoute,
@@ -324,7 +324,7 @@ tips: [
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, AssetValue, FeeOption, Chain } from "@uswap/sdk";
+import { createUSwap, AssetValue, FeeOption, Chain } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 
@@ -369,7 +369,7 @@ import {
   ThorchainPlugin,
   keystoreWallet,
   ledgerWallet,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   plugins: {
@@ -389,7 +389,7 @@ For low-level blockchain operations:
 ```typescript
 // @noErrorValidation
 
-import { getToolbox, Chain } from "@uswap/sdk";
+import { getToolbox, Chain } from "@tcswap/sdk";
 
 const address = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
 const btcToolbox = getToolbox(Chain.Bitcoin);
@@ -406,7 +406,7 @@ Create your own plugin to extend USwap:
 ```typescript
 // @noErrorValidation
 
-import { USwap } from "@uswap/sdk";
+import { USwap } from "@tcswap/sdk";
 
 const MyCustomPlugin = {
   myCustomMethod: async (params: any) => {
@@ -436,7 +436,7 @@ USwap uses typed errors for better debugging:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap, USwapError, FeeOption } from "@uswap/sdk";
+import { createUSwap, USwapError, FeeOption } from "@tcswap/sdk";
 
 const uSwap = createUSwap();
 

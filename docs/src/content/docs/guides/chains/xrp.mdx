@@ -24,10 +24,10 @@ XRP Ledger is a decentralized blockchain focused on fast, low-cost payments and 
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const xrpWallet = await uSwap.getWallet(Chain.Ripple);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getXRPToolbox } from '@uswap/toolboxes/ripple';
+import { getXRPToolbox } from '@tcswap/toolboxes/ripple';
 
 
 const xrpToolbox = await getXRPToolbox({
@@ -74,7 +74,7 @@ Connect to XRP Ledger using various wallet types:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Ripple], "your mnemonic phrase");
 
@@ -94,7 +94,7 @@ const xrpAddress = uSwap.getAddress(Chain.Ripple);
 
 console.log("XRP address:", xrpAddress);
 
-import { validateXRPAddress } from "@uswap/toolboxes/ripple";
+import { validateXRPAddress } from "@tcswap/toolboxes/ripple";
 
 const isValidAddress = validateXRPAddress(xrpAddress);
 console.log("Valid XRP address:", isValidAddress);
@@ -112,7 +112,7 @@ console.log("Account info:", {
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH",
@@ -538,7 +538,7 @@ const configureAccount = async () => {
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Ripple, [

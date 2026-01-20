@@ -1,5 +1,5 @@
-import type { AssetValue, SwapParams } from "@uswap/helpers";
-import type { QuoteResponseRoute } from "@uswap/helpers/api";
+import type { AssetValue, SwapParams } from "@tcswap/helpers";
+import type { QuoteResponseRoute } from "@tcswap/helpers/api";
 
 export type WithdrawFeeResponse = {
   egressId: string;

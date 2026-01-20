@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type DerivationPathArray, derivationPathToString, NetworkDerivationPath, USwapError } from "@uswap/helpers";
+import { type DerivationPathArray, derivationPathToString, NetworkDerivationPath, USwapError } from "@tcswap/helpers";
 import { CosmosLedgerInterface } from "../interfaces/CosmosLedgerInterface";
 
 export class CosmosLedger extends CosmosLedgerInterface {

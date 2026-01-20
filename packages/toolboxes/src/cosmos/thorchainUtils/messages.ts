@@ -3,7 +3,7 @@
  */
 
 import type { TxBodyEncodeObject } from "@cosmjs/proto-signing";
-import { AssetValue, Chain, getChainConfig, type TCLikeChain, USwapError } from "@uswap/helpers";
+import { AssetValue, Chain, getChainConfig, type TCLikeChain, USwapError } from "@tcswap/helpers";
 
 import { createStargateClient, getDefaultChainFee, getDenomWithChain, getMsgSendDenom } from "../util";
 

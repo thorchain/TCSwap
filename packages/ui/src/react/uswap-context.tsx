@@ -4,8 +4,8 @@
 
 "use client";
 
-import type { Chain, EVMChain, TokenNames, USwapConfigState } from "@uswap/sdk";
-import { AssetValue, NetworkDerivationPath, WalletOption } from "@uswap/sdk";
+import type { Chain, EVMChain, TokenNames, USwapConfigState } from "@tcswap/sdk";
+import { AssetValue, NetworkDerivationPath, WalletOption } from "@tcswap/sdk";
 import { useCallback, useEffect, useMemo } from "react";
 import { create } from "zustand";
 import type { BalanceDetails, KeystoreFile, USwapState } from "./types";
@@ -48,7 +48,7 @@ export const useUSwap = () => {
 
   const loadUSwap = useCallback(
     async (params?: { config: USwapConfigState | undefined }) => {
-      const { createUSwap } = await import("@uswap/sdk");
+      const { createUSwap } = await import("@tcswap/sdk");
 
       const uSwapClient = createUSwap({ config: params?.config });
 
@@ -178,7 +178,7 @@ export const useUSwap = () => {
       try {
         setIsConnectingWallet(true);
 
-        const { decryptFromKeystore } = await import("@uswap/wallet-keystore");
+        const { decryptFromKeystore } = await import("@tcswap/wallet-keystore");
         const phrase = await decryptFromKeystore(keystoreFile.keystore, password);
 
         if (!phrase) throw new Error("Failed to decrypt keystore");

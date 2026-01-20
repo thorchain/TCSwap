@@ -9,7 +9,7 @@ import {
   derivationPathToString,
   NetworkDerivationPath,
   USwapError,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import { AbstractSigner, type Provider, type TransactionRequest } from "ethers";
 
 import { getLedgerTransport } from "../helpers/getLedgerTransport";

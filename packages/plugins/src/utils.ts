@@ -2,8 +2,8 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { ApproveMode, ApproveReturnType, EVMChain, ProviderName } from "@uswap/helpers";
-import { type AssetValue, EVMChains, USwapError } from "@uswap/helpers";
+import type { ApproveMode, ApproveReturnType, EVMChain, ProviderName } from "@tcswap/helpers";
+import { type AssetValue, EVMChains, USwapError } from "@tcswap/helpers";
 import type { SwapKitPluginParams } from "./types";
 
 export function createPlugin<

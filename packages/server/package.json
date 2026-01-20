@@ -1,10 +1,10 @@
 {
   "author": "swapkit-oss",
   "dependencies": {
-    "@uswap/helpers": "workspace:*",
-    "@uswap/tokens": "workspace:*",
-    "@uswap/toolboxes": "workspace:*",
-    "@uswap/wallet-keystore": "workspace:*"
+    "@tcswap/helpers": "workspace:*",
+    "@tcswap/tokens": "workspace:*",
+    "@tcswap/toolboxes": "workspace:*",
+    "@tcswap/wallet-keystore": "workspace:*"
   },
   "description": "USwap - Server SDK",
   "exports": {
@@ -16,14 +16,10 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/server",
-  "repository": {
-    "directory": "packages/server",
-    "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
-  },
+  "name": "@tcswap/server",
+  "repository": { "directory": "packages/server", "type": "git", "url": "git+https://github.com/thorchain/TCSwap.git" },
   "scripts": {
     "build": "bun run ./build.ts",
     "build:clean": "rm -rf dist && bun run ./build.ts",

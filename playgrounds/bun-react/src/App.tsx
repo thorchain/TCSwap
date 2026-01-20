@@ -4,8 +4,8 @@
 
 import "../styles/index.css";
 
-import { Chain, WalletOption } from "@uswap/core";
-import { USwapProvider, useUSwap } from "@uswap/ui/react";
+import { Chain, WalletOption } from "@tcswap/core";
+import { USwapProvider, useUSwap } from "@tcswap/ui/react";
 import { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

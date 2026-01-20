@@ -3,8 +3,8 @@
  */
 
 import { VersionedTransaction } from "@solana/web3.js";
-import { ApproveMode, AssetValue, Chain, EVMChains, ProviderName, type SwapParams, USwapError } from "@uswap/helpers";
-import type { EVMTransaction, QuoteResponseRoute } from "@uswap/helpers/api";
+import { ApproveMode, AssetValue, Chain, EVMChains, ProviderName, type SwapParams, USwapError } from "@tcswap/helpers";
+import type { EVMTransaction, QuoteResponseRoute } from "@tcswap/helpers/api";
 import { match } from "ts-pattern";
 import { approve, createPlugin } from "../utils";
 

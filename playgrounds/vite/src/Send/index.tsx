@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { type AssetValue, getExplorerTxUrl } from "@uswap/core";
+import { type AssetValue, getExplorerTxUrl } from "@tcswap/core";
 import { useCallback, useState } from "react";
 import type { USwapClient } from "../uSwapClient";
 

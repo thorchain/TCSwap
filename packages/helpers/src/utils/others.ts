@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain } from "@uswap/types";
+import { Chain } from "@tcswap/types";
 import { type ErrorKeys, USwapError } from "../modules/uSwapError";
 
 // 10 rune for register, 1 rune per year

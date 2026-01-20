@@ -1,1 +1,1 @@
-export * from "@uswap/core";
+export * from "@tcswap/core";

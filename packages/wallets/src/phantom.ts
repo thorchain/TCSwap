@@ -1,1 +1,1 @@
-export * from "@uswap/wallet-extensions/phantom";
+export * from "@tcswap/wallet-extensions/phantom";

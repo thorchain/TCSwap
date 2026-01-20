@@ -3,7 +3,7 @@
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { Chain } from "@uswap/types";
+import { Chain } from "@tcswap/types";
 import { FeeOption } from "../../types";
 import { USwapConfig } from "../uSwapConfig";
 

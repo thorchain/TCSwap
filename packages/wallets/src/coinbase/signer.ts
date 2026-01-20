@@ -4,7 +4,7 @@
 
 import type { CoinbaseWalletProvider } from "@coinbase/wallet-sdk";
 import type { createCoinbaseWalletSDK } from "@coinbase/wallet-sdk/dist/createCoinbaseWalletSDK.js";
-import { Chain, USwapError } from "@uswap/helpers";
+import { Chain, USwapError } from "@tcswap/helpers";
 import type { Provider } from "ethers";
 
 async function getCoinbaseMobileSigner(walletProvider: CoinbaseWalletProvider, provider?: Provider) {
@@ -65,7 +65,7 @@ export const getWalletMethods = async ({
     case Chain.Base:
     case Chain.BinanceSmartChain: {
       const walletProvider = coinbaseSdk.getProvider() as CoinbaseWalletProvider;
-      const { getEvmToolbox, getProvider } = await import("@uswap/toolboxes/evm");
+      const { getEvmToolbox, getProvider } = await import("@tcswap/toolboxes/evm");
 
       const provider = await getProvider(chain);
       const signer = await getCoinbaseMobileSigner(walletProvider, provider);

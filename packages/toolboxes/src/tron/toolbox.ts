@@ -12,7 +12,7 @@ import {
   USwapError,
   updateDerivationPath,
   warnOnce,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import type { TronWeb } from "tronweb";
 import { match, P } from "ts-pattern";
 import { trc20ABI } from "./helpers/trc20.abi";

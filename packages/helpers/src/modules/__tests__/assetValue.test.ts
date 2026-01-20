@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { Chain, getChainConfig } from "@uswap/types";
+import { Chain, getChainConfig } from "@tcswap/types";
 import { AssetValue, getMinAmountByChain } from "../assetValue";
 
 describe("AssetValue", () => {
@@ -886,7 +886,7 @@ describe("fromUrl", () => {
 });
 
 describe("fromIdentifierSync", () => {
-  test("(same as fromIdentifier) - creates AssetValue from string via `@uswap/tokens` lists", async () => {
+  test("(same as fromIdentifier) - creates AssetValue from string via `@tcswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const thor = AssetValue.from({ asset: "ARB.USDT-0XFD086BC7CD5C481DCC9C85EBE478A1C0B69FCBB9" });
 
@@ -906,7 +906,7 @@ describe("fromIdentifierSync", () => {
 });
 
 describe("fromStringSync", () => {
-  test("creates AssetValue from string via `@uswap/tokens` lists", async () => {
+  test("creates AssetValue from string via `@tcswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const thor = AssetValue.from({ asset: "ETH.THOR-0xa5f2211b9b8170f694421f2046281775e8468044" });
 
@@ -997,7 +997,7 @@ describe("fromStringSync", () => {
 });
 
 describe("fromStringWithBaseSync", () => {
-  test("creates AssetValue from string with base decimals via `@uswap/tokens` lists", async () => {
+  test("creates AssetValue from string with base decimals via `@tcswap/tokens` lists", async () => {
     await AssetValue.loadStaticAssets();
     const btc = AssetValue.from({ asset: "BTC.BTC", fromBaseDecimal: 8, value: 5200000000000 });
 

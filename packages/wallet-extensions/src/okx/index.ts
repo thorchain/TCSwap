@@ -1,6 +1,6 @@
-import { Chain, filterSupportedChains, WalletOption } from "@uswap/helpers";
+import { Chain, filterSupportedChains, WalletOption } from "@tcswap/helpers";
 
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import { getWalletMethods } from "./helpers";
 
 export const okxWallet = createWallet({

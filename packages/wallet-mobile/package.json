@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "dependencies": { "@uswap/helpers": "workspace:*", "@uswap/toolboxes": "workspace:*" },
+  "dependencies": { "@tcswap/helpers": "workspace:*", "@tcswap/toolboxes": "workspace:*" },
   "description": "USwap - Wallet Mobile",
   "exports": {
     ".": {
@@ -11,13 +11,13 @@
     }
   },
   "files": ["dist/", "src/"],
-  "homepage": "https://github.com/horizontalsystems/USwap",
+  "homepage": "https://github.com/thorchain/TCSwap",
   "license": "Apache-2.0",
-  "name": "@uswap/wallet-mobile",
+  "name": "@tcswap/wallet-mobile",
   "repository": {
     "directory": "packages/wallet-mobile",
     "type": "git",
-    "url": "git+https://github.com/horizontalsystems/USwap.git"
+    "url": "git+https://github.com/thorchain/TCSwap.git"
   },
   "scripts": {
     "build": "bun run ./build.ts",

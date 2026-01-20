@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, getChainConfig } from "@uswap/types";
+import { Chain, getChainConfig } from "@tcswap/types";
 import { USwapNumber } from "../modules/uSwapNumber";
 
 type ShareParams<T extends {}> = T & { liquidityUnits: string; poolUnits: string };

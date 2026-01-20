@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, test } from "bun:test";
 import { JsonRpcProvider } from "@near-js/providers";
-import { AssetValue, Chain, getRPCUrl } from "@uswap/helpers";
+import { AssetValue, Chain, getRPCUrl } from "@tcswap/helpers";
 import { getFullAccessPublicKey } from "../helpers/core";
 import { getNearToolbox } from "../toolbox";
 

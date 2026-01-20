@@ -30,22 +30,22 @@ Install USwap and required dependencies:
 <Tabs syncKey="package-manager">
   <TabItem label="bun">
     ```bash
-    bun add @uswap/sdk node-polyfill-webpack-plugin
+    bun add @tcswap/sdk node-polyfill-webpack-plugin
     ```
   </TabItem>
   <TabItem label="pnpm">
     ```bash
-    pnpm add @uswap/sdk node-polyfill-webpack-plugin
+    pnpm add @tcswap/sdk node-polyfill-webpack-plugin
     ```
   </TabItem>
   <TabItem label="npm">
     ```bash
-    npm install @uswap/sdk node-polyfill-webpack-plugin
+    npm install @tcswap/sdk node-polyfill-webpack-plugin
     ```
   </TabItem>
   <TabItem label="yarn">
     ```bash
-    yarn add @uswap/sdk node-polyfill-webpack-plugin
+    yarn add @tcswap/sdk node-polyfill-webpack-plugin
     ```
   </TabItem>
 </Tabs>
@@ -172,8 +172,8 @@ Create a USwap instance configuration:
 ```typescript
 // @noErrorValidation
 
-import { createUSwap } from "@uswap/sdk";
-import { USwapConfig } from "@uswap/sdk";
+import { createUSwap } from "@tcswap/sdk";
+import { USwapConfig } from "@tcswap/sdk";
 
 if (process.env.NEXT_PUBLIC_USWAP_API_KEY) {
   USwapConfig.setApiKey("uSwap", process.env.NEXT_PUBLIC_USWAP_API_KEY);
@@ -198,7 +198,7 @@ Create a client component for wallet interactions:
 
 import { useState } from "react";
 import { uSwapClient } from "@/lib/uSwap";
-import { Chain, WalletOption } from "@uswap/sdk";
+import { Chain, WalletOption } from "@tcswap/sdk";
 
 export function WalletButton() {
   const [isConnected, setIsConnected] = useState(false);
@@ -256,7 +256,7 @@ For more complex applications, use a context provider:
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import { USwap } from "@uswap/sdk";
+import { USwap } from "@tcswap/sdk";
 import { uSwapClient } from "@/lib/uSwap";
 
 const uSwapContext = createContext<USwap | null>(null);
@@ -312,7 +312,7 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
 USwap operations that require wallet connections must be performed in client components. For server components, you can only use read-only operations:
 
 ```tsx
-import { AssetValue, USwapApi } from "@uswap/sdk";
+import { AssetValue, USwapApi } from "@tcswap/sdk";
 
 export async function TokenPrice({ symbol }: { symbol: string }) {
   const price = await USwapApi.getPrice({
@@ -333,7 +333,7 @@ For Cosmos ecosystem wallets like Keplr and Cosmostation, create a specialized c
 
 import { useState } from "react";
 import { uSwapClient } from "@/lib/uSwap";
-import { Chain, WalletOption } from "@uswap/sdk";
+import { Chain, WalletOption } from "@tcswap/sdk";
 
 export function CosmosWalletButton() {
   const [isConnected, setIsConnected] = useState(false);

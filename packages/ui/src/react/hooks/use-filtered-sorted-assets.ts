@@ -2,7 +2,7 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import type { AssetValue, TokenNames } from "@uswap/sdk";
+import type { AssetValue, TokenNames } from "@tcswap/sdk";
 import { useMemo, useState } from "react";
 import type { UseFilteredSortedAssetsFilters } from "../types";
 import { assetsMap, useUSwap } from "../uswap-context";

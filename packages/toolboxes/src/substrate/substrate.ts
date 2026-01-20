@@ -17,7 +17,7 @@ import {
   type SubstrateChain,
   USwapError,
   USwapNumber,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 
 import { match, P } from "ts-pattern";
 import { createBalanceGetter } from "./balance";

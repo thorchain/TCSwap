@@ -24,10 +24,10 @@ Polygon is a leading Ethereum Layer 2 scaling solution providing fast, low-cost 
 
 ```bash
 # Full SDK (recommended)
-bun add @uswap/sdk
+bun add @tcswap/sdk
 
 # Individual packages for smaller bundles
-bun add @uswap/toolboxes @uswap/plugins
+bun add @tcswap/toolboxes @tcswap/plugins
 ```
 
 ### Basic Setup
@@ -36,7 +36,7 @@ bun add @uswap/toolboxes @uswap/plugins
 <TabItem label="With SDK">
 ```typescript
 // @noErrorValidation
-import { createUSwap, Chain } from '@uswap/sdk';
+import { createUSwap, Chain } from '@tcswap/sdk';
 
 const uSwap = createUSwap();
 
@@ -47,7 +47,7 @@ const polygonWallet = await uSwap.getWallet(Chain.Polygon);
 <TabItem label="Standalone Toolbox">
 ```typescript
 // @noErrorValidation
-import { getPolygonToolbox } from '@uswap/toolboxes/evm';
+import { getPolygonToolbox } from '@tcswap/toolboxes/evm';
 
 
 const polygonToolbox = await getPolygonToolbox({
@@ -74,7 +74,7 @@ Connect to Polygon using Ethereum-compatible wallets:
 
 ```typescript
 // @noErrorValidation
-import { Chain, FeeOption } from "@uswap/sdk";
+import { Chain, FeeOption } from "@tcswap/sdk";
 
 await uSwap.connectKeystore([Chain.Polygon], "your mnemonic phrase");
 
@@ -91,7 +91,7 @@ MATIC is the native gas and utility token of Polygon:
 
 ```typescript
 // @noErrorValidation
-import { AssetValue } from "@uswap/sdk";
+import { AssetValue } from "@tcswap/sdk";
 
 const txHash = await uSwap.transfer({
   recipient: "0x742c4B4F3e0b5b069F5DCF8A65Eaf8d3E888a3E7",
@@ -446,7 +446,7 @@ const addLiquidity = await toolbox.call({
 
 ```typescript
 // @noErrorValidation
-import { USwapConfig } from '@uswap/sdk';
+import { USwapConfig } from '@tcswap/sdk';
 
 
 USwapConfig.setRpcUrl(Chain.Polygon, [
@@ -487,7 +487,7 @@ Handle Polygon-specific errors:
 
 ```typescript
 // @noErrorValidation
-import { USwapError } from "@uswap/sdk";
+import { USwapError } from "@tcswap/sdk";
 
 try {
   await uSwap.transfer({

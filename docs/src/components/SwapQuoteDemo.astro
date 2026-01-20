@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sellAmount = sellAmountInput.value;
     const slippage = slippageInput.value;
 
-    return `import { USwapApi } from '@uswap/helpers/api';
+    return `import { USwapApi } from '@tcswap/helpers/api';
 
 const quoteResponse = await USwapApi.getSwapQuote({
   sellAsset: '${sellAsset}',

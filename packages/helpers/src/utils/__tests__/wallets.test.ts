@@ -4,7 +4,7 @@
 
 // @ts-nocheck - Test file with intentional mocking of browser globals and ethers types
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { Chain } from "@uswap/types";
+import { Chain } from "@tcswap/types";
 
 import { USwapError } from "../../modules/uSwapError";
 import { WalletOption } from "../../types";

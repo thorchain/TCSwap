@@ -17,7 +17,7 @@ USwap v4 brings significant improvements to developer experience, runtime flexib
     Update API keys, RPC URLs, and settings without recreating the USwap client. Perfect for production environments and dynamic configuration management.
 
     ```typescript
-    import { USwapConfig } from '@uswap/sdk';
+    import { USwapConfig } from '@tcswap/sdk';
 
 
     USwapConfig.setRpcUrl(Chain.Ethereum, "https:
@@ -35,8 +35,8 @@ USwap v4 brings significant improvements to developer experience, runtime flexib
 
     ```typescript
 
-    import { createUSwap, Chain } from '@uswap/sdk';
-    import { ThorchainPlugin } from '@uswap/plugins/thorchain';
+    import { createUSwap, Chain } from '@tcswap/sdk';
+    import { ThorchainPlugin } from '@tcswap/plugins/thorchain';
     ```
 
     [Migration guide →](/others/migrate-to-v4)
@@ -60,7 +60,7 @@ USwap v4 brings significant improvements to developer experience, runtime flexib
     New `createPlugin` and `createWallet` helpers provide consistent interfaces for extending USwap functionality.
 
     ```typescript
-    import { createPlugin } from '@uswap/plugins';
+    import { createPlugin } from '@tcswap/plugins';
 
     export const MyPlugin = createPlugin({
       name: "myPlugin",

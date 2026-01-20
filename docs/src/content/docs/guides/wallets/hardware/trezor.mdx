@@ -58,7 +58,7 @@ Trezor Connect works in modern browsers:
 
 ```ts twoslash
 
-import { USwap, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@tcswap/sdk";
 
 
 const uSwap = USwap({
@@ -83,7 +83,7 @@ const uSwap = USwap({
 
 ```ts twoslash
 
-import { createUSwap, Chain } from "@uswap/sdk";
+import { createUSwap, Chain } from "@tcswap/sdk";
 
 
 const uSwap = createUSwap({
@@ -112,7 +112,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -146,7 +146,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -177,7 +177,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -216,7 +216,7 @@ import {
   trezorWallet,
   Chain,
   type DerivationPathArray,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -259,7 +259,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -319,7 +319,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -376,7 +376,7 @@ import {
   Chain,
   AssetValue,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -414,7 +414,7 @@ import {
   Chain,
   NetworkDerivationPath,
   FeeOption,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({ wallets: { ...trezorWallet } });
 
@@ -452,7 +452,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 const uSwap = USwap({ wallets: { ...trezorWallet } });
 
@@ -491,7 +491,7 @@ async function setupEVMChains() {
 
 ```ts twoslash
 
-import { USwap, trezorWallet, Chain, NetworkDerivationPath } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain, NetworkDerivationPath } from "@tcswap/sdk";
 
 const uSwap = USwap({
   wallets: { ...trezorWallet },
@@ -610,7 +610,7 @@ async function handleBrowserIssues() {
 ### Best Practices
 
 ```ts twoslash
-import { USwap, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@tcswap/sdk";
 
 async function verifyAddressOnDevice() {
   const uSwap = USwap({ wallets: { ...trezorWallet } });
@@ -706,7 +706,7 @@ const uSwap = USwap({
 ### Custom Coin Support
 
 ```ts twoslash
-import { USwap, trezorWallet, Chain } from "@uswap/sdk";
+import { USwap, trezorWallet, Chain } from "@tcswap/sdk";
 
 class CustomTrezorWallet {
   private uSwap: any;
@@ -761,7 +761,7 @@ import {
   trezorWallet,
   Chain,
   NetworkDerivationPath,
-} from "@uswap/sdk";
+} from "@tcswap/sdk";
 
 interface TrezorWalletProps {
   onConnect: (address: string) => void;

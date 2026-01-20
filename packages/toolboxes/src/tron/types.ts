@@ -3,7 +3,7 @@ import type {
   FeeOption,
   GenericCreateTransactionParams,
   GenericTransferParams,
-} from "@uswap/helpers";
+} from "@tcswap/helpers";
 import type { Contract, Types } from "tronweb";
 
 export type TronTransaction = Types.Transaction;

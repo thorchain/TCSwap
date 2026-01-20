@@ -1,5 +1,5 @@
-import { Chain, EVMChains, filterSupportedChains, WalletOption } from "@uswap/helpers";
-import { createWallet, getWalletSupportedChains } from "@uswap/wallet-core";
+import { Chain, EVMChains, filterSupportedChains, WalletOption } from "@tcswap/helpers";
+import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 
 import { getWalletMethods } from "./helpers";
 
