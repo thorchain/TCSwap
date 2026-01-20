@@ -1,5 +1,11 @@
 # @tcswap/types
 
+## 0.4.1
+
+### Patch Changes
+
+- Rename packages
+
 ## 0.4.0
 
 ### Minor Changes

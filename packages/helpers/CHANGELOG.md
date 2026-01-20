@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tcswap/contracts@4.0.5
+  - @tcswap/tokens@4.1.5
+  - @tcswap/types@0.4.1
+
 ## 4.5.14
 
 ### Patch Changes

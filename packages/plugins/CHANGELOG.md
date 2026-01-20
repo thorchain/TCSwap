@@ -1,5 +1,13 @@
 # @tcswap/plugins
 
+## 4.2.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.15
+  - @tcswap/toolboxes@4.3.15
+
 ## 4.2.14
 
 ### Patch Changes

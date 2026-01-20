@@ -1,12 +1,12 @@
 {
   "author": "swapkit-oss",
   "dependencies": {
-    "@tcswap/core": "workspace:*",
-    "@tcswap/helpers": "workspace:*",
-    "@tcswap/plugins": "workspace:*",
-    "@tcswap/server": "workspace:*",
-    "@tcswap/toolboxes": "workspace:*",
-    "@tcswap/wallets": "workspace:*"
+    "@tcswap/core": "4.1.16",
+    "@tcswap/helpers": "4.5.15",
+    "@tcswap/plugins": "4.2.15",
+    "@tcswap/server": "4.0.59",
+    "@tcswap/toolboxes": "4.3.15",
+    "@tcswap/wallets": "4.3.16"
   },
   "description": "USwap - SDK",
   "exports": {
@@ -54,5 +54,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.2.15"
+  "version": "4.2.16"
 }

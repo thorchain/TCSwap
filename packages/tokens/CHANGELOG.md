@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.5
+
+### Patch Changes
+
+- Rename packages
+
 ## 4.1.4
 
 ### Patch Changes

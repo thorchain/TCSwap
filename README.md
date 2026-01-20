@@ -1,10 +1,10 @@
-# USwap
+# TCSwap
 
 ### _Integrate Blockchains easily_
 
 ## Usage
 
-[Documentation](https://uswap.github.io/USwap)
+[Documentation](https://github.com/thorchain/TCSwap)
 
 
 ## Packages
@@ -70,4 +70,4 @@ bun changeset
 After PR is merged to `develop` branch with changeset file, github action will create new PR with updated versions of packages and changelogs.
 
 ### Attribution
-This project is based on code from SwapKit, licensed under the Apache License 2.0. Our version contains modifications specific to USwap.
+This project is based on code from SwapKit, licensed under the Apache License 2.0. Our version contains modifications specific to TCSwap.

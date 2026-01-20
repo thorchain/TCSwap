@@ -1,5 +1,11 @@
 # @tcswap/contracts
 
+## 4.0.5
+
+### Patch Changes
+
+- Rename packages
+
 ## 4.0.1
 
 ### Patch Changes

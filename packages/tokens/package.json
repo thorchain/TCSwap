@@ -2,7 +2,7 @@
   "author": "swapkit-oss",
   "dependencies": { "ts-pattern": "^5.9.0" },
   "description": "USwap - Tokens",
-  "devDependencies": { "@tcswap/helpers": "workspace:*", "ts-pattern": "5.9.0" },
+  "devDependencies": { "@tcswap/helpers": "4.5.15", "ts-pattern": "5.9.0" },
   "exports": {
     ".": {
       "bun": "./src/index.ts",
@@ -27,5 +27,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.1.4"
+  "version": "4.1.5"
 }
