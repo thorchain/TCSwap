@@ -27,6 +27,7 @@ export async function buildPackage({
     minify: !isDebug,
     outdir: "./dist",
     packages: "external",
+    root: "src",
     sourcemap: "linked",
     splitting: !pkgName.includes("toolboxes"),
     ...rest,
