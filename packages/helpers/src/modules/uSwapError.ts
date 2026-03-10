@@ -341,6 +341,7 @@ const errorCodes = {
    */
   toolbox_solana_no_signer: 50401,
   toolbox_solana_fee_estimation_failed: 50402,
+  toolbox_solana_broadcast_failed: 50403,
   /**
    * Toolboxes - Substrate
    */

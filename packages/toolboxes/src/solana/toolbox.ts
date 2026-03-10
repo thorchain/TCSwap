@@ -358,7 +358,20 @@ function transfer(getConnection: () => Promise<Connection>, signer?: SolanaSigne
 function broadcastTransaction(getConnection: () => Promise<Connection>) {
   return async (transaction: Transaction | VersionedTransaction) => {
     const connection = await getConnection();
-    return connection.sendRawTransaction(transaction.serialize());
+    try {
+      return await connection.sendRawTransaction(transaction.serialize());
+    } catch (error) {
+      const { SendTransactionError } = await import("@solana/web3.js");
+      if (error instanceof SendTransactionError) {
+        const logs = await error.getLogs(connection);
+        const isInsufficientFunds = logs?.some((log) => log.includes("insufficient lamports"));
+        throw new USwapError(
+          isInsufficientFunds ? "core_transaction_deposit_insufficient_funds_error" : "toolbox_solana_broadcast_failed",
+          { logs, message: error.message },
+        );
+      }
+      throw error;
+    }
   };
 }
 

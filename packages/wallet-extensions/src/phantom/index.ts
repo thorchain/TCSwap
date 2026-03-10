@@ -92,9 +92,10 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
       const transfer = async ({
         recipient,
         assetValue,
+        memo,
         isProgramDerivedAddress,
       }: GenericTransferParams & { assetValue: AssetValue; isProgramDerivedAddress?: boolean }) => {
-        const { PublicKey } = await import("@solana/web3.js");
+        const { PublicKey, SendTransactionError } = await import("@solana/web3.js");
         const validateAddress = await toolbox.getAddressValidator();
 
         if (!(isProgramDerivedAddress || validateAddress(recipient))) {
@@ -107,6 +108,7 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
         const transaction = await toolbox.createTransaction({
           assetValue,
           isProgramDerivedAddress,
+          memo,
           recipient,
           sender: address,
         });
@@ -121,9 +123,21 @@ async function getWalletMethods(chain: PhantomSupportedChain) {
 
         const signedTransaction = await provider.signTransaction(transaction);
 
-        const txid = await connection.sendRawTransaction(signedTransaction.serialize());
-
-        return txid;
+        try {
+          return await connection.sendRawTransaction(signedTransaction.serialize());
+        } catch (error) {
+          if (error instanceof SendTransactionError) {
+            const logs = await error.getLogs(connection);
+            const isInsufficientFunds = logs?.some((log) => log.includes("insufficient lamports"));
+            throw new USwapError(
+              isInsufficientFunds
+                ? "core_transaction_deposit_insufficient_funds_error"
+                : "toolbox_solana_broadcast_failed",
+              { logs, message: error.message },
+            );
+          }
+          throw error;
+        }
       };
 
       return { ...toolbox, address, transfer };
