@@ -1,5 +1,16 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.17
+
+### Patch Changes
+
+- Solana support
+
+- Updated dependencies []:
+  - @tcswap/toolboxes@4.3.16
+  - @tcswap/helpers@4.5.16
+  - @tcswap/wallet-core@4.0.60
+
 ## 4.1.16
 
 ### Patch Changes

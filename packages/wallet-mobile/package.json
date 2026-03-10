@@ -1,6 +1,6 @@
 {
   "author": "swapkit-oss",
-  "dependencies": { "@tcswap/helpers": "4.5.15", "@tcswap/toolboxes": "4.3.15" },
+  "dependencies": { "@tcswap/helpers": "workspace:*", "@tcswap/toolboxes": "4.3.16" },
   "description": "USwap - Wallet Mobile",
   "exports": {
     ".": {
@@ -29,5 +29,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.0.59"
+  "version": "4.0.60"
 }

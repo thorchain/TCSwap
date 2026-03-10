@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.16
+
+### Patch Changes
+
+- Solana support
+
 ## 4.5.15
 
 ### Patch Changes

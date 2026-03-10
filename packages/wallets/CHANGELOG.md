@@ -1,5 +1,19 @@
 <!-- Modifications © 2025 Magic Systems. -->
 
+## 4.3.17
+
+### Patch Changes
+
+- Solana support
+
+- Updated dependencies []:
+  - @tcswap/wallet-extensions@4.1.17
+  - @tcswap/toolboxes@4.3.16
+  - @tcswap/helpers@4.5.16
+  - @tcswap/wallet-hardware@4.2.17
+  - @tcswap/wallet-keystore@4.1.16
+  - @tcswap/wallet-core@4.0.60
+
 ## 4.3.16
 
 ### Patch Changes
