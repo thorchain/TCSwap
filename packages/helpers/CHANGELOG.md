@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.17
+
+### Patch Changes
+
+- Update URLs
+
+- Updated dependencies []:
+  - @tcswap/types@0.4.2
+
 ## 4.5.16
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @tcswap/types
 
+## 0.4.2
+
+### Patch Changes
+
+- Update URLs
+
 ## 0.4.1
 
 ### Patch Changes
