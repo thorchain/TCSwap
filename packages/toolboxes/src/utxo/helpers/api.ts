@@ -64,7 +64,9 @@ async function broadcastUTXOTx({ chain, txHash }: { chain: Chain; txHash: string
 }
 
 function baseUrl(chain: Chain) {
-  return `https://api.blockchair.com/${mapChainToBlockchairChain(chain)}`;
+  const customUrl = USwapConfig.get("envs").blockchairApiUrl;
+  const host = customUrl ?? "https://api.blockchair.com";
+  return `${host}/${mapChainToBlockchairChain(chain)}`;
 }
 
 function getDefaultTxFeeByChain(chain: Chain) {

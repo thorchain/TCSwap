@@ -73,6 +73,7 @@ const initialState = {
   endpoints: {} as CustomApiEndpoints,
   envs: {
     apiUrl: "https://swap-api.unstoppable.money",
+    blockchairApiUrl: null as string | null,
     devApiUrl: "https://swap-api-dev.unstoppable.money",
     experimental_apiKey: null as string | null,
     experimental_apiUrlQuote: null as string | null,
