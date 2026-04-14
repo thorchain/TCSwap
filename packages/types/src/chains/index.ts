@@ -76,7 +76,7 @@ const { chainIdToChain, chainToBaseDecimal, chainToBlockTime, explorerUrls, rpcU
 );
 
 export const NODE_URLS = {
-  [Chain.THORChain]: "https://thornode.ninerealms.com",
+  [Chain.THORChain]: "https://gateway.liquify.com/chain/thorchain_api",
   [Chain.Maya]: "https://mayanode.mayachain.info",
   [StagenetChain.THORChain]: "https://stagenet-thornode.ninerealms.com",
   [StagenetChain.Maya]: "https://stagenet.mayanode.mayachain.info",

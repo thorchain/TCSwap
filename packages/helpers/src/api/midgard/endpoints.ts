@@ -30,7 +30,7 @@ import type {
 } from "./types";
 
 function getMidgardBaseUrl(isThorchain = true) {
-  return isThorchain ? "https://midgard.ninerealms.com" : "https://midgard.mayachain.info";
+  return isThorchain ? "https://gateway.liquify.com/chain/thorchain_midgard" : "https://midgard.mayachain.info";
 }
 
 function getNameServiceBaseUrl(isThorchain = true) {

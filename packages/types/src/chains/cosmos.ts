@@ -25,8 +25,8 @@ export const THORConfig = createChain({
   name: "THORChain",
   nativeCurrency: "RUNE",
   networkDerivationPath: [44, 931, 0, 0, 0],
-  nodeUrl: "https://thornode.ninerealms.com",
-  rpcUrls: ["https://rpc.ninerealms.com", "https://thornode.ninerealms.com"],
+  nodeUrl: "https://gateway.liquify.com/chain/thorchain_api",
+  rpcUrls: ["https://gateway.liquify.com/chain/thorchain_rpc"],
   type,
 });
 
