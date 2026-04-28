@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.2.19
+
+### Patch Changes
+
+- Escape HTML chars
+
 ## 4.2.18
 
 ### Patch Changes

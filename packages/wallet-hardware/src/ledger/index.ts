@@ -94,7 +94,7 @@ function recursivelyOrderKeys(unordered: any) {
 }
 
 function stringifyKeysInOrder(data: any) {
-  return JSON.stringify(recursivelyOrderKeys(data));
+  return JSON.stringify(recursivelyOrderKeys(data)).replace(/</g, "\\u003c").replace(/>/g, "\\u003e");
 }
 
 async function getWalletMethods({ chain, derivationPath }: { chain: Chain; derivationPath?: DerivationPathArray }) {
