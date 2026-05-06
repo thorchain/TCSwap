@@ -186,10 +186,38 @@ export function parseAminoMessageForDirectSigning<T extends MsgDeposit | MsgSend
       coins: (msg as MsgDeposit).value.coins.map((coin: { asset: string; amount: string }) => {
         const assetValue = AssetValue.from({ asset: coin.asset });
 
-        const symbol = (assetValue.isSynthetic ? assetValue.symbol.split("/")?.[1] : assetValue.symbol)?.toUpperCase();
-        const chain = (assetValue.isSynthetic ? assetValue.symbol.split("/")?.[0] : assetValue.chain)?.toUpperCase();
+        // Synth: chain="<L1>", symbol="<TICKER>", synth=true (e.g. BTC.BTC + synth=true).
+        // Trade: chain="<L1>", symbol="<TICKER>", trade=true (proto carries the trade flag).
+        // Secured: chain="<L1>", symbol="<TICKER>", secured=true (proto carries the secured flag).
+        // Native (RUNE etc): chain="THOR", symbol="RUNE".
+        let symbol = assetValue.symbol.toUpperCase();
+        let chain = assetValue.chain.toUpperCase();
 
-        return { ...coin, asset: { chain, symbol, synth: assetValue.isSynthetic, ticker: assetValue.ticker } };
+        if (assetValue.isSynthetic) {
+          const [synthChain, synthSymbol] = assetValue.symbol.split("/");
+          chain = (synthChain ?? chain).toUpperCase();
+          symbol = (synthSymbol ?? assetValue.ticker).toUpperCase();
+        } else if (assetValue.isTradeAsset) {
+          const [tradeChain, tradeSymbol] = assetValue.symbol.split("~");
+          chain = (tradeChain ?? chain).toUpperCase();
+          symbol = (tradeSymbol ?? assetValue.ticker).toUpperCase();
+        } else if (assetValue.isSecuredAsset) {
+          const dashIndex = assetValue.symbol.indexOf("-");
+          chain = (dashIndex > 0 ? assetValue.symbol.slice(0, dashIndex) : chain).toUpperCase();
+          symbol = (dashIndex > 0 ? assetValue.symbol.slice(dashIndex + 1) : assetValue.ticker).toUpperCase();
+        }
+
+        return {
+          ...coin,
+          asset: {
+            chain,
+            secured: assetValue.isSecuredAsset,
+            symbol,
+            synth: assetValue.isSynthetic,
+            ticker: assetValue.ticker,
+            trade: assetValue.isTradeAsset,
+          },
+        };
       }),
     },
   };

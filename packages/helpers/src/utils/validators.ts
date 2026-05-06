@@ -5,6 +5,7 @@
 import type { Chain } from "@tcswap/types";
 import { USwapConfig } from "../modules/uSwapConfig";
 import { USwapError } from "../modules/uSwapError";
+import { isSecuredAssetIdentifier } from "./asset";
 
 // Backward compatibility
 const supportedChains = ["TERRA", ...USwapConfig.get("chains")];
@@ -17,6 +18,8 @@ export function validateIdentifier(identifier = "") {
 
   const [synthChain] = uppercasedIdentifier.split("/") as [Chain, string];
   if (supportedChains.includes(synthChain)) return true;
+
+  if (isSecuredAssetIdentifier(identifier)) return true;
 
   throw new USwapError({
     errorKey: "helpers_invalid_identifier",

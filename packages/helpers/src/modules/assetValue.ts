@@ -13,6 +13,7 @@ import {
   getAssetType,
   getCommonAssetInfo,
   isGasAsset,
+  isSecuredAssetIdentifier,
 } from "../utils/asset";
 import { warnOnce } from "../utils/others";
 import { validateIdentifier } from "../utils/validators";
@@ -74,6 +75,7 @@ export class AssetValue extends BigIntArithmetics {
   address?: string;
   chain: Chain;
   isGasAsset = false;
+  isSecuredAsset = false;
   isSynthetic = false;
   isTradeAsset = false;
   symbol: string;
@@ -105,12 +107,13 @@ export class AssetValue extends BigIntArithmetics {
     this.address = assetInfo.address;
     this.isSynthetic = assetInfo.isSynthetic;
     this.isTradeAsset = assetInfo.isTradeAsset;
+    this.isSecuredAsset = assetInfo.isSecuredAsset ?? false;
     this.isGasAsset = assetInfo.isGasAsset;
     this.chainId = getChainConfig(assetInfo.chain).chainId;
   }
 
   toString({ includeSynthProtocol }: { includeSynthProtocol?: boolean } = {}) {
-    return (this.isSynthetic || this.isTradeAsset) && !includeSynthProtocol
+    return (this.isSynthetic || this.isTradeAsset || this.isSecuredAsset) && !includeSynthProtocol
       ? this.symbol
       : `${this.chain}.${this.symbol}`;
   }
@@ -122,6 +125,10 @@ export class AssetValue extends BigIntArithmetics {
 
     if (this.isTradeAsset) {
       return `${this.chain}.${this.symbol.replace(/~/g, "..")}`;
+    }
+
+    if (this.isSecuredAsset) {
+      return `${this.chain}.${this.symbol}`;
     }
 
     const encodedSymbol = this.symbol.replace(/\./g, "__");
@@ -188,7 +195,7 @@ export class AssetValue extends BigIntArithmetics {
       fallbackIdentifier as CommonAssetString,
     );
 
-    const { chain, isSynthetic, isTradeAsset, address } = getAssetInfo(unsafeIdentifier);
+    const { chain, isSynthetic, isTradeAsset, isSecuredAsset, address } = getAssetInfo(unsafeIdentifier);
     const { baseDecimal } = getChainConfig(chain);
 
     const token = staticTokensMap.get(
@@ -197,7 +204,7 @@ export class AssetValue extends BigIntArithmetics {
         : (unsafeIdentifier.toUpperCase() as TokenNames),
     );
 
-    if (!token && asyncTokenLookup && !isSynthetic && !isTradeAsset) {
+    if (!token && asyncTokenLookup && !isSynthetic && !isTradeAsset && !isSecuredAsset) {
       return (async () => {
         const { ticker } = assetFromString(unsafeIdentifier);
         const tokenData = await fetchTokenData({ address, chain, ticker });
@@ -232,7 +239,9 @@ or by passing asyncTokenLookup: true to the from() function, which will make it 
     const assetValue =
       isSynthetic || isTradeAsset
         ? createSyntheticAssetValue(identifier, adjustedValue)
-        : createAssetValue({ decimal, identifier, tax, value: adjustedValue });
+        : isSecuredAsset
+          ? createSecuredAssetValue(identifier, adjustedValue)
+          : createAssetValue({ decimal, identifier, tax, value: adjustedValue });
 
     return assetValue as ConditionalAssetValueReturn<T>;
   }
@@ -389,6 +398,24 @@ function createSyntheticAssetValue(identifier: string, value: NumberPrimitives =
   });
 }
 
+function createSecuredAssetValue(identifier: string, value: NumberPrimitives = 0) {
+  // Canonical Secured Asset identifier is the bare "<CHAIN>-<SYMBOL>" form. The caller has
+  // already routed here via `isSecuredAssetIdentifier`, which rejects anything with a dot.
+  const dashIndex = identifier.indexOf("-");
+  if (dashIndex === -1) {
+    throw new USwapError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
+  }
+
+  const securedChain = identifier.slice(0, dashIndex).toUpperCase();
+  const symbolRemainder = identifier.slice(dashIndex + 1).toUpperCase();
+
+  if (!securedChain || !symbolRemainder) {
+    throw new USwapError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
+  }
+
+  return new AssetValue({ decimal: 8, identifier: `${securedChain}-${symbolRemainder}`, value: safeValue(value, 8) });
+}
+
 async function createAsyncAssetValue({
   address,
   chain,
@@ -416,8 +443,11 @@ function validateAssetChain(assetOrChain: AssetIdentifier) {
       ({ chain }) => chain,
     )
     .otherwise((x) => {
-      const assetInfo = assetFromString((x as { asset: string }).asset);
-      return assetInfo.synth ? Chain.THORChain : assetInfo.chain;
+      const assetStr = (x as { asset: string }).asset;
+      if (isSecuredAssetIdentifier(assetStr)) return Chain.THORChain;
+      if (assetStr.includes("/") || assetStr.includes("~")) return Chain.THORChain;
+      const assetInfo = assetFromString(assetStr);
+      return assetInfo.chain;
     });
 
   // TODO: move to USwapConfig chains once we support it throughout sdk
@@ -447,6 +477,10 @@ function getAssetString(assetOrChain: AssetIdentifier) {
     return chain;
   }
 
+  if (isSecuredAssetIdentifier(assetOrChain.asset)) {
+    return assetOrChain.asset.toUpperCase();
+  }
+
   const { chain, symbol } = assetFromString(assetOrChain.asset);
   const isNativeChain = getAssetType({ chain, symbol }) === "Native";
 
@@ -472,7 +506,47 @@ function getSyntheticOrTradeAssetInfo(identifier: string, isSynthetic: boolean, 
   const { ticker, address } = getAssetBaseInfo({ chain: synthChain as Chain, symbol: synthSymbol });
   const finalSymbol = `${synthChain}${assetSeparator}${synthSymbol}`;
 
-  return { address, chain: identifierChain, isGasAsset: false, isSynthetic, isTradeAsset, symbol: finalSymbol, ticker };
+  return {
+    address,
+    chain: identifierChain,
+    isGasAsset: false,
+    isSecuredAsset: false,
+    isSynthetic,
+    isTradeAsset,
+    symbol: finalSymbol,
+    ticker,
+  };
+}
+
+function getSecuredAssetInfo(identifier: string) {
+  // Canonical Secured Asset identifier is the bare "<CHAIN>-<SYMBOL>" form (no "THOR." prefix).
+  // `isSecuredAssetIdentifier` rejects anything containing a dot before this is reached.
+  const dashIndex = identifier.indexOf("-");
+  const securedChain = identifier.slice(0, dashIndex).toUpperCase();
+  const remainder = identifier.slice(dashIndex + 1);
+
+  if (!securedChain || !remainder) {
+    throw new USwapError({ errorKey: "helpers_invalid_asset_identifier", info: { identifier } });
+  }
+
+  // For token-bearing secured assets like ETH-USDC-0x…, ticker is the part between the chain
+  // separator and the address; the address is the trailing 0x… segment if present.
+  const lastDash = remainder.lastIndexOf("-");
+  const hasAddress = lastDash !== -1 && /^0[xX]/.test(remainder.slice(lastDash + 1));
+  const ticker = (hasAddress ? remainder.slice(0, lastDash) : remainder).toUpperCase();
+  const address = hasAddress ? remainder.slice(lastDash + 1) : undefined;
+  const symbol = `${securedChain}-${remainder.toUpperCase()}`;
+
+  return {
+    address,
+    chain: Chain.THORChain,
+    isGasAsset: false,
+    isSecuredAsset: true,
+    isSynthetic: false,
+    isTradeAsset: false,
+    symbol,
+    ticker,
+  };
 }
 
 function getNormalAssetInfo(identifier: string) {
@@ -496,6 +570,7 @@ function getNormalAssetInfo(identifier: string) {
     address: formattedAddress,
     chain,
     isGasAsset: isGasAsset({ chain, symbol: assetSymbol }),
+    isSecuredAsset: false,
     isSynthetic: false,
     isTradeAsset: false,
     symbol: finalSymbol,
@@ -510,6 +585,10 @@ function getAssetInfo(identifier: string) {
 
   if (isSynthetic || isTradeAsset) {
     return getSyntheticOrTradeAssetInfo(identifier, isSynthetic, isTradeAsset);
+  }
+
+  if (isSecuredAssetIdentifier(identifier)) {
+    return getSecuredAssetInfo(identifier);
   }
 
   return getNormalAssetInfo(identifier);

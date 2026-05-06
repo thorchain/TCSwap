@@ -24,7 +24,9 @@ import type { NearBrowserWalletProvider } from "../helpers/near";
 type TransactionMethod = "transfer" | "deposit";
 
 type TransactionParams = {
-  asset: string | { chain: string; symbol: string; ticker: string };
+  asset:
+    | string
+    | { chain: string; symbol: string; ticker: string; synth?: boolean; trade?: boolean; secured?: boolean };
   amount: number | string | { amount: number; decimals?: number };
   decimal?: number;
   recipient: string;
@@ -170,11 +172,7 @@ export async function walletTransfer(
   const params = [
     {
       amount: { amount: assetValue.getBaseValue("number"), decimals: assetValue.decimal },
-      asset: {
-        chain: assetValue.chain,
-        symbol: assetValue.symbol.toUpperCase(),
-        ticker: assetValue.symbol.toUpperCase(),
-      },
+      asset: buildThorchainAsset(assetValue),
       from,
       gasLimit,
       memo: memo || "",
@@ -183,4 +181,61 @@ export async function walletTransfer(
   ];
 
   return transaction({ chain: assetValue.chain, method, params });
+}
+
+// Builds the proto Asset shape THORChain's `common.Asset` expects. Critical detail:
+// for Synthetic / Trade / Secured assets the `chain` field MUST be the underlying L1 chain
+// (e.g. "ETH" for "ETH-ETH"), NOT "THOR". THORChain's Validate() explicitly rejects
+// `secured && chain == THOR` and the parser turns "ETH-ETH" into {chain:"ETH", symbol:"ETH",
+// secured:true}. Same applies for trade (chain L1 + trade=true) and synth (chain L1 + synth=true).
+// See thornode common/asset.go.
+function buildThorchainAsset(assetValue: AssetValue) {
+  const baseChain = assetValue.chain;
+  const baseSymbol = assetValue.symbol;
+  const baseTicker = assetValue.ticker;
+
+  if (assetValue.isSynthetic) {
+    const [synthChain, synthSymbol] = baseSymbol.split("/");
+    return {
+      chain: (synthChain || baseChain).toUpperCase(),
+      secured: false,
+      symbol: (synthSymbol || baseTicker).toUpperCase(),
+      synth: true,
+      ticker: baseTicker.toUpperCase(),
+      trade: false,
+    };
+  }
+  if (assetValue.isTradeAsset) {
+    const [tradeChain, tradeSymbol] = baseSymbol.split("~");
+    return {
+      chain: (tradeChain || baseChain).toUpperCase(),
+      secured: false,
+      symbol: (tradeSymbol || baseTicker).toUpperCase(),
+      synth: false,
+      ticker: baseTicker.toUpperCase(),
+      trade: true,
+    };
+  }
+  if (assetValue.isSecuredAsset) {
+    const dashIndex = baseSymbol.indexOf("-");
+    const securedChain = dashIndex > 0 ? baseSymbol.slice(0, dashIndex) : baseChain;
+    const securedSymbol = dashIndex > 0 ? baseSymbol.slice(dashIndex + 1) : baseTicker;
+    return {
+      chain: securedChain.toUpperCase(),
+      secured: true,
+      symbol: securedSymbol.toUpperCase(),
+      synth: false,
+      ticker: baseTicker.toUpperCase(),
+      trade: false,
+    };
+  }
+
+  return {
+    chain: baseChain,
+    secured: false,
+    symbol: baseSymbol.toUpperCase(),
+    synth: false,
+    ticker: baseTicker.toUpperCase(),
+    trade: false,
+  };
 }

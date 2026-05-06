@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.18
+
+### Patch Changes
+
+- secured-assets
+
 ## 4.5.17
 
 ### Patch Changes

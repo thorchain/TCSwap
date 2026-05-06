@@ -27,6 +27,8 @@ $root.common = (() => {
      * @property {string|null} [symbol] Asset symbol
      * @property {string|null} [ticker] Asset ticker
      * @property {boolean|null} [synth] Asset synth
+     * @property {boolean|null} [trade] Asset trade
+     * @property {boolean|null} [secured] Asset secured
      */
 
     /**
@@ -76,6 +78,22 @@ $root.common = (() => {
     Asset.prototype.synth = false;
 
     /**
+     * Asset trade.
+     * @member {boolean} trade
+     * @memberof common.Asset
+     * @instance
+     */
+    Asset.prototype.trade = false;
+
+    /**
+     * Asset secured.
+     * @member {boolean} secured
+     * @memberof common.Asset
+     * @instance
+     */
+    Asset.prototype.secured = false;
+
+    /**
      * Creates a new Asset instance using the specified properties.
      * @function create
      * @memberof common.Asset
@@ -106,6 +124,10 @@ $root.common = (() => {
         writer.uint32(/* id 3, wireType 2 =*/ 26).string(message.ticker);
       if (message.synth != null && Object.hasOwnProperty.call(message, "synth"))
         writer.uint32(/* id 4, wireType 0 =*/ 32).bool(message.synth);
+      if (message.trade != null && Object.hasOwnProperty.call(message, "trade"))
+        writer.uint32(/* id 5, wireType 0 =*/ 40).bool(message.trade);
+      if (message.secured != null && Object.hasOwnProperty.call(message, "secured"))
+        writer.uint32(/* id 6, wireType 0 =*/ 48).bool(message.secured);
       return writer;
     };
 
@@ -152,6 +174,12 @@ $root.common = (() => {
           case 4:
             message.synth = reader.bool();
             break;
+          case 5:
+            message.trade = reader.bool();
+            break;
+          case 6:
+            message.secured = reader.bool();
+            break;
           default:
             reader.skipType(tag & 7);
             break;
@@ -193,6 +221,10 @@ $root.common = (() => {
         if (!$util.isString(message.ticker)) return "ticker: string expected";
       if (message.synth != null && message.hasOwnProperty("synth"))
         if (typeof message.synth !== "boolean") return "synth: boolean expected";
+      if (message.trade != null && message.hasOwnProperty("trade"))
+        if (typeof message.trade !== "boolean") return "trade: boolean expected";
+      if (message.secured != null && message.hasOwnProperty("secured"))
+        if (typeof message.secured !== "boolean") return "secured: boolean expected";
       return null;
     };
 
@@ -211,6 +243,8 @@ $root.common = (() => {
       if (object.symbol != null) message.symbol = String(object.symbol);
       if (object.ticker != null) message.ticker = String(object.ticker);
       if (object.synth != null) message.synth = Boolean(object.synth);
+      if (object.trade != null) message.trade = Boolean(object.trade);
+      if (object.secured != null) message.secured = Boolean(object.secured);
       return message;
     };
 
@@ -231,6 +265,8 @@ $root.common = (() => {
         object.symbol = "";
         object.ticker = "";
         object.synth = false;
+        object.trade = false;
+        object.secured = false;
       }
       if (message.chain != null && message.hasOwnProperty("chain")) object.chain = message.chain;
       if (message.symbol != null && message.hasOwnProperty("symbol"))
@@ -238,6 +274,9 @@ $root.common = (() => {
       if (message.ticker != null && message.hasOwnProperty("ticker"))
         object.ticker = message.ticker;
       if (message.synth != null && message.hasOwnProperty("synth")) object.synth = message.synth;
+      if (message.trade != null && message.hasOwnProperty("trade")) object.trade = message.trade;
+      if (message.secured != null && message.hasOwnProperty("secured"))
+        object.secured = message.secured;
       return object;
     };
 

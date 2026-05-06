@@ -4,7 +4,15 @@
 
 import type { OfflineSigner } from "@cosmjs/proto-signing";
 import type { SigningStargateClientOptions } from "@cosmjs/stargate";
-import { AssetValue, Chain, type CosmosChain, getChainConfig, getRPCUrl, USwapError } from "@tcswap/helpers";
+import {
+  AssetValue,
+  Chain,
+  type CosmosChain,
+  getChainConfig,
+  getRPCUrl,
+  isSecuredAssetIdentifier,
+  USwapError,
+} from "@tcswap/helpers";
 import type { CosmosCreateTransactionParams } from "./types";
 
 export const USK_KUJIRA_FACTORY_DENOM =
@@ -38,6 +46,11 @@ export const getMsgSendDenom = (symbol: string, isThorchain = false) => {
     return symbol.toLowerCase();
   }
 
+  // Secured assets on THORChain (e.g. "BTC-BTC") use lowercase bank denom.
+  if (isSecuredAssetIdentifier(symbol)) {
+    return symbol.toLowerCase();
+  }
+
   switch (symbol) {
     case "uUSK":
     case "USK":
@@ -59,11 +72,12 @@ export const getMsgSendDenom = (symbol: string, isThorchain = false) => {
   }
 };
 
-export const getDenomWithChain = ({ symbol, chain }: AssetValue) => {
+export const getDenomWithChain = ({ symbol, chain, isSecuredAsset }: AssetValue) => {
   if (chain === Chain.Maya) {
     return (symbol.toUpperCase() !== "CACAO" ? symbol : `${Chain.Maya}.${symbol}`).toUpperCase();
   }
   if (chain === Chain.THORChain) {
+    if (isSecuredAsset) return symbol.toUpperCase();
     return (
       ["RUNE", "TCY", "RUJI"].includes(symbol.toUpperCase()) ? `${Chain.THORChain}.${symbol}` : symbol
     ).toUpperCase();
@@ -186,7 +200,9 @@ const DENOM_MAP = {
 
   // Noble denoms
   uusdc: { chain: Chain.Noble, decimals: getChainConfig(Chain.Noble).baseDecimal },
+  // THORChain factory denoms (cosmos-bank surfaces RUJI/KUJI as `x/...`).
   "x/kuji": { asset: "THOR.KUJI", decimals: getChainConfig(Chain.THORChain).baseDecimal },
+  "x/ruji": { asset: "THOR.RUJI", decimals: getChainConfig(Chain.THORChain).baseDecimal },
 
   // USK on Kujira (lowercase version of the factory denom)
   [USK_KUJIRA_FACTORY_DENOM.toLowerCase()]: {
@@ -205,9 +221,12 @@ export const getAssetFromDenom = (denom: string, amount: string) => {
   const config = DENOM_MAP[denom.toLowerCase()];
 
   if (!config) {
+    // Secured assets like "btc-btc" come back lowercased from the cosmos bank module.
+    // Normalize to upper-case before constructing the AssetValue.
+    const normalizedAsset = isSecuredAssetIdentifier(denom) ? denom.toUpperCase() : denom;
     // For unknown denoms, default to 8 decimals (common for many Cosmos chains)
     // This preserves the original behavior while using fromBaseDecimal
-    return AssetValue.from({ asset: denom, fromBaseDecimal: 8, value: amount });
+    return AssetValue.from({ asset: normalizedAsset, fromBaseDecimal: 8, value: amount });
   }
 
   const { chain, asset, decimals } = config;

@@ -1,5 +1,5 @@
 import type { TokenNames } from "@tcswap/tokens";
-import { Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@tcswap/types";
+import { AllChains, Chain, type EVMChain, EVMChains, getChainConfig, UTXOChains } from "@tcswap/types";
 import { match } from "ts-pattern";
 import type { AssetValue } from "../modules/assetValue";
 import { RequestClient } from "../modules/requestClient";
@@ -341,9 +341,41 @@ export const getCommonAssetInfo = (assetString: CommonAssetString) => {
   return commonAssetInfo;
 };
 
+export function isSecuredAssetIdentifier(identifier = "") {
+  if (!identifier) return false;
+
+  // Synthetic and trade assets use distinct separators; never confuse those with secured.
+  if (identifier.includes("/") || identifier.includes("~")) return false;
+
+  const upper = identifier.toUpperCase();
+
+  // Canonical Secured Asset identifiers from THORChain are bare "<CHAIN>-<SYMBOL>" — they
+  // never carry a chain prefix. Any "." means a normal chain.symbol identifier (ETH.USDC-0x…).
+  if (upper.includes(".")) return false;
+
+  const dashIndex = upper.indexOf("-");
+  if (dashIndex <= 0) return false;
+
+  const chainPart = upper.slice(0, dashIndex);
+  const tickerPart = upper.slice(dashIndex + 1);
+
+  if (!chainPart || !tickerPart) return false;
+  // First segment must be the L1 chain code (e.g. BTC, ETH, AVAX). Exclude THOR/MAYA themselves —
+  // secured assets always derive from non-protocol L1 chains.
+  if (chainPart === Chain.THORChain || chainPart === Chain.Maya) return false;
+  if (!AllChains.includes(chainPart as Chain)) return false;
+
+  // Tickers like "0x…" without anything before the address aren't valid; address-bearing tokens
+  // come through as TICKER-0x… which is fine because the part before the address is the ticker.
+  if (tickerPart.startsWith("0X")) return false;
+
+  return true;
+}
+
 export function getAssetType({ chain, symbol }: { chain: Chain; symbol: string }) {
   if (symbol.includes("/")) return "Synth";
   if (symbol.includes("~")) return "Trade";
+  if (chain === Chain.THORChain && isSecuredAssetIdentifier(symbol)) return "Secured";
 
   const isNative = match(chain)
     .with(Chain.Radix, () => symbol === Chain.Radix || `${chain}.${symbol}` === getCommonAssetInfo(chain).identifier)

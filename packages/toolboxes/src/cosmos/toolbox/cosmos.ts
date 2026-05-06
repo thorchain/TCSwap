@@ -215,20 +215,12 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
     getAddress,
     getBalance: async (address: string, _potentialScamFilter?: boolean) => {
       const denomBalances = await cosmosBalanceDenomsGetter(rpcUrl)(address);
+      const isTcLike = [Chain.THORChain, Chain.Maya].includes(chain as TCLikeChain);
       const balances = await Promise.all(
         denomBalances
-          .filter(
-            ({ denom }) =>
-              denom &&
-              !denom.includes("IBC/") &&
-              !([Chain.THORChain, Chain.Maya].includes(chain as TCLikeChain) && denom.split("-").length > 2),
-          )
+          .filter(({ denom }) => denom && !denom.includes("IBC/"))
           .map(({ denom, amount }) => {
-            const fullDenom =
-              [Chain.THORChain, Chain.Maya].includes(chain as TCLikeChain) &&
-              (denom.includes("/") || denom.includes("˜"))
-                ? `${chain}.${denom}`
-                : denom;
+            const fullDenom = isTcLike && (denom.includes("/") || denom.includes("~")) ? `${chain}.${denom}` : denom;
             return getAssetFromDenom(fullDenom, amount);
           }),
       );
