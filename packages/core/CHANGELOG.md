@@ -1,5 +1,15 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.19
+  - @tcswap/plugins@4.2.19
+  - @tcswap/toolboxes@4.3.19
+  - @tcswap/wallets@4.3.21
+
 ## 4.1.20
 
 ### Patch Changes

@@ -538,6 +538,8 @@ export const RouteQuoteMetadataV2Schema = RouteQuoteMetadataSchema.extend({
   near: NearDepositChannelParamsSchema.optional(),
   priceImpact: optional(number().describe("Price impact")),
   referrer: optional(string()),
+  slippageBps: optional(number().describe("Slippage in basis points")),
+  totalBps: optional(number().describe("Total fee in basis points")),
   txType: optional(z.enum(RouteQuoteTxType)),
 });
 
