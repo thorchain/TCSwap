@@ -2,11 +2,22 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
-import { Chain, ChainId, ChainToChainId, filterSupportedChains, USwapError, WalletOption } from "@tcswap/helpers";
+import {
+  Chain,
+  ChainId,
+  ChainToChainId,
+  type EVMChain,
+  EVMChains,
+  filterSupportedChains,
+  USwapError,
+  WalletOption,
+} from "@tcswap/helpers";
 import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
+import type { Eip1193Provider } from "ethers";
 import { chainRegistry } from "./chainRegistry";
 
 const keplrSupportedChainIds = [ChainId.Cosmos, ChainId.Kujira, ChainId.Noble, ChainId.THORChain] as const;
+const keplrCosmosChains = [Chain.Cosmos, Chain.Kujira, Chain.Noble, Chain.THORChain] as const;
 
 export const keplrWallet = createWallet({
   connect: ({ addChain, supportedChains }) =>
@@ -20,6 +31,30 @@ export const keplrWallet = createWallet({
 
       await Promise.all(
         filteredChains.map(async (chain) => {
+          if (EVMChains.includes(chain as EVMChain)) {
+            const ethereumProvider = keplrClient?.ethereum as unknown as Eip1193Provider | undefined;
+            if (!ethereumProvider) throw new USwapError("wallet_keplr_chain_not_supported", { chain });
+
+            const { BrowserProvider } = await import("ethers");
+            const { getWeb3WalletMethods } = await import("../evm-extensions");
+
+            const browserProvider = new BrowserProvider(ethereumProvider, "any");
+            await browserProvider.send("eth_requestAccounts", []);
+            const signer = await browserProvider.getSigner();
+            const address = await signer.getAddress();
+
+            const walletMethods = await getWeb3WalletMethods({
+              address,
+              chain: chain as EVMChain,
+              provider: browserProvider,
+              walletProvider: ethereumProvider,
+            });
+
+            const disconnect = () => browserProvider.send("wallet_revokePermissions", [{ eth_accounts: {} }]);
+            addChain({ ...walletMethods, address, chain, disconnect, walletType });
+            return;
+          }
+
           const chainId = ChainToChainId[chain] as (typeof keplrSupportedChainIds)[number];
 
           if (!keplrSupportedChainIds.includes(chainId)) {
@@ -39,7 +74,7 @@ export const keplrWallet = createWallet({
           if (!accounts?.[0]?.address) throw new USwapError("wallet_keplr_no_accounts");
 
           const [{ address }] = accounts;
-          const toolbox = await getCosmosToolbox(chain, { signer });
+          const toolbox = await getCosmosToolbox(chain as (typeof keplrCosmosChains)[number], { signer });
 
           addChain({ ...toolbox, address, chain, walletType });
         }),
@@ -48,7 +83,7 @@ export const keplrWallet = createWallet({
       return true;
     },
   name: "connectKeplr",
-  supportedChains: [Chain.Cosmos, Chain.Kujira, Chain.Noble, Chain.THORChain],
+  supportedChains: [...keplrCosmosChains, ...EVMChains],
 });
 
 export const KEPLR_SUPPORTED_CHAINS = getWalletSupportedChains(keplrWallet);
