@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.21
+
+### Patch Changes
+
+- Keplr EVM support
+
 ## 4.1.20
 
 ### Patch Changes

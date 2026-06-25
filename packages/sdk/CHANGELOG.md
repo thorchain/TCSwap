@@ -1,5 +1,13 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.2.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tcswap/wallets@4.3.22
+  - @tcswap/core@4.1.22
+
 ## 4.2.21
 
 ### Patch Changes
