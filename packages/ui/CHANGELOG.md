@@ -1,5 +1,15 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 0.3.23
+
+### Patch Changes
+
+- Keplr UTXO
+
+- Updated dependencies []:
+  - @tcswap/wallets@4.3.23
+  - @tcswap/sdk@4.2.23
+
 ## 0.3.22
 
 ### Patch Changes
