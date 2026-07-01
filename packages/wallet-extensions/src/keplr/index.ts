@@ -31,6 +31,29 @@ export const keplrWallet = createWallet({
 
       await Promise.all(
         filteredChains.map(async (chain) => {
+          if (chain === Chain.Bitcoin) {
+            const bitcoinProvider = keplrClient?.bitcoin;
+            if (!bitcoinProvider) throw new USwapError("wallet_keplr_chain_not_supported", { chain });
+
+            const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
+            const { Psbt } = await import("bitcoinjs-lib");
+
+            const [address] = await bitcoinProvider.requestAccounts();
+            if (!address) throw new USwapError("wallet_keplr_no_accounts");
+
+            const signer = {
+              getAddress: () => Promise.resolve(address),
+              signTransaction: async (psbt: InstanceType<typeof Psbt>) => {
+                const signedPsbt = await bitcoinProvider.signPsbt(psbt.toHex(), { autoFinalized: false });
+                return Psbt.fromHex(signedPsbt);
+              },
+            };
+
+            const toolbox = await getUtxoToolbox(Chain.Bitcoin, { signer });
+            addChain({ ...toolbox, address, chain, walletType });
+            return;
+          }
+
           if (EVMChains.includes(chain as EVMChain)) {
             const ethereumProvider = keplrClient?.ethereum as unknown as Eip1193Provider | undefined;
             if (!ethereumProvider) throw new USwapError("wallet_keplr_chain_not_supported", { chain });
@@ -83,7 +106,7 @@ export const keplrWallet = createWallet({
       return true;
     },
   name: "connectKeplr",
-  supportedChains: [...keplrCosmosChains, ...EVMChains],
+  supportedChains: [...keplrCosmosChains, ...EVMChains, Chain.Bitcoin],
 });
 
 export const KEPLR_SUPPORTED_CHAINS = getWalletSupportedChains(keplrWallet);
