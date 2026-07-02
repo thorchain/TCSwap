@@ -1,10 +1,8 @@
-import { Chain } from "@tcswap/helpers";
+import type { Chain } from "@tcswap/helpers";
 import type { CoreTxParams } from "./types";
 
-export function validateAddressType({ chain, address }: { chain?: Chain; address?: string }) {
-  if (!address) return false;
-
-  return chain === Chain.Bitcoin ? !address.startsWith("bc1p") : true;
+export function validateAddressType({ address }: { chain?: Chain; address?: string }) {
+  return Boolean(address);
 }
 
 export function prepareTxParams({
