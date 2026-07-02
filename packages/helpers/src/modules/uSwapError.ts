@@ -443,6 +443,12 @@ const errorCodes = {
 
 export type ErrorKeys = keyof typeof errorCodes;
 
+// Info objects can contain BigInt values (e.g. AssetValue), which JSON.stringify
+// throws on by default. Serialize them as strings so building an error never throws.
+function safeStringify(value: unknown) {
+  return JSON.stringify(value, (_key, val) => (typeof val === "bigint" ? val.toString() : val));
+}
+
 export class USwapError extends Error {
   static ErrorCode = errorCodes;
 
@@ -453,7 +459,7 @@ export class USwapError extends Error {
     const isErrorString = typeof errorOrErrorKey === "string";
     const errorKey = isErrorString ? errorOrErrorKey : errorOrErrorKey.errorKey;
     const info = isErrorString ? undefined : errorOrErrorKey.info;
-    const message = `${errorKey}${info ? `: ${JSON.stringify(info)}` : ""}`;
+    const message = `${errorKey}${info ? `: ${safeStringify(info)}` : ""}`;
 
     super(message);
     Object.setPrototypeOf(this, USwapError.prototype);
@@ -466,10 +472,10 @@ export class USwapError extends Error {
       const errorMsg =
         sourceErrorOrInfo instanceof Error
           ? `${sourceErrorOrInfo.message}${sourceErrorOrInfo.cause ? ` (${sourceErrorOrInfo.cause})` : ""}`
-          : JSON.stringify(sourceErrorOrInfo);
+          : safeStringify(sourceErrorOrInfo);
       console.error(`USwapError [${errorKey}]: ${errorMsg}`);
     } else if (info) {
-      console.error(`USwapError [${errorKey}]: ${JSON.stringify(info)}`);
+      console.error(`USwapError [${errorKey}]: ${safeStringify(info)}`);
     }
   }
 }

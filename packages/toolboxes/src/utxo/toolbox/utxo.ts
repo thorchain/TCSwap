@@ -398,9 +398,20 @@ function transfer(signer?: ChainSigner<Psbt, Psbt>) {
 
     const { psbt } = await createTransaction({ assetValue, feeRate: txFeeRate, memo, recipient, sender: from });
     const signedPsbt = await signer.signTransaction(psbt);
-    signedPsbt.finalizeAllInputs(); // Finalise inputs
+
+    // Taproot inputs (Bitcoin only) need an ECC lib registered via initEccLib(), which is
+    // per-module-instance. Wallet signers may return a Psbt from a different bitcoinjs-lib
+    // copy, so re-hydrate into this (ECC-initialized) instance to finalize it here.
+    let finalPsbt = signedPsbt;
+    if (chain === Chain.Bitcoin) {
+      initEccLib(secp256k1);
+      const getNetwork = await getUtxoNetwork();
+      finalPsbt = Psbt.fromBase64(signedPsbt.toBase64(), { network: getNetwork(chain) });
+    }
+
+    finalPsbt.finalizeAllInputs(); // Finalise inputs
     // TX extracted and formatted to hex
-    return getUtxoApi(chain).broadcastTx(signedPsbt.extractTransaction().toHex());
+    return getUtxoApi(chain).broadcastTx(finalPsbt.extractTransaction().toHex());
   };
 }
 
