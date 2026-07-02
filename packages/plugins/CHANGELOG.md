@@ -1,5 +1,15 @@
 # @tcswap/plugins
 
+## 4.2.20
+
+### Patch Changes
+
+- Taproot
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.20
+  - @tcswap/toolboxes@4.3.20
+
 ## 4.2.19
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.3.20
+
+### Patch Changes
+
+- Taproot
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.20
+
 ## 4.3.19
 
 ### Patch Changes

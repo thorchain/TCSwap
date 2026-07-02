@@ -1,5 +1,15 @@
 # @tcswap/browser
 
+## 4.1.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.20
+  - @tcswap/plugins@4.2.20
+  - @tcswap/core@4.1.24
+  - @tcswap/wallets@4.3.24
+
 ## 4.1.23
 
 ### Patch Changes

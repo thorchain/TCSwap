@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.20
+
+### Patch Changes
+
+- Taproot
+
 ## 4.5.19
 
 ### Patch Changes
