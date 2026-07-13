@@ -10,6 +10,8 @@ import {
   type CosmosChain,
   getChainConfig,
   getRPCUrl,
+  getThorFactoryAssetDenom,
+  getThorFactoryAssetTicker,
   isSecuredAssetIdentifier,
   USwapError,
 } from "@tcswap/helpers";
@@ -78,6 +80,10 @@ export const getDenomWithChain = ({ symbol, chain, isSecuredAsset }: AssetValue)
   }
   if (chain === Chain.THORChain) {
     if (isSecuredAsset) return symbol.toUpperCase();
+    // Deposit asset strings use "THOR.<TICKER>" (e.g. THOR.RUJI), not the raw denom in `symbol`.
+    const factoryDenom = getThorFactoryAssetDenom(symbol);
+    const factoryTicker = factoryDenom && getThorFactoryAssetTicker(factoryDenom);
+    if (factoryTicker) return `${Chain.THORChain}.${factoryTicker}`.toUpperCase();
     return (
       ["RUNE", "TCY", "RUJI"].includes(symbol.toUpperCase()) ? `${Chain.THORChain}.${symbol}` : symbol
     ).toUpperCase();
@@ -200,9 +206,10 @@ const DENOM_MAP = {
 
   // Noble denoms
   uusdc: { chain: Chain.Noble, decimals: getChainConfig(Chain.Noble).baseDecimal },
-  // THORChain factory denoms (cosmos-bank surfaces RUJI/KUJI as `x/...`).
-  "x/kuji": { asset: "THOR.KUJI", decimals: getChainConfig(Chain.THORChain).baseDecimal },
-  "x/ruji": { asset: "THOR.RUJI", decimals: getChainConfig(Chain.THORChain).baseDecimal },
+  // THORChain factory denoms — the raw denom stays in the identifier so MsgSend denoms
+  // (`symbol.toLowerCase()`) round-trip.
+  "x/kuji": { asset: "THOR.x/kuji", decimals: getChainConfig(Chain.THORChain).baseDecimal },
+  "x/ruji": { asset: "THOR.x/ruji", decimals: getChainConfig(Chain.THORChain).baseDecimal },
 
   // USK on Kujira (lowercase version of the factory denom)
   [USK_KUJIRA_FACTORY_DENOM.toLowerCase()]: {

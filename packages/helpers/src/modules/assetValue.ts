@@ -12,6 +12,8 @@ import {
   fetchTokenInfo,
   getAssetType,
   getCommonAssetInfo,
+  getThorFactoryAssetDenom,
+  getThorFactoryAssetTicker,
   isGasAsset,
   isSecuredAssetIdentifier,
 } from "../utils/asset";
@@ -477,6 +479,12 @@ function getAssetString(assetOrChain: AssetIdentifier) {
     return chain;
   }
 
+  // Bare factory denoms (x/staking-tcy) need the "THOR." prefix to pass identifier validation.
+  const factoryDenom = getThorFactoryAssetDenom(assetOrChain.asset);
+  if (factoryDenom) {
+    return `${Chain.THORChain}.${factoryDenom}`;
+  }
+
   if (isSecuredAssetIdentifier(assetOrChain.asset)) {
     return assetOrChain.asset.toUpperCase();
   }
@@ -578,7 +586,27 @@ function getNormalAssetInfo(identifier: string) {
   };
 }
 
+// Factory denoms keep the whole denom in `symbol` so MsgSend denoms (`symbol.toLowerCase()`)
+// survive identifier round-trips; ticker falls back to the denom when unknown.
+function getFactoryAssetInfo(denom: string) {
+  return {
+    address: undefined,
+    chain: Chain.THORChain,
+    isGasAsset: false,
+    isSecuredAsset: false,
+    isSynthetic: false,
+    isTradeAsset: false,
+    symbol: denom,
+    ticker: getThorFactoryAssetTicker(denom) ?? denom,
+  };
+}
+
 function getAssetInfo(identifier: string) {
+  const factoryDenom = getThorFactoryAssetDenom(identifier);
+  if (factoryDenom) {
+    return getFactoryAssetInfo(factoryDenom);
+  }
+
   const shortIdentifier = identifier.slice(0, 14);
   const isSynthetic = shortIdentifier.includes("/");
   const isTradeAsset = shortIdentifier.includes("~");

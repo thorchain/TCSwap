@@ -372,7 +372,39 @@ export function isSecuredAssetIdentifier(identifier = "") {
   return true;
 }
 
+// Display tickers for known THORChain token-factory denoms. The raw denom stays in `symbol`
+// (MsgSend uses `symbol.toLowerCase()`); the ticker drives display and "THOR.<TICKER>" identifiers.
+export const THOR_FACTORY_TOKEN_TICKERS: Record<string, string> = {
+  "thor.auto": "AUTO",
+  "thor.lqdy": "LQDY",
+  "thor.nami": "NAMI",
+  "x/brune": "bRUNE",
+  "x/kuji": "KUJI",
+  "x/ruji": "RUJI",
+  "x/staking-tcy": "sTCY",
+  "x/staking-x/brune": "sbRUNE",
+  "x/staking-x/ruji": "sRUJI",
+};
+
+// Factory denoms (x/ruji, x/staking-x/ruji, thor.lqdy, …) contain "/" like synth identifiers
+// but are single bank denoms — splitting them like synths truncates them. Accepts the bare or
+// "THOR."-prefixed form and returns the lowercase denom.
+export function getThorFactoryAssetDenom(identifier: string): string | undefined {
+  const lower = identifier.toLowerCase();
+  if (lower in THOR_FACTORY_TOKEN_TICKERS) return lower;
+
+  const denom = lower.startsWith(`${Chain.THORChain.toLowerCase()}.`) ? lower.slice(5) : lower;
+  if (denom in THOR_FACTORY_TOKEN_TICKERS || denom.startsWith("x/") || denom.startsWith("thor.")) return denom;
+
+  return undefined;
+}
+
+export function getThorFactoryAssetTicker(denom: string): string | undefined {
+  return THOR_FACTORY_TOKEN_TICKERS[denom.toLowerCase()];
+}
+
 export function getAssetType({ chain, symbol }: { chain: Chain; symbol: string }) {
+  if (chain === Chain.THORChain && getThorFactoryAssetDenom(symbol)) return chain;
   if (symbol.includes("/")) return "Synth";
   if (symbol.includes("~")) return "Trade";
   if (chain === Chain.THORChain && isSecuredAssetIdentifier(symbol)) return "Secured";

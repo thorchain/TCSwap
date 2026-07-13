@@ -16,6 +16,51 @@ describe("AssetValue", () => {
       expect(avaxSolanaAsset.toString()).toBe("AVAX.SOL-0xFE6B19286885a4F7F55AdAD09C3Cd1f906D2478F");
     });
 
+    test("THORChain factory denoms parse whole and round-trip", () => {
+      const ruji = AssetValue.from({ asset: "THOR.x/ruji", fromBaseDecimal: 8, value: "100000000" });
+      expect(ruji.chain).toBe(Chain.THORChain);
+      expect(ruji.symbol).toBe("x/ruji");
+      expect(ruji.ticker).toBe("RUJI");
+      expect(ruji.isSynthetic).toBe(false);
+      expect(ruji.toString()).toBe("THOR.x/ruji");
+
+      // Two-slash denoms must not be truncated by synth splitting (x/staking-x/ruji → x/staking-x)
+      const sRuji = AssetValue.from({ asset: "THOR.X/STAKING-X/RUJI", fromBaseDecimal: 8, value: "100000000" });
+      expect(sRuji.symbol).toBe("x/staking-x/ruji");
+      expect(sRuji.ticker).toBe("sRUJI");
+      expect(sRuji.isSynthetic).toBe(false);
+
+      // set() re-parses chain+symbol — the denom must survive
+      const half = sRuji.set(0.5);
+      expect(half.symbol).toBe("x/staking-x/ruji");
+      expect(half.ticker).toBe("sRUJI");
+      expect(half.getBaseValue("string")).toBe("50000000");
+
+      const lqdy = AssetValue.from({ asset: "THOR.thor.lqdy", fromBaseDecimal: 8, value: "100000000" });
+      expect(lqdy.symbol).toBe("thor.lqdy");
+      expect(lqdy.ticker).toBe("LQDY");
+
+      const sTcy = AssetValue.from({ asset: "x/staking-tcy", fromBaseDecimal: 8, value: "100000000" });
+      expect(sTcy.chain).toBe(Chain.THORChain);
+      expect(sTcy.symbol).toBe("x/staking-tcy");
+      expect(sTcy.ticker).toBe("sTCY");
+
+      // Unknown factory denoms keep the whole denom; ticker falls back to the denom itself
+      const bowLp = AssetValue.from({
+        asset: "THOR.x/bow-xyk-thor.lqdy-btc-btc",
+        fromBaseDecimal: 8,
+        value: "100000000",
+      });
+      expect(bowLp.symbol).toBe("x/bow-xyk-thor.lqdy-btc-btc");
+      expect(bowLp.ticker).toBe("x/bow-xyk-thor.lqdy-btc-btc");
+
+      // Real synths are unaffected
+      const btcSynth = AssetValue.from({ asset: "THOR.BTC/BTC", fromBaseDecimal: 8, value: "100000000" });
+      expect(btcSynth.isSynthetic).toBe(true);
+      expect(btcSynth.symbol).toBe("BTC/BTC");
+      expect(btcSynth.ticker).toBe("BTC");
+    });
+
     test("returns asset ticker with value", () => {
       const fakeAvaxUSDCAsset = new AssetValue({
         chain: Chain.Avalanche,

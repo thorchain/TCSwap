@@ -11,6 +11,7 @@ import {
   EVMChains,
   type FeeOption,
   getChainConfig,
+  getThorFactoryAssetDenom,
   type NetworkParams,
   providerRequest,
   USwapError,
@@ -185,6 +186,14 @@ function buildThorchainAsset(assetValue: AssetValue) {
   const baseChain = assetValue.chain;
   const baseSymbol = assetValue.symbol;
   const baseTicker = assetValue.ticker;
+
+  // Factory denoms (x/ruji, x/staking-tcy, thor.lqdy, …) are single bank denoms, not synths.
+  // The Vultisig extension resolves coins by `ticker` and keys its THORChain token registry
+  // by the raw denom, so pass the denom through unchanged.
+  const factoryDenom = baseChain === Chain.THORChain ? getThorFactoryAssetDenom(baseSymbol) : undefined;
+  if (factoryDenom) {
+    return { chain: baseChain, secured: false, symbol: factoryDenom, synth: false, ticker: factoryDenom, trade: false };
+  }
 
   if (assetValue.isSynthetic) {
     const [synthChain, synthSymbol] = baseSymbol.split("/");

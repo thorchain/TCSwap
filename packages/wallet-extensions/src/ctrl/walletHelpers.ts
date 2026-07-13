@@ -11,6 +11,7 @@ import {
   type EVMChain,
   EVMChains,
   type FeeOption,
+  getThorFactoryAssetDenom,
   providerRequest,
   type TCLikeChain,
   USwapError,
@@ -193,6 +194,13 @@ function buildThorchainAsset(assetValue: AssetValue) {
   const baseChain = assetValue.chain;
   const baseSymbol = assetValue.symbol;
   const baseTicker = assetValue.ticker;
+
+  // Factory denoms (x/ruji, x/staking-tcy, thor.lqdy, …) are single bank denoms, not synths —
+  // pass the raw denom through unchanged.
+  const factoryDenom = baseChain === Chain.THORChain ? getThorFactoryAssetDenom(baseSymbol) : undefined;
+  if (factoryDenom) {
+    return { chain: baseChain, secured: false, symbol: factoryDenom, synth: false, ticker: factoryDenom, trade: false };
+  }
 
   if (assetValue.isSynthetic) {
     const [synthChain, synthSymbol] = baseSymbol.split("/");

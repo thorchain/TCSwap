@@ -220,7 +220,12 @@ export async function createCosmosToolbox({ chain, ...toolboxParams }: CosmosToo
         denomBalances
           .filter(({ denom }) => denom && !denom.includes("IBC/"))
           .map(({ denom, amount }) => {
-            const fullDenom = isTcLike && (denom.includes("/") || denom.includes("~")) ? `${chain}.${denom}` : denom;
+            // Synth (btc/btc), trade (btc~btc) and factory (x/ruji, thor.lqdy) denoms need the
+            // chain prefix so identifier parsing keeps the full denom.
+            const fullDenom =
+              isTcLike && (denom.includes("/") || denom.includes("~") || denom.includes("."))
+                ? `${chain}.${denom}`
+                : denom;
             return getAssetFromDenom(fullDenom, amount);
           }),
       );
