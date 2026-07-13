@@ -1,5 +1,16 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.24
+
+### Patch Changes
+
+- THORChain native tokens
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.21
+  - @tcswap/toolboxes@4.3.21
+  - @tcswap/wallet-core@4.0.65
+
 ## 4.1.23
 
 ### Patch Changes

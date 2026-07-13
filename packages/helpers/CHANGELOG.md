@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.21
+
+### Patch Changes
+
+- THORChain native tokens
+
 ## 4.5.20
 
 ### Patch Changes
