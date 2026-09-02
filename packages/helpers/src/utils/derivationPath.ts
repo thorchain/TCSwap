@@ -87,6 +87,11 @@ export function getWalletFormatFor(path: string) {
       return "legacy";
     case 49:
       return "p2sh";
+    // BIP-86 (Taproot). Ledger builds the address from a descriptor picked by this
+    // format, so returning "bech32" here would hand back a P2WPKH (bc1q) address
+    // derived from the Taproot key -- an address the user has no funds on.
+    case 86:
+      return "bech32m";
     default:
       return "bech32";
   }

@@ -39,8 +39,10 @@ const signUTXOTransaction = (
   const splitNewTx = btcApp.splitTransaction(newTxHex, true);
   const outputScriptHex = btcApp.serializeTransactionOutputs(splitNewTx).toString("hex");
 
+  // "bech32m" makes hw-app-btc treat the inputs as P2TR (BIP-86 / Taproot); "bech32"
+  // is P2WPKH. Picking the wrong one produces a signature the network rejects.
   const params: CreateTransactionArg = {
-    additionals: ["bech32"],
+    additionals: [getWalletFormatFor(derivationPath) === "bech32m" ? "bech32m" : "bech32"],
     associatedKeysets: inputs.map(() => derivationPath),
     inputs,
     outputScriptHex,

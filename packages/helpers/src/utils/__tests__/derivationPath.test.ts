@@ -129,7 +129,12 @@ describe("getWalletFormatFor", () => {
 
   test("returns bech32 for purpose 84 and others", () => {
     expect(getWalletFormatFor("m/84'/0'/0'/0/0")).toBe("bech32");
-    expect(getWalletFormatFor("m/86'/0'/0'/0/0")).toBe("bech32");
+    expect(getWalletFormatFor("m/2'/0'/0'/0/0")).toBe("bech32");
+  });
+
+  test("returns bech32m for purpose 86 (Taproot)", () => {
+    expect(getWalletFormatFor("m/86'/0'/0'/0/0")).toBe("bech32m");
+    expect(getWalletFormatFor("m/86'/0'/1'/0/3")).toBe("bech32m");
   });
 });
 

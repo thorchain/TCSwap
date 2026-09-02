@@ -20,6 +20,8 @@ import { type Psbt, script } from "bitcoinjs-lib";
 
 function getScriptType(derivationPath: DerivationPathArray) {
   switch (derivationPath[0]) {
+    case 86:
+      return { input: "SPENDTAPROOT", output: "PAYTOTAPROOT" } as const;
     case 84:
       return { input: "SPENDWITNESS", output: "PAYTOWITNESS" } as const;
     case 49:
