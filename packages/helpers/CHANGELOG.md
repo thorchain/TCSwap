@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.22
+
+### Patch Changes
+
+- Derive Taproot addresses for BIP-86
+
 ## 4.5.21
 
 ### Patch Changes

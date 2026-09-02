@@ -1,5 +1,16 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.2.24
+
+### Patch Changes
+
+- Derive Taproot addresses for BIP-86
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.22
+  - @tcswap/toolboxes@4.3.22
+  - @tcswap/wallet-core@4.0.66
+
 ## 4.2.23
 
 ### Patch Changes
