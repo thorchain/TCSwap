@@ -78,6 +78,10 @@ export const useUSwap = () => {
             await uSwap?.connectKeplr?.(chains);
             break;
 
+          case WalletOption.EXODUS:
+            await uSwap?.connectExodus?.(chains);
+            break;
+
           case WalletOption.LEDGER:
             await uSwap?.connectLedger?.(chains);
             break;

@@ -14,6 +14,7 @@ export type EthereumWindowProvider = BrowserProvider & {
   __XDEFI?: boolean;
   isBraveWallet?: boolean;
   isCoinbaseWallet?: boolean;
+  isExodus?: boolean;
   isMetaMask?: boolean;
   isOkxWallet?: boolean;
   isKeepKeyWallet?: boolean;
@@ -41,9 +42,6 @@ export enum WalletOption {
   COSMOSTATION = "COSMOSTATION",
   CTRL = "CTRL",
   EIP6963 = "EIP6963",
-  /**
-   * @deprecated Use PASSKEYS instead
-   */
   EXODUS = "EXODUS",
   KEEPKEY = "KEEPKEY",
   KEEPKEY_BEX = "KEEPKEY_BEX",

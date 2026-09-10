@@ -6,6 +6,7 @@
 
 import { Chain, EVMChains, WalletOption } from "@tcswap/helpers";
 import { BITGET_SUPPORTED_CHAINS } from "@tcswap/wallets/bitget";
+import { EXODUS_SUPPORTED_CHAINS } from "@tcswap/wallets/exodus";
 import { PHANTOM_SUPPORTED_CHAINS } from "@tcswap/wallets/phantom";
 import { SearchIcon, WalletMinimalIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
@@ -25,6 +26,7 @@ const WALLET_GROUPS = {
     WalletOption.METAMASK,
     WalletOption.PHANTOM,
     WalletOption.KEPLR,
+    WalletOption.EXODUS,
     WalletOption.PASSKEYS,
     WalletOption.BRAVE,
     WalletOption.OKX,
@@ -181,7 +183,7 @@ export const availableChainsByWallet: Record<WalletOption, Chain[] | readonly Ch
     Chain.Polkadot,
     Chain.Chainflip,
   ],
-  [WalletOption.EXODUS]: [Chain.Ethereum, Chain.BinanceSmartChain, Chain.Polygon, Chain.Bitcoin],
+  [WalletOption.EXODUS]: EXODUS_SUPPORTED_CHAINS,
   [WalletOption.PASSKEYS]: [Chain.Ethereum, Chain.BinanceSmartChain, Chain.Polygon, Chain.Bitcoin],
   [WalletOption.LEDGER_LIVE]: [],
   [WalletOption.COSMOSTATION]: [],

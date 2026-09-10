@@ -89,10 +89,10 @@
       "types": "./dist/types/evm-extensions.d.ts"
     },
     "./exodus": {
-      "bun": "./src/passkeys/index.ts",
-      "default": "./dist/passkeys/index.js",
-      "require": "./dist/passkeys/index.cjs",
-      "types": "./dist/types/passkeys/index.d.ts"
+      "bun": "./src/exodus.ts",
+      "default": "./dist/exodus.js",
+      "require": "./dist/exodus.cjs",
+      "types": "./dist/types/exodus.d.ts"
     },
     "./keepkey": {
       "bun": "./src/keepkey.ts",

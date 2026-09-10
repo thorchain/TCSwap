@@ -267,6 +267,17 @@ const errorCodes = {
   wallet_tronlink_locked: 24002,
 
   /**
+   * Wallets - Exodus
+   */
+  wallet_exodus_not_found: 24101,
+  wallet_exodus_bitcoin_not_found: 24102,
+  wallet_exodus_chain_not_supported: 24103,
+  wallet_exodus_no_address: 24104,
+  wallet_exodus_request_canceled: 24105,
+  wallet_exodus_signature_canceled: 24106,
+  wallet_exodus_sign_transaction_error: 24107,
+
+  /**
    * Chainflip
    */
   chainflip_channel_error: 30001,

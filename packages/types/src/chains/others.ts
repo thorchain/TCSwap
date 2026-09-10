@@ -60,11 +60,9 @@ const SOL = createChain({
   name: "Solana",
   nativeCurrency: "SOL",
   networkDerivationPath: [44, 501, 0, 0, 0],
-  rpcUrls: [
-    "https://solana-rpc.publicnode.com",
-    "https://api.mainnet-beta.solana.com",
-    "https://solana-mainnet.rpc.extrnode.com",
-  ],
+  // publicnode blocks `getTokenAccountsByOwner` with a 403, which is half of what a Solana balance
+  // asks for, so it cannot lead this list; extrnode no longer resolves at all.
+  rpcUrls: ["https://api.mainnet-beta.solana.com", "https://solana-rpc.publicnode.com"],
   type,
 });
 

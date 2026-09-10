@@ -153,5 +153,10 @@ declare global {
         }
       | EthereumWindowProvider;
     tronLink?: TronLinkWindow;
+
+    // Exodus mirrors these onto `window.ethereum` / `window.solana` / `window.BitcoinProvider` when
+    // those are free, but only its own namespace is ever exclusively Exodus's.
+    exodus?: { ethereum?: Eip1193Provider & { isExodus?: boolean }; solana?: SolanaProvider & { isExodus?: boolean } };
+    solana?: SolanaProvider & { isExodus?: boolean; isPhantom?: boolean };
   }
 }

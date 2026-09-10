@@ -21,6 +21,7 @@ import { bitgetWallet } from "@tcswap/wallets/bitget";
 import { coinbaseWallet } from "@tcswap/wallets/coinbase";
 import { ctrlWallet } from "@tcswap/wallets/ctrl";
 import { evmWallet } from "@tcswap/wallets/evm-extensions";
+import { exodusWallet } from "@tcswap/wallets/exodus";
 import { keepkeyWallet } from "@tcswap/wallets/keepkey";
 import { keepkeyBexWallet } from "@tcswap/wallets/keepkey-bex";
 import { keplrWallet } from "@tcswap/wallets/keplr";
@@ -58,8 +59,6 @@ export * from "@tcswap/toolboxes/solana";
 export * from "@tcswap/toolboxes/substrate";
 export * from "@tcswap/toolboxes/utxo";
 export * from "@tcswap/wallets";
-
-const exodusWallet = { ...passkeysWallet, connectExodusWallet: passkeysWallet.connectPasskeys };
 
 export {
   bitgetWallet,

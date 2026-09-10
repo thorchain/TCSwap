@@ -9,20 +9,34 @@ import { USwapError } from "../modules/uSwapError";
 import { warnOnce } from "./others";
 
 function getRpcBody(chain: Chain | StagenetChain) {
-  return match(chain)
-    .with(...EVMChains, () => ({ id: 1, jsonrpc: "2.0", method: "eth_blockNumber", params: [] }))
-    .with(...UTXOChains, () => ({ id: "test", jsonrpc: "1.0", method: "getblockchaininfo", params: [] }))
-    .with(...CosmosChains, ...StagenetChains, () => ({ id: 1, jsonrpc: "2.0", method: "status", params: {} }))
-    .with(Chain.Polkadot, Chain.Chainflip, () => ({ id: 1, jsonrpc: "2.0", method: "system_health", params: [] }))
-    .with(Chain.Solana, () => ({ id: 1, jsonrpc: "2.0", method: "getHealth" }))
-    .with(Chain.Sui, () => ({ id: 1, jsonrpc: "2.0", method: "sui_getSystemState", params: [] }))
-    .with(Chain.Ton, () => ({ id: 1, jsonrpc: "2.0", method: "getAddressInformation", params: { address: "" } }))
-    .with(Chain.Tron, Chain.Radix, () => "")
-    .with(Chain.Near, () => ({ id: "dontcare", jsonrpc: "2.0", method: "status", params: [] }))
-    .with(Chain.Ripple, () => ({ id: 1, jsonrpc: "2.0", method: "ping", params: [{}] }))
-    .otherwise(() => {
-      throw new USwapError("helpers_chain_not_supported", { chain });
-    });
+  return (
+    match(chain)
+      .with(...EVMChains, () => ({ id: 1, jsonrpc: "2.0", method: "eth_blockNumber", params: [] }))
+      .with(...UTXOChains, () => ({ id: "test", jsonrpc: "1.0", method: "getblockchaininfo", params: [] }))
+      .with(...CosmosChains, ...StagenetChains, () => ({ id: 1, jsonrpc: "2.0", method: "status", params: {} }))
+      .with(Chain.Polkadot, Chain.Chainflip, () => ({ id: 1, jsonrpc: "2.0", method: "system_health", params: [] }))
+      // Not `getHealth`: endpoints that serve it happily still block `getTokenAccountsByOwner`, and a
+      // Solana balance needs that one, so probing with it is what tells a usable node from a useless
+      // one. The owner below holds nothing, so the answer is an empty list.
+      .with(Chain.Solana, () => ({
+        id: 1,
+        jsonrpc: "2.0",
+        method: "getTokenAccountsByOwner",
+        params: [
+          "11111111111111111111111111111111",
+          { programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+          { encoding: "jsonParsed" },
+        ],
+      }))
+      .with(Chain.Sui, () => ({ id: 1, jsonrpc: "2.0", method: "sui_getSystemState", params: [] }))
+      .with(Chain.Ton, () => ({ id: 1, jsonrpc: "2.0", method: "getAddressInformation", params: { address: "" } }))
+      .with(Chain.Tron, Chain.Radix, () => "")
+      .with(Chain.Near, () => ({ id: "dontcare", jsonrpc: "2.0", method: "status", params: [] }))
+      .with(Chain.Ripple, () => ({ id: 1, jsonrpc: "2.0", method: "ping", params: [{}] }))
+      .otherwise(() => {
+        throw new USwapError("helpers_chain_not_supported", { chain });
+      })
+  );
 }
 
 function getChainStatusEndpoint(chain: Chain | StagenetChain) {

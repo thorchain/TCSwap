@@ -55,6 +55,12 @@
       "require": "./dist/evm-extensions/index.cjs",
       "types": "./dist/types/evm-extensions/index.d.ts"
     },
+    "./exodus": {
+      "bun": "./src/exodus/index.ts",
+      "default": "./dist/exodus/index.js",
+      "require": "./dist/exodus/index.cjs",
+      "types": "./dist/types/exodus/index.d.ts"
+    },
     "./keepkey-bex": {
       "bun": "./src/keepkey-bex/index.ts",
       "default": "./dist/keepkey-bex/index.js",
