@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.23
+
+### Patch Changes
+
+- Exodus support
+
+- Updated dependencies []:
+  - @tcswap/types@0.4.3
+
 ## 4.5.22
 
 ### Patch Changes

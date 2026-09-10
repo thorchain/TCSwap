@@ -1,5 +1,19 @@
 <!-- Modifications © 2025 Magic Systems. -->
 
+## 4.3.27
+
+### Patch Changes
+
+- Exodus support
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.23
+  - @tcswap/wallet-extensions@4.1.26
+  - @tcswap/toolboxes@4.3.23
+  - @tcswap/wallet-core@4.0.67
+  - @tcswap/wallet-hardware@4.2.25
+  - @tcswap/wallet-keystore@4.1.23
+
 ## 4.3.26
 
 ### Patch Changes

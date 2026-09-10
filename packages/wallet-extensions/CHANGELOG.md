@@ -1,5 +1,16 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.26
+
+### Patch Changes
+
+- Exodus support
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.23
+  - @tcswap/toolboxes@4.3.23
+  - @tcswap/wallet-core@4.0.67
+
 ## 4.1.25
 
 ### Patch Changes
