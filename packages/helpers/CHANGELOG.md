@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.24
+
+### Patch Changes
+
+- Exodus
+
 ## 4.5.23
 
 ### Patch Changes
