@@ -111,7 +111,10 @@ export function wrapMethodWithNetworkSwitch<T extends (...args: any[]) => any>(
 ) {
   return (async (...args: any[]) => {
     const { chainIdHex } = getChainConfig(chain);
-    if ((await provider.getNetwork()).chainId.toString() === chainIdHex) {
+    // `chainId` is a bigint and `chainIdHex` a "0x..." string, so comparing their text never matched:
+    // every wrapped call asked the wallet to switch to the network it was already on, one round trip
+    // (and in some wallets one prompt) per balance, estimate, approve and transfer.
+    if (chainIdHex && (await provider.getNetwork()).chainId === BigInt(chainIdHex)) {
       return func(...args);
     }
     try {

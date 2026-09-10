@@ -6,14 +6,7 @@ import { Chain, type EVMChain, EVMChains, filterSupportedChains, USwapError, Wal
 import type { SolanaProvider } from "@tcswap/toolboxes/solana";
 import { createWallet, getWalletSupportedChains } from "@tcswap/wallet-core";
 import type { Eip1193Provider } from "ethers";
-import {
-  AddressPurpose,
-  BitcoinNetworkType,
-  type BitcoinProvider,
-  type GetAddressResponse,
-  getAddress,
-  signTransaction as satsSignTransaction,
-} from "sats-connect";
+import type { BitcoinProvider, GetAddressResponse } from "sats-connect";
 
 /**
  * The Exodus browser extension, which is a different wallet from Exodus's Passkeys wallet in
@@ -43,8 +36,6 @@ const EXODUS_RDNS = "com.exodus.web3-wallet";
 /** The Wallet Standard feature Exodus registers its Bitcoin provider under. */
 const SATS_CONNECT_FEATURE = "sats-connect:";
 
-const BITCOIN_NETWORK = { type: BitcoinNetworkType.Mainnet };
-
 type ExodusFlagged = { isExodus?: boolean };
 type StandardWallet = { features?: Record<string, { provider?: unknown } | undefined> };
 type WalletStandardApi = { register: (...wallets: StandardWallet[]) => () => void };
@@ -54,13 +45,35 @@ export const exodusWallet = createWallet({
     async function connectExodus(chains: Chain[]) {
       const filteredChains = filterSupportedChains({ chains, supportedChains, walletType });
 
-      // One chain at a time: connecting an EVM chain switches the network Exodus is on, and parallel
-      // connects would leave it on whichever of them finished last.
-      for (const chain of filteredChains) {
-        const { address, ...walletMethods } = await getWalletMethods(chain);
+      const failures: unknown[] = [];
 
-        addChain({ ...walletMethods, address, chain, walletType });
-      }
+      const connectChain = async (chain: (typeof filteredChains)[number]) => {
+        try {
+          const { address, ...walletMethods } = await getWalletMethods(chain);
+
+          addChain({ ...walletMethods, address, chain, walletType });
+        } catch (error) {
+          // A chain the user declined, or one Exodus does not hold, should not cost them the rest.
+          failures.push(error);
+          console.warn(`Exodus failed to connect ${chain}:`, error);
+        }
+      };
+
+      // EVM chains one at a time, because connecting one switches the network Exodus is on and
+      // parallel connects would leave it wherever the last finished. Bitcoin and Solana are separate
+      // providers that touch none of that, so they run alongside rather than behind.
+      const evmChains = filteredChains.filter((chain) => EVMChains.includes(chain as EVMChain));
+      const otherChains = filteredChains.filter((chain) => !EVMChains.includes(chain as EVMChain));
+
+      const connectEVMChains = async () => {
+        for (const chain of evmChains) {
+          await connectChain(chain);
+        }
+      };
+
+      await Promise.all([connectEVMChains(), ...otherChains.map(connectChain)]);
+
+      if (failures.length === filteredChains.length) throw failures[0];
 
       return true;
     },
@@ -88,7 +101,11 @@ async function getEVMWalletMethods(chain: EVMChain) {
   const { getWeb3WalletMethods } = await import("../evm-extensions");
 
   const provider = new BrowserProvider(walletProvider, "any");
-  await provider.send("eth_requestAccounts", []);
+
+  // `eth_accounts` answers silently when the site is already approved and the wallet unlocked, which
+  // is every page load after the first; `eth_requestAccounts` is the call that opens Exodus.
+  const approved: string[] = await provider.send("eth_accounts", []);
+  if (approved.length === 0) await provider.send("eth_requestAccounts", []);
 
   const signer = await provider.getSigner();
   const address = await signer.getAddress();
@@ -105,10 +122,12 @@ async function getSolanaWalletMethods() {
 
   const { getSolanaToolbox } = await import("@tcswap/toolboxes/solana");
 
-  // Exodus answers `connect()` with the account and parks it on the provider; older builds only do
-  // the latter.
-  const { publicKey } = await provider.connect();
-  const address = (publicKey || provider.publicKey)?.toString();
+  // `onlyIfTrusted` reconnects an already-approved site without opening Exodus, and rejects instead
+  // of prompting when the site is new - which is when the visible connect is the right thing.
+  // Exodus answers with the account and parks it on the provider; older builds only do the latter,
+  // and answer with nothing at all, so neither result can be destructured.
+  const connection = await provider.connect({ onlyIfTrusted: true }).catch(() => provider.connect());
+  const address = (connection?.publicKey || provider.publicKey)?.toString();
   if (!address) throw new USwapError("wallet_exodus_no_address", { chain: Chain.Solana });
 
   const toolbox = await getSolanaToolbox({ signer: provider });
@@ -122,24 +141,38 @@ async function getBitcoinWalletMethods() {
 
   const { getUtxoToolbox } = await import("@tcswap/toolboxes/utxo");
   const { Psbt } = await import("bitcoinjs-lib");
+  // Imported here rather than at the top: Sats Connect and the JWT library it pulls in are ~130kB,
+  // and only an Exodus user reaching for Bitcoin ever needs them.
+  const {
+    AddressPurpose,
+    BitcoinNetworkType,
+    getAddress,
+    signTransaction: satsSignTransaction,
+  } = await import("sats-connect");
 
+  const BITCOIN_NETWORK = { type: BitcoinNetworkType.Mainnet };
   const getProvider = () => Promise.resolve(provider);
-  let address = "";
 
-  await getAddress({
-    getProvider,
-    onCancel: () => {
-      throw new USwapError("wallet_exodus_request_canceled");
-    },
-    onFinish: (response: GetAddressResponse) => {
-      address = response.addresses[0]?.address || "";
-    },
-    payload: {
-      message: "Address for receiving and sending payments",
-      network: BITCOIN_NETWORK,
-      purposes: [AddressPurpose.Payment],
-    },
-  });
+  // Exodus keeps the addresses it has already granted this site on the provider, so a reconnect
+  // reads them instead of asking again - `getAddress` opens the wallet every single time.
+  let address = grantedPaymentAddress(provider, AddressPurpose.Payment);
+
+  if (!address) {
+    await getAddress({
+      getProvider,
+      onCancel: () => {
+        throw new USwapError("wallet_exodus_request_canceled");
+      },
+      onFinish: (response: GetAddressResponse) => {
+        address = response.addresses[0]?.address || "";
+      },
+      payload: {
+        message: "Address for receiving and sending payments",
+        network: BITCOIN_NETWORK,
+        purposes: [AddressPurpose.Payment],
+      },
+    });
+  }
 
   if (!address) throw new USwapError("wallet_exodus_no_address", { chain: Chain.Bitcoin });
 
@@ -209,6 +242,13 @@ function getSolanaProvider(): SolanaProvider | undefined {
   const provider = (window.exodus?.solana || window.solana) as (SolanaProvider & ExodusFlagged) | undefined;
 
   return provider?.isExodus ? provider : undefined;
+}
+
+/** The payment address Exodus has already granted this site, when there is one. */
+function grantedPaymentAddress(provider: BitcoinProvider, payment: string) {
+  const { accounts } = provider as { accounts?: { address?: string; purpose?: string }[] };
+
+  return accounts?.find((account) => account.purpose === payment)?.address || "";
 }
 
 function getBitcoinProvider(): BitcoinProvider | undefined {

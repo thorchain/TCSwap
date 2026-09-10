@@ -62,7 +62,9 @@ export const getWeb3WalletMethods = async ({
   const { chainIdHex } = getChainConfig(chain);
 
   const currentNetwork = await provider.getNetwork();
-  if (currentNetwork.chainId.toString() !== chainIdHex) {
+  // Compared as numbers: `chainId` is a bigint, `chainIdHex` a "0x..." string, and their text forms
+  // never matched - so connecting always switched the network, even to the one already selected.
+  if (currentNetwork.chainId !== BigInt(chainIdHex)) {
     try {
       const networkParams = toolbox.getNetworkParams();
       await switchEVMWalletNetwork(provider, chain, networkParams);
