@@ -168,6 +168,7 @@ export enum ProviderName {
   NEAR = "NEAR",
   GARDEN = "GARDEN",
   OKX = "OKX",
+  HOUDINI = "HOUDINI",
 }
 
 export enum FeeTypeEnum {

@@ -6,6 +6,7 @@ import type { Chain } from "@tcswap/helpers";
 import type { FullWallet } from "@tcswap/toolboxes";
 import type { ChainflipPlugin } from "./chainflip";
 import type { EVMPlugin } from "./evm";
+import type { HoudiniPlugin } from "./houdini";
 import type { NearPlugin } from "./near";
 import type { RadixPlugin } from "./radix";
 import type { SolanaPlugin } from "./solana/plugin";
@@ -19,7 +20,8 @@ export type USwapPlugins = typeof ChainflipPlugin &
   typeof RadixPlugin &
   typeof SolanaPlugin &
   typeof EVMPlugin &
-  typeof NearPlugin;
+  typeof NearPlugin &
+  typeof HoudiniPlugin;
 
 export type PluginName = keyof USwapPlugins;
 

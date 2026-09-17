@@ -529,12 +529,33 @@ export const RouteQuoteMetadataSchema = object({
   tags: array(z.enum(PriorityLabel)).optional(),
 });
 
+// Houdini Swap private route (`providers: ["HOUDINI"]`): two centralized-exchange hops with no
+// on-chain link between deposit and payout. `houdiniId` only exists once the order does (a
+// non-dry quote); it tracks the swap and links to the public order page.
+export const HoudiniMetadataSchema = object({
+  amountInUsd: optional(number()),
+  amountOutUsd: optional(number()),
+  depositTag: optional(string()),
+  expires: optional(number()),
+  houdiniId: optional(string()),
+  markup: optional(number()),
+  max: optional(number()),
+  min: optional(number()),
+  orderUrl: optional(string()),
+  quoteId: string(),
+  swapName: optional(string()),
+  type: string(),
+});
+
+export type HoudiniMetadata = z.infer<typeof HoudiniMetadataSchema>;
+
 export const RouteQuoteMetadataV2Schema = RouteQuoteMetadataSchema.extend({
   affiliate: optional(string()),
   affiliateFee: optional(string()),
   approvalAddress: optional(string().describe("Approval address for swap")),
   chainflip: ChainflipMetadataSchema.optional(),
   garden: NearDepositChannelParamsSchema.optional(),
+  houdini: HoudiniMetadataSchema.optional(),
   near: NearDepositChannelParamsSchema.optional(),
   priceImpact: optional(number().describe("Price impact")),
   referrer: optional(string()),
@@ -572,6 +593,9 @@ export const QuoteResponseRouteItem = object({
   memo: optional(string().describe("Memo")),
   meta: optional(RouteQuoteMetadataV2Schema),
   providers: array(z.enum(ProviderName)),
+  // Deposit QR code (data URL) for a wallet-less deposit-address swap, when the quote was
+  // requested without a source address.
+  qrCodeDataURL: optional(string().describe("Deposit QR code data URL")),
   refundAddress: optional(string().describe("Refund address")),
   sellAmount: string().describe("Sell amount"),
   sellAsset: string().describe("Asset to sell"),

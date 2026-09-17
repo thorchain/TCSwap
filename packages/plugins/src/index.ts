@@ -35,6 +35,10 @@ export async function loadPlugin<P extends PluginName>(pluginName: P) {
       const { NearPlugin } = await import("./near");
       return NearPlugin;
     })
+    .with("houdini", async () => {
+      const { HoudiniPlugin } = await import("./houdini");
+      return HoudiniPlugin;
+    })
     .exhaustive();
 
   return plugin as unknown as USwapPlugins[P];

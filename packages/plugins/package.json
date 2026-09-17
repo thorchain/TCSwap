@@ -42,6 +42,12 @@
       "require": "./dist/garden/index.cjs",
       "types": "./dist/types/garden/index.d.ts"
     },
+    "./houdini": {
+      "bun": "./src/houdini/index.ts",
+      "default": "./dist/houdini/index.js",
+      "require": "./dist/houdini/index.cjs",
+      "types": "./dist/types/houdini/index.d.ts"
+    },
     "./near": {
       "bun": "./src/near/index.ts",
       "default": "./dist/near/index.js",

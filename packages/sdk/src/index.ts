@@ -11,6 +11,7 @@ import type { createPlugin } from "@tcswap/plugins";
 import { ChainflipPlugin } from "@tcswap/plugins/chainflip";
 import { EVMPlugin } from "@tcswap/plugins/evm";
 import { GardenPlugin } from "@tcswap/plugins/garden";
+import { HoudiniPlugin } from "@tcswap/plugins/houdini";
 import { NearPlugin } from "@tcswap/plugins/near";
 import { RadixPlugin } from "@tcswap/plugins/radix";
 import { SolanaPlugin } from "@tcswap/plugins/solana";
@@ -47,6 +48,7 @@ export * from "@tcswap/helpers/api";
 export * from "@tcswap/plugins";
 export * from "@tcswap/plugins/chainflip";
 export * from "@tcswap/plugins/evm";
+export * from "@tcswap/plugins/houdini";
 export * from "@tcswap/plugins/near";
 export * from "@tcswap/plugins/radix";
 export * from "@tcswap/plugins/solana";
@@ -95,6 +97,7 @@ export const defaultPlugins = {
   ...SolanaPlugin,
   ...NearPlugin,
   ...GardenPlugin,
+  ...HoudiniPlugin,
 };
 
 export const defaultWallets = {
