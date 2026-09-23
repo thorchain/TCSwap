@@ -1,5 +1,15 @@
 # @tcswap/plugins
 
+## 4.2.25
+
+### Patch Changes
+
+- Houdini
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.25
+  - @tcswap/toolboxes@4.3.25
+
 ## 4.2.24
 
 ### Patch Changes

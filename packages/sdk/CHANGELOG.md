@@ -1,5 +1,19 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.2.29
+
+### Patch Changes
+
+- Houdini
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.25
+  - @tcswap/plugins@4.2.25
+  - @tcswap/core@4.1.29
+  - @tcswap/server@4.0.69
+  - @tcswap/toolboxes@4.3.25
+  - @tcswap/wallets@4.3.29
+
 ## 4.2.28
 
 ### Patch Changes
