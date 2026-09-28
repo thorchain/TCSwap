@@ -2,9 +2,10 @@
  * Modifications © 2025 Horizontal Systems.
  */
 
+import secp256k1 from "@bitcoinerlab/secp256k1";
 import { networks as zcashNetworks } from "@bitgo/utxo-lib";
 import { Chain, getRPCUrl, RequestClient, USwapConfig, USwapError, type UTXOChain, warnOnce } from "@tcswap/helpers";
-import { networks } from "bitcoinjs-lib";
+import { address as btcAddress, initEccLib, networks } from "bitcoinjs-lib";
 // @ts-expect-error
 import coininfo from "coininfo";
 import { uniqid } from "../../utils";
@@ -121,9 +122,14 @@ async function getSuggestedTxFee(chain: Chain) {
   }
 }
 
+// Balance and UTXO reads run on every balance refresh: a failure moves on to the
+// Esplora fallback instead of retrying (retries also spend the Blockchair quota).
+const noRetry = { retry: { maxRetries: 0 } };
+
 async function blockchairRequest<T>(url: string, apiKey?: string): Promise<T> {
   const response = await RequestClient.get<BlockchairResponse<T>>(
     `${url}${apiKey ? `${url.includes("?") ? "&" : "?"}key=${apiKey}` : ""}`,
+    noRetry,
   );
 
   if (!response || response.context.code !== 200)
@@ -136,12 +142,17 @@ async function getAddressData({ address, chain, apiKey }: BlockchairParams<{ add
   if (!address) throw new USwapError("toolbox_utxo_invalid_params", { error: "Address is required" });
 
   try {
-    const response = await blockchairRequest<BlockchairAddressResponse>(
-      `${baseUrl(chain)}/dashboards/address/${address}?transaction_details=true`,
-      apiKey,
+    return await withEsploraFallback(
+      chain,
+      async () => {
+        const response = await blockchairRequest<BlockchairAddressResponse>(
+          `${baseUrl(chain)}/dashboards/address/${address}?transaction_details=true`,
+          apiKey,
+        );
+        return response[address];
+      },
+      (host) => getEsploraAddressData(host, address),
     );
-
-    return response[address];
   } catch {
     return { address: { balance: 0, transaction_count: 0 }, utxo: [] };
   }
@@ -157,11 +168,17 @@ async function getRawTx({ chain, apiKey, txHash }: BlockchairParams<{ txHash?: s
   if (!txHash) throw new USwapError("toolbox_utxo_invalid_params", { error: "TxHash is required" });
 
   try {
-    const rawTxResponse = await blockchairRequest<BlockchairRawTransactionResponse>(
-      `${baseUrl(chain)}/raw/transaction/${txHash}`,
-      apiKey,
+    return await withEsploraFallback(
+      chain,
+      async () => {
+        const rawTxResponse = await blockchairRequest<BlockchairRawTransactionResponse>(
+          `${baseUrl(chain)}/raw/transaction/${txHash}`,
+          apiKey,
+        );
+        return rawTxResponse?.[txHash]?.raw_transaction || "";
+      },
+      (host) => esploraText(`${host}/tx/${txHash}/hex`),
     );
-    return rawTxResponse?.[txHash]?.raw_transaction || "";
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`Failed to fetch raw transaction: ${errorMessage}`);
@@ -231,40 +248,34 @@ async function getUnspentUtxos({
 }: BlockchairFetchUnspentUtxoParams): Promise<Awaited<ReturnType<typeof fetchUtxosBatch>>> {
   if (!address) throw new USwapError("toolbox_utxo_invalid_params", { error: "Address is required" });
 
-  try {
-    const utxos = await fetchUtxosBatch({ address, apiKey, chain, limit, offset, targetValue });
-    const utxosCount = utxos.length;
-    const isComplete = utxosCount < limit;
+  const utxos = await fetchUtxosBatch({ address, apiKey, chain, limit, offset, targetValue });
+  const utxosCount = utxos.length;
+  const isComplete = utxosCount < limit;
 
-    const unspentUtxos = utxos.filter(({ is_spent }) => !is_spent);
+  const unspentUtxos = utxos.filter(({ is_spent }) => !is_spent);
 
-    const unspentUtxosValue = getTxsValue(unspentUtxos);
-    const totalCurrentValue = accumulativeValue + unspentUtxosValue;
+  const unspentUtxosValue = getTxsValue(unspentUtxos);
+  const totalCurrentValue = accumulativeValue + unspentUtxosValue;
 
-    const limitReached = targetValue && totalCurrentValue >= targetValue;
+  const limitReached = targetValue && totalCurrentValue >= targetValue;
 
-    if (isComplete || limitReached) {
-      return pickMostValuableTxs(unspentUtxos, targetValue);
-    }
-
-    const nextBatch = await getUnspentUtxos({
-      accumulativeValue: totalCurrentValue,
-      address,
-      apiKey,
-      chain,
-      limit,
-      offset: offset + limit,
-      targetValue,
-    });
-
-    const allUtxos = [...unspentUtxos, ...nextBatch];
-
-    return pickMostValuableTxs(allUtxos, targetValue);
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Failed to fetch unspent UTXOs: ${errorMessage}`);
-    return [];
+  if (isComplete || limitReached) {
+    return pickMostValuableTxs(unspentUtxos, targetValue);
   }
+
+  const nextBatch = await getUnspentUtxos({
+    accumulativeValue: totalCurrentValue,
+    address,
+    apiKey,
+    chain,
+    limit,
+    offset: offset + limit,
+    targetValue,
+  });
+
+  const allUtxos = [...unspentUtxos, ...nextBatch];
+
+  return pickMostValuableTxs(allUtxos, targetValue);
 }
 
 async function getUtxos({
@@ -274,7 +285,18 @@ async function getUtxos({
   fetchTxHex = true,
   targetValue,
 }: BlockchairParams<{ address: string; fetchTxHex?: boolean; targetValue?: number }>) {
-  const utxos = await getUnspentUtxos({ address, apiKey, chain, targetValue });
+  // Errors used to be swallowed into an empty list, so an API outage (e.g. an
+  // exhausted Blockchair key) surfaced as toolbox_utxo_insufficient_balance.
+  let utxos: Awaited<ReturnType<typeof fetchUtxosBatch>>;
+  try {
+    utxos = await withEsploraFallback(
+      chain,
+      () => getUnspentUtxos({ address, apiKey, chain, targetValue }),
+      async (host) => pickMostValuableTxs(await getEsploraUtxos(host, address, chain), targetValue),
+    );
+  } catch (error) {
+    throw new USwapError({ errorKey: "toolbox_utxo_api_error", info: { address, chain } }, error);
+  }
 
   const results = [];
 
@@ -293,6 +315,82 @@ async function getUtxos({
     });
   }
   return results;
+}
+
+// Keyless Esplora APIs (CORS-enabled) that answer when Blockchair fails -- e.g.
+// its key is out of quota. Tried in order after Blockchair.
+const ESPLORA_HOSTS: Partial<Record<Chain, string[]>> = {
+  [Chain.Bitcoin]: ["https://mempool.space/api", "https://blockstream.info/api"],
+  [Chain.Litecoin]: ["https://litecoinspace.org/api"],
+};
+
+type EsploraUtxo = { txid: string; vout: number; value: number; status: { confirmed: boolean } };
+type EsploraStats = { funded_txo_sum: number; spent_txo_sum: number; tx_count: number };
+
+async function withEsploraFallback<T>(chain: Chain, primary: () => Promise<T>, fallback: (host: string) => Promise<T>) {
+  try {
+    return await primary();
+  } catch (error) {
+    for (const host of ESPLORA_HOSTS[chain] ?? []) {
+      try {
+        return await fallback(host);
+      } catch {
+        // Next host.
+      }
+    }
+    throw error;
+  }
+}
+
+async function esploraText(url: string) {
+  const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+  if (!response.ok) throw new Error(`${url}: ${response.status}`);
+  return response.text();
+}
+
+async function getEsploraUtxos(host: string, address: string, chain: Chain) {
+  const utxos = await RequestClient.get<EsploraUtxo[]>(`${host}/address/${address}/utxo`, noRetry);
+  // Esplora omits the output script; the toolbox needs it for the PSBT's witnessUtxo.
+  // (Taproot addresses need the ECC lib to decode.)
+  initEccLib(secp256k1);
+  const script_hex = Buffer.from(btcAddress.toOutputScript(address, getUtxoNetwork()(chain))).toString("hex");
+
+  return utxos.map(({ txid, vout, value, status }) => ({
+    hash: txid,
+    index: vout,
+    is_confirmed: status.confirmed,
+    is_spent: false,
+    script_hex,
+    txHex: null,
+    value,
+  }));
+}
+
+async function getEsploraAddressData(host: string, address: string) {
+  const [{ chain_stats, mempool_stats }, utxos] = await Promise.all([
+    RequestClient.get<{ chain_stats: EsploraStats; mempool_stats: EsploraStats }>(
+      `${host}/address/${address}`,
+      noRetry,
+    ),
+    RequestClient.get<EsploraUtxo[]>(`${host}/address/${address}/utxo`, noRetry),
+  ]);
+
+  return {
+    address: {
+      balance:
+        chain_stats.funded_txo_sum -
+        chain_stats.spent_txo_sum +
+        mempool_stats.funded_txo_sum -
+        mempool_stats.spent_txo_sum,
+      transaction_count: chain_stats.tx_count + mempool_stats.tx_count,
+    },
+    utxo: utxos.map(({ txid, vout, value, status }) => ({
+      block_id: status.confirmed ? 0 : -1,
+      index: vout,
+      transaction_hash: txid,
+      value,
+    })),
+  } as BlockchairAddressResponse[string];
 }
 
 export function getUtxoApi(chain: UTXOChain) {
