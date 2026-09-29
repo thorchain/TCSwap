@@ -122,14 +122,15 @@ async function getSuggestedTxFee(chain: Chain) {
   }
 }
 
-// Balance and UTXO reads run on every balance refresh: a failure moves on to the
-// Esplora fallback instead of retrying (retries also spend the Blockchair quota).
-const noRetry = { retry: { maxRetries: 0 } };
+// Balance and UTXO reads run on every balance refresh. Where an Esplora fallback
+// exists, a failure moves on to it at once instead of retrying (retries also
+// spend the Blockchair quota); other chains keep the default retries.
+const noRetry = { retry: { maxRetries: 0 }, timeoutMs: 10_000 };
 
-async function blockchairRequest<T>(url: string, apiKey?: string): Promise<T> {
+async function blockchairRequest<T>(url: string, chain: Chain, apiKey?: string): Promise<T> {
   const response = await RequestClient.get<BlockchairResponse<T>>(
     `${url}${apiKey ? `${url.includes("?") ? "&" : "?"}key=${apiKey}` : ""}`,
-    noRetry,
+    ESPLORA_HOSTS[chain] ? noRetry : undefined,
   );
 
   if (!response || response.context.code !== 200)
@@ -147,6 +148,7 @@ async function getAddressData({ address, chain, apiKey }: BlockchairParams<{ add
       async () => {
         const response = await blockchairRequest<BlockchairAddressResponse>(
           `${baseUrl(chain)}/dashboards/address/${address}?transaction_details=true`,
+          chain,
           apiKey,
         );
         return response[address];
@@ -173,6 +175,7 @@ async function getRawTx({ chain, apiKey, txHash }: BlockchairParams<{ txHash?: s
       async () => {
         const rawTxResponse = await blockchairRequest<BlockchairRawTransactionResponse>(
           `${baseUrl(chain)}/raw/transaction/${txHash}`,
+          chain,
           apiKey,
         );
         return rawTxResponse?.[txHash]?.raw_transaction || "";
@@ -193,6 +196,7 @@ async function fetchUtxosBatch({ chain, address, apiKey, offset = 0, limit = 30 
   const response = await blockchairRequest<BlockchairOutputsResponse[]>(
     // TODO - remove max value limit once we updated bitcoinjs-lib to support larger values
     `${baseUrl(chain)}/outputs?q=recipient(${address}),is_spent(false),value(..2000000000000000)&s=value(desc)&fields=${fields}&limit=${limit}&offset=${offset}`,
+    chain,
     apiKey,
   );
 
@@ -292,7 +296,14 @@ async function getUtxos({
     utxos = await withEsploraFallback(
       chain,
       () => getUnspentUtxos({ address, apiKey, chain, targetValue }),
-      async (host) => pickMostValuableTxs(await getEsploraUtxos(host, address, chain), targetValue),
+      async (host) => {
+        const picked = pickMostValuableTxs(await getEsploraUtxos(host, address, chain), targetValue);
+        // Take the raw txs from the same host rather than going back to Blockchair once per input.
+        if (!fetchTxHex) return picked;
+        return Promise.all(
+          picked.map(async (utxo) => ({ ...utxo, txHex: await esploraText(`${host}/tx/${utxo.hash}/hex`) })),
+        );
+      },
     );
   } catch (error) {
     throw new USwapError({ errorKey: "toolbox_utxo_api_error", info: { address, chain } }, error);
@@ -300,10 +311,12 @@ async function getUtxos({
 
   const results = [];
 
-  for (const { hash, index, script_hex, value } of utxos) {
+  // `txHex` is only ever set by the Esplora path above (Blockchair's is the spending
+  // signature, always null for an unspent output).
+  for (const { hash, index, script_hex, value, txHex: fetchedTxHex } of utxos) {
     let txHex: string | undefined;
     if (fetchTxHex) {
-      txHex = await getRawTx({ apiKey, chain, txHash: hash });
+      txHex = fetchedTxHex || (await getRawTx({ apiKey, chain, txHash: hash }));
     }
     results.push({
       address,
@@ -324,7 +337,7 @@ const ESPLORA_HOSTS: Partial<Record<Chain, string[]>> = {
   [Chain.Litecoin]: ["https://litecoinspace.org/api"],
 };
 
-type EsploraUtxo = { txid: string; vout: number; value: number; status: { confirmed: boolean } };
+type EsploraUtxo = { txid: string; vout: number; value: number; status: { confirmed: boolean; block_height?: number } };
 type EsploraStats = { funded_txo_sum: number; spent_txo_sum: number; tx_count: number };
 
 async function withEsploraFallback<T>(chain: Chain, primary: () => Promise<T>, fallback: (host: string) => Promise<T>) {
@@ -384,8 +397,9 @@ async function getEsploraAddressData(host: string, address: string) {
         mempool_stats.spent_txo_sum,
       transaction_count: chain_stats.tx_count + mempool_stats.tx_count,
     },
+    transactions: [] as BlockchairTransaction[],
     utxo: utxos.map(({ txid, vout, value, status }) => ({
-      block_id: status.confirmed ? 0 : -1,
+      block_id: status.block_height ?? -1,
       index: vout,
       transaction_hash: txid,
       value,
