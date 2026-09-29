@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.3.27
+
+### Patch Changes
+
+- Litecoin API fallbac
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.25
+
 ## 4.3.26
 
 ### Patch Changes
