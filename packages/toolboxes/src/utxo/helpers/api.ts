@@ -130,7 +130,7 @@ const noRetry = { retry: { maxRetries: 0 }, timeoutMs: 10_000 };
 async function blockchairRequest<T>(url: string, chain: Chain, apiKey?: string): Promise<T> {
   const response = await RequestClient.get<BlockchairResponse<T>>(
     `${url}${apiKey ? `${url.includes("?") ? "&" : "?"}key=${apiKey}` : ""}`,
-    ESPLORA_HOSTS[chain] ? noRetry : undefined,
+    UTXO_FALLBACKS[chain] ? noRetry : undefined,
   );
 
   if (!response || response.context.code !== 200)
@@ -143,7 +143,7 @@ async function getAddressData({ address, chain, apiKey }: BlockchairParams<{ add
   if (!address) throw new USwapError("toolbox_utxo_invalid_params", { error: "Address is required" });
 
   try {
-    return await withEsploraFallback(
+    return await withFallback(
       chain,
       async () => {
         const response = await blockchairRequest<BlockchairAddressResponse>(
@@ -153,7 +153,7 @@ async function getAddressData({ address, chain, apiKey }: BlockchairParams<{ add
         );
         return response[address];
       },
-      (host) => getEsploraAddressData(host, address),
+      (api) => api.getAddressData(address),
     );
   } catch {
     return { address: { balance: 0, transaction_count: 0 }, utxo: [] };
@@ -170,7 +170,7 @@ async function getRawTx({ chain, apiKey, txHash }: BlockchairParams<{ txHash?: s
   if (!txHash) throw new USwapError("toolbox_utxo_invalid_params", { error: "TxHash is required" });
 
   try {
-    return await withEsploraFallback(
+    return await withFallback(
       chain,
       async () => {
         const rawTxResponse = await blockchairRequest<BlockchairRawTransactionResponse>(
@@ -180,7 +180,7 @@ async function getRawTx({ chain, apiKey, txHash }: BlockchairParams<{ txHash?: s
         );
         return rawTxResponse?.[txHash]?.raw_transaction || "";
       },
-      (host) => esploraText(`${host}/tx/${txHash}/hex`),
+      (api) => api.getRawTx(txHash),
     );
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -293,16 +293,17 @@ async function getUtxos({
   // exhausted Blockchair key) surfaced as toolbox_utxo_insufficient_balance.
   let utxos: Awaited<ReturnType<typeof fetchUtxosBatch>>;
   try {
-    utxos = await withEsploraFallback(
+    utxos = await withFallback(
       chain,
       () => getUnspentUtxos({ address, apiKey, chain, targetValue }),
-      async (host) => {
-        const picked = pickMostValuableTxs(await getEsploraUtxos(host, address, chain), targetValue);
-        // Take the raw txs from the same host rather than going back to Blockchair once per input.
+      async (api) => {
+        const picked = pickMostValuableTxs(await api.getUtxos(address, chain), targetValue);
         if (!fetchTxHex) return picked;
-        return Promise.all(
-          picked.map(async (utxo) => ({ ...utxo, txHex: await esploraText(`${host}/tx/${utxo.hash}/hex`) })),
-        );
+        // Take the raw txs from the same source rather than going back to Blockchair once
+        // per input -- one at a time, as BlockCypher allows ~3 requests/second.
+        const withHex: FallbackUtxo[] = [];
+        for (const utxo of picked) withHex.push({ ...utxo, txHex: await api.getRawTx(utxo.hash) });
+        return withHex;
       },
     );
   } catch (error) {
@@ -330,30 +331,50 @@ async function getUtxos({
   return results;
 }
 
-// Keyless Esplora APIs (CORS-enabled) that answer when Blockchair fails -- e.g.
-// its key is out of quota. Tried in order after Blockchair.
-const ESPLORA_HOSTS: Partial<Record<Chain, string[]>> = {
-  [Chain.Bitcoin]: ["https://mempool.space/api", "https://blockstream.info/api"],
-  [Chain.Litecoin]: ["https://litecoinspace.org/api"],
+// Keyless, CORS-enabled APIs that answer when Blockchair fails -- e.g. its key
+// is out of quota. Tried in order after Blockchair; each sits behind the same
+// interface so a chain can list as many as it needs.
+type FallbackUtxo = Awaited<ReturnType<typeof fetchUtxosBatch>>[number];
+type UtxoFallback = {
+  getUtxos: (address: string, chain: Chain) => Promise<FallbackUtxo[]>;
+  getAddressData: (address: string) => Promise<BlockchairAddressResponse[string]>;
+  getRawTx: (txHash: string) => Promise<string>;
 };
 
-type EsploraUtxo = { txid: string; vout: number; value: number; status: { confirmed: boolean; block_height?: number } };
-type EsploraStats = { funded_txo_sum: number; spent_txo_sum: number; tx_count: number };
-
-async function withEsploraFallback<T>(chain: Chain, primary: () => Promise<T>, fallback: (host: string) => Promise<T>) {
+async function withFallback<T>(chain: Chain, primary: () => Promise<T>, fallback: (api: UtxoFallback) => Promise<T>) {
   try {
     return await primary();
   } catch (error) {
-    for (const host of ESPLORA_HOSTS[chain] ?? []) {
+    for (const api of UTXO_FALLBACKS[chain] ?? []) {
       try {
-        return await fallback(host);
+        return await fallback(api);
       } catch {
-        // Next host.
+        // Next fallback.
       }
     }
     throw error;
   }
 }
+
+// Neither fallback's UTXO list is guaranteed to carry the output script; the
+// toolbox needs it for the PSBT's witnessUtxo. (Taproot addresses need the ECC lib to decode.)
+function outputScriptHex(address: string, chain: Chain) {
+  initEccLib(secp256k1);
+  return Buffer.from(btcAddress.toOutputScript(address, getUtxoNetwork()(chain))).toString("hex");
+}
+
+function toFallbackUtxo(
+  hash: string,
+  index: number,
+  value: number,
+  confirmed: boolean,
+  script_hex: string,
+): FallbackUtxo {
+  return { hash, index, is_confirmed: confirmed, is_spent: false, script_hex, txHex: null, value };
+}
+
+type EsploraUtxo = { txid: string; vout: number; value: number; status: { confirmed: boolean; block_height?: number } };
+type EsploraStats = { funded_txo_sum: number; spent_txo_sum: number; tx_count: number };
 
 async function esploraText(url: string) {
   const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
@@ -361,51 +382,116 @@ async function esploraText(url: string) {
   return response.text();
 }
 
-async function getEsploraUtxos(host: string, address: string, chain: Chain) {
-  const utxos = await RequestClient.get<EsploraUtxo[]>(`${host}/address/${address}/utxo`, noRetry);
-  // Esplora omits the output script; the toolbox needs it for the PSBT's witnessUtxo.
-  // (Taproot addresses need the ECC lib to decode.)
-  initEccLib(secp256k1);
-  const script_hex = Buffer.from(btcAddress.toOutputScript(address, getUtxoNetwork()(chain))).toString("hex");
-
-  return utxos.map(({ txid, vout, value, status }) => ({
-    hash: txid,
-    index: vout,
-    is_confirmed: status.confirmed,
-    is_spent: false,
-    script_hex,
-    txHex: null,
-    value,
-  }));
-}
-
-async function getEsploraAddressData(host: string, address: string) {
-  const [{ chain_stats, mempool_stats }, utxos] = await Promise.all([
-    RequestClient.get<{ chain_stats: EsploraStats; mempool_stats: EsploraStats }>(
-      `${host}/address/${address}`,
-      noRetry,
-    ),
-    RequestClient.get<EsploraUtxo[]>(`${host}/address/${address}/utxo`, noRetry),
-  ]);
+function esplora(host: string): UtxoFallback {
+  const getUtxoList = (address: string) => RequestClient.get<EsploraUtxo[]>(`${host}/address/${address}/utxo`, noRetry);
 
   return {
-    address: {
-      balance:
-        chain_stats.funded_txo_sum -
-        chain_stats.spent_txo_sum +
-        mempool_stats.funded_txo_sum -
-        mempool_stats.spent_txo_sum,
-      transaction_count: chain_stats.tx_count + mempool_stats.tx_count,
+    getAddressData: async (address) => {
+      const [{ chain_stats, mempool_stats }, utxos] = await Promise.all([
+        RequestClient.get<{ chain_stats: EsploraStats; mempool_stats: EsploraStats }>(
+          `${host}/address/${address}`,
+          noRetry,
+        ),
+        getUtxoList(address),
+      ]);
+
+      return {
+        address: {
+          balance:
+            chain_stats.funded_txo_sum -
+            chain_stats.spent_txo_sum +
+            mempool_stats.funded_txo_sum -
+            mempool_stats.spent_txo_sum,
+          transaction_count: chain_stats.tx_count + mempool_stats.tx_count,
+        },
+        transactions: [] as BlockchairTransaction[],
+        utxo: utxos.map(({ txid, vout, value, status }) => ({
+          block_id: status.block_height ?? -1,
+          index: vout,
+          transaction_hash: txid,
+          value,
+        })),
+      } as BlockchairAddressResponse[string];
     },
-    transactions: [] as BlockchairTransaction[],
-    utxo: utxos.map(({ txid, vout, value, status }) => ({
-      block_id: status.block_height ?? -1,
-      index: vout,
-      transaction_hash: txid,
-      value,
-    })),
-  } as BlockchairAddressResponse[string];
+    getRawTx: (txHash) => esploraText(`${host}/tx/${txHash}/hex`),
+    getUtxos: async (address, chain) => {
+      const script_hex = outputScriptHex(address, chain);
+      return (await getUtxoList(address)).map(({ txid, vout, value, status }) =>
+        toFallbackUtxo(txid, vout, value, status.confirmed, script_hex),
+      );
+    },
+  };
 }
+
+type BlockCypherTxRef = {
+  tx_hash: string;
+  tx_output_n: number;
+  value: number;
+  block_height: number;
+  spent?: boolean;
+  double_spend?: boolean;
+};
+type BlockCypherAddress = {
+  final_balance: number;
+  final_n_tx: number;
+  txrefs?: BlockCypherTxRef[];
+  unconfirmed_txrefs?: BlockCypherTxRef[];
+};
+
+// BlockCypher's free tier is ~100 requests/hour per IP. That is fine for a last
+// resort called from each user's own browser, not as a primary source.
+function blockCypher(coin: string): UtxoFallback {
+  const base = `https://api.blockcypher.com/v1/${coin}/main`;
+
+  async function getUnspent(address: string) {
+    const data = await RequestClient.get<BlockCypherAddress>(
+      `${base}/addrs/${address}?unspentOnly=true&limit=2000`,
+      noRetry,
+    );
+    // Unconfirmed refs can also be the inputs of a pending spend (tx_output_n -1).
+    const refs = [...(data.txrefs ?? []), ...(data.unconfirmed_txrefs ?? [])].filter(
+      (ref) => ref.tx_output_n >= 0 && !ref.spent && !ref.double_spend,
+    );
+    return { data, refs };
+  }
+
+  return {
+    getAddressData: async (address) => {
+      const { data, refs } = await getUnspent(address);
+      return {
+        address: { balance: data.final_balance, transaction_count: data.final_n_tx },
+        transactions: [] as BlockchairTransaction[],
+        utxo: refs.map(({ tx_hash, tx_output_n, value, block_height }) => ({
+          block_id: block_height > 0 ? block_height : -1,
+          index: tx_output_n,
+          transaction_hash: tx_hash,
+          value,
+        })),
+      } as BlockchairAddressResponse[string];
+    },
+    getRawTx: async (txHash) => {
+      const { hex } = await RequestClient.get<{ hex?: string }>(
+        `${base}/txs/${txHash}?includeHex=true&limit=1`,
+        noRetry,
+      );
+      if (!hex) throw new Error(`${base}/txs/${txHash}: no hex`);
+      return hex;
+    },
+    getUtxos: async (address, chain) => {
+      const script_hex = outputScriptHex(address, chain);
+      const { refs } = await getUnspent(address);
+      return refs.map(({ tx_hash, tx_output_n, value, block_height }) =>
+        toFallbackUtxo(tx_hash, tx_output_n, value, block_height > 0, script_hex),
+      );
+    },
+  };
+}
+
+const UTXO_FALLBACKS: Partial<Record<Chain, UtxoFallback[]>> = {
+  [Chain.Bitcoin]: [esplora("https://mempool.space/api"), esplora("https://blockstream.info/api")],
+  // litecoinspace.org is the only public Litecoin Esplora, and its address index can stall for minutes.
+  [Chain.Litecoin]: [esplora("https://litecoinspace.org/api"), blockCypher("ltc")],
+};
 
 export function getUtxoApi(chain: UTXOChain) {
   const apiKey = USwapConfig.get("apiKeys").blockchair || "";
