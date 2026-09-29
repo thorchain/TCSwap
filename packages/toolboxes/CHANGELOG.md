@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.3.26
+
+### Patch Changes
+
+- utxo api
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.25
+
 ## 4.3.25
 
 ### Patch Changes

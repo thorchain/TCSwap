@@ -90,5 +90,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.2.25"
+  "version": "4.2.26"
 }
