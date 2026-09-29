@@ -122,8 +122,8 @@ async function getSuggestedTxFee(chain: Chain) {
   }
 }
 
-// Balance and UTXO reads run on every balance refresh. Where an Esplora fallback
-// exists, a failure moves on to it at once instead of retrying (retries also
+// Balance and UTXO reads run on every balance refresh. Where a fallback (see
+// UTXO_FALLBACKS) exists, a failure moves on to it at once instead of retrying (retries also
 // spend the Blockchair quota); other chains keep the default retries.
 const noRetry = { retry: { maxRetries: 0 }, timeoutMs: 10_000 };
 
@@ -300,10 +300,8 @@ async function getUtxos({
         const picked = pickMostValuableTxs(await api.getUtxos(address, chain), targetValue);
         if (!fetchTxHex) return picked;
         // Take the raw txs from the same source rather than going back to Blockchair once
-        // per input -- one at a time, as BlockCypher allows ~3 requests/second.
-        const withHex: FallbackUtxo[] = [];
-        for (const utxo of picked) withHex.push({ ...utxo, txHex: await api.getRawTx(utxo.hash) });
-        return withHex;
+        // per input. (BlockCypher paces its own requests; see blockCypherGet.)
+        return Promise.all(picked.map(async (utxo) => ({ ...utxo, txHex: await api.getRawTx(utxo.hash) })));
       },
     );
   } catch (error) {
@@ -312,7 +310,7 @@ async function getUtxos({
 
   const results = [];
 
-  // `txHex` is only ever set by the Esplora path above (Blockchair's is the spending
+  // `txHex` is only ever set by a fallback above (Blockchair's is the spending
   // signature, always null for an unspent output).
   for (const { hash, index, script_hex, value, txHex: fetchedTxHex } of utxos) {
     let txHex: string | undefined;
@@ -336,24 +334,51 @@ async function getUtxos({
 // interface so a chain can list as many as it needs.
 type FallbackUtxo = Awaited<ReturnType<typeof fetchUtxosBatch>>[number];
 type UtxoFallback = {
+  name: string;
   getUtxos: (address: string, chain: Chain) => Promise<FallbackUtxo[]>;
   getAddressData: (address: string) => Promise<BlockchairAddressResponse[string]>;
   getRawTx: (txHash: string) => Promise<string>;
 };
 
+// A source that just failed (Blockchair out of quota, a stalled litecoinspace) is
+// skipped for a while, so each balance refresh doesn't wait out its timeout again.
+const SOURCE_COOLDOWN_MS = 2 * 60_000;
+const sourceCoolingUntil = new Map<string, number>();
+
+function isCoolingDown(source: string) {
+  return (sourceCoolingUntil.get(source) ?? 0) > Date.now();
+}
+
+function coolDown(source: string, error: unknown) {
+  // A 400/404 is about this request (e.g. Esplora refusing an address with
+  // more than 500 UTXOs), not the source being down.
+  const status = (error as { cause?: { status?: number } }).cause?.status;
+  if (status === 400 || status === 404) return;
+  sourceCoolingUntil.set(source, Date.now() + SOURCE_COOLDOWN_MS);
+}
+
 async function withFallback<T>(chain: Chain, primary: () => Promise<T>, fallback: (api: UtxoFallback) => Promise<T>) {
-  try {
-    return await primary();
-  } catch (error) {
-    for (const api of UTXO_FALLBACKS[chain] ?? []) {
-      try {
-        return await fallback(api);
-      } catch {
-        // Next fallback.
-      }
+  const fallbacks = UTXO_FALLBACKS[chain] ?? [];
+  if (!fallbacks.length) return primary();
+
+  const sources = [
+    { name: `blockchair:${chain}`, run: primary },
+    ...fallbacks.map((api) => ({ name: api.name, run: () => fallback(api) })),
+  ];
+  // In order, skipping any source that is cooling down -- unless all of them are.
+  const ready = sources.filter(({ name }) => !isCoolingDown(name));
+
+  const failures: unknown[] = [];
+  for (const { name, run } of ready.length ? ready : sources) {
+    try {
+      return await run();
+    } catch (error) {
+      failures.push(error);
+      coolDown(name, error);
     }
-    throw error;
   }
+  // Report every source, not just Blockchair: its failure is often the least telling one.
+  throw new Error(failures.map((e) => (e instanceof Error ? e.message : String(e))).join(" | "));
 }
 
 // Neither fallback's UTXO list is guaranteed to carry the output script; the
@@ -420,6 +445,7 @@ function esplora(host: string): UtxoFallback {
         toFallbackUtxo(txid, vout, value, status.confirmed, script_hex),
       );
     },
+    name: host,
   };
 }
 
@@ -427,7 +453,8 @@ type BlockCypherTxRef = {
   tx_hash: string;
   tx_output_n: number;
   value: number;
-  block_height: number;
+  // Absent (null) while unconfirmed.
+  block_height?: number | null;
   spent?: boolean;
   double_spend?: boolean;
 };
@@ -436,18 +463,60 @@ type BlockCypherAddress = {
   final_n_tx: number;
   txrefs?: BlockCypherTxRef[];
   unconfirmed_txrefs?: BlockCypherTxRef[];
+  hasMore?: boolean;
 };
 
 // BlockCypher's free tier is ~100 requests/hour per IP. That is fine for a last
 // resort called from each user's own browser, not as a primary source.
+// BlockCypher's per-second limit (~3/s) is shared by every call this page makes,
+// so space them all out -- not just one loop -- and ride out one 429 from a burst.
+const BLOCKCYPHER_SPACING_MS = 350;
+let blockCypherNextSlot = 0;
+
+function blockCypherSlot() {
+  const now = Date.now();
+  const at = Math.max(now, blockCypherNextSlot);
+  blockCypherNextSlot = at + BLOCKCYPHER_SPACING_MS;
+  return new Promise((resolve) => setTimeout(resolve, at - now));
+}
+
+async function blockCypherGet<T>(url: string): Promise<T> {
+  await blockCypherSlot();
+  try {
+    return await RequestClient.get<T>(url, noRetry);
+  } catch (error) {
+    // RequestClient puts the HTTP status on the error's cause.
+    if ((error as { cause?: { status?: number } }).cause?.status !== 429) throw error;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await blockCypherSlot();
+    return RequestClient.get<T>(url, noRetry);
+  }
+}
+
+const BLOCKCYPHER_ADDRESS_TTL_MS = 15_000;
+const blockCypherAddressCache = new Map<string, { data: Promise<BlockCypherAddress>; expires: number }>();
+
 function blockCypher(coin: string): UtxoFallback {
   const base = `https://api.blockcypher.com/v1/${coin}/main`;
 
   async function getUnspent(address: string) {
-    const data = await RequestClient.get<BlockCypherAddress>(
-      `${base}/addrs/${address}?unspentOnly=true&limit=2000`,
-      noRetry,
-    );
+    // A balance refresh reads the address data and then the UTXOs; share one call
+    // (the free tier is ~100 requests/hour per IP).
+    const url = `${base}/addrs/${address}?unspentOnly=true&limit=2000`;
+    let entry = blockCypherAddressCache.get(url);
+    if (!entry || entry.expires <= Date.now()) {
+      const data = blockCypherGet<BlockCypherAddress>(url).catch((error) => {
+        blockCypherAddressCache.delete(url);
+        throw error;
+      });
+      entry = { data, expires: Date.now() + BLOCKCYPHER_ADDRESS_TTL_MS };
+      blockCypherAddressCache.set(url, entry);
+    }
+
+    const data = await entry.data;
+    // With `hasMore`, the list stops at 2000 (the most recent) unspent outputs. They are
+    // still real, spendable UTXOs, so coin selection works on them; only
+    // estimateMaxSendableAmount can come out low. `final_balance` stays exact.
     // Unconfirmed refs can also be the inputs of a pending spend (tx_output_n -1).
     const refs = [...(data.txrefs ?? []), ...(data.unconfirmed_txrefs ?? [])].filter(
       (ref) => ref.tx_output_n >= 0 && !ref.spent && !ref.double_spend,
@@ -462,7 +531,7 @@ function blockCypher(coin: string): UtxoFallback {
         address: { balance: data.final_balance, transaction_count: data.final_n_tx },
         transactions: [] as BlockchairTransaction[],
         utxo: refs.map(({ tx_hash, tx_output_n, value, block_height }) => ({
-          block_id: block_height > 0 ? block_height : -1,
+          block_id: block_height && block_height > 0 ? block_height : -1,
           index: tx_output_n,
           transaction_hash: tx_hash,
           value,
@@ -470,10 +539,7 @@ function blockCypher(coin: string): UtxoFallback {
       } as BlockchairAddressResponse[string];
     },
     getRawTx: async (txHash) => {
-      const { hex } = await RequestClient.get<{ hex?: string }>(
-        `${base}/txs/${txHash}?includeHex=true&limit=1`,
-        noRetry,
-      );
+      const { hex } = await blockCypherGet<{ hex?: string }>(`${base}/txs/${txHash}?includeHex=true&limit=1`);
       if (!hex) throw new Error(`${base}/txs/${txHash}: no hex`);
       return hex;
     },
@@ -481,9 +547,10 @@ function blockCypher(coin: string): UtxoFallback {
       const script_hex = outputScriptHex(address, chain);
       const { refs } = await getUnspent(address);
       return refs.map(({ tx_hash, tx_output_n, value, block_height }) =>
-        toFallbackUtxo(tx_hash, tx_output_n, value, block_height > 0, script_hex),
+        toFallbackUtxo(tx_hash, tx_output_n, value, !!block_height && block_height > 0, script_hex),
       );
     },
+    name: base,
   };
 }
 
@@ -503,7 +570,12 @@ export function getUtxoApi(chain: UTXOChain) {
   });
 
   return {
-    broadcastTx: (txHash: string) => broadcastUTXOTx({ chain, txHash }),
+    broadcastTx: async (txHash: string) => {
+      const hash = await broadcastUTXOTx({ chain, txHash });
+      // The sender's cached UTXOs are now spent; don't build the next tx from them.
+      blockCypherAddressCache.clear();
+      return hash;
+    },
     getAddressData: (address: string) => getAddressData({ address, apiKey, chain }),
     getBalance: (address: string) => getUnconfirmedBalance({ address, apiKey, chain }),
     getRawTx: (txHash: string) => getRawTx({ apiKey, chain, txHash }),
