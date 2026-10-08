@@ -22,7 +22,7 @@ import { match, P } from "ts-pattern";
 import { accumulative, compileMemo, getUtxoApi } from "../helpers";
 import type { TargetOutput, UTXOBuildTxParams, UTXOTransferParams, UTXOType } from "../types";
 import { createUTXOToolbox } from "./utxo";
-import { validateZcashAddress } from "./validators";
+import { texToTransparentAddress, validateZcashAddress } from "./validators";
 
 function getZcashNetwork() {
   return networks.zcash;
@@ -130,8 +130,12 @@ async function createTransaction(buildTxParams: UTXOBuildTxParams) {
 
   const utxos = await getUtxoApi(Chain.Zcash).getUtxos({ address: sender, fetchTxHex: fetchTxHex !== false });
 
+  // A TEX recipient is paid through the t-address with the same key hash: the output script is identical, and
+  // this transaction spends transparent inputs only, which is all ZIP-320 asks of a payment to one.
+  const recipientAddress = texToTransparentAddress(recipient) ?? recipient;
+
   const targetOutputs = [
-    { address: recipient, value: Number(assetValue.getBaseValue("string")) },
+    { address: recipientAddress, value: Number(assetValue.getBaseValue("string")) },
     ...(compiledMemo ? [{ script: compiledMemo, value: 0 }] : []),
   ];
 
