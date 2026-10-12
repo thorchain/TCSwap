@@ -111,7 +111,10 @@ declare global {
             connect: () => Promise<{ address: string; publicKey: string }>;
             disconnect: () => Promise<void>;
             signMessage: (message: string, { from }: { from: string }) => Promise<string>;
-            signPsbt: (psbtHex: string, { from, type }: { from: string; type: string }) => Promise<string>;
+            signPsbt: (
+              psbtHex: string,
+              { autoFinalized, toSignInputs }: { autoFinalized?: boolean; toSignInputs?: UnisatToSignInputs[] },
+            ) => Promise<string>;
           };
           keplr: {
             enable: (chainId: string | string[]) => Promise<void>;

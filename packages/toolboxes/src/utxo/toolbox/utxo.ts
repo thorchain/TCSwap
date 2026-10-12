@@ -409,7 +409,11 @@ function transfer(signer?: ChainSigner<Psbt, Psbt>) {
       finalPsbt = Psbt.fromBase64(signedPsbt.toBase64(), { network: getNetwork(chain) });
     }
 
-    finalPsbt.finalizeAllInputs(); // Finalise inputs
+    // Finalise inputs, skipping any a wallet already finalized itself (bitcoinjs-lib throws
+    // "Can not finalize input #N" on those, since finalizing drops their partial signatures)
+    finalPsbt.data.inputs.forEach((input, index) => {
+      if (!(input.finalScriptSig || input.finalScriptWitness)) finalPsbt.finalizeInput(index);
+    });
     // TX extracted and formatted to hex
     return getUtxoApi(chain).broadcastTx(finalPsbt.extractTransaction().toHex());
   };
