@@ -1,5 +1,15 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.31
+
+### Patch Changes
+
+- Fix the error: "Can not finalize input #0"
+
+- Updated dependencies []:
+  - @tcswap/toolboxes@4.3.28
+  - @tcswap/helpers@4.5.25
+
 ## 4.1.30
 
 ### Patch Changes
