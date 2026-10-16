@@ -15,6 +15,23 @@ export async function createDefaultRegistry() {
   ]);
 }
 
+const ASSET_FLAGS = ["synth", "trade", "secured"] as const;
+
+// protobufjs writes every field present on the object, even `false`. MsgCompiled is THORChain's
+// common.Asset, which has a `secured` field (6) that mayanode's lacks, so an explicit
+// `secured: false` makes mayanode reject the tx with `errUnknownField "*common.Asset": {TagNum: 6}`.
+// Proto3 omits defaults anyway, so dropping false flags leaves the decoded message unchanged.
+function omitFalseAssetFlags(coin: any) {
+  if (!coin?.asset || typeof coin.asset !== "object") return coin;
+
+  const asset = { ...coin.asset };
+  for (const flag of ASSET_FLAGS) {
+    if (!asset[flag]) delete asset[flag];
+  }
+
+  return { ...coin, asset };
+}
+
 export async function createDefaultAminoTypes(chain: TCLikeChain) {
   const imported = await import("@cosmjs/stargate");
   const AminoTypes = imported.AminoTypes ?? imported.default?.AminoTypes;
@@ -23,7 +40,11 @@ export async function createDefaultAminoTypes(chain: TCLikeChain) {
   return new AminoTypes({
     "/types.MsgDeposit": {
       aminoType: `${aminoTypePrefix}/MsgDeposit`,
-      fromAmino: ({ signer, ...rest }: any) => ({ ...rest, signer: bech32ToBase64(signer) }),
+      fromAmino: ({ signer, coins, ...rest }: any) => ({
+        ...rest,
+        coins: coins?.map(omitFalseAssetFlags),
+        signer: bech32ToBase64(signer),
+      }),
       toAmino: ({ signer, ...rest }: any) => ({ ...rest, signer: base64ToBech32(signer) }),
     },
     "/types.MsgSend": {

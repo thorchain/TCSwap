@@ -76,7 +76,8 @@ export const getMsgSendDenom = (symbol: string, isThorchain = false) => {
 
 export const getDenomWithChain = ({ symbol, chain, isSecuredAsset }: AssetValue) => {
   if (chain === Chain.Maya) {
-    return (symbol.toUpperCase() !== "CACAO" ? symbol : `${Chain.Maya}.${symbol}`).toUpperCase();
+    // Native denoms need the chain prefix: a bare "MAYA" parses back as MAYA.CACAO.
+    return (["CACAO", "MAYA"].includes(symbol.toUpperCase()) ? `${Chain.Maya}.${symbol}` : symbol).toUpperCase();
   }
   if (chain === Chain.THORChain) {
     if (isSecuredAsset) return symbol.toUpperCase();
