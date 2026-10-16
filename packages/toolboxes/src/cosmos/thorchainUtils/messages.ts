@@ -207,15 +207,19 @@ export function parseAminoMessageForDirectSigning<T extends MsgDeposit | MsgSend
           symbol = (dashIndex > 0 ? assetValue.symbol.slice(dashIndex + 1) : assetValue.ticker).toUpperCase();
         }
 
+        // protobufjs writes every flag that is present on the object, even `false`. MAYAChain's
+        // common.Asset has no `secured` field (6), so an explicit `secured: false` makes mayanode
+        // reject every MsgDeposit with `errUnknownField "*common.Asset": {TagNum: 6}`. Set flags
+        // only when true — proto3 omits defaults anyway, so THORChain decodes the same bytes.
         return {
           ...coin,
           asset: {
             chain,
-            secured: assetValue.isSecuredAsset,
             symbol,
-            synth: assetValue.isSynthetic,
             ticker: assetValue.ticker,
-            trade: assetValue.isTradeAsset,
+            ...(assetValue.isSynthetic && { synth: true }),
+            ...(assetValue.isTradeAsset && { trade: true }),
+            ...(assetValue.isSecuredAsset && { secured: true }),
           },
         };
       }),
