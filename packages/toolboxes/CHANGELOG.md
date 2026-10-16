@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.3.29
+
+### Patch Changes
+
+- fix Kestore swap CACAO to ETH.USDC
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.25
+
 ## 4.3.28
 
 ### Patch Changes
