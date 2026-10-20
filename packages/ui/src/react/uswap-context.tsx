@@ -82,6 +82,10 @@ export const useUSwap = () => {
             await uSwap?.connectExodus?.(chains);
             break;
 
+          case WalletOption.BRAVE:
+            await uSwap?.connectBrave?.(chains);
+            break;
+
           case WalletOption.LEDGER:
             await uSwap?.connectLedger?.(chains);
             break;

@@ -59,9 +59,8 @@ export const exodusWallet = createWallet({
         }
       };
 
-      // EVM chains one at a time, because connecting one switches the network Exodus is on and
-      // parallel connects would leave it wherever the last finished. Bitcoin and Solana are separate
-      // providers that touch none of that, so they run alongside rather than behind.
+      // EVM chains share one provider, so only the first connect opens Exodus's approval. Bitcoin and
+      // Solana are separate providers and run alongside.
       const evmChains = filteredChains.filter((chain) => EVMChains.includes(chain as EVMChain));
       const otherChains = filteredChains.filter((chain) => !EVMChains.includes(chain as EVMChain));
 
@@ -110,7 +109,6 @@ async function getEVMWalletMethods(chain: EVMChain) {
   const signer = await provider.getSigner();
   const address = await signer.getAddress();
 
-  // Switches Exodus onto the requested network, and back onto it before every later call.
   const walletMethods = await getWeb3WalletMethods({ address, chain, provider, walletProvider });
 
   return { ...walletMethods, address };

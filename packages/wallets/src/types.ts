@@ -1,5 +1,6 @@
 import { WalletOption } from "@tcswap/helpers";
 import type { bitgetWallet } from "@tcswap/wallet-extensions/bitget";
+import type { braveWallet } from "@tcswap/wallet-extensions/brave";
 import type { cosmostationWallet } from "@tcswap/wallet-extensions/cosmostation";
 import type { ctrlWallet } from "@tcswap/wallet-extensions/ctrl";
 import type { evmWallet } from "@tcswap/wallet-extensions/evm-extensions";
@@ -25,7 +26,7 @@ import type { xamanWallet } from "./xaman";
 
 export type SKWallets = {
   [WalletOption.BITGET]: typeof bitgetWallet;
-  [WalletOption.BRAVE]: typeof evmWallet;
+  [WalletOption.BRAVE]: typeof braveWallet;
   [WalletOption.COINBASE_MOBILE]: typeof coinbaseWallet;
   [WalletOption.COINBASE_WEB]: typeof evmWallet;
   [WalletOption.COSMOSTATION]: typeof cosmostationWallet;
@@ -61,7 +62,7 @@ export type SKConnectWallets = SKWallets[keyof SKWallets];
 
 export type SKWalletsSupportedChains = {
   [WalletOption.BITGET]: typeof bitgetWallet.connectBitget.supportedChains;
-  [WalletOption.BRAVE]: typeof evmWallet.connectEVMWallet.supportedChains;
+  [WalletOption.BRAVE]: typeof braveWallet.connectBrave.supportedChains;
   [WalletOption.COINBASE_MOBILE]: typeof coinbaseWallet.connectCoinbaseWallet.supportedChains;
   [WalletOption.COINBASE_WEB]: typeof evmWallet.connectEVMWallet.supportedChains;
   [WalletOption.COSMOSTATION]: typeof cosmostationWallet.connectCosmostation.supportedChains;

@@ -19,6 +19,7 @@ import { MayachainPlugin, ThorchainPlugin } from "@tcswap/plugins/thorchain";
 import type { createWallet } from "@tcswap/wallets";
 
 import { bitgetWallet } from "@tcswap/wallets/bitget";
+import { braveWallet } from "@tcswap/wallets/brave";
 import { coinbaseWallet } from "@tcswap/wallets/coinbase";
 import { ctrlWallet } from "@tcswap/wallets/ctrl";
 import { evmWallet } from "@tcswap/wallets/evm-extensions";
@@ -64,6 +65,7 @@ export * from "@tcswap/wallets";
 
 export {
   bitgetWallet,
+  braveWallet,
   coinbaseWallet,
   ctrlWallet,
   evmWallet,
@@ -102,6 +104,7 @@ export const defaultPlugins = {
 
 export const defaultWallets = {
   ...bitgetWallet,
+  ...braveWallet,
   ...coinbaseWallet,
   ...ctrlWallet,
   ...evmWallet,

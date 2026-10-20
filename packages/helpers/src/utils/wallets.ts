@@ -104,10 +104,27 @@ export function filterSupportedChains<T extends string[]>({
   return supported as T;
 }
 
+// Parallel wrapped calls share one switch instead of each opening a prompt.
+const pendingSwitches = new WeakMap<object, Map<Chain, Promise<void>>>();
+
+function switchNetworkOnce(provider: BrowserProvider, chain: Chain, networkParams?: NetworkParams) {
+  const byChain = pendingSwitches.get(provider) ?? new Map<Chain, Promise<void>>();
+  pendingSwitches.set(provider, byChain);
+
+  const pending = byChain.get(chain);
+  if (pending) return pending;
+
+  const switching = switchEVMWalletNetwork(provider, chain, networkParams).finally(() => byChain.delete(chain));
+  byChain.set(chain, switching);
+  return switching;
+}
+
+/** `networkParams` lets the switch add a network the wallet does not know yet. */
 export function wrapMethodWithNetworkSwitch<T extends (...args: any[]) => any>(
   func: T,
   provider: BrowserProvider,
   chain: Chain,
+  networkParams?: NetworkParams,
 ) {
   return (async (...args: any[]) => {
     const { chainIdHex } = getChainConfig(chain);
@@ -118,7 +135,7 @@ export function wrapMethodWithNetworkSwitch<T extends (...args: any[]) => any>(
       return func(...args);
     }
     try {
-      await switchEVMWalletNetwork(provider, chain);
+      await switchNetworkOnce(provider, chain, networkParams);
     } catch (error) {
       throw new USwapError({ errorKey: "helpers_failed_to_switch_network", info: { error } });
     }
@@ -131,11 +148,13 @@ export function prepareNetworkSwitch<T extends Record<string, unknown>, M extend
   chain,
   provider = window.ethereum,
   methodNames = [],
+  networkParams,
 }: {
   toolbox: T;
   chain: Chain;
   provider?: BrowserProvider | JsonRpcProvider;
   methodNames?: M[];
+  networkParams?: NetworkParams;
 }) {
   const methodsToWrap = [
     ...methodNames,
@@ -153,6 +172,16 @@ export function prepareNetworkSwitch<T extends Record<string, unknown>, M extend
     "estimateGasLimit",
     "estimateGasPrices",
     "createContractTxObject",
+    // Read the wallet's network too, so they need it on `chain` now that connecting no longer switches.
+    "createApprovalTx",
+    "createTransaction",
+    "createTransferTx",
+    "estimateTransactionFee",
+    "estimateL1Gas",
+    "estimateL1GasCost",
+    "estimateL2GasCost",
+    "estimateTotalGasCost",
+    "getL1GasPrice",
   ] as M[];
   const wrappedMethods = methodsToWrap.reduce((object, methodName) => {
     if (!toolbox[methodName]) return object;
@@ -162,7 +191,7 @@ export function prepareNetworkSwitch<T extends Record<string, unknown>, M extend
     if (typeof method !== "function") return object;
 
     // @ts-expect-error
-    const wrappedMethod = wrapMethodWithNetworkSwitch(method, provider, chain);
+    const wrappedMethod = wrapMethodWithNetworkSwitch(method, provider, chain, networkParams);
 
     // biome-ignore lint/performance/noAccumulatingSpread: valid use case
     return { ...object, [methodName]: wrappedMethod };

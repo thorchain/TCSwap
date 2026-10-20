@@ -398,11 +398,9 @@ describe("wallets", () => {
     test("calls original function directly when network already matches (no switch needed)", async () => {
       const originalFunc = mock(() => Promise.resolve("result"));
       const mockSend = mock(() => Promise.resolve());
-      // Mock chainId that when toString() equals chainIdHex "0x1"
-      // This simulates the API returning hex format
-      const mockChainId = { toString: () => "0x1" };
+      // ethers reports `chainId` as a bigint
       const provider = createMockBrowserProvider({
-        getNetwork: mock(() => Promise.resolve({ chainId: mockChainId })),
+        getNetwork: mock(() => Promise.resolve({ chainId: BigInt(1) })),
         send: mockSend,
       });
 
@@ -444,6 +442,49 @@ describe("wallets", () => {
       await expect(wrapped()).rejects.toThrow(USwapError);
     });
 
+    test("asks the wallet once when several wrapped calls need the same switch", async () => {
+      const mockSend = mock(() => Promise.resolve());
+      const provider = createMockBrowserProvider({
+        getNetwork: mock(() => Promise.resolve({ chainId: BigInt(137) })),
+        send: mockSend,
+      });
+
+      const estimate = wrapMethodWithNetworkSwitch(
+        mock(() => Promise.resolve("gas")),
+        provider,
+        Chain.Ethereum,
+      );
+      const allowance = wrapMethodWithNetworkSwitch(
+        mock(() => Promise.resolve("allowance")),
+        provider,
+        Chain.Ethereum,
+      );
+
+      expect(await Promise.all([estimate(), allowance()])).toEqual(["gas", "allowance"]);
+      expect(mockSend).toHaveBeenCalledTimes(1);
+    });
+
+    test("adds the network when the wallet does not know it and networkParams are given", async () => {
+      const mockSend = mock((method: string) =>
+        method === "wallet_switchEthereumChain" ? Promise.reject(new Error("Unrecognized chain")) : Promise.resolve(),
+      );
+      const provider = createMockBrowserProvider({
+        getNetwork: mock(() => Promise.resolve({ chainId: BigInt(1) })),
+        send: mockSend,
+      });
+      const networkParams = { chainId: "0x89", chainName: "Polygon" };
+
+      const wrapped = wrapMethodWithNetworkSwitch(
+        mock(() => Promise.resolve()),
+        provider,
+        Chain.Polygon,
+        networkParams,
+      );
+      await wrapped();
+
+      expect(mockSend).toHaveBeenCalledWith("wallet_addEthereumChain", [networkParams]);
+    });
+
     test("preserves function return value after network switch", async () => {
       const originalFunc = mock(() => Promise.resolve({ txHash: "0xabc123" }));
       const mockChainId = { toString: () => "0x38" }; // BSC hex
@@ -483,6 +524,21 @@ describe("wallets", () => {
       expect(result.sendTransaction).not.toBe(toolbox.sendTransaction);
       // Non-standard methods should remain unchanged
       expect(result.nonWrappedMethod).toBe(toolbox.nonWrappedMethod);
+    });
+
+    test("wraps the reads that build or price a transaction on the wallet's network", () => {
+      const provider = createMockBrowserProvider();
+      const toolbox = {
+        createApprovalTx: mock(() => Promise.resolve()),
+        createTransferTx: mock(() => Promise.resolve()),
+        estimateTransactionFee: mock(() => Promise.resolve()),
+      };
+
+      const result = prepareNetworkSwitch({ chain: Chain.Ethereum, provider, toolbox });
+
+      expect(result.createApprovalTx).not.toBe(toolbox.createApprovalTx);
+      expect(result.createTransferTx).not.toBe(toolbox.createTransferTx);
+      expect(result.estimateTransactionFee).not.toBe(toolbox.estimateTransactionFee);
     });
 
     test("wraps custom method names", () => {

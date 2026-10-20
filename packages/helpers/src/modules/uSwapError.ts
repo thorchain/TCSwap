@@ -278,6 +278,14 @@ const errorCodes = {
   wallet_exodus_sign_transaction_error: 24107,
 
   /**
+   * Wallets - Brave
+   */
+  wallet_brave_evm_not_found: 24201,
+  wallet_brave_solana_not_found: 24202,
+  wallet_brave_chain_not_supported: 24203,
+  wallet_brave_no_address: 24204,
+
+  /**
    * Chainflip
    */
   chainflip_channel_error: 30001,

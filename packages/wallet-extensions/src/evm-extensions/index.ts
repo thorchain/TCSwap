@@ -7,9 +7,7 @@ import {
   type EVMChain,
   EVMChains,
   filterSupportedChains,
-  getChainConfig,
   prepareNetworkSwitch,
-  switchEVMWalletNetwork,
   USwapError,
   WalletOption,
 } from "@tcswap/helpers";
@@ -59,22 +57,11 @@ export const getWeb3WalletMethods = async ({
 
   const signer = await provider.getSigner();
   const toolbox = await getEvmToolbox(chain, { provider, signer });
-  const { chainIdHex } = getChainConfig(chain);
 
-  const currentNetwork = await provider.getNetwork();
-  // Compared as numbers: `chainId` is a bigint, `chainIdHex` a "0x..." string, and their text forms
-  // never matched - so connecting always switched the network, even to the one already selected.
-  if (currentNetwork.chainId !== BigInt(chainIdHex)) {
-    try {
-      const networkParams = toolbox.getNetworkParams();
-      await switchEVMWalletNetwork(provider, chain, networkParams);
-    } catch {
-      throw new USwapError("wallet_evm_extensions_failed_to_switch_network", { chain });
-    }
-  }
-
+  // No switch on connect (one prompt per chain in Brave and Exodus); wrapped methods switch on demand.
   return prepareNetworkSwitch({
     chain,
+    networkParams: toolbox.getNetworkParams(),
     provider,
     toolbox: { ...toolbox, getBalance: () => toolbox.getBalance(address) },
   });

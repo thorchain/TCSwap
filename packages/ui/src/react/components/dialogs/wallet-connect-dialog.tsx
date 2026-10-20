@@ -6,6 +6,7 @@
 
 import { Chain, EVMChains, WalletOption } from "@tcswap/helpers";
 import { BITGET_SUPPORTED_CHAINS } from "@tcswap/wallets/bitget";
+import { BRAVE_SUPPORTED_CHAINS } from "@tcswap/wallets/brave";
 import { EXODUS_SUPPORTED_CHAINS } from "@tcswap/wallets/exodus";
 import { PHANTOM_SUPPORTED_CHAINS } from "@tcswap/wallets/phantom";
 import { SearchIcon, WalletMinimalIcon } from "lucide-react";
@@ -77,7 +78,7 @@ const AllChainsSupported = [
 
 export const availableChainsByWallet: Record<WalletOption, Chain[] | readonly Chain[]> = {
   [WalletOption.BITGET]: BITGET_SUPPORTED_CHAINS,
-  [WalletOption.BRAVE]: EVMChains,
+  [WalletOption.BRAVE]: BRAVE_SUPPORTED_CHAINS,
   [WalletOption.COINBASE_MOBILE]: EVMChains,
   [WalletOption.COINBASE_WEB]: EVMChains,
   [WalletOption.EIP6963]: EVMChains,
