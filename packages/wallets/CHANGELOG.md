@@ -1,5 +1,19 @@
 <!-- Modifications © 2025 Magic Systems. -->
 
+## 4.3.34
+
+### Patch Changes
+
+- Brave Wallet support
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.26
+  - @tcswap/wallet-extensions@4.1.33
+  - @tcswap/toolboxes@4.3.30
+  - @tcswap/wallet-core@4.0.70
+  - @tcswap/wallet-hardware@4.2.32
+  - @tcswap/wallet-keystore@4.1.30
+
 ## 4.3.33
 
 ### Patch Changes

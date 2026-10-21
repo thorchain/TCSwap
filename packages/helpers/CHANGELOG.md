@@ -1,5 +1,11 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.26
+
+### Patch Changes
+
+- Brave Wallet support
+
 ## 4.5.25
 
 ### Patch Changes

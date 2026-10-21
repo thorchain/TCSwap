@@ -1,5 +1,16 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.33
+
+### Patch Changes
+
+- Brave Wallet support
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.26
+  - @tcswap/toolboxes@4.3.30
+  - @tcswap/wallet-core@4.0.70
+
 ## 4.1.32
 
 ### Patch Changes
