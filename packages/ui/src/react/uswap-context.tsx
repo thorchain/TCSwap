@@ -64,10 +64,14 @@ export const useUSwap = () => {
 
       try {
         switch (option) {
-          case WalletOption.METAMASK:
           case WalletOption.COINBASE_WEB:
           case WalletOption.TRUSTWALLET_WEB:
             await uSwap?.connectEVMWallet?.(chains as EVMChain[]);
+            break;
+
+          case WalletOption.METAMASK:
+          case WalletOption.RABBY:
+            await uSwap?.connectEVMWallet?.(chains as EVMChain[], option);
             break;
 
           case WalletOption.PHANTOM:

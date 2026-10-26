@@ -12,8 +12,10 @@ import {
   addAccountsChangedCallback,
   addEVMWalletNetwork,
   filterSupportedChains,
+  getEIP6963Provider,
   getEIP6963Wallets,
   getETHDefaultWallet,
+  getMetaMaskProvider,
   isDetected,
   isWeb3Detected,
   listWeb3EVMWallets,
@@ -101,6 +103,60 @@ describe("wallets", () => {
       expect(listWeb3EVMWallets()).toContain(WalletOption.TRUSTWALLET_WEB);
     });
 
+    test("detects Rabby via isRabby, not as MetaMask", () => {
+      globalThis.window.ethereum = createMockEthereumProvider({ isMetaMask: true, isRabby: true });
+      const wallets = listWeb3EVMWallets();
+      expect(wallets).toContain(WalletOption.RABBY);
+      expect(wallets).not.toContain(WalletOption.METAMASK);
+    });
+
+    test("detects Rabby by its EIP-6963 announcement when MetaMask holds window.ethereum", () => {
+      const rabby = createMockEthereumProvider();
+      let announce: ((event: any) => void) | undefined;
+      globalThis.window = createMockWindow({
+        addEventListener: mock((_: string, listener: (event: any) => void) => {
+          announce = listener;
+        }),
+        dispatchEvent: mock(() => {
+          announce?.({ detail: { info: { name: "Rabby Wallet", rdns: "io.rabby", uuid: "rabby" }, provider: rabby } });
+          return true;
+        }),
+        ethereum: createMockEthereumProvider({ isMetaMask: true }),
+      });
+
+      const wallets = listWeb3EVMWallets();
+      expect(wallets).toContain(WalletOption.RABBY);
+      expect(wallets).toContain(WalletOption.METAMASK);
+      expect(getEIP6963Provider("io.rabby")).toBe(rabby);
+    });
+
+    test("detects MetaMask by its EIP-6963 announcement when Rabby holds window.ethereum", () => {
+      const metamask = createMockEthereumProvider();
+      let announce: ((event: any) => void) | undefined;
+      globalThis.window = createMockWindow({
+        addEventListener: mock((_: string, listener: (event: any) => void) => {
+          announce = listener;
+        }),
+        dispatchEvent: mock(() => {
+          announce?.({
+            detail: { info: { name: "MetaMask", rdns: "io.metamask", uuid: "metamask" }, provider: metamask },
+          });
+          return true;
+        }),
+        ethereum: createMockEthereumProvider({ isMetaMask: true, isRabby: true }),
+      });
+
+      const wallets = listWeb3EVMWallets();
+      expect(wallets).toContain(WalletOption.METAMASK);
+      expect(wallets).toContain(WalletOption.RABBY);
+      expect(getMetaMaskProvider()).toBe(metamask);
+    });
+
+    test("finds no MetaMask provider when only Rabby holds window.ethereum", () => {
+      globalThis.window.ethereum = createMockEthereumProvider({ isMetaMask: true, isRabby: true });
+      expect(getMetaMaskProvider()).toBeUndefined();
+    });
+
     test("detects Trust wallet via window.trustwallet", () => {
       globalThis.window.trustwallet = createMockEthereumProvider();
       expect(listWeb3EVMWallets()).toContain(WalletOption.TRUSTWALLET_WEB);
@@ -181,6 +237,11 @@ describe("wallets", () => {
     test("returns BRAVE when isBraveWallet is true", () => {
       globalThis.window.ethereum = createMockEthereumProvider({ isBraveWallet: true });
       expect(getETHDefaultWallet()).toBe(WalletOption.BRAVE);
+    });
+
+    test("returns RABBY when isRabby is true, despite isMetaMask", () => {
+      globalThis.window.ethereum = createMockEthereumProvider({ isMetaMask: true, isRabby: true });
+      expect(getETHDefaultWallet()).toBe(WalletOption.RABBY);
     });
 
     test("returns COINBASE_WEB when coinbase provider is selected", () => {

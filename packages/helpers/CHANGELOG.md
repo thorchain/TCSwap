@@ -1,5 +1,13 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.27
+
+### Patch Changes
+
+- Add Rabby Wallet as `WalletOption.RABBY`, connected through `connectEVMWallet` with the provider Rabby announces over EIP-6963 (rdns `io.rabby`), so it works whether or not Rabby is the default wallet. `window.ethereum` flagged `isRabby` is no longer detected as MetaMask.
+
+- Add `getMetaMaskProvider` and `METAMASK_RDNS`: MetaMask is found by its EIP-6963 announcement (rdns `io.metamask`), so `listWeb3EVMWallets` still detects it when Rabby, as default wallet, holds `window.ethereum`. Without an announcement it falls back to `window.ethereum` unless Brave or Rabby holds it.
+
 ## 4.5.26
 
 ### Patch Changes

@@ -17,6 +17,7 @@ export type EthereumWindowProvider = BrowserProvider & {
   isExodus?: boolean;
   isMetaMask?: boolean;
   isOkxWallet?: boolean;
+  isRabby?: boolean;
   isKeepKeyWallet?: boolean;
   isTrust?: boolean;
   isTalisman?: boolean;
@@ -57,6 +58,7 @@ export enum WalletOption {
   PASSKEYS = "PASSKEYS",
   PHANTOM = "PHANTOM",
   POLKADOT_JS = "POLKADOT_JS",
+  RABBY = "RABBY",
   RADIX_WALLET = "RADIX_WALLET",
   TALISMAN = "TALISMAN",
   TREZOR = "TREZOR",
@@ -93,7 +95,7 @@ export type BaseWallet<T extends EmptyWallet | Record<string, unknown>> = {
   [key in Chain]: ChainWallet<key> & (T extends EmptyWallet ? T[key] : never);
 };
 
-export type EIP6963ProviderInfo = { walletId: string; uuid: string; name: string; icon: string };
+export type EIP6963ProviderInfo = { walletId: string; uuid: string; name: string; icon: string; rdns?: string };
 
 export type EIP6963ProviderDetail = { info: EIP6963ProviderInfo; provider: Eip1193Provider };
 

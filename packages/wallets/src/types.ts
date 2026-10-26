@@ -47,6 +47,7 @@ export type SKWallets = {
   [WalletOption.PASSKEYS]: typeof passkeysWallet;
   [WalletOption.PHANTOM]: typeof phantomWallet;
   [WalletOption.POLKADOT_JS]: typeof polkadotWallet;
+  [WalletOption.RABBY]: typeof evmWallet;
   [WalletOption.RADIX_WALLET]: typeof radixWallet;
   [WalletOption.TALISMAN]: typeof talismanWallet;
   [WalletOption.TREZOR]: typeof trezorWallet;
@@ -83,6 +84,7 @@ export type SKWalletsSupportedChains = {
   [WalletOption.PASSKEYS]: typeof passkeysWallet.connectPasskeys.supportedChains;
   [WalletOption.PHANTOM]: typeof phantomWallet.connectPhantom.supportedChains;
   [WalletOption.POLKADOT_JS]: typeof polkadotWallet.connectPolkadotJs.supportedChains;
+  [WalletOption.RABBY]: typeof evmWallet.connectEVMWallet.supportedChains;
   [WalletOption.RADIX_WALLET]: typeof radixWallet.connectRadixWallet.supportedChains;
   [WalletOption.TALISMAN]: typeof talismanWallet.connectTalisman.supportedChains;
   [WalletOption.TREZOR]: typeof trezorWallet.connectTrezor.supportedChains;

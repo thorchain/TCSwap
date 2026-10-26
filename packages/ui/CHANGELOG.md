@@ -1,5 +1,19 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 0.3.35
+
+### Patch Changes
+
+- Add Rabby Wallet as `WalletOption.RABBY`, connected through `connectEVMWallet` with the provider Rabby announces over EIP-6963 (rdns `io.rabby`), so it works whether or not Rabby is the default wallet. `window.ethereum` flagged `isRabby` is no longer detected as MetaMask.
+
+- Adding Rabby Wallet
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.27
+  - @tcswap/wallets@4.3.35
+  - @tcswap/sdk@4.2.35
+  - @tcswap/wallet-keystore@4.1.31
+
 ## 0.3.34
 
 ### Patch Changes

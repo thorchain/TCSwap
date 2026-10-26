@@ -64,6 +64,12 @@
       "require": "./dist/bitget.cjs",
       "types": "./dist/types/bitget.d.ts"
     },
+    "./brave": {
+      "bun": "./src/brave.ts",
+      "default": "./dist/brave.js",
+      "require": "./dist/brave.cjs",
+      "types": "./dist/types/brave.d.ts"
+    },
     "./coinbase": {
       "bun": "./src/coinbase/index.ts",
       "default": "./dist/coinbase/index.js",
@@ -216,5 +222,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.3.34"
+  "version": "4.3.35"
 }

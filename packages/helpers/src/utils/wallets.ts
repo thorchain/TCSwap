@@ -34,10 +34,11 @@ export function isDetected(walletOption: WalletOption) {
 }
 
 export function listWeb3EVMWallets() {
-  const metamaskEnabled = window?.ethereum && !window.ethereum?.isBraveWallet;
+  const metamaskEnabled = getMetaMaskProvider();
   const ctrlEnabled = window?.ctrl || window?.ethereum?.__XDEFI;
   const vultisigEnabled = window?.vultisig;
   const braveEnabled = window?.ethereum?.isBraveWallet;
+  const rabbyEnabled = window?.ethereum?.isRabby || getEIP6963Provider(RABBY_RDNS);
   const trustEnabled = window?.ethereum?.isTrust || window?.trustwallet;
   const coinbaseEnabled =
     (window?.ethereum?.overrideIsMetaMask && window?.ethereum?.selectedProvider?.isCoinbaseWallet) ||
@@ -50,6 +51,7 @@ export function listWeb3EVMWallets() {
   if (ctrlEnabled) wallets.push(WalletOption.CTRL);
   if (vultisigEnabled) wallets.push(WalletOption.VULTISIG);
   if (braveEnabled) wallets.push(WalletOption.BRAVE);
+  if (rabbyEnabled) wallets.push(WalletOption.RABBY);
   if (trustEnabled) wallets.push(WalletOption.TRUSTWALLET_WEB);
   if (coinbaseEnabled) wallets.push(WalletOption.COINBASE_WEB);
   if (okxMobileEnabled()) wallets.push(WalletOption.OKX_MOBILE);
@@ -210,9 +212,10 @@ export function addAccountsChangedCallback(callback: () => void) {
 }
 
 export function getETHDefaultWallet() {
-  const { isTrust, isBraveWallet, __XDEFI, overrideIsMetaMask, selectedProvider } = window?.ethereum || {};
+  const { isTrust, isBraveWallet, isRabby, __XDEFI, overrideIsMetaMask, selectedProvider } = window?.ethereum || {};
   if (isTrust) return WalletOption.TRUSTWALLET_WEB;
   if (isBraveWallet) return WalletOption.BRAVE;
+  if (isRabby) return WalletOption.RABBY;
   if (overrideIsMetaMask && selectedProvider?.isCoinbaseWallet) return WalletOption.COINBASE_WEB;
   if (__XDEFI) return WalletOption.CTRL;
   if (window?.$onekey?.ethereum) return WalletOption.ONEKEY;
@@ -235,6 +238,32 @@ export function getEIP6963Wallets() {
   }
 
   return { providers, removeEIP6963EventListener };
+}
+
+export const METAMASK_RDNS = "io.metamask";
+export const RABBY_RDNS = "io.rabby";
+
+/**
+ * MetaMask by its EIP-6963 announcement, else `window.ethereum` unless Brave or Rabby holds it — Rabby, as default
+ * wallet, takes it and flags it isMetaMask as well. Other wallets injecting there without announcing pass as MetaMask.
+ */
+export function getMetaMaskProvider() {
+  if (typeof window === "undefined") return undefined;
+
+  const ethereum = window.ethereum;
+  return (
+    getEIP6963Provider(METAMASK_RDNS) ??
+    (ethereum && !ethereum.isBraveWallet && !ethereum.isRabby ? ethereum : undefined)
+  );
+}
+
+/** The provider an extension announces over EIP-6963 under `rdns`, whichever extension holds `window.ethereum`. */
+export function getEIP6963Provider(rdns: string) {
+  if (typeof window === "undefined") return undefined;
+
+  const { providers, removeEIP6963EventListener } = getEIP6963Wallets();
+  removeEIP6963EventListener();
+  return providers.find((p) => p.info.rdns === rdns)?.provider;
 }
 
 export function okxMobileEnabled() {

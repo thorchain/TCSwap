@@ -1,5 +1,21 @@
 <!-- Modifications © 2025 Magic Systems. -->
 
+## 4.3.35
+
+### Patch Changes
+
+- Add Rabby Wallet as `WalletOption.RABBY`, connected through `connectEVMWallet` with the provider Rabby announces over EIP-6963 (rdns `io.rabby`), so it works whether or not Rabby is the default wallet. `window.ethereum` flagged `isRabby` is no longer detected as MetaMask.
+
+- `loadWallet(WalletOption.RABBY)` loads the EVM extensions wallet, and `SKWallets` / `SKWalletsSupportedChains` include `WalletOption.RABBY`.
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.27
+  - @tcswap/wallet-extensions@4.1.34
+  - @tcswap/toolboxes@4.3.31
+  - @tcswap/wallet-core@4.0.71
+  - @tcswap/wallet-hardware@4.2.33
+  - @tcswap/wallet-keystore@4.1.31
+
 ## 4.3.34
 
 ### Patch Changes

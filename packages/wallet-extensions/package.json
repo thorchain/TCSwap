@@ -37,6 +37,12 @@
       "require": "./dist/bitget/index.cjs",
       "types": "./dist/types/bitget/index.d.ts"
     },
+    "./brave": {
+      "bun": "./src/brave/index.ts",
+      "default": "./dist/brave/index.js",
+      "require": "./dist/brave/index.cjs",
+      "types": "./dist/types/brave/index.d.ts"
+    },
     "./cosmostation": {
       "bun": "./src/cosmostation/index.ts",
       "default": "./dist/cosmostation/index.js",
@@ -135,5 +141,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.1.33"
+  "version": "4.1.34"
 }

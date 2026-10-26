@@ -1,5 +1,18 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.1.34
+
+### Patch Changes
+
+- Add Rabby Wallet as `WalletOption.RABBY`, connected through `connectEVMWallet` with the provider Rabby announces over EIP-6963 (rdns `io.rabby`), so it works whether or not Rabby is the default wallet. `window.ethereum` flagged `isRabby` is no longer detected as MetaMask.
+
+- `connectEVMWallet` with `WalletOption.METAMASK` finds MetaMask by its EIP-6963 announcement (`getMetaMaskProvider`), so it no longer connects Rabby in its place when Rabby, as default wallet, holds `window.ethereum`. When MetaMask is not installed and Rabby or Brave holds `window.ethereum`, it now throws `wallet_evm_extensions_not_found` instead of connecting that wallet as MetaMask. Called without a wallet type, it still uses `window.ethereum`, whichever wallet injected it.
+
+- Updated dependencies []:
+  - @tcswap/helpers@4.5.27
+  - @tcswap/toolboxes@4.3.31
+  - @tcswap/wallet-core@4.0.71
+
 ## 4.1.33
 
 ### Patch Changes

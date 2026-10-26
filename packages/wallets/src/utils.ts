@@ -33,6 +33,7 @@ export async function loadWallet<W extends WalletOption>(walletOption: W): Promi
       WalletOption.EIP6963,
       WalletOption.METAMASK,
       WalletOption.OKX_MOBILE,
+      WalletOption.RABBY,
       WalletOption.TRUSTWALLET_WEB,
       async () => (await import("@tcswap/wallet-extensions/evm-extensions")).evmWallet,
     )

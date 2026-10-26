@@ -61,6 +61,7 @@ export const availableChainsByWallet = {
   [WalletOption.PASSKEYS]: PASSKEYS_SUPPORTED_CHAINS,
   [WalletOption.PHANTOM]: PHANTOM_SUPPORTED_CHAINS,
   [WalletOption.POLKADOT_JS]: POLKADOT_SUPPORTED_CHAINS,
+  [WalletOption.RABBY]: EVMChains,
   [WalletOption.RADIX_WALLET]: RADIX_SUPPORTED_CHAINS,
   [WalletOption.TALISMAN]: TALISMAN_SUPPORTED_CHAINS,
   [WalletOption.TREZOR]: TREZOR_SUPPORTED_CHAINS,
@@ -87,6 +88,7 @@ export const WalletPicker = ({ skClient, setWallet, setPhrase }: Props) => {
           return skClient.connectBitget?.(chainsToConnect);
         case WalletOption.COINBASE_WEB:
         case WalletOption.METAMASK:
+        case WalletOption.RABBY:
         case WalletOption.TRUSTWALLET_WEB:
         case WalletOption.EIP6963:
           return skClient.connectEVMWallet(chainsToConnect, option, provider);
