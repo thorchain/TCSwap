@@ -294,6 +294,14 @@ const errorCodes = {
   wallet_binance_no_address: 24303,
 
   /**
+   * Wallets - Freighter
+   */
+  wallet_freighter_not_found: 25001,
+  wallet_freighter_request_failed: 25002,
+  wallet_freighter_wrong_network: 25003,
+  wallet_freighter_signer_mismatch: 25004,
+
+  /**
    * Chainflip
    */
   chainflip_channel_error: 30001,
@@ -425,6 +433,15 @@ const errorCodes = {
   toolbox_sui_broadcast_error: 90706,
   toolbox_sui_no_signer: 90707,
   toolbox_sui_no_sender: 90708,
+  /**
+   * Toolboxes - Stellar
+   */
+  toolbox_stellar_signer_not_found: 90801,
+  toolbox_stellar_get_balance_error: 90802,
+  toolbox_stellar_asset_not_supported: 90803,
+  toolbox_stellar_broadcast_error: 90804,
+  toolbox_stellar_account_not_found: 90805,
+  toolbox_stellar_invalid_memo: 90806,
   /**
    * Toolboxes - General
    */

@@ -6,6 +6,7 @@ import type { NearWallet } from "./near";
 import type { RadixWallet } from "./radix";
 import type { RippleWallet } from "./ripple";
 import type { SolanaWallet } from "./solana";
+import type { StellarWallet } from "./stellar";
 import type { SubstrateToolboxes } from "./substrate";
 import type { SuiWallet } from "./sui";
 import type { TONWallet } from "./ton";
@@ -16,6 +17,7 @@ type OtherWallets = {
   [Chain.Radix]: RadixWallet;
   [Chain.Ripple]: RippleWallet;
   [Chain.Solana]: SolanaWallet;
+  [Chain.Stellar]: StellarWallet;
   [Chain.Ton]: TONWallet;
   [Chain.Sui]: SuiWallet;
   [Chain.Tron]: TronWallet;

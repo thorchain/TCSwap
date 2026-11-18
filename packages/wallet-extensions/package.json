@@ -6,6 +6,7 @@
     "@near-js/crypto": "~2.5.0",
     "@near-js/transactions": "~2.5.0",
     "@solana/web3.js": "~1.98.0",
+    "@stellar/freighter-api": "~6.0.1",
     "@tcswap/helpers": "workspace:*",
     "@tcswap/toolboxes": "workspace:*",
     "@tcswap/wallet-core": "workspace:*",
@@ -20,6 +21,7 @@
     "@near-js/crypto": "2.5.0",
     "@near-js/transactions": "2.5.0",
     "@solana/web3.js": "1.98.4",
+    "@stellar/freighter-api": "6.0.1",
     "ethers": "6.15.0",
     "sats-connect": "1.0.0",
     "ts-pattern": "5.9.0"
@@ -72,6 +74,12 @@
       "default": "./dist/exodus/index.js",
       "require": "./dist/exodus/index.cjs",
       "types": "./dist/types/exodus/index.d.ts"
+    },
+    "./freighter": {
+      "bun": "./src/freighter/index.ts",
+      "default": "./dist/freighter/index.js",
+      "require": "./dist/freighter/index.cjs",
+      "types": "./dist/types/freighter/index.d.ts"
     },
     "./keepkey-bex": {
       "bun": "./src/keepkey-bex/index.ts",

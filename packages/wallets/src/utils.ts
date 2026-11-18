@@ -14,6 +14,7 @@ export async function loadWallet<W extends WalletOption>(walletOption: W): Promi
     .with(WalletOption.OKX, async () => (await import("@tcswap/wallet-extensions/okx")).okxWallet)
     .with(WalletOption.ONEKEY, async () => (await import("@tcswap/wallet-extensions/onekey")).onekeyWallet)
     .with(WalletOption.EXODUS, async () => (await import("./passkeys")).passkeysWallet)
+    .with(WalletOption.FREIGHTER, async () => (await import("@tcswap/wallet-extensions/freighter")).freighterWallet)
     .with(WalletOption.KEEPKEY, async () => (await import("@tcswap/wallet-hardware/keepkey")).keepkeyWallet)
     .with(
       WalletOption.KEEPKEY_BEX,

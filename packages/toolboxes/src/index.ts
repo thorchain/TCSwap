@@ -24,6 +24,7 @@ import type { getNearToolbox } from "./near";
 import type { RadixToolbox } from "./radix";
 import type { getRippleToolbox } from "./ripple";
 import type { getSolanaToolbox, SolanaCreateTransactionParams } from "./solana";
+import type { getStellarToolbox } from "./stellar";
 import type { getSubstrateToolbox } from "./substrate";
 import type { getSuiToolbox, SuiCreateTransactionParams } from "./sui";
 import type { getTONToolbox } from "./ton";
@@ -45,6 +46,7 @@ export async function getAddressValidator() {
   const { getValidateNearAddress } = await import("./near");
   const { radixValidateAddress } = await import("./radix");
   const { rippleValidateAddress } = await import("./ripple");
+  const { stellarValidateAddress } = await import("./stellar");
   const { substrateValidateAddress } = await import("./substrate");
 
   const cardanoValidateAddress = await getCardanoAddressValidator();
@@ -70,6 +72,7 @@ export async function getAddressValidator() {
       .with(Chain.Near, () => nearValidateAddress(address))
       .with(Chain.Ripple, () => rippleValidateAddress(address))
       .with(Chain.Solana, () => solanaValidateAddress(address))
+      .with(Chain.Stellar, () => stellarValidateAddress(address))
       .with(Chain.Sui, () => suiValidateAddress(address))
       .with(Chain.Ton, () => tonValidateAddress(address))
       .with(Chain.Tron, () => tronValidateAddress(address))
@@ -105,6 +108,7 @@ export function getFeeEstimator<T extends keyof CreateTransactionParams>(chain: 
         Chain.Polkadot,
         Chain.Solana,
         Chain.Ripple,
+        Chain.Stellar,
         Chain.Tron,
         Chain.Near,
         Chain.Cardano,
@@ -144,6 +148,7 @@ type Toolboxes = {
   [Chain.Near]: Awaited<ReturnType<typeof getNearToolbox>>;
   [Chain.Ripple]: Awaited<ReturnType<typeof getRippleToolbox>>;
   [Chain.Solana]: Awaited<ReturnType<typeof getSolanaToolbox>>;
+  [Chain.Stellar]: Awaited<ReturnType<typeof getStellarToolbox>>;
   [Chain.Sui]: Awaited<ReturnType<typeof getSuiToolbox>>;
   [Chain.Ton]: Awaited<ReturnType<typeof getTONToolbox>>;
   [Chain.Tron]: Awaited<ReturnType<typeof createTronToolbox>>;
@@ -161,6 +166,7 @@ type ToolboxParams = { [key in EVMChain]: Parameters<typeof getEvmToolbox>[1] } 
   [Chain.Near]: Parameters<typeof getNearToolbox>[0];
   [Chain.Ripple]: Parameters<typeof getRippleToolbox>[0];
   [Chain.Solana]: Parameters<typeof getSolanaToolbox>[0];
+  [Chain.Stellar]: Parameters<typeof getStellarToolbox>[0];
   [Chain.Sui]: Parameters<typeof getSuiToolbox>[0];
   [Chain.Ton]: Parameters<typeof getTONToolbox>[0];
   [Chain.Tron]: Parameters<typeof createTronToolbox>[0];
@@ -178,6 +184,7 @@ type CreateTransactionParams = { [key in EVMChain]: EVMCreateTransactionParams }
   [Chain.Ripple]: GenericCreateTransactionParams;
   [Chain.Near]: GenericCreateTransactionParams;
   [Chain.Solana]: SolanaCreateTransactionParams;
+  [Chain.Stellar]: GenericCreateTransactionParams;
   [Chain.Sui]: SuiCreateTransactionParams;
   [Chain.Ton]: GenericCreateTransactionParams;
   [Chain.Tron]: GenericCreateTransactionParams;
@@ -227,6 +234,11 @@ export async function getToolbox<T extends keyof Toolboxes>(
       const { getRippleToolbox } = await import("./ripple");
       const rippleToolbox = await getRippleToolbox(params as Parameters<typeof getRippleToolbox>[0]);
       return rippleToolbox as Toolboxes[T];
+    })
+    .with(Chain.Stellar, async () => {
+      const { getStellarToolbox } = await import("./stellar");
+      const stellarToolbox = await getStellarToolbox(params as Parameters<typeof getStellarToolbox>[0]);
+      return stellarToolbox as Toolboxes[T];
     })
     .with(Chain.Solana, async () => {
       const { getSolanaToolbox } = await import("./solana");

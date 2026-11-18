@@ -5,6 +5,7 @@ import type { braveWallet } from "@tcswap/wallet-extensions/brave";
 import type { cosmostationWallet } from "@tcswap/wallet-extensions/cosmostation";
 import type { ctrlWallet } from "@tcswap/wallet-extensions/ctrl";
 import type { evmWallet } from "@tcswap/wallet-extensions/evm-extensions";
+import type { freighterWallet } from "@tcswap/wallet-extensions/freighter";
 import type { keepkeyBexWallet } from "@tcswap/wallet-extensions/keepkey-bex";
 import type { keplrWallet } from "@tcswap/wallet-extensions/keplr";
 import type { okxWallet } from "@tcswap/wallet-extensions/okx";
@@ -35,6 +36,7 @@ export type SKWallets = {
   [WalletOption.CTRL]: typeof ctrlWallet;
   [WalletOption.EIP6963]: typeof evmWallet;
   [WalletOption.EXODUS]: typeof passkeysWallet;
+  [WalletOption.FREIGHTER]: typeof freighterWallet;
   [WalletOption.KEEPKEY]: typeof keepkeyWallet;
   [WalletOption.KEEPKEY_BEX]: typeof keepkeyBexWallet;
   [WalletOption.KEPLR]: typeof keplrWallet;
@@ -73,6 +75,7 @@ export type SKWalletsSupportedChains = {
   [WalletOption.CTRL]: typeof ctrlWallet.connectCtrl.supportedChains;
   [WalletOption.EIP6963]: typeof evmWallet.connectEVMWallet.supportedChains;
   [WalletOption.EXODUS]: typeof passkeysWallet.connectPasskeys.supportedChains;
+  [WalletOption.FREIGHTER]: typeof freighterWallet.connectFreighter.supportedChains;
   [WalletOption.KEEPKEY]: typeof keepkeyWallet.connectKeepkey.supportedChains;
   [WalletOption.KEEPKEY_BEX]: typeof keepkeyBexWallet.connectKeepkeyBex.supportedChains;
   [WalletOption.KEPLR]: typeof keplrWallet.connectKeplr.supportedChains;

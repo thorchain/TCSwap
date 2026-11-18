@@ -17,7 +17,7 @@ export function getExplorerTxUrl({ chain, txHash }: { txHash: string; chain: Cha
     )
     .with(...UTXOChains, Chain.Radix, Chain.Tron, () => `${explorerUrl}/transaction/${txHash.toLowerCase()}`)
     .with(Chain.Near, () => `${explorerUrl}/txns/${txHash}`)
-    .with(Chain.Ripple, () => `${explorerUrl}/transactions/${txHash}`)
+    .with(Chain.Ripple, Chain.Stellar, () => `${explorerUrl}/transactions/${txHash}`)
     .with(Chain.Sui, () => `${explorerUrl}/txblock/${txHash}`)
     .with(Chain.Cardano, Chain.Ton, () => `${explorerUrl}/tx/${txHash}`)
     .otherwise(() => "");
@@ -28,5 +28,6 @@ export function getExplorerAddressUrl({ chain, address }: { address: string; cha
 
   return match(chain)
     .with(Chain.Solana, Chain.Sui, Chain.Radix, () => `${explorerUrl}/account/${address}`)
+    .with(Chain.Stellar, () => `${explorerUrl}/accounts/${address}`)
     .otherwise(() => `${explorerUrl}/address/${address}`);
 }

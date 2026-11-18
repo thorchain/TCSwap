@@ -108,6 +108,12 @@
       "require": "./dist/exodus.cjs",
       "types": "./dist/types/exodus.d.ts"
     },
+    "./freighter": {
+      "bun": "./src/freighter.ts",
+      "default": "./dist/freighter.js",
+      "require": "./dist/freighter.cjs",
+      "types": "./dist/types/freighter.d.ts"
+    },
     "./keepkey": {
       "bun": "./src/keepkey.ts",
       "default": "./dist/keepkey.js",

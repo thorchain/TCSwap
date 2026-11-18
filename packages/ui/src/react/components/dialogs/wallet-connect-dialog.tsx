@@ -87,6 +87,7 @@ export const availableChainsByWallet: Record<WalletOption, Chain[] | readonly Ch
   [WalletOption.COINBASE_MOBILE]: EVMChains,
   [WalletOption.COINBASE_WEB]: EVMChains,
   [WalletOption.EIP6963]: EVMChains,
+  [WalletOption.FREIGHTER]: [Chain.Stellar],
   [WalletOption.KEPLR]: [Chain.Cosmos, Chain.Kujira, Chain.Noble, Chain.THORChain, Chain.Bitcoin, ...EVMChains],
   [WalletOption.LEAP]: [Chain.Cosmos, Chain.Kujira, Chain.Noble, Chain.THORChain, Chain.Bitcoin, ...EVMChains],
   [WalletOption.LEDGER]: AllChainsSupported,

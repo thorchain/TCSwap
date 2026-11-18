@@ -315,6 +315,7 @@ export const getCommonAssetInfo = (assetString: CommonAssetString) => {
       Chain.Ripple,
       Chain.Polkadot,
       Chain.Near,
+      Chain.Stellar,
       ...UTXOChains,
       (asset) => ({ decimal, identifier: `${asset}.${asset}` }),
     )

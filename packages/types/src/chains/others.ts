@@ -110,6 +110,19 @@ const SUI = createChain({
   type,
 });
 
+const XLM = createChain({
+  baseDecimal: 7,
+  blockTime: 5,
+  chain: Chain.Stellar,
+  chainId: ChainId.Stellar,
+  explorerUrl: "https://stellarchain.io",
+  name: "Stellar",
+  nativeCurrency: "XLM",
+  networkDerivationPath: [44, 148, 0, 0, 0],
+  rpcUrls: ["https://horizon.stellar.org"],
+  type,
+});
+
 const ADA = createChain({
   baseDecimal: 6,
   blockTime: 600,
@@ -123,6 +136,6 @@ const ADA = createChain({
   type,
 });
 
-export const OtherChainConfigs = [NEAR, XRD, XRP, SOL, TON, TRON, SUI, ADA] as const;
+export const OtherChainConfigs = [NEAR, XRD, XRP, SOL, TON, TRON, SUI, ADA, XLM] as const;
 export const OtherChains = OtherChainConfigs.map((config) => config.chain);
 export type OtherChain = (typeof OtherChains)[number];
