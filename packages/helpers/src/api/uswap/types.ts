@@ -580,29 +580,213 @@ const QuoteResponseRouteLegItem = object({
   sellAsset: string().describe("Asset to sell"),
 });
 
+// --- Aggregator /v3 (API_V3.md) -------------------------------------------------------------
+// A v3 route says how to pay in one `execution` block. The swap plugins read the older flat
+// fields (`tx`, `memo`, `inboundAddress`, `targetAddress`, `expiration`), which `flattenSwapRoute`
+// (./serializer) fills from it.
+
+export const SignableTxSchema = z.discriminatedUnion("kind", [
+  object({
+    data: string(),
+    from: string(),
+    gas: optional(string()),
+    gasPrice: optional(string()),
+    kind: z.literal("evm"),
+    to: string(),
+    value: string(),
+  }),
+  object({ kind: z.literal("psbt"), psbt: string() }),
+  object({ kind: z.literal("solana"), message: string() }),
+  object({ kind: z.literal("near"), tx: string() }),
+  object({ kind: z.literal("stellar"), xdr: string() }),
+  object({ kind: z.literal("cosmos"), tx: unknown() }),
+  object({ kind: z.literal("ripple"), tx: unknown() }),
+  object({ kind: z.literal("ton"), tx: unknown() }),
+  object({ kind: z.literal("tron"), tx: unknown() }),
+]);
+
+export type SignableTx = z.infer<typeof SignableTxSchema>;
+
+export const ExecutionApprovalSchema = object({
+  amount: string().describe("Allowance amount in base units"),
+  spender: string().describe("Spender to approve"),
+  token: string().describe("Token that needs an allowance"),
+});
+
+export type ExecutionApproval = z.infer<typeof ExecutionApprovalSchema>;
+
+/**
+ * Order identifier bound to a `transfer` deposit — `destination_tag` goes in the tx's
+ * tag field (e.g. XRP), `text` in the memo field. Omitting it strands the funds.
+ */
+export const TransferAttachmentSchema = z.discriminatedUnion("type", [
+  object({ type: z.literal("destination_tag"), value: string() }),
+  object({ type: z.literal("text"), value: string() }),
+]);
+
+export type TransferAttachment = z.infer<typeof TransferAttachmentSchema>;
+
+export const ThorchainDeliverySchema = z.discriminatedUnion("kind", [
+  object({
+    approval: optional(ExecutionApprovalSchema),
+    kind: z.literal("evm_contract_call"),
+    router: string().describe("Router contract encoding the memo — a plain transfer will not work"),
+    unsignedTx: optional(SignableTxSchema),
+  }),
+  object({
+    kind: z.literal("utxo_op_return"),
+    shieldedMemoAddress: optional(string().describe("Maya ZEC only: send the memo to this 2nd shielded output")),
+    unsignedTx: optional(SignableTxSchema),
+  }),
+  object({ kind: z.literal("cosmos_memo"), unsignedTx: optional(SignableTxSchema) }),
+]);
+
+export type ThorchainDelivery = z.infer<typeof ThorchainDeliverySchema>;
+
+/** How to send funds for a committed route — switch on `method` and handle only that branch. */
+export const SwapExecutionSchema = z.discriminatedUnion("method", [
+  object({
+    approval: optional(ExecutionApprovalSchema),
+    chain: string().describe("Source chain — decides the tx shape"),
+    method: z.literal("signed_transaction"),
+    transactions: array(SignableTxSchema),
+  }),
+  object({
+    amount: string(),
+    asset: string(),
+    attachment: optional(TransferAttachmentSchema),
+    chain: string(),
+    depositAddress: string(),
+    method: z.literal("transfer"),
+    qr: optional(object({ dataURL: string(), str: string() })),
+    unsignedTx: optional(SignableTxSchema),
+    unsignedTxUnavailable: optional(boolean()),
+  }),
+  object({
+    amount: string(),
+    asset: string(),
+    chain: string(),
+    delivery: ThorchainDeliverySchema,
+    expiry: optional(string()),
+    inboundAddress: string(),
+    memo: string().describe("The memo IS the swap order — never omit it"),
+    method: z.literal("thorchain_deposit"),
+    protocol: z.enum(["THORCHAIN", "MAYACHAIN"]),
+  }),
+]);
+
+export type SwapExecution = z.infer<typeof SwapExecutionSchema>;
+
+/** What `POST /v3/rate` and `POST /v3/preview` share. Exactly one of `sellAmount` / `buyAmount` is given. */
+const v3QuoteFields = {
+  buyAmount: optional(string().describe("Exact output: the amount to receive")),
+  buyAsset: string().describe("Asset to buy"),
+  chainId: optional(string().describe("Required when an asset is a bare contract address")),
+  floating: optional(boolean()),
+  sellAmount: optional(string().describe("Exact input: the amount to spend")),
+  sellAsset: string().describe("Asset to sell"),
+  slippage: number().describe("Tolerance in percent, at least 0 and below 100"),
+  streamingInterval: optional(number().describe("THORChain / Mayachain only")),
+  streamingQuantity: optional(number().describe("THORChain / Mayachain only")),
+};
+
+/** `POST /v3/rate` - compare routes. Read-only, no addresses. */
+export const RateRequestSchema = object({
+  ...v3QuoteFields,
+  privacy: optional(array(z.enum(["none", "basic"])).describe("The rails wanted; the server picks the providers")),
+  providers: optional(array(string()).describe("Narrow the comparison to these providers")),
+});
+export type RateRequest = z.infer<typeof RateRequestSchema>;
+
+/** The client's fee settings for the inbound transaction, so the preview is priced as it will be signed. */
+export const NetworkFeeSchema = z.discriminatedUnion("kind", [
+  object({ gasPrice: string(), kind: z.literal("legacy") }),
+  object({ kind: z.literal("eip1559"), maxFeePerGas: string(), maxPriorityFeePerGas: string() }),
+  object({ feeRate: number(), kind: z.literal("utxo") }),
+  object({ computeUnitPrice: number(), kind: z.literal("solana") }),
+]);
+export type NetworkFee = z.infer<typeof NetworkFeeSchema>;
+
+/** `POST /v3/preview` - one provider, with addresses: the deposit details and a `previewToken`. Creates nothing. */
+export const PreviewRequestSchema = object({
+  ...v3QuoteFields,
+  destinationAddress: string().describe("Where the bought funds are sent"),
+  destinationMemo: optional(string().describe("The tag or memo the payout must carry (HOUDINI_PRIVATE only)")),
+  generateQR: optional(boolean().describe("transfer providers: return a deposit QR code from commit")),
+  networkFee: optional(NetworkFeeSchema),
+  provider: string().describe("The single provider to create the order with"),
+  refundAddress: optional(string()),
+  sourceAddress: optional(string().describe("The sending account; required for signed_transaction providers")),
+});
+export type PreviewRequest = z.infer<typeof PreviewRequestSchema>;
+
+/** `POST /v3/commit` - creates the order for a previewed route and returns its `uuid`. */
+export const CommitRequestSchema = object({
+  inboundTxHash: optional(string().describe("The signed inbound transaction's hash, reported before broadcasting")),
+  previewToken: string(),
+});
+export type CommitRequest = z.infer<typeof CommitRequestSchema>;
+
+/**
+ * Which Zcash addresses one side of a route takes: a unified (u1…) address when `unified` is
+ * present, a transparent one when `transparent`, a TEX (ZIP-320) one when `tex`.
+ */
+export const ZcashAddressRuleSchema = object({
+  sameAsRefund: optional(boolean().describe("source only: sourceAddress, when sent, must equal refundAddress")),
+  tex: optional(boolean()),
+  transparent: optional(boolean()),
+  unified: optional(object({ receivers: array(string()), requiresOneOf: array(string()) })),
+});
+export type ZcashAddressRule = z.infer<typeof ZcashAddressRuleSchema>;
+
+export const ZcashAddressRulesSchema = object({
+  destination: optional(ZcashAddressRuleSchema),
+  refund: optional(ZcashAddressRuleSchema),
+  source: optional(ZcashAddressRuleSchema),
+});
+export type ZcashAddressRules = z.infer<typeof ZcashAddressRulesSchema>;
+
+/** The one way a provider is paid, as `GET /v3/providers` names it and `execution.method` repeats it. */
+export type SwapExecutionMethod = SwapExecution["method"];
+
 export const QuoteResponseRouteItem = object({
+  addressRules: optional(ZcashAddressRulesSchema).describe("v3: on a route with ZEC on either side"),
+  approvalSpender: optional(string().describe("v3: the spender a token sell must be approved to")),
   buyAsset: string().describe("Asset to buy"),
   destinationAddress: optional(string().describe("Destination address")),
   estimatedTime: optional(EstimatedTimeSchema),
+  execution: optional(SwapExecutionSchema).describe("v3: how to send the funds"),
+  executionType: optional(z.enum(["signed_transaction", "transfer", "thorchain_deposit"])).describe(
+    "v3: the provider's execution method, known before a preview exists",
+  ),
   expectedBuyAmount: string().describe("Expected Buy amount"),
   expectedBuyAmountMaxSlippage: optional(string().describe("Expected Buy amount max slippage")),
   expiration: optional(string().describe("Expiration")),
+  expiresAt: optional(number().describe("v3: when the quote lapses, epoch ms")),
   fees: FeesSchema,
   inboundAddress: optional(string().describe("Inbound address")),
   legs: optional(array(QuoteResponseRouteLegItem)),
   memo: optional(string().describe("Memo")),
   meta: optional(RouteQuoteMetadataV2Schema),
+  minBuyAmount: optional(
+    string().nullable().describe("v3: the enforced floor; null when nothing enforces the quoted amount"),
+  ),
+  previewToken: optional(string().describe("v3: set by /preview; commit it to create the order")),
   providers: array(z.enum(ProviderName)),
   // Deposit QR code (data URL) for a wallet-less deposit-address swap, when the quote was
   // requested without a source address.
   qrCodeDataURL: optional(string().describe("Deposit QR code data URL")),
+  qrCodeStr: optional(string()),
   refundAddress: optional(string().describe("Refund address")),
   sellAmount: string().describe("Sell amount"),
   sellAsset: string().describe("Asset to sell"),
+  shielded_memo_address: optional(string()),
   sourceAddress: optional(string().describe("Source address")),
   targetAddress: optional(string().describe("Target address")),
   tx: optional(union([EVMTransactionSchema, CosmosTransactionSchema, string()])),
+  txExtraAttribute: optional(z.looseObject({})),
   txType: optional(z.enum(RouteQuoteTxType)),
+  uuid: optional(string().describe("v3: set by /commit - the handle /track takes")),
   warnings: optional(RouteQuoteWarningSchema),
 });
 

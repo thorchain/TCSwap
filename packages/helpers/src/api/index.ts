@@ -10,6 +10,7 @@ import * as uswap from "./uswap/endpoints";
 export * from "./memoless/types";
 export * from "./midgard/types";
 export * from "./thornode/types";
+export * from "./uswap/serializer";
 export * from "./uswap/types";
 
 export const USwapApi = { ...uswap, ...memoless, mayachainMidgard, thorchainMidgard, thornode };
