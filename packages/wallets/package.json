@@ -236,5 +236,5 @@
     "type-check:go": "tsgo"
   },
   "type": "module",
-  "version": "4.3.38"
+  "version": "4.3.39"
 }

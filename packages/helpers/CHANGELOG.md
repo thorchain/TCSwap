@@ -1,5 +1,14 @@
 <!-- Modifications © 2025 Horizontal Systems. -->
 
+## 4.5.30
+
+### Patch Changes
+
+- Add API v3 support
+
+- Updated dependencies []:
+  - @tcswap/types@0.4.4
+
 ## 4.5.29
 
 ### Patch Changes
