@@ -297,6 +297,20 @@ const MEGAETHConfig = createChain({
   type,
 });
 
+const ROBINHOODConfig = createChain({
+  baseDecimal,
+  blockTime: 0.25,
+  chain: Chain.Robinhood,
+  chainId: ChainId.Robinhood,
+  chainIdHex: "0x1237",
+  explorerUrl: "https://robinscan.io",
+  name: "Robinhood",
+  nativeCurrency: "ETH",
+  networkDerivationPath,
+  rpcUrls: ["https://rpc.mainnet.chain.robinhood.com", "https://robinhood-rpc.publicnode.com"],
+  type,
+});
+
 export const EVMChainConfigs = [
   ARBConfig,
   AURORAConfig,
@@ -315,6 +329,7 @@ export const EVMChainConfigs = [
   MONADConfig,
   OPConfig,
   POLConfig,
+  ROBINHOODConfig,
   SONICConfig,
   UNIConfig,
   XLAYERConfig,
@@ -339,6 +354,7 @@ export const EVMChains = [
   Chain.Monad,
   Chain.Optimism,
   Chain.Polygon,
+  Chain.Robinhood,
   Chain.Sonic,
   Chain.Unichain,
   Chain.XLayer,

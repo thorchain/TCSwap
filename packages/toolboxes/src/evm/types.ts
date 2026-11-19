@@ -34,6 +34,7 @@ import type {
   MEGAETHToolbox,
   MONADToolbox,
   OPToolbox,
+  ROBINHOODToolbox,
   SONICToolbox,
   UNIToolbox,
   XLayerToolbox,
@@ -140,6 +141,7 @@ export type EVMToolboxes = {
   [Chain.Monad]: Awaited<ReturnType<typeof MONADToolbox>>;
   [Chain.Optimism]: Awaited<ReturnType<typeof OPToolbox>>;
   [Chain.Polygon]: Awaited<ReturnType<typeof MATICToolbox>>;
+  [Chain.Robinhood]: Awaited<ReturnType<typeof ROBINHOODToolbox>>;
   [Chain.Sonic]: Awaited<ReturnType<typeof SONICToolbox>>;
   [Chain.Unichain]: Awaited<ReturnType<typeof UNIToolbox>>;
   [Chain.XLayer]: Awaited<ReturnType<typeof XLayerToolbox>>;

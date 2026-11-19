@@ -29,6 +29,7 @@ export async function getEvmToolbox<T extends EVMChain>(chain: T, params?: EVMTo
       .with(Chain.Hyperevm, () => evmToolboxes.HYPEREVMToolbox(toolboxParams) as Toolbox)
       .with(Chain.Optimism, () => OPToolbox(toolboxParams) as Toolbox)
       .with(Chain.Polygon, () => evmToolboxes.MATICToolbox(toolboxParams) as Toolbox)
+      .with(Chain.Robinhood, () => evmToolboxes.ROBINHOODToolbox(toolboxParams) as Toolbox)
       .with(Chain.Sonic, () => evmToolboxes.SONICToolbox(toolboxParams) as Toolbox)
       .with(Chain.Unichain, () => evmToolboxes.UNIToolbox(toolboxParams) as Toolbox)
       .with(Chain.XLayer, () => evmToolboxes.XLayerToolbox(toolboxParams) as Toolbox)

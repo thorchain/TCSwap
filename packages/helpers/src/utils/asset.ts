@@ -27,7 +27,14 @@ type RadixResourceResponse = {
   };
   owner_role?: any;
 };
-const ethGasChains = [Chain.Arbitrum, Chain.Aurora, Chain.Base, Chain.Ethereum, Chain.Optimism] as const;
+const ethGasChains = [
+  Chain.Arbitrum,
+  Chain.Aurora,
+  Chain.Base,
+  Chain.Ethereum,
+  Chain.Optimism,
+  Chain.Robinhood,
+] as const;
 
 async function getRadixAssetDecimals(address: string) {
   const { baseDecimal } = getChainConfig(Chain.Radix);

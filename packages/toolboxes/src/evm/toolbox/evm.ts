@@ -40,6 +40,7 @@ export const CROToolbox = createEvmToolbox(Chain.Cronos);
 export const GNOToolbox = createEvmToolbox(Chain.Gnosis);
 export const HYPEREVMToolbox = createEvmToolbox(Chain.Hyperevm);
 export const MATICToolbox = createEvmToolbox(Chain.Polygon);
+export const ROBINHOODToolbox = createEvmToolbox(Chain.Robinhood);
 export const SONICToolbox = createEvmToolbox(Chain.Sonic);
 export const UNIToolbox = createEvmToolbox(Chain.Unichain);
 export const XLayerToolbox = createEvmToolbox(Chain.XLayer);
